@@ -152,6 +152,7 @@
                 <div class="mt-3">
                     <label class="text-[11px] text-slate-400 font-medium block mb-1">Выбрать ресторан:</label>
                     <select id="adminRestaurantSelect" onchange="loadAdminBookings()" class="w-full bg-slate-800 text-xs text-white rounded-lg p-2 border border-slate-700 outline-none">
+                        <option value="all" selected>🏢 Все рестораны (общий список)</option>
                         <option value="1">La Terrazza (Алматы)</option>
                         <option value="2">Чайхана NAVAT (Алматы)</option>
                         <option value="3">Sandyq (Астана)</option>
@@ -496,7 +497,7 @@
 
         // PERMANENT backend URL (Railway cloud deployment).
         // This is the fallback when no ?api= query param is provided.
-        const DEFAULT_BACKEND_URL = "https://restokz-bot-production.up.railway.app";
+        const DEFAULT_BACKEND_URL = "https://restokz-app.loca.lt";
 
         let API_BASE = DEFAULT_BACKEND_URL;
 
@@ -798,6 +799,8 @@
         }
 
         // --- Navigation Tabs ---
+        let myBookingsPollInterval = null;
+
         function switchTab(tabId) {
             document.getElementById('tab-restaurants').classList.add('hidden');
             document.getElementById('tab-my-bookings').classList.add('hidden');
@@ -816,8 +819,23 @@
 
             document.getElementById(`tab-${tabId}`).classList.remove('hidden');
 
+            if (myBookingsPollInterval) {
+                clearInterval(myBookingsPollInterval);
+                myBookingsPollInterval = null;
+            }
+
             if (tabId === 'my-bookings') {
                 loadMyBookings();
+                // Auto-refresh every 4 seconds so status changes from admin immediately reflect on guest screen
+                myBookingsPollInterval = setInterval(() => {
+                    const tab = document.getElementById('tab-my-bookings');
+                    if (tab && !tab.classList.contains('hidden')) {
+                        loadMyBookings(true);
+                    } else {
+                        clearInterval(myBookingsPollInterval);
+                        myBookingsPollInterval = null;
+                    }
+                }, 4000);
             } else if (tabId === 'admin') {
                 loadAdminBookings();
             }
@@ -1135,17 +1153,6 @@
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerText = "Подтвердить бронирование";
-            }
-
-            // 3. If Telegram WebApp opened via keyboard with sendData support
-            if (tg && tg.sendData) {
-                try {
-                    tg.sendData(JSON.stringify(bookingPayload));
-                } catch (e) {
-                    console.log(e);
-                }
-            }
-
             closeRestaurantModal();
             showSuccessModal(bookingPayload, bookingPayload.id);
         }
@@ -1251,18 +1258,36 @@
         }
 
         // --- Guest Bookings ("Мои брони") ---
-        async function loadMyBookings() {
+        async function loadMyBookings(silent = false) {
             const list = document.getElementById('myBookingsList');
-            list.innerHTML = '<div class="text-center py-8 text-slate-400 text-xs animate-pulse">Загрузка ваших бронирований...</div>';
+            if (!silent) {
+                list.innerHTML = '<div class="text-center py-8 text-slate-400 text-xs animate-pulse">Загрузка ваших бронирований...</div>';
+            }
 
             // 1. Get from localStorage
             let localList = getStoredBookings();
             let bookings = localList;
 
-            // 2. Query API if available
-            const tgId = tgUser ? tgUser.id : 348581961;
-            const data = await apiFetch(`/api/bookings/my?user_id=${tgId}`);
-            if (data && data.bookings && data.bookings.length > 0) {
+            // 2. Query API using Telegram user ID, local booking IDs, and saved phone
+            const tgId = (tgUser && tgUser.id) ? tgUser.id : '';
+            const localIds = localList.map(b => b.id).filter(id => id);
+            const savedPhone = (document.getElementById('guestPhoneInput')?.value || '').trim();
+
+            let query = `/api/bookings/my?`;
+            const qParams = [];
+            if (tgId) qParams.push(`user_id=${tgId}`);
+            if (localIds.length > 0) qParams.push(`ids=${localIds.join(',')}`);
+            if (savedPhone) qParams.push(`phone=${encodeURIComponent(savedPhone)}`);
+            query += qParams.join('&');
+
+            const data = await apiFetch(query);
+            if (data && data.bookings) {
+                // Update local storage with real status from server
+                data.bookings.forEach(serverB => {
+                    updateLocalBookingStatus(serverB.id, serverB.status);
+                });
+
+                // Merge: prefer server bookings with fresh status
                 const apiIds = new Set(data.bookings.map(b => b.id));
                 const localOnly = localList.filter(b => !apiIds.has(b.id));
                 bookings = [...data.bookings, ...localOnly];
@@ -1339,10 +1364,15 @@
 
         async function loadAdminBookings() {
             const list = document.getElementById('adminBookingsList');
-            const restId = parseInt(document.getElementById('adminRestaurantSelect').value);
+            const selectVal = document.getElementById('adminRestaurantSelect').value;
+            const isAll = selectVal === 'all';
+            const restId = isAll ? null : parseInt(selectVal);
 
             // 1. Get from localStorage
-            let localList = getStoredBookings().filter(b => b.restaurant_id == restId);
+            let localList = getStoredBookings();
+            if (!isAll && restId) {
+                localList = localList.filter(b => b.restaurant_id == restId);
+            }
 
             if (adminFilterDate === 'today') {
                 const todayStr = getTodayDateString();
@@ -1355,9 +1385,12 @@
             let bookings = localList;
 
             // 2. Query API if available
-            let query = `/api/admin/bookings?restaurant_id=${restId}`;
-            if (adminFilterDate === 'today') query += `&date=${getTodayDateString()}`;
-            if (adminFilterDate === 'tomorrow') query += `&date=${getTomorrowDateString()}`;
+            let query = `/api/admin/bookings?`;
+            const qParams = [];
+            if (!isAll && restId) qParams.push(`restaurant_id=${restId}`);
+            if (adminFilterDate === 'today') qParams.push(`date=${getTodayDateString()}`);
+            if (adminFilterDate === 'tomorrow') qParams.push(`date=${getTomorrowDateString()}`);
+            query += qParams.join('&');
 
             const data = await apiFetch(query);
             const statusEl = document.getElementById('adminConnectionStatus');

@@ -497,11 +497,36 @@ def get_booking_details(booking_id: int) -> Optional[Dict[str, Any]]:
     conn.close()
     return dict(row) if row else None
 
-def get_user_bookings(guest_tg_id: int) -> List[Dict[str, Any]]:
+def get_user_bookings(
+    guest_tg_id: Optional[int] = None,
+    booking_ids: Optional[List[int]] = None,
+    phone: Optional[str] = None
+) -> List[Dict[str, Any]]:
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    cursor.execute("""
+    conditions = []
+    params = []
+
+    if guest_tg_id:
+        conditions.append("b.guest_tg_id = ?")
+        params.append(guest_tg_id)
+
+    if booking_ids:
+        placeholders = ",".join("?" for _ in booking_ids)
+        conditions.append(f"b.id IN ({placeholders})")
+        params.extend(booking_ids)
+
+    if phone:
+        conditions.append("b.guest_phone = ?")
+        params.append(phone)
+
+    if not conditions:
+        conn.close()
+        return []
+
+    where_clause = " OR ".join(conditions)
+    query = f"""
         SELECT b.*, 
                r.name as restaurant_name, 
                r.address as restaurant_address,
@@ -511,10 +536,11 @@ def get_user_bookings(guest_tg_id: int) -> List[Dict[str, Any]]:
         FROM bookings b
         JOIN restaurants r ON b.restaurant_id = r.id
         JOIN tables t ON b.table_id = t.id
-        WHERE b.guest_tg_id = ?
-        ORDER BY b.booking_date DESC, b.booking_time DESC
-    """, (guest_tg_id,))
+        WHERE {where_clause}
+        ORDER BY b.booking_date DESC, b.booking_time DESC, b.id DESC
+    """
 
+    cursor.execute(query, params)
     rows = cursor.fetchall()
     conn.close()
     return [dict(r) for r in rows]

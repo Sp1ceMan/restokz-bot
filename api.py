@@ -119,15 +119,29 @@ async def create_booking_endpoint(request: web.Request) -> web.Response:
 
 async def get_my_bookings(request: web.Request) -> web.Response:
     user_id_str = request.query.get("user_id")
-    if not user_id_str:
-        return web.json_response({"bookings": []})
+    ids_str = request.query.get("ids")
+    phone = request.query.get("phone")
 
-    try:
-        user_id = int(user_id_str)
-        bookings = database.get_user_bookings(user_id)
-        return web.json_response({"bookings": bookings})
-    except ValueError:
-        return web.json_response({"error": "Invalid user_id"}, status=400)
+    user_id = None
+    if user_id_str:
+        try:
+            user_id = int(user_id_str)
+        except ValueError:
+            pass
+
+    booking_ids = []
+    if ids_str:
+        for chunk in ids_str.split(","):
+            chunk = chunk.strip()
+            if chunk.isdigit():
+                booking_ids.append(int(chunk))
+
+    bookings = database.get_user_bookings(
+        guest_tg_id=user_id,
+        booking_ids=booking_ids if booking_ids else None,
+        phone=phone
+    )
+    return web.json_response({"bookings": bookings})
 
 async def get_admin_bookings_endpoint(request: web.Request) -> web.Response:
     rest_id_str = request.query.get("restaurant_id")
