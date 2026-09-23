@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RestoKZ — Бронирование ресторанов в Казахстане</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#fff7ed',
+                            100: '#ffedd5',
+                            500: '#f97316',
+                            600: '#ea580c',
+                            700: '#c2410c',
+                        },
+                        kzgold: '#F4C430',
+                        kzblue: '#00AFCA'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            -webkit-tap-highlight-color: transparent;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .table-node {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .table-node.selected {
+            transform: scale(1.08);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
+            outline: 3px solid #3b82f6;
+        }
+        .table-node.busy {
+            opacity: 0.45;
+            cursor: not-allowed;
+            filter: grayscale(0.5);
+        }
+        .badge-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+    </style>
+</head>
+<body class="text-slate-100 min-h-screen flex flex-col justify-between pb-20 select-none">
+
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-30 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 py-3">
+        <div class="max-w-md mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-500 flex items-center justify-center text-lg font-bold shadow-lg shadow-orange-500/20">
+                    🍽️
+                </div>
+                <div>
+                    <h1 class="text-base font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-amber-200 bg-clip-text text-transparent leading-tight">RestoKZ</h1>
+                    <p class="text-[10px] text-slate-400 font-medium">Казахстан • Бронирование столов</p>
+                </div>
+            </div>
+
+            <!-- City Selector -->
+            <div class="relative">
+                <select id="citySelect" onchange="onCityChange(this.value)" class="bg-slate-800 text-xs text-amber-300 font-medium py-1.5 px-3 rounded-lg border border-slate-700 outline-none focus:border-amber-500 transition-colors">
+                    <option value="Все" selected>🇰🇿 Все города</option>
+                    <option value="Алматы">Алматы</option>
+                    <option value="Астана">Астана</option>
+                    <option value="Шымкент">Шымкент</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-md mx-auto w-full px-4 pt-4 flex-1">
+
+        <!-- TAB 1: RESTAURANTS CATALOG -->
+        <section id="tab-restaurants" class="space-y-4">
+            
+            <!-- Search & Quick Filters -->
+            <div class="space-y-3">
+                <div class="relative">
+                    <input type="text" id="searchInput" oninput="onSearchInput(this.value)" placeholder="Поиск ресторана, кухни, адреса..." 
+                           class="w-full bg-slate-800/80 border border-slate-700 rounded-xl py-2.5 pl-10 pr-4 text-xs placeholder-slate-400 text-white outline-none focus:border-amber-500 transition-all">
+                    <span class="absolute left-3.5 top-2.5 text-slate-400 text-sm">🔍</span>
+                </div>
+
+                <!-- Cuisine Chips -->
+                <div class="flex gap-2 overflow-x-auto hide-scrollbar pb-1 text-xs">
+                    <button onclick="filterCuisine('Все')" class="cuisine-btn active px-3 py-1.5 rounded-full bg-amber-500 text-slate-950 font-semibold whitespace-nowrap transition-all">Все</button>
+                    <button onclick="filterCuisine('Казахская')" class="cuisine-btn px-3 py-1.5 rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 whitespace-nowrap transition-all">🥩 Казахская</button>
+                    <button onclick="filterCuisine('Итальянская')" class="cuisine-btn px-3 py-1.5 rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 whitespace-nowrap transition-all">🍝 Итальянская</button>
+                    <button onclick="filterCuisine('Восточная')" class="cuisine-btn px-3 py-1.5 rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 whitespace-nowrap transition-all">🫖 Восточная</button>
+                </div>
+            </div>
+
+            <!-- Restaurants List Feed -->
+            <div id="restaurantsList" class="space-y-4">
+                <!-- Injected via JavaScript -->
+                <div class="text-center py-12 text-slate-400 text-sm animate-pulse">Загрузка ресторанов...</div>
+            </div>
+        </section>
+
+        <!-- TAB 2: MY BOOKINGS -->
+        <section id="tab-my-bookings" class="hidden space-y-4">
+            <div class="flex items-center justify-between">
+                <h2 class="text-lg font-bold">📋 Мои бронирования</h2>
+                <button onclick="loadMyBookings()" class="text-xs text-amber-400 hover:underline">Обновить</button>
+            </div>
+            <div id="myBookingsList" class="space-y-3">
+                <!-- Injected via JavaScript -->
+            </div>
+        </section>
+
+        <!-- TAB 3: ADMIN PANEL (FOR RESTAURANT HOSTESS / MANAGER) -->
+        <section id="tab-admin" class="hidden space-y-4">
+            <div class="bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 rounded-2xl p-4">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xl">👑</span>
+                        <div>
+                            <h2 class="text-sm font-bold text-amber-400">Панель управления заведения</h2>
+                            <p class="text-[10px] text-slate-400">Рабочее место хостес и администратора</p>
+                        </div>
+                    </div>
+                    <span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-[10px] font-bold px-2 py-0.5 rounded-full">В сети</span>
+                </div>
+
+                <!-- Select Restaurant for Admin -->
+                <div class="mt-3">
+                    <label class="text-[11px] text-slate-400 font-medium block mb-1">Выбрать ресторан:</label>
+                    <select id="adminRestaurantSelect" onchange="loadAdminBookings()" class="w-full bg-slate-800 text-xs text-white rounded-lg p-2 border border-slate-700 outline-none">
+                        <option value="1">La Terrazza (Алматы)</option>
+                        <option value="2">Чайхана NAVAT (Алматы)</option>
+                        <option value="3">Sandyq (Астана)</option>
+                        <option value="4">Del Papa (Алматы)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Date Filter & Refresh for Admin -->
+            <div class="flex items-center justify-between gap-2 text-xs">
+                <div class="flex gap-2">
+                    <button onclick="filterAdminDate('all', this)" class="admin-date-btn px-3 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-bold">Все даты</button>
+                    <button onclick="filterAdminDate('today', this)" class="admin-date-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300">Сегодня</button>
+                    <button onclick="filterAdminDate('tomorrow', this)" class="admin-date-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300">Завтра</button>
+                </div>
+                <button onclick="loadAdminBookings()" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-400 font-bold flex items-center gap-1 border border-slate-700 text-xs">
+                    🔄 Обновить
+                </button>
+            </div>
+
+            <div id="adminConnectionStatus" class="text-[10px] px-1 min-h-[16px]"></div>
+
+            <!-- Admin Bookings List -->
+            <div id="adminBookingsList" class="space-y-3">
+                <div class="text-center py-8 text-slate-400 text-sm">Загрузка броней...</div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- RESTAURANT DETAILS MODAL -->
+    <div id="restaurantModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex flex-col justify-end">
+        <div class="bg-slate-900 border-t border-slate-800 rounded-t-3xl max-h-[92vh] flex flex-col overflow-hidden max-w-md mx-auto w-full">
+            
+            <!-- Modal Header / Cover -->
+            <div class="relative h-44 bg-slate-800 flex-shrink-0">
+                <img id="modalCover" src="" class="w-full h-full object-cover" alt="Restaurant Cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-black/40"></div>
+                
+                <button onclick="closeRestaurantModal()" class="absolute top-3 right-3 w-8 h-8 bg-black/60 rounded-full flex items-center justify-center text-white text-sm backdrop-blur-md">✕</button>
+
+                <div class="absolute bottom-3 left-4 right-4">
+                    <span id="modalCuisineBadge" class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 bg-amber-500 text-slate-950 rounded-md">Итальянская</span>
+                    <h2 id="modalTitle" class="text-xl font-extrabold text-white mt-1">La Terrazza</h2>
+                    <p id="modalAddress" class="text-xs text-slate-300 flex items-center gap-1 mt-0.5">📍 ул. Сатпаева 29</p>
+                </div>
+            </div>
+
+            <!-- Tabs Switcher inside Modal -->
+            <div class="flex border-b border-slate-800 bg-slate-900 px-4 pt-2">
+                <button id="modalTabBtn-book" onclick="switchModalTab('book')" class="flex-1 py-2.5 text-xs font-bold border-b-2 border-amber-500 text-amber-400 text-center transition-all">
+                    🪑 Забронировать стол
+                </button>
+                <button id="modalTabBtn-menu" onclick="switchModalTab('menu')" class="flex-1 py-2.5 text-xs font-bold border-b-2 border-transparent text-slate-400 text-center hover:text-slate-200 transition-all">
+                    📖 Меню заведения
+                </button>
+                <button id="modalTabBtn-about" onclick="switchModalTab('about')" class="flex-1 py-2.5 text-xs font-bold border-b-2 border-transparent text-slate-400 text-center hover:text-slate-200 transition-all">
+                    ℹ️ Инфо
+                </button>
+            </div>
+
+            <!-- Modal Body Scrollable -->
+            <div class="flex-1 overflow-y-auto p-4 space-y-4 hide-scrollbar">
+                
+                <!-- 1. BOOKING SUB-VIEW -->
+                <div id="modalSubTab-book" class="space-y-4">
+                    
+                    <!-- Date Picker -->
+                    <div>
+                        <label class="text-xs font-bold text-slate-300 block mb-1.5">1. Выберите дату</label>
+                        <div class="flex gap-2">
+                            <button type="button" onclick="selectDateQuick('today')" id="dateBtn-today" class="date-quick-btn flex-1 py-2 rounded-xl bg-amber-500 text-slate-950 text-xs font-bold transition-all">Сегодня</button>
+                            <button type="button" onclick="selectDateQuick('tomorrow')" id="dateBtn-tomorrow" class="date-quick-btn flex-1 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold transition-all">Завтра</button>
+                            <input type="date" id="bookingDateInput" onchange="onCustomDateChange(this.value)" class="flex-1 bg-slate-800 border border-slate-700 text-xs text-slate-200 rounded-xl px-2.5 py-2 outline-none">
+                        </div>
+                    </div>
+
+                    <!-- Time Slots -->
+                    <div>
+                        <label class="text-xs font-bold text-slate-300 block mb-1.5">2. Выберите время</label>
+                        <div class="grid grid-cols-4 gap-2 text-xs" id="timeSlotsContainer">
+                            <button type="button" onclick="selectTime('18:00', this)" class="time-slot-btn py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium">18:00</button>
+                            <button type="button" onclick="selectTime('18:30', this)" class="time-slot-btn py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium">18:30</button>
+                            <button type="button" onclick="selectTime('19:00', this)" class="time-slot-btn py-2 rounded-xl bg-amber-500 text-slate-950 font-bold selected">19:00</button>
+                            <button type="button" onclick="selectTime('19:30', this)" class="time-slot-btn py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium">19:30</button>
+                            <button type="button" onclick="selectTime('20:00', this)" class="time-slot-btn py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium">20:00</button>
+                            <button type="button" onclick="selectTime('20:30', this)" class="time-slot-btn py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium">20:30</button>
+                            <button type="button" onclick="selectTime('21:00', this)" class="time-slot-btn py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium">21:00</button>
+                            <button type="button" onclick="selectTime('21:30', this)" class="time-slot-btn py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium">21:30</button>
+                        </div>
+                    </div>
+
+                    <!-- Guests Count -->
+                    <div>
+                        <label class="text-xs font-bold text-slate-300 block mb-1.5">3. Количество гостей</label>
+                        <div class="flex items-center justify-between bg-slate-800 border border-slate-700 rounded-xl p-2">
+                            <span class="text-xs text-slate-400 pl-2">Персон за столиком:</span>
+                            <div class="flex items-center gap-3">
+                                <button type="button" onclick="changeGuestCount(-1)" class="w-8 h-8 rounded-lg bg-slate-700 text-white font-bold flex items-center justify-center hover:bg-slate-600">-</button>
+                                <span id="guestsCountValue" class="text-base font-extrabold text-amber-400 w-6 text-center">2</span>
+                                <button type="button" onclick="changeGuestCount(1)" class="w-8 h-8 rounded-lg bg-slate-700 text-white font-bold flex items-center justify-center hover:bg-slate-600">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Hall Scheme -->
+                    <div>
+                        <div class="flex items-center justify-between mb-1.5">
+                            <label class="text-xs font-bold text-slate-300">4. Выберите столик на схеме зала</label>
+                            <span class="text-[10px] text-amber-400">Нажмите на стол</span>
+                        </div>
+
+                        <!-- Legend -->
+                        <div class="flex items-center justify-center gap-4 text-[10px] text-slate-400 mb-2">
+                            <div class="flex items-center gap-1">
+                                <div class="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
+                                <span>Свободен</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <div class="w-2.5 h-2.5 rounded-full bg-rose-500"></div>
+                                <span>Занят</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <div class="w-2.5 h-2.5 rounded-full bg-blue-500"></div>
+                                <span>Выбран вами</span>
+                            </div>
+                        </div>
+
+                        <!-- Hall Grid Map Container -->
+                        <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 min-h-[240px] relative flex flex-col justify-between">
+                            <div class="text-[10px] text-slate-500 text-center uppercase tracking-wider font-semibold border-b border-slate-800 pb-1 mb-3">
+                                🪟 Панорамные окна / Вид на город
+                            </div>
+
+                            <div id="hallTablesGrid" class="grid grid-cols-3 gap-3 justify-items-center items-center py-2">
+                                <!-- Tables injected dynamically -->
+                                <div class="col-span-3 text-center text-xs text-slate-500">Загрузка столиков...</div>
+                            </div>
+
+                            <div class="text-[10px] text-slate-500 text-center uppercase tracking-wider font-semibold border-t border-slate-800 pt-1 mt-3">
+                                🚪 Вход в заведение • Барная стойка
+                            </div>
+                        </div>
+
+                        <!-- Selected Table Info Banner -->
+                        <div id="selectedTableBanner" class="mt-2 p-3 bg-blue-500/10 border border-blue-500/30 rounded-xl text-xs text-blue-300 flex items-center justify-between">
+                            <div>
+                                <span class="font-bold text-white" id="selectedTableTitle">Столик не выбран</span>
+                                <p class="text-[10px] text-slate-400" id="selectedTableDesc">Нажмите на свободный зеленый столик выше</p>
+                            </div>
+                            <span class="text-lg">🪑</span>
+                        </div>
+                    </div>
+
+                    <!-- Contact Details Form -->
+                    <div class="space-y-2 pt-1 border-t border-slate-800">
+                        <label class="text-xs font-bold text-slate-300 block">5. Контактные данные гостя</label>
+                        
+                        <div>
+                            <input type="text" id="guestNameInput" placeholder="Ваше имя" 
+                                   class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs text-white placeholder-slate-400 outline-none focus:border-amber-500">
+                        </div>
+
+                        <div>
+                            <div class="relative">
+                                <span class="absolute left-3 top-2.5 text-xs text-slate-400">🇰🇿</span>
+                                <input type="tel" id="guestPhoneInput" oninput="formatKZPhone(this)" placeholder="+7 (701) 000-00-00" 
+                                       class="w-full bg-slate-800 border border-slate-700 rounded-xl py-2.5 pl-9 pr-3 text-xs text-white placeholder-slate-400 outline-none focus:border-amber-500 font-mono">
+                            </div>
+                            <span class="text-[10px] text-slate-400 mt-0.5 block pl-1">Ресторан перезвонит или напишет для подтверждения</span>
+                        </div>
+
+                        <div>
+                            <input type="text" id="guestWishesInput" placeholder="Пожелания (день рождения, детский стул, тихое место...)" 
+                                   class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs text-white placeholder-slate-400 outline-none focus:border-amber-500">
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="button" id="submitBookingBtn" onclick="submitBooking()" disabled 
+                            class="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 disabled:from-slate-800 disabled:to-slate-800 disabled:text-slate-500 text-slate-950 font-extrabold text-sm shadow-lg shadow-orange-500/20 transition-all opacity-50 cursor-not-allowed">
+                        Подтвердить бронирование
+                    </button>
+
+                </div>
+
+                <!-- 2. MENU SUB-VIEW -->
+                <div id="modalSubTab-menu" class="hidden space-y-4">
+                    <div id="menuCategoriesBar" class="flex gap-2 overflow-x-auto hide-scrollbar pb-1 text-xs">
+                        <!-- Category pills -->
+                    </div>
+                    <div id="menuDishesList" class="space-y-3">
+                        <!-- Menu Items -->
+                    </div>
+                </div>
+
+                <!-- 3. ABOUT SUB-VIEW -->
+                <div id="modalSubTab-about" class="hidden space-y-4 text-xs">
+                    <div class="bg-slate-800/60 rounded-xl p-3 space-y-2 border border-slate-700/60">
+                        <h4 class="font-bold text-amber-400">О заведении</h4>
+                        <p id="modalAboutDescription" class="text-slate-300 leading-relaxed"></p>
+                    </div>
+
+                    <div class="bg-slate-800/60 rounded-xl p-3 space-y-2 border border-slate-700/60">
+                        <div class="flex items-center justify-between">
+                            <span class="text-slate-400">Режим работы:</span>
+                            <span id="modalAboutHours" class="font-bold text-white">11:00 - 00:00</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-slate-400">Средний чек:</span>
+                            <span id="modalAboutCheck" class="font-bold text-amber-400">~8 000 ₸</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-slate-400">Телефон:</span>
+                            <a id="modalAboutPhone" href="" class="font-bold text-blue-400 underline">+7 (727) ...</a>
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        <a id="modal2GisBtn" href="https://2gis.kz" target="_blank" class="block text-center py-2.5 rounded-xl bg-emerald-600/20 border border-emerald-500/40 text-emerald-300 font-bold hover:bg-emerald-600/30 transition-all">
+                            🗺️ Открыть адрес в 2GIS / Карты
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- SUCCESS BOOKING MODAL -->
+    <div id="successModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-3xl p-6 max-w-sm w-full text-center space-y-4 shadow-2xl">
+            <div class="w-16 h-16 bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 rounded-full flex items-center justify-center text-3xl mx-auto shadow-lg shadow-emerald-500/20">
+                ✓
+            </div>
+            
+            <div>
+                <h3 class="text-lg font-extrabold text-white">Заявка на бронь принята!</h3>
+                <p class="text-xs text-slate-300 mt-1" id="successModalSubtext">Администратор заведения получил вашу заявку.</p>
+            </div>
+
+            <div class="bg-slate-800/80 rounded-2xl p-3 text-left text-xs space-y-1.5 border border-slate-700/60" id="successBookingDetails">
+                <!-- Injected via JS -->
+            </div>
+
+            <button onclick="closeSuccessModal()" class="w-full py-3 rounded-xl bg-amber-500 text-slate-950 font-extrabold text-xs shadow-md">
+                Отлично, понятно
+            </button>
+        </div>
+    </div>
+
+    <!-- Bottom Mobile Navigation Bar -->
+    <nav class="fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 backdrop-blur-md border-t border-slate-800 py-2 px-6">
+        <div class="max-w-md mx-auto flex justify-around items-center">
+            
+            <button onclick="switchTab('restaurants')" id="navBtn-restaurants" class="nav-btn flex flex-col items-center gap-1 text-amber-400 font-bold text-[11px] transition-colors">
+                <span class="text-xl">🏠</span>
+                <span>Рестораны</span>
+            </button>
+
+            <button onclick="switchTab('my-bookings')" id="navBtn-my-bookings" class="nav-btn flex flex-col items-center gap-1 text-slate-400 font-medium text-[11px] hover:text-slate-200 transition-colors relative">
+                <span class="text-xl">📋</span>
+                <span>Мои брони</span>
+                <span id="myBookingsBadge" class="hidden absolute top-0 right-1 w-2 h-2 rounded-full bg-amber-500"></span>
+            </button>
+
+            <button onclick="switchTab('admin')" id="navBtn-admin" class="nav-btn flex flex-col items-center gap-1 text-slate-400 font-medium text-[11px] hover:text-slate-200 transition-colors">
+                <span class="text-xl">👑</span>
+                <span>Для ресторана</span>
+            </button>
+
+        </div>
+    </nav>
+
+    <!-- Application JavaScript Logic -->
+    <script>
+        // --- Telegram Mini App Initialization ---
+        const tg = window.Telegram ? window.Telegram.WebApp : null;
+        let tgUser = null;
+
+        if (tg) {
+            try {
+                tg.ready();
+                tg.expand();
+                if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+                    tgUser = tg.initDataUnsafe.user;
+                }
+            } catch (e) {
+                console.log("Telegram WebApp initialization error:", e);
+            }
+        }
+
+        // --- Application State ---
+        let currentCity = "Все";
+        let currentCuisine = "Все";
+        let currentSearchQuery = "";
+        let allRestaurants = [];
+        let selectedRestaurant = null;
+        let selectedDate = getTodayDateString();
+        let selectedTimeSlot = "19:00";
+        let currentGuestCount = 2;
+        let currentTables = [];
+        let selectedTable = null;
+        let restaurantMenu = [];
+
+        function getTodayDateString() {
+            const d = new Date();
+            return d.toISOString().split('T')[0];
+        }
+
+        function getTomorrowDateString() {
+            const d = new Date();
+            d.setDate(d.getDate() + 1);
+            return d.toISOString().split('T')[0];
+        }
+
+        // --- Initial Load ---
+        window.addEventListener('DOMContentLoaded', () => {
+            // Check URL query parameters for default tab
+            const urlParams = new URLSearchParams(window.location.search);
+            const tabParam = urlParams.get('tab');
+
+            // Prefill guest name from Telegram if available
+            if (tgUser && tgUser.first_name) {
+                const fullName = tgUser.first_name + (tgUser.last_name ? ' ' + tgUser.last_name : '');
+                document.getElementById('guestNameInput').value = fullName;
+            }
+
+            document.getElementById('bookingDateInput').value = selectedDate;
+            document.getElementById('bookingDateInput').min = selectedDate;
+
+            loadRestaurants();
+
+            if (tabParam === 'my_bookings') {
+                switchTab('my-bookings');
+            } else if (tabParam === 'admin') {
+                switchTab('admin');
+            }
+        });
+
+        // --- API & Data Handling ---
+
+        // PERMANENT backend URL (Railway cloud deployment).
+        // This is the fallback when no ?api= query param is provided.
+        // After deploying to Railway, replace with your actual domain:
+        //   e.g. "https://restokz-api.up.railway.app"
+        const DEFAULT_BACKEND_URL = "https://restokz-app.loca.lt";
+
+        let API_BASE = DEFAULT_BACKEND_URL;
+
+        // 1. If running directly on a self-hosted server (localhost, tunnel domain)
+        //    use the current page's origin as the API base
+        const _host = window.location.hostname;
+        if (_host === 'localhost' || _host === '127.0.0.1' ||
+            _host.includes('loca.lt') || _host.includes('trycloudflare.com') ||
+            _host.includes('railway.app') || _host.includes('up.railway.app')) {
+            API_BASE = window.location.origin;
+        }
+
+        // 2. ?api= query parameter (injected by Telegram bot's get_webapp_url())
+        //    Always takes top priority — this is how the bot tells the WebApp
+        //    which backend to use.
+        const queryParams = new URLSearchParams(window.location.search);
+        const apiParam = queryParams.get('api');
+        if (apiParam) {
+            API_BASE = apiParam;
+            // Cache it, but only cache permanent URLs (railway.app), not ephemeral tunnels
+            if (apiParam.includes('railway.app') || apiParam.includes('render.com') ||
+                apiParam.includes('fly.dev') || apiParam.includes('herokuapp.com')) {
+                try { localStorage.setItem('restokz_permanent_api', apiParam); } catch(e){}
+            }
+            // Always update the session cache
+            try { localStorage.setItem('restokz_backend_api', apiParam); } catch(e){}
+        } else {
+            // 3. Try permanent URL cache first (Railway/Render)
+            try {
+                const permanentApi = localStorage.getItem('restokz_permanent_api');
+                if (permanentApi) {
+                    API_BASE = permanentApi;
+                } else {
+                    // 4. Fall back to session cache, skip known-dead domains
+                    const savedApi = localStorage.getItem('restokz_backend_api');
+                    if (savedApi &&
+                        !savedApi.includes('loca.lt') &&
+                        !savedApi.includes('yellow-wombat') &&
+                        !_host.includes('localhost')) {
+                        API_BASE = savedApi;
+                    }
+                }
+            } catch(e){}
+        }
+
+        async function apiFetch(endpoint, options = {}) {
+            // If no backend configured yet and not absolute URL, return null immediately
+            if (!API_BASE && !endpoint.startsWith('http')) {
+                return null;
+            }
+
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 4500); // 4.5 sec timeout max
+
+            try {
+                let url = endpoint.startsWith('http') ? endpoint : `${API_BASE}${endpoint}`;
+                const sep = url.includes('?') ? '&' : '?';
+                url = `${url}${sep}bypass-tunnel-reminder=true`;
+
+                const res = await fetch(url, {
+                    ...options,
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+
+                if (res.ok) {
+                    return await res.json();
+                } else {
+                    console.warn(`API call ${url} returned ${res.status}`);
+                }
+            } catch (err) {
+                clearTimeout(timeoutId);
+                console.warn(`API call ${endpoint} timed out or failed:`, err.message || err);
+            }
+            return null;
+        }
+
+        // --- LocalStorage Persistence ---
+        function getStoredBookings() {
+            try {
+                const data = localStorage.getItem('restokz_bookings_v3');
+                if (data) return JSON.parse(data);
+            } catch (e) {
+                console.error(e);
+            }
+            return [];
+        }
+
+        function saveStoredBookings(list) {
+            try {
+                localStorage.setItem('restokz_bookings_v3', JSON.stringify(list));
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function addLocalBooking(booking) {
+            const list = getStoredBookings();
+            list.unshift(booking);
+            saveStoredBookings(list);
+        }
+
+        function updateLocalBookingStatus(id, newStatus) {
+            const list = getStoredBookings();
+            const b = list.find(item => item.id == id);
+            if (b) {
+                b.status = newStatus;
+                saveStoredBookings(list);
+            }
+        }
+
+        function updateLocalBookingId(oldId, newId) {
+            const list = getStoredBookings();
+            const b = list.find(item => item.id == oldId);
+            if (b) {
+                b.id = newId;
+                saveStoredBookings(list);
+            }
+        }
+
+        // Demo Fallback Data in case the webapp is viewed static on Netlify without backend proxy
+        const fallbackRestaurants = [
+            {
+                id: 1,
+                name: "La Terrazza",
+                city: "Алматы",
+                cuisine: "Итальянская, Средиземноморская",
+                address: "ул. Сатпаева, 29/6 (БЦ Сары-Арка)",
+                phone: "+7 (727) 315-05-05",
+                rating: 4.9,
+                avg_check: 12000,
+                cover_image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80",
+                description: "Премиальный итальянский ресторан с панорамной террасой, авторской пастой ручной работы и коллекцией вин Старого Света.",
+                working_hours: "12:00 - 00:00",
+                two_gis_url: "https://2gis.kz/almaty"
+            },
+            {
+                id: 2,
+                name: "Чайхана NAVAT",
+                city: "Алматы",
+                cuisine: "Восточная, Казахская, Узбекская",
+                address: "пр. Достык, 48 (уг. ул. Шевченко)",
+                phone: "+7 (701) 777-11-22",
+                rating: 4.8,
+                avg_check: 8500,
+                cover_image: "https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80",
+                description: "Атмосфера восточного гостеприимства: праздничный казан-кебаб, бешбармак из конины, нежнейшие манты и авторские чаи.",
+                working_hours: "10:00 - 02:00",
+                two_gis_url: "https://2gis.kz/almaty"
+            },
+            {
+                id: 3,
+                name: "Sandyq (Сандық)",
+                city: "Астана",
+                cuisine: "Национальная казахская",
+                address: "пр. Кабанбай батыра, 15/1",
+                phone: "+7 (7172) 65-43-21",
+                rating: 4.95,
+                avg_check: 15000,
+                cover_image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80",
+                description: "Ресторан высокой казахской кухни с этно-интерьером музейного уровня, традиционными рецептами кочевников и живой музыкой кобыза.",
+                working_hours: "12:00 - 01:00",
+                two_gis_url: "https://2gis.kz/astana"
+            },
+            {
+                id: 4,
+                name: "Del Papa",
+                city: "Алматы",
+                cuisine: "Итальянская, Домашняя",
+                address: "ул. Гоголя, 87 (уг. ул. Панфилова)",
+                phone: "+7 (727) 222-33-44",
+                rating: 4.7,
+                avg_check: 7000,
+                cover_image: "https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?w=800&q=80",
+                description: "Уютная семейная траттория в историческом центре Алматы. Хрустящая пицца из дровяной печи и домашняя атмосфера.",
+                working_hours: "11:00 - 23:00",
+                two_gis_url: "https://2gis.kz/almaty"
+            }
+        ];
+
+        async function loadRestaurants() {
+            const data = await apiFetch('/api/restaurants');
+            if (data && data.restaurants && data.restaurants.length > 0) {
+                allRestaurants = data.restaurants;
+            } else {
+                allRestaurants = fallbackRestaurants;
+            }
+            renderRestaurants();
+        }
+
+        function renderRestaurants() {
+            const listContainer = document.getElementById('restaurantsList');
+            let filtered = allRestaurants;
+
+            if (currentCity !== "Все") {
+                filtered = filtered.filter(r => r.city === currentCity);
+            }
+
+            if (currentCuisine !== "Все") {
+                filtered = filtered.filter(r => r.cuisine.toLowerCase().includes(currentCuisine.toLowerCase()));
+            }
+
+            if (currentSearchQuery.trim()) {
+                const q = currentSearchQuery.toLowerCase();
+                filtered = filtered.filter(r => 
+                    r.name.toLowerCase().includes(q) || 
+                    r.cuisine.toLowerCase().includes(q) || 
+                    r.address.toLowerCase().includes(q)
+                );
+            }
+
+            if (filtered.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="text-center py-10 text-slate-400 space-y-2">
+                        <span class="text-3xl">🔍</span>
+                        <p class="text-xs">Рестораны по вашему запросу не найдены</p>
+                    </div>
+                `;
+                return;
+            }
+
+            listContainer.innerHTML = filtered.map(r => `
+                <div class="bg-slate-800/90 border border-slate-700/80 rounded-2xl overflow-hidden shadow-lg hover:border-amber-500/50 transition-all flex flex-col">
+                    <div class="relative h-36 bg-slate-700 cursor-pointer" onclick="openRestaurantModal(${r.id}, 'book')">
+                        <img src="${r.cover_image}" alt="${r.name}" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-black/30"></div>
+                        
+                        <div class="absolute top-2.5 right-2.5 bg-slate-900/80 backdrop-blur-md px-2 py-1 rounded-lg text-amber-400 text-xs font-bold flex items-center gap-1 border border-slate-700">
+                            ⭐ ${r.rating}
+                        </div>
+
+                        <div class="absolute bottom-2.5 left-3">
+                            <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 bg-amber-500/90 text-slate-950 rounded-md">
+                                ${r.city}
+                            </span>
+                            <h3 class="text-base font-extrabold text-white mt-1 leading-tight">${r.name}</h3>
+                        </div>
+                    </div>
+
+                    <div class="p-3.5 flex flex-col justify-between flex-1 space-y-3">
+                        <div class="space-y-1">
+                            <p class="text-xs text-amber-300/90 font-medium">${r.cuisine}</p>
+                            <p class="text-[11px] text-slate-400 flex items-center gap-1">📍 ${r.address}</p>
+                            <p class="text-[11px] text-slate-300">Средний чек: <b class="text-amber-400">~${formatPrice(r.avg_check)}</b></p>
+                        </div>
+
+                        <div class="flex gap-2 pt-1">
+                            <button onclick="openRestaurantModal(${r.id}, 'menu')" class="flex-1 py-2 rounded-xl bg-slate-700/80 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-600/60 transition-all">
+                                📖 Меню
+                            </button>
+                            <button onclick="openRestaurantModal(${r.id}, 'book')" class="flex-[1.5] py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 text-xs font-extrabold shadow-md shadow-orange-500/20 hover:brightness-110 transition-all">
+                                🪑 Бронь стола
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function formatPrice(val) {
+            return Number(val).toLocaleString('ru-RU') + ' ₸';
+        }
+
+        /**
+         * Returns correct Russian pluralization for seat count.
+         * Examples: 1 → "место", 2-4 → "места", 5+ → "мест"
+         */
+        function pluralizeSeats(n) {
+            const mod10 = n % 10;
+            const mod100 = n % 100;
+            if (mod100 >= 11 && mod100 <= 19) return `${n} мест`;
+            if (mod10 === 1) return `${n} место`;
+            if (mod10 >= 2 && mod10 <= 4) return `${n} места`;
+            return `${n} мест`;
+        }
+
+        function onCityChange(city) {
+            currentCity = city;
+            renderRestaurants();
+        }
+
+        function onSearchInput(val) {
+            currentSearchQuery = val;
+            renderRestaurants();
+        }
+
+        function filterCuisine(cuisine) {
+            currentCuisine = cuisine;
+            document.querySelectorAll('.cuisine-btn').forEach(btn => {
+                if (btn.innerText.includes(cuisine)) {
+                    btn.classList.add('active', 'bg-amber-500', 'text-slate-950', 'font-semibold');
+                    btn.classList.remove('bg-slate-800', 'text-slate-300');
+                } else {
+                    btn.classList.remove('active', 'bg-amber-500', 'text-slate-950', 'font-semibold');
+                    btn.classList.add('bg-slate-800', 'text-slate-300');
+                }
+            });
+            renderRestaurants();
+        }
+
+        // --- Navigation Tabs ---
+        function switchTab(tabId) {
+            document.getElementById('tab-restaurants').classList.add('hidden');
+            document.getElementById('tab-my-bookings').classList.add('hidden');
+            document.getElementById('tab-admin').classList.add('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(b => {
+                b.classList.remove('text-amber-400', 'font-bold');
+                b.classList.add('text-slate-400', 'font-medium');
+            });
+
+            const activeBtn = document.getElementById(`navBtn-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-slate-400', 'font-medium');
+                activeBtn.classList.add('text-amber-400', 'font-bold');
+            }
+
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+
+            if (tabId === 'my-bookings') {
+                loadMyBookings();
+            } else if (tabId === 'admin') {
+                loadAdminBookings();
+            }
+        }
+
+        // --- Restaurant Modal & Booking Flow ---
+        async function openRestaurantModal(restaurantId, defaultSubTab = 'book') {
+            selectedRestaurant = allRestaurants.find(r => r.id === restaurantId);
+            if (!selectedRestaurant) return;
+
+            document.getElementById('modalCover').src = selectedRestaurant.cover_image;
+            document.getElementById('modalTitle').innerText = selectedRestaurant.name;
+            document.getElementById('modalAddress').innerText = '📍 ' + selectedRestaurant.address;
+            document.getElementById('modalCuisineBadge').innerText = selectedRestaurant.cuisine.split(',')[0];
+            
+            // About tab prefill
+            document.getElementById('modalAboutDescription').innerText = selectedRestaurant.description;
+            document.getElementById('modalAboutHours').innerText = selectedRestaurant.working_hours || "11:00 - 00:00";
+            document.getElementById('modalAboutCheck').innerText = `~${formatPrice(selectedRestaurant.avg_check)}`;
+            document.getElementById('modalAboutPhone').innerText = selectedRestaurant.phone;
+            document.getElementById('modalAboutPhone').href = `tel:${selectedRestaurant.phone.replace(/[^0-9+]/g, '')}`;
+            document.getElementById('modal2GisBtn').href = selectedRestaurant.two_gis_url || `https://2gis.kz/search/${encodeURIComponent(selectedRestaurant.name)}`;
+
+            // Reset table selection
+            selectedTable = null;
+            updateSelectedTableBanner();
+
+            document.getElementById('restaurantModal').classList.remove('hidden');
+
+            switchModalTab(defaultSubTab);
+            loadTablesForCurrentSlot();
+            loadRestaurantMenu(restaurantId);
+        }
+
+        function closeRestaurantModal() {
+            document.getElementById('restaurantModal').classList.add('hidden');
+        }
+
+        function switchModalTab(subTab) {
+            ['book', 'menu', 'about'].forEach(t => {
+                document.getElementById(`modalSubTab-${t}`).classList.add('hidden');
+                document.getElementById(`modalTabBtn-${t}`).classList.remove('border-amber-500', 'text-amber-400');
+                document.getElementById(`modalTabBtn-${t}`).classList.add('border-transparent', 'text-slate-400');
+            });
+
+            document.getElementById(`modalSubTab-${subTab}`).classList.remove('hidden');
+            document.getElementById(`modalTabBtn-${subTab}`).classList.add('border-amber-500', 'text-amber-400');
+            document.getElementById(`modalTabBtn-${subTab}`).classList.remove('border-transparent', 'text-slate-400');
+        }
+
+        // Quick date pickers
+        function selectDateQuick(type) {
+            document.querySelectorAll('.date-quick-btn').forEach(b => {
+                b.classList.remove('bg-amber-500', 'text-slate-950');
+                b.classList.add('bg-slate-800', 'text-slate-300');
+            });
+
+            if (type === 'today') {
+                selectedDate = getTodayDateString();
+                document.getElementById('dateBtn-today').classList.add('bg-amber-500', 'text-slate-950');
+                document.getElementById('dateBtn-today').classList.remove('bg-slate-800', 'text-slate-300');
+            } else if (type === 'tomorrow') {
+                selectedDate = getTomorrowDateString();
+                document.getElementById('dateBtn-tomorrow').classList.add('bg-amber-500', 'text-slate-950');
+                document.getElementById('dateBtn-tomorrow').classList.remove('bg-slate-800', 'text-slate-300');
+            }
+            document.getElementById('bookingDateInput').value = selectedDate;
+            loadTablesForCurrentSlot();
+        }
+
+        function onCustomDateChange(val) {
+            if (!val) return;
+            selectedDate = val;
+            document.querySelectorAll('.date-quick-btn').forEach(b => {
+                b.classList.remove('bg-amber-500', 'text-slate-950');
+                b.classList.add('bg-slate-800', 'text-slate-300');
+            });
+            loadTablesForCurrentSlot();
+        }
+
+        function selectTime(timeStr, btn) {
+            selectedTimeSlot = timeStr;
+            document.querySelectorAll('.time-slot-btn').forEach(b => {
+                b.classList.remove('bg-amber-500', 'text-slate-950', 'font-bold');
+                b.classList.add('bg-slate-800', 'text-slate-200');
+            });
+            btn.classList.add('bg-amber-500', 'text-slate-950', 'font-bold');
+            btn.classList.remove('bg-slate-800', 'text-slate-200');
+            loadTablesForCurrentSlot();
+        }
+
+        function changeGuestCount(delta) {
+            currentGuestCount = Math.max(1, Math.min(12, currentGuestCount + delta));
+            document.getElementById('guestsCountValue').innerText = currentGuestCount;
+            // Highlight matching tables if any
+        }
+
+        // --- Interactive Tables Scheme ---
+        async function loadTablesForCurrentSlot() {
+            if (!selectedRestaurant) return;
+            const container = document.getElementById('hallTablesGrid');
+            container.innerHTML = '<div class="col-span-3 text-center text-xs text-slate-400 py-4 animate-pulse">Обновление схемы зала...</div>';
+
+            const data = await apiFetch(`/api/restaurants/${selectedRestaurant.id}/tables?date=${selectedDate}&time=${selectedTimeSlot}`);
+            
+            if (data && data.tables) {
+                currentTables = data.tables;
+            } else {
+                // Fallback demo tables layout
+                currentTables = [
+                    { id: 1, table_number: 1, seats: 2, zone_type: "У окна", description: "У окна, вид на горы", is_available: true },
+                    { id: 2, table_number: 2, seats: 4, zone_type: "Зал", description: "Уютный стол в центре", is_available: true },
+                    { id: 3, table_number: 3, seats: 2, zone_type: "VIP", description: "Приватный столик", is_available: false },
+                    { id: 4, table_number: 4, seats: 6, zone_type: "Зал", description: "Для компании", is_available: true },
+                    { id: 5, table_number: 5, seats: 4, zone_type: "У окна", description: "Светлый столик", is_available: true },
+                    { id: 6, table_number: 6, seats: 8, zone_type: "VIP", description: "Большой банкетный стол", is_available: true },
+                    { id: 7, table_number: 7, seats: 4, zone_type: "Терраса", description: "Свежий воздух", is_available: true },
+                    { id: 8, table_number: 8, seats: 2, zone_type: "Терраса", description: "Романтический на двоих", is_available: false },
+                ];
+            }
+
+            // Sync with local bookings for this restaurant and date
+            try {
+                const localBusy = getStoredBookings().filter(b => 
+                    b.restaurant_id == selectedRestaurant.id &&
+                    b.booking_date === selectedDate &&
+                    b.status !== 'rejected' && b.status !== 'cancelled'
+                );
+                localBusy.forEach(b => {
+                    const found = currentTables.find(t => t.table_number == b.table_number || t.id == b.table_id);
+                    if (found) {
+                        found.is_available = false;
+                    }
+                });
+            } catch (e) {
+                console.error(e);
+            }
+
+            renderTablesGrid();
+        }
+
+        function renderTablesGrid() {
+            const container = document.getElementById('hallTablesGrid');
+            container.innerHTML = '';
+
+            currentTables.forEach(t => {
+                const isSelected = selectedTable && selectedTable.id === t.id;
+                const isBusy = !t.is_available;
+
+                const card = document.createElement('div');
+                card.className = `table-node w-24 h-20 rounded-2xl flex flex-col items-center justify-center p-1.5 cursor-pointer relative border transition-all ${
+                    isBusy 
+                        ? 'busy bg-rose-500/10 border-rose-500/40 text-rose-300' 
+                        : isSelected 
+                            ? 'selected bg-blue-600 text-white border-blue-400' 
+                            : 'bg-emerald-500/15 border-emerald-500/50 text-emerald-300 hover:bg-emerald-500/25'
+                }`;
+
+                let zoneIcon = "🍽️";
+                if (t.zone_type.includes("окн")) zoneIcon = "🪟";
+                if (t.zone_type.includes("VIP")) zoneIcon = "👑";
+                if (t.zone_type.includes("Террас")) zoneIcon = "🌿";
+
+                card.innerHTML = `
+                    <div class="flex items-center gap-1">
+                        <span class="text-xs">${zoneIcon}</span>
+                        <span class="font-extrabold text-xs">Стол №${t.table_number}</span>
+                    </div>
+                    <span class="text-[10px] font-medium opacity-80 mt-0.5">${pluralizeSeats(t.seats)}</span>
+                    <span class="text-[9px] mt-0.5 px-1.5 py-0.2 rounded font-bold ${
+                        isBusy ? 'bg-rose-500/30 text-rose-200' : isSelected ? 'bg-white/20 text-white' : 'bg-emerald-500/30 text-emerald-200'
+                    }">${isBusy ? 'Занят' : isSelected ? 'Выбран' : 'Свободен'}</span>
+                `;
+
+                if (!isBusy) {
+                    card.onclick = () => onSelectTable(t);
+                }
+
+                container.appendChild(card);
+            });
+        }
+
+        function onSelectTable(table) {
+            selectedTable = table;
+            renderTablesGrid();
+            updateSelectedTableBanner();
+            validateBookingForm();
+        }
+
+        function updateSelectedTableBanner() {
+            const banner = document.getElementById('selectedTableBanner');
+            const title = document.getElementById('selectedTableTitle');
+            const desc = document.getElementById('selectedTableDesc');
+
+            if (selectedTable) {
+                banner.classList.remove('bg-blue-500/10', 'border-blue-500/30', 'text-blue-300');
+                banner.classList.add('bg-emerald-500/15', 'border-emerald-500/50', 'text-emerald-300');
+                title.innerText = `Стол №${selectedTable.table_number} (${selectedTable.zone_type || 'Зал'})`;
+                desc.innerText = `Вместимость: до ${selectedTable.seats} человек • ${selectedTable.description || 'Отличный выбор'}`;
+            } else {
+                banner.classList.add('bg-blue-500/10', 'border-blue-500/30', 'text-blue-300');
+                banner.classList.remove('bg-emerald-500/15', 'border-emerald-500/50', 'text-emerald-300');
+                title.innerText = `Столик не выбран`;
+                desc.innerText = `Нажмите на свободный зеленый столик выше`;
+            }
+        }
+
+        // Kazakhstan Phone Mask Auto-formatter: +7 (7XX) XXX-XX-XX
+        function formatKZPhone(input) {
+            let numbers = input.value.replace(/\D/g, '');
+            if (!numbers) {
+                input.value = '';
+                validateBookingForm();
+                return;
+            }
+
+            if (numbers[0] === '8' || numbers[0] === '7') {
+                numbers = '7' + numbers.substring(1);
+            } else {
+                numbers = '7' + numbers;
+            }
+
+            numbers = numbers.substring(0, 11);
+
+            let formatted = '+7';
+            if (numbers.length > 1) {
+                formatted += ' (' + numbers.substring(1, 4);
+            }
+            if (numbers.length >= 5) {
+                formatted += ') ' + numbers.substring(4, 7);
+            }
+            if (numbers.length >= 8) {
+                formatted += '-' + numbers.substring(7, 9);
+            }
+            if (numbers.length >= 10) {
+                formatted += '-' + numbers.substring(9, 11);
+            }
+
+            input.value = formatted;
+            validateBookingForm();
+        }
+
+        function validateBookingForm() {
+            const name = document.getElementById('guestNameInput').value.trim();
+            const phone = document.getElementById('guestPhoneInput').value.trim();
+            const btn = document.getElementById('submitBookingBtn');
+
+            const isPhoneValid = phone.length >= 17; // +7 (7XX) XXX-XX-XX length
+            const isValid = selectedTable && name.length >= 2 && isPhoneValid;
+
+            if (isValid) {
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed', 'from-slate-800', 'to-slate-800', 'text-slate-500');
+                btn.classList.add('from-amber-500', 'to-orange-500', 'text-slate-950');
+            } else {
+                btn.disabled = true;
+                btn.classList.add('opacity-50', 'cursor-not-allowed', 'from-slate-800', 'to-slate-800', 'text-slate-500');
+                btn.classList.remove('from-amber-500', 'to-orange-500', 'text-slate-950');
+            }
+        }
+
+        document.getElementById('guestNameInput').addEventListener('input', validateBookingForm);
+
+        // --- Booking Submission ---
+        async function submitBooking() {
+            if (!selectedTable || !selectedRestaurant) return;
+
+            const name = document.getElementById('guestNameInput').value.trim();
+            const phone = document.getElementById('guestPhoneInput').value.trim();
+            const wishes = document.getElementById('guestWishesInput').value.trim();
+            const localId = Math.floor(1000 + Math.random() * 9000);
+
+            const bookingPayload = {
+                id: localId,
+                restaurant_id: selectedRestaurant.id,
+                restaurant_name: selectedRestaurant.name,
+                restaurant_address: selectedRestaurant.address,
+                restaurant_phone: selectedRestaurant.phone,
+                table_id: selectedTable.id,
+                table_number: selectedTable.table_number,
+                table_zone: selectedTable.zone_type || 'Зал',
+                guest_tg_id: tgUser ? tgUser.id : null,
+                guest_username: tgUser ? tgUser.username : null,
+                guest_name: name,
+                guest_phone: phone,
+                booking_date: selectedDate,
+                booking_time: selectedTimeSlot,
+                guests_count: currentGuestCount,
+                wishes: wishes,
+                status: 'pending',
+                created_at: new Date().toISOString()
+            };
+
+            // 1. Immediately save to localStorage so it is NEVER lost
+            addLocalBooking(bookingPayload);
+
+            const submitBtn = document.getElementById('submitBookingBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerText = "⏳ Отправка заявки...";
+
+            try {
+                // 2. Also send to API if backend is online
+                const res = await apiFetch('/api/bookings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(bookingPayload)
+                });
+
+                if (res && res.booking && res.booking.id) {
+                    bookingPayload.id = res.booking.id;
+                    updateLocalBookingId(localId, res.booking.id);
+                }
+            } catch (err) {
+                console.warn("Booking submit error:", err);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Подтвердить бронирование";
+            }
+
+            // 3. If Telegram WebApp opened via keyboard with sendData support
+            if (tg && tg.sendData) {
+                try {
+                    tg.sendData(JSON.stringify(bookingPayload));
+                } catch (e) {
+                    console.log(e);
+                }
+            }
+
+            closeRestaurantModal();
+            showSuccessModal(bookingPayload, bookingPayload.id);
+        }
+
+        function showSuccessModal(payload, bookingId) {
+            const details = document.getElementById('successBookingDetails');
+            details.innerHTML = `
+                <div class="flex justify-between border-b border-slate-700/60 pb-1">
+                    <span class="text-slate-400">Номер брони:</span>
+                    <span class="font-bold text-amber-400">#${bookingId}</span>
+                </div>
+                <div class="flex justify-between border-b border-slate-700/60 py-1">
+                    <span class="text-slate-400">Ресторан:</span>
+                    <span class="font-bold text-white">${selectedRestaurant.name}</span>
+                </div>
+                <div class="flex justify-between border-b border-slate-700/60 py-1">
+                    <span class="text-slate-400">Дата и время:</span>
+                    <span class="font-bold text-white">${payload.booking_date}, ${payload.booking_time}</span>
+                </div>
+                <div class="flex justify-between border-b border-slate-700/60 py-1">
+                    <span class="text-slate-400">Столик:</span>
+                    <span class="font-bold text-emerald-400">№${payload.table_number} (${selectedTable.zone_type || 'Зал'})</span>
+                </div>
+                <div class="flex justify-between border-b border-slate-700/60 py-1">
+                    <span class="text-slate-400">Гостей:</span>
+                    <span class="font-bold text-white">${payload.guests_count} чел.</span>
+                </div>
+                <div class="flex justify-between pt-1">
+                    <span class="text-slate-400">Гость:</span>
+                    <span class="font-bold text-white">${payload.guest_name}</span>
+                </div>
+            `;
+            document.getElementById('successModal').classList.remove('hidden');
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').classList.add('hidden');
+            switchTab('my-bookings');
+        }
+
+        // --- Restaurant Menu View ---
+        async function loadRestaurantMenu(restaurantId) {
+            const data = await apiFetch(`/api/restaurants/${restaurantId}/menu`);
+            if (data && data.menu) {
+                restaurantMenu = data.menu;
+            } else {
+                restaurantMenu = [
+                    {
+                        name: "Популярные блюда",
+                        items: [
+                            { title: "Фирменное блюдо от шефа", description: "Изысканная подача, фермерские продукты", price: 6500, weight: "350 г", image_url: "https://images.unsplash.com/photo-1544025162-d76694265947?w=600&q=80" },
+                            { title: "Свежий фирменный салат", description: "Спелые томаты, зелень, оливковое масло", price: 2900, weight: "220 г", image_url: "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600&q=80" }
+                        ]
+                    }
+                ];
+            }
+
+            renderMenuCategories();
+        }
+
+        function renderMenuCategories() {
+            const catBar = document.getElementById('menuCategoriesBar');
+            catBar.innerHTML = restaurantMenu.map((cat, idx) => `
+                <button onclick="renderMenuItems(${idx})" class="menu-cat-btn px-3 py-1.5 rounded-full ${idx === 0 ? 'bg-amber-500 text-slate-950 font-bold' : 'bg-slate-800 text-slate-300'} whitespace-nowrap transition-all">
+                    ${cat.icon || '🍽️'} ${cat.name}
+                </button>
+            `).join('');
+
+            renderMenuItems(0);
+        }
+
+        function renderMenuItems(catIndex) {
+            document.querySelectorAll('.menu-cat-btn').forEach((b, idx) => {
+                if (idx === catIndex) {
+                    b.classList.add('bg-amber-500', 'text-slate-950', 'font-bold');
+                    b.classList.remove('bg-slate-800', 'text-slate-300');
+                } else {
+                    b.classList.remove('bg-amber-500', 'text-slate-950', 'font-bold');
+                    b.classList.add('bg-slate-800', 'text-slate-300');
+                }
+            });
+
+            const list = document.getElementById('menuDishesList');
+            const category = restaurantMenu[catIndex];
+            if (!category || !category.items || category.items.length === 0) {
+                list.innerHTML = '<div class="text-center py-6 text-slate-400 text-xs">В данной категории нет блюд</div>';
+                return;
+            }
+
+            list.innerHTML = category.items.map(dish => `
+                <div class="bg-slate-800/80 border border-slate-700/60 rounded-xl p-2.5 flex gap-3 items-center">
+                    <img src="${dish.image_url}" alt="${dish.title}" class="w-16 h-16 rounded-lg object-cover flex-shrink-0 bg-slate-700">
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-start gap-1">
+                            <h4 class="text-xs font-bold text-white truncate">${dish.title}</h4>
+                            <span class="text-xs font-extrabold text-amber-400 whitespace-nowrap">${formatPrice(dish.price)}</span>
+                        </div>
+                        <p class="text-[10px] text-slate-400 line-clamp-2 mt-0.5">${dish.description || ''}</p>
+                        <span class="text-[9px] text-slate-500 mt-1 inline-block">${dish.weight || ''}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // --- Guest Bookings ("Мои брони") ---
+        async function loadMyBookings() {
+            const list = document.getElementById('myBookingsList');
+            list.innerHTML = '<div class="text-center py-8 text-slate-400 text-xs animate-pulse">Загрузка ваших бронирований...</div>';
+
+            // 1. Get from localStorage
+            let localList = getStoredBookings();
+            let bookings = localList;
+
+            // 2. Query API if available
+            const tgId = tgUser ? tgUser.id : 348581961;
+            const data = await apiFetch(`/api/bookings/my?user_id=${tgId}`);
+            if (data && data.bookings && data.bookings.length > 0) {
+                const apiIds = new Set(data.bookings.map(b => b.id));
+                const localOnly = localList.filter(b => !apiIds.has(b.id));
+                bookings = [...data.bookings, ...localOnly];
+            }
+
+            if (!bookings || bookings.length === 0) {
+                list.innerHTML = `
+                    <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-6 text-center space-y-3">
+                        <span class="text-3xl">🍽️</span>
+                        <h3 class="text-xs font-bold text-white">У вас пока нет активных броней</h3>
+                        <p class="text-[11px] text-slate-400">Выберите ресторан в каталоге и забронируйте любимый столик за пару секунд!</p>
+                        <button onclick="switchTab('restaurants')" class="px-4 py-2 bg-amber-500 text-slate-950 font-bold rounded-xl text-xs">
+                            Перейти в каталог
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            list.innerHTML = bookings.map(b => {
+                let statusBadge = '';
+                if (b.status === 'confirmed') {
+                    statusBadge = '<span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-[10px] font-bold px-2 py-0.5 rounded-full">✅ Подтверждено</span>';
+                } else if (b.status === 'pending') {
+                    statusBadge = '<span class="bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] font-bold px-2 py-0.5 rounded-full">⏳ В ожидании</span>';
+                } else if (b.status === 'rejected') {
+                    statusBadge = '<span class="bg-rose-500/20 text-rose-400 border border-rose-500/40 text-[10px] font-bold px-2 py-0.5 rounded-full">❌ Отклонено</span>';
+                } else {
+                    statusBadge = '<span class="bg-slate-700 text-slate-300 text-[10px] font-bold px-2 py-0.5 rounded-full">🏁 Завершено</span>';
+                }
+
+                return `
+                    <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-3.5 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-white flex items-center gap-1.5">
+                                📍 ${b.restaurant_name}
+                            </span>
+                            ${statusBadge}
+                        </div>
+                        <p class="text-[11px] text-slate-400">🏢 ${b.restaurant_address || ''}</p>
+
+                        <div class="bg-slate-900/60 rounded-xl p-2.5 grid grid-cols-2 gap-2 text-[11px] border border-slate-700/50">
+                            <div>
+                                <span class="text-slate-400 block text-[10px]">Дата и время:</span>
+                                <span class="font-bold text-white">${b.booking_date} в ${b.booking_time}</span>
+                            </div>
+                            <div>
+                                <span class="text-slate-400 block text-[10px]">Столик и гости:</span>
+                                <span class="font-bold text-amber-400">Стол №${b.table_number} (${b.guests_count} чел.)</span>
+                            </div>
+                        </div>
+
+                        ${b.wishes ? `<p class="text-[10px] text-slate-400 italic">💬 «${b.wishes}»</p>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // --- Admin / Hostess Panel ---
+        let adminFilterDate = "all";
+
+        function filterAdminDate(type, btnEl) {
+            adminFilterDate = type;
+            document.querySelectorAll('.admin-date-btn').forEach(btn => {
+                btn.classList.remove('bg-amber-500', 'text-slate-950', 'font-bold');
+                btn.classList.add('bg-slate-800', 'text-slate-300');
+            });
+            if (btnEl) {
+                btnEl.classList.add('bg-amber-500', 'text-slate-950', 'font-bold');
+                btnEl.classList.remove('bg-slate-800', 'text-slate-300');
+            }
+            loadAdminBookings();
+        }
+
+        async function loadAdminBookings() {
+            const list = document.getElementById('adminBookingsList');
+            const restId = parseInt(document.getElementById('adminRestaurantSelect').value);
+
+            // 1. Get from localStorage
+            let localList = getStoredBookings().filter(b => b.restaurant_id == restId);
+
+            if (adminFilterDate === 'today') {
+                const todayStr = getTodayDateString();
+                localList = localList.filter(b => b.booking_date === todayStr);
+            } else if (adminFilterDate === 'tomorrow') {
+                const tomorrowStr = getTomorrowDateString();
+                localList = localList.filter(b => b.booking_date === tomorrowStr);
+            }
+
+            let bookings = localList;
+
+            // 2. Query API if available
+            let query = `/api/admin/bookings?restaurant_id=${restId}`;
+            if (adminFilterDate === 'today') query += `&date=${getTodayDateString()}`;
+            if (adminFilterDate === 'tomorrow') query += `&date=${getTomorrowDateString()}`;
+
+            const data = await apiFetch(query);
+            const statusEl = document.getElementById('adminConnectionStatus');
+
+            if (data && data.bookings) {
+                let apiBookings = data.bookings;
+                if (adminFilterDate === 'today') {
+                    apiBookings = apiBookings.filter(b => b.booking_date === getTodayDateString());
+                } else if (adminFilterDate === 'tomorrow') {
+                    apiBookings = apiBookings.filter(b => b.booking_date === getTomorrowDateString());
+                }
+                const apiIds = new Set(apiBookings.map(b => b.id));
+                const localOnly = localList.filter(b => !apiIds.has(b.id));
+                bookings = [...apiBookings, ...localOnly];
+                if (statusEl) {
+                    statusEl.innerHTML = `<span class="text-emerald-400 font-bold">🟢 База данных подключена (${bookings.length} заявок)</span>`;
+                }
+            } else {
+                if (statusEl) {
+                    statusEl.innerHTML = `<span class="text-amber-400 font-medium">⚠️ Ожидание связи с сервером (${bookings.length} в памяти)</span>`;
+                }
+            }
+
+            // Sort newest bookings first (highest ID on top)
+            bookings.sort((a, b) => b.id - a.id);
+
+            if (!bookings || bookings.length === 0) {
+                list.innerHTML = '<div class="text-center py-8 text-slate-400 text-xs">Заявок на бронирование пока нет</div>';
+                return;
+            }
+
+            list.innerHTML = bookings.map(b => {
+                const phoneClean = (b.guest_phone || '').replace(/[^0-9+]/g, '');
+                const isPending = b.status === 'pending';
+                const isConfirmed = b.status === 'confirmed';
+
+                return `
+                    <div class="bg-slate-800/90 border ${isPending ? 'border-amber-500/50 shadow-md shadow-amber-500/10' : 'border-slate-700'} rounded-2xl p-3.5 space-y-3">
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm font-extrabold text-amber-400">#${b.id}</span>
+                                <span class="text-xs font-bold text-white">Стол №${b.table_number} (${b.table_zone || 'Зал'})</span>
+                            </div>
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                                b.status === 'confirmed' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40' :
+                                b.status === 'pending' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 badge-pulse' :
+                                b.status === 'rejected' ? 'bg-rose-500/20 text-rose-400 border border-rose-500/40' :
+                                'bg-slate-700 text-slate-300'
+                            }">
+                                ${b.status === 'confirmed' ? '✅ Подтверждена' : b.status === 'pending' ? '⏳ Ожидает решения' : b.status === 'rejected' ? '❌ Отклонена' : '🏁 Завершена'}
+                            </span>
+                        </div>
+
+                        <!-- Guest Info Block -->
+                        <div class="bg-slate-900/60 rounded-xl p-2.5 space-y-1.5 border border-slate-700/50 text-xs">
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-400">Гость:</span>
+                                <span class="font-bold text-white">${b.guest_name}</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-400">Телефон:</span>
+                                <a href="tel:${phoneClean}" class="font-mono font-bold text-blue-400 underline flex items-center gap-1">
+                                    📞 ${b.guest_phone}
+                                </a>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-400">Время визита:</span>
+                                <span class="font-bold text-amber-300">📅 ${b.booking_date} в ${b.booking_time}</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-400">Гостей:</span>
+                                <span class="font-bold text-white">${b.guests_count} чел.</span>
+                            </div>
+                            ${b.wishes ? `
+                                <div class="pt-1 border-t border-slate-800 text-[11px] text-slate-300">
+                                    <span class="text-slate-500 block text-[10px]">Пожелания:</span>
+                                    «${b.wishes}»
+                                </div>
+                            ` : ''}
+                        </div>
+
+                        <!-- Hostess Action Buttons -->
+                        <div class="flex gap-2">
+                            ${isPending ? `
+                                <button onclick="setBookingStatus(${b.id}, 'confirmed')" class="flex-1 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md transition-all">
+                                    ✅ Подтвердить
+                                </button>
+                                <button onclick="setBookingStatus(${b.id}, 'rejected')" class="flex-1 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs transition-all">
+                                    ❌ Отклонить
+                                </button>
+                            ` : isConfirmed ? `
+                                <button onclick="setBookingStatus(${b.id}, 'completed')" class="flex-1 py-2 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold text-xs transition-all">
+                                    🍽 Гости пришли
+                                </button>
+                                <a href="tel:${phoneClean}" class="px-3 py-2 rounded-xl bg-blue-600 text-white font-bold text-xs flex items-center justify-center">
+                                    📞 Позвонить
+                                </a>
+                            ` : `
+                                <button onclick="setBookingStatus(${b.id}, 'confirmed')" class="flex-1 py-1.5 rounded-xl bg-slate-700 text-slate-300 text-xs">
+                                    Вернуть в подтвержденные
+                                </button>
+                            `}
+                        </div>
+
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function setBookingStatus(bookingId, status) {
+            // Update in localStorage immediately
+            updateLocalBookingStatus(bookingId, status);
+
+            // Also send to API if available
+            await apiFetch(`/api/admin/bookings/${bookingId}/status`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: status })
+            });
+
+            loadAdminBookings();
+        }
+    </script>
+</body>
+</html>

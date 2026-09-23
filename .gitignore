@@ -1,0 +1,37 @@
+# Файлы, которые НЕ нужны в git (секреты, кэш, локальные файлы)
+
+# База данных (не коммитим — будет создана автоматически на Railway)
+booking.db
+
+# Локальный туннель URL (меняется каждый запуск)
+tunnel_url.txt
+
+# Python кэш
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.pyc
+
+# Виртуальные окружения
+venv/
+env/
+.venv/
+
+# Переменные окружения (секреты!)
+.env
+
+# Windows специфичные
+Thumbs.db
+desktop.ini
+
+# macOS
+.DS_Store
+
+# Cloudflared бинарник (большой файл, не нужен в git)
+cloudflared.exe
+
+# IDE
+.vscode/
+.idea/
