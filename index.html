@@ -206,68 +206,89 @@
             </div>
 
             <!-- Tabs Switcher inside Modal -->
-            <div class="flex border-b border-[#20232c] bg-[#121419] px-4 pt-2">
-                <button id="modalTabBtn-book" onclick="switchModalTab('book')" class="flex-1 py-2.5 text-xs font-bold border-b-2 border-[#c5a880] text-[#c5a880] text-center transition-all">
-                    🪑 Забронировать стол
+            <div class="grid grid-cols-3 border-b border-[#20232c] bg-[#121419] px-3 pt-1">
+                <button id="modalTabBtn-book" onclick="switchModalTab('book')" class="py-3 text-xs font-bold border-b-2 border-[#c5a880] text-[#c5a880] text-center whitespace-nowrap transition-all">
+                    🪑 Бронь стола
                 </button>
-                <button id="modalTabBtn-menu" onclick="switchModalTab('menu')" class="flex-1 py-2.5 text-xs font-bold border-b-2 border-transparent text-[#8c93a0] text-center hover:text-stone-200 transition-all">
-                    📖 Меню заведения
+                <button id="modalTabBtn-menu" onclick="switchModalTab('menu')" class="py-3 text-xs font-bold border-b-2 border-transparent text-[#8c93a0] text-center whitespace-nowrap hover:text-stone-200 transition-all">
+                    📖 Меню
                 </button>
-                <button id="modalTabBtn-about" onclick="switchModalTab('about')" class="flex-1 py-2.5 text-xs font-bold border-b-2 border-transparent text-[#8c93a0] text-center hover:text-stone-200 transition-all">
+                <button id="modalTabBtn-about" onclick="switchModalTab('about')" class="py-3 text-xs font-bold border-b-2 border-transparent text-[#8c93a0] text-center whitespace-nowrap hover:text-stone-200 transition-all">
                     ℹ️ Инфо
                 </button>
             </div>
 
             <!-- Modal Body Scrollable -->
-            <div class="flex-1 overflow-y-auto p-4 space-y-4 hide-scrollbar">
+            <div class="flex-1 overflow-y-auto p-4 space-y-5 hide-scrollbar">
                 
                 <!-- 1. BOOKING SUB-VIEW -->
-                <div id="modalSubTab-book" class="space-y-4">
+                <div id="modalSubTab-book" class="space-y-5">
                     
                     <!-- Date Picker -->
                     <div>
-                        <label class="text-xs font-semibold text-stone-300 block mb-1.5">1. Выберите дату</label>
-                        <div class="flex gap-2">
-                            <button type="button" onclick="selectDateQuick('today')" id="dateBtn-today" class="date-quick-btn flex-1 py-2 rounded-xl bg-[#c5a880] text-[#0e1013] text-xs font-bold transition-all shadow-sm">Сегодня</button>
-                            <button type="button" onclick="selectDateQuick('tomorrow')" id="dateBtn-tomorrow" class="date-quick-btn flex-1 py-2 rounded-xl bg-[#181a20] text-[#8c93a0] border border-[#252933] text-xs font-medium transition-all hover:text-stone-200">Завтра</button>
-                            <input type="date" id="bookingDateInput" onchange="onCustomDateChange(this.value)" class="flex-1 bg-[#181a20] border border-[#252933] text-xs text-[#dfcbb5] rounded-xl px-2.5 py-2 outline-none focus:border-[#c5a880] cursor-pointer">
+                        <label class="text-xs font-semibold text-stone-300 block mb-2">1. Выберите дату</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button type="button" onclick="selectDateQuick('today')" id="dateBtn-today" class="date-quick-btn py-2.5 rounded-xl bg-[#c5a880] text-[#0e1013] text-xs font-bold transition-all shadow-sm">Сегодня</button>
+                            <button type="button" onclick="selectDateQuick('tomorrow')" id="dateBtn-tomorrow" class="date-quick-btn py-2.5 rounded-xl bg-[#181a20] text-[#8c93a0] border border-[#252933] text-xs font-medium transition-all hover:text-stone-200">Завтра</button>
+                            <input type="date" id="bookingDateInput" onchange="onCustomDateChange(this.value)" class="w-full bg-[#181a20] border border-[#252933] text-xs text-[#dfcbb5] rounded-xl px-2.5 py-2 outline-none focus:border-[#c5a880] cursor-pointer text-center">
                         </div>
                     </div>
 
                     <!-- Time Selection (Full Day / Evening / Custom) -->
                     <div>
-                        <div class="flex items-center justify-between mb-1.5">
+                        <div class="flex items-center justify-between mb-2">
                             <label class="text-xs font-semibold text-stone-300">2. Время визита</label>
-                            <span class="text-xs font-serif font-bold text-[#dfcbb5]" id="selectedTimeDisplay">19:00</span>
+                            <div class="flex items-center gap-1.5 bg-[#c5a880]/15 border border-[#c5a880]/30 px-2.5 py-0.5 rounded-lg">
+                                <span class="text-[10px] text-[#8c93a0]">Выбрано:</span>
+                                <span class="text-xs font-serif font-bold text-[#dfcbb5]" id="selectedTimeDisplay">19:00</span>
+                            </div>
                         </div>
 
-                        <!-- Period Toggle (Day vs Evening vs Custom) -->
-                        <div class="flex p-1 bg-[#181a20] rounded-xl border border-[#252933] mb-2 text-xs">
-                            <button type="button" onclick="setTimePeriod('day')" id="periodBtn-day" 
-                                    class="period-tab-btn flex-1 py-1.5 rounded-lg text-[11px] font-medium transition-all text-[#8c93a0] hover:text-stone-200">
-                                ☀️ Обед (11:00 - 16:30)
-                            </button>
-                            <button type="button" onclick="setTimePeriod('evening')" id="periodBtn-evening" 
-                                    class="period-tab-btn flex-1 py-1.5 rounded-lg text-[11px] font-bold bg-[#c5a880] text-[#0e1013] transition-all shadow-sm">
-                                🌙 Ужин (17:00 - 23:00)
-                            </button>
-                            <button type="button" onclick="setTimePeriod('custom')" id="periodBtn-custom" 
-                                    class="period-tab-btn px-3 py-1.5 rounded-lg text-[11px] font-medium transition-all text-[#8c93a0] hover:text-stone-200">
-                                ⏱️ Своё
-                            </button>
-                        </div>
+                        <div class="bg-[#16181f] border border-[#252933] rounded-2xl p-3 space-y-3">
+                            <!-- Period Toggle (Day vs Evening vs Custom) -->
+                            <div class="grid grid-cols-3 gap-1.5 p-1 bg-[#0e1013] rounded-xl border border-[#222630]">
+                                <button type="button" onclick="setTimePeriod('day')" id="periodBtn-day" 
+                                        class="period-tab-btn py-2 px-2 rounded-lg text-center transition-all text-[#8c93a0] hover:text-[#f3efe9]">
+                                    <span class="block text-xs font-bold leading-tight">☀️ День</span>
+                                    <span class="block text-[9px] opacity-75 mt-0.5">11:00 – 16:30</span>
+                                </button>
+                                <button type="button" onclick="setTimePeriod('evening')" id="periodBtn-evening" 
+                                        class="period-tab-btn py-2 px-2 rounded-lg text-center bg-[#c5a880] text-[#0e1013] transition-all shadow-sm">
+                                    <span class="block text-xs font-bold leading-tight">🌙 Вечер</span>
+                                    <span class="block text-[9px] opacity-80 mt-0.5">17:00 – 23:00</span>
+                                </button>
+                                <button type="button" onclick="setTimePeriod('custom')" id="periodBtn-custom" 
+                                        class="period-tab-btn py-2 px-2 rounded-lg text-center transition-all text-[#8c93a0] hover:text-[#f3efe9]">
+                                    <span class="block text-xs font-bold leading-tight">⏱️ Своё</span>
+                                    <span class="block text-[9px] opacity-75 mt-0.5">Точное время</span>
+                                </button>
+                            </div>
 
-                        <!-- Slots Grid -->
-                        <div id="timeSlotsContainer" class="grid grid-cols-4 gap-1.5 text-xs max-h-36 overflow-y-auto hide-scrollbar p-0.5">
-                            <!-- Injected dynamically via renderTimeSlots() -->
-                        </div>
+                            <!-- Slots Grid (12 items = 3 neat rows of 4) -->
+                            <div id="timeSlotsContainer" class="grid grid-cols-4 gap-2 text-xs">
+                                <!-- Injected dynamically via renderTimeSlots() -->
+                            </div>
 
-                        <!-- Custom Exact Time Input (Shown when 'custom' is active) -->
-                        <div id="customTimeWrapper" class="hidden mt-2 flex items-center justify-between bg-[#181a20] border border-[#252933] rounded-xl p-2.5">
-                            <span class="text-xs text-[#8c93a0]">Укажите любое точное время:</span>
-                            <input type="time" id="customTimeInput" onchange="onCustomTimeChange(this.value)" 
-                                   min="10:00" max="23:45" step="900"
-                                   class="bg-[#121419] border border-[#2d3240] text-xs text-[#dfcbb5] font-semibold rounded-lg px-3 py-1.5 outline-none focus:border-[#c5a880]">
+                            <!-- Custom Exact Time Input (Shown when 'custom' is active) -->
+                            <div id="customTimeWrapper" class="hidden space-y-2.5 pt-1">
+                                <div class="flex items-center justify-between bg-[#0e1013] border border-[#252933] rounded-xl px-3.5 py-2.5">
+                                    <div>
+                                        <span class="text-xs font-medium text-[#f3efe9] block">Укажите точное время</span>
+                                        <span class="text-[10px] text-[#8c93a0]">Любой час и минуты визита</span>
+                                    </div>
+                                    <input type="time" id="customTimeInput" onchange="onCustomTimeChange(this.value)" 
+                                           min="09:00" max="23:59" step="300"
+                                           class="bg-[#181a20] border border-[#c5a880]/50 text-sm text-[#dfcbb5] font-bold rounded-xl px-3 py-1.5 outline-none focus:border-[#c5a880] cursor-pointer">
+                                </div>
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <span class="text-[10px] text-[#8c93a0] mr-1">Быстрый выбор:</span>
+                                    <button type="button" onclick="pickCustomQuick('10:00')" class="px-2.5 py-1 rounded-lg bg-[#0e1013] border border-[#252933] text-[11px] text-[#c9c5bd] hover:border-[#c5a880]">10:00</button>
+                                    <button type="button" onclick="pickCustomQuick('10:30')" class="px-2.5 py-1 rounded-lg bg-[#0e1013] border border-[#252933] text-[11px] text-[#c9c5bd] hover:border-[#c5a880]">10:30</button>
+                                    <button type="button" onclick="pickCustomQuick('17:15')" class="px-2.5 py-1 rounded-lg bg-[#0e1013] border border-[#252933] text-[11px] text-[#c9c5bd] hover:border-[#c5a880]">17:15</button>
+                                    <button type="button" onclick="pickCustomQuick('22:30')" class="px-2.5 py-1 rounded-lg bg-[#0e1013] border border-[#252933] text-[11px] text-[#c9c5bd] hover:border-[#c5a880]">22:30</button>
+                                    <button type="button" onclick="pickCustomQuick('23:30')" class="px-2.5 py-1 rounded-lg bg-[#0e1013] border border-[#252933] text-[11px] text-[#c9c5bd] hover:border-[#c5a880]">23:30</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -492,8 +513,9 @@
         ];
 
         const eveningTimeSlots = [
-            '17:00', '17:30', '18:00', '18:30', '19:00', '19:30',
-            '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00'
+            '17:00', '17:30', '18:00', '18:30',
+            '19:00', '19:30', '20:00', '20:30',
+            '21:00', '21:30', '22:00', '22:30'
         ];
 
         function getTodayDateString() {
@@ -537,7 +559,7 @@
 
         // PERMANENT backend URL (Railway cloud deployment).
         // This is the fallback when no ?api= query param is provided.
-        const DEFAULT_BACKEND_URL = "https://restokz-bot-production.up.railway.app";
+        const DEFAULT_BACKEND_URL = "https://restokz-app.loca.lt";
 
         let API_BASE = DEFAULT_BACKEND_URL;
 
@@ -988,9 +1010,9 @@
                 const btn = document.getElementById(t.id);
                 if (!btn) return;
                 if (t.key === period) {
-                    btn.className = "period-tab-btn flex-1 py-1.5 rounded-lg text-[11px] font-bold bg-[#c5a880] text-[#0e1013] transition-all shadow-sm";
+                    btn.className = "period-tab-btn py-2 px-2 rounded-lg text-center bg-[#c5a880] text-[#0e1013] transition-all shadow-sm";
                 } else {
-                    btn.className = "period-tab-btn flex-1 py-1.5 rounded-lg text-[11px] font-medium transition-all text-[#8c93a0] hover:text-[#f3efe9]";
+                    btn.className = "period-tab-btn py-2 px-2 rounded-lg text-center transition-all text-[#8c93a0] hover:text-[#f3efe9]";
                 }
             });
 
@@ -1028,10 +1050,10 @@
                 const isSelected = selectedTimeSlot === timeStr;
                 const activeClass = isSelected
                     ? 'bg-[#c5a880] text-[#0e1013] font-bold shadow-sm'
-                    : 'bg-[#181a20] text-[#c9c5bd] border border-[#252933] hover:border-[#c5a880]/60 hover:text-[#f3efe9]';
+                    : 'bg-[#111319] text-[#c9c5bd] border border-[#232732] hover:border-[#c5a880]/60 hover:text-[#f3efe9]';
                 return `
                     <button type="button" onclick="selectTime('${timeStr}', this)" 
-                            class="time-slot-btn py-2 px-1 rounded-xl text-center text-xs transition-all ${activeClass}">
+                            class="time-slot-btn py-2.5 px-1 rounded-xl text-center text-xs font-semibold transition-all ${activeClass}">
                         ${timeStr}
                     </button>
                 `;
@@ -1043,6 +1065,12 @@
             updateTimeDisplay();
             renderTimeSlots();
             loadTablesForCurrentSlot();
+        }
+
+        function pickCustomQuick(val) {
+            const customInput = document.getElementById('customTimeInput');
+            if (customInput) customInput.value = val;
+            onCustomTimeChange(val);
         }
 
         function onCustomTimeChange(val) {
