@@ -15,8 +15,9 @@ DB_FILE = os.environ.get(
 )
 
 def get_db_connection() -> sqlite3.Connection:
-    conn = sqlite3.connect(DB_FILE)
+    conn = sqlite3.connect(DB_FILE, timeout=15.0)
     conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA foreign_keys = ON")
     return conn
 
 def init_db():
@@ -27,110 +28,113 @@ def init_db():
         os.makedirs(db_dir, exist_ok=True)
 
     conn = get_db_connection()
-    cursor = conn.cursor()
+    try:
+        conn.execute("PRAGMA journal_mode = WAL")
+        conn.execute("PRAGMA synchronous = NORMAL")
+        cursor = conn.cursor()
 
-    cursor.executescript("""
-    CREATE TABLE IF NOT EXISTS restaurants (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        city TEXT NOT NULL,
-        cuisine TEXT NOT NULL,
-        address TEXT NOT NULL,
-        phone TEXT NOT NULL,
-        rating REAL DEFAULT 4.8,
-        avg_check INTEGER DEFAULT 8000,
-        cover_image TEXT,
-        description TEXT,
-        working_hours TEXT DEFAULT '11:00 - 00:00',
-        two_gis_url TEXT,
-        admin_tg_id INTEGER
-    );
+        cursor.executescript("""
+        CREATE TABLE IF NOT EXISTS restaurants (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            city TEXT NOT NULL,
+            cuisine TEXT NOT NULL,
+            address TEXT NOT NULL,
+            phone TEXT NOT NULL,
+            rating REAL DEFAULT 4.8,
+            avg_check INTEGER DEFAULT 8000,
+            cover_image TEXT,
+            description TEXT,
+            working_hours TEXT DEFAULT '11:00 - 00:00',
+            two_gis_url TEXT,
+            admin_tg_id INTEGER
+        );
 
-    CREATE TABLE IF NOT EXISTS menu_categories (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        restaurant_id INTEGER NOT NULL,
-        name TEXT NOT NULL,
-        icon TEXT DEFAULT '🍽️',
-        sort_order INTEGER DEFAULT 0,
-        FOREIGN KEY (restaurant_id) REFERENCES restaurants (id) ON DELETE CASCADE
-    );
+        CREATE TABLE IF NOT EXISTS menu_categories (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            restaurant_id INTEGER NOT NULL,
+            name TEXT NOT NULL,
+            icon TEXT DEFAULT '🍽️',
+            sort_order INTEGER DEFAULT 0,
+            FOREIGN KEY (restaurant_id) REFERENCES restaurants (id) ON DELETE CASCADE
+        );
 
-    CREATE TABLE IF NOT EXISTS menu_items (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        restaurant_id INTEGER NOT NULL,
-        category_id INTEGER NOT NULL,
-        title TEXT NOT NULL,
-        description TEXT,
-        price INTEGER NOT NULL,
-        weight TEXT,
-        image_url TEXT,
-        is_available INTEGER DEFAULT 1,
-        FOREIGN KEY (restaurant_id) REFERENCES restaurants (id) ON DELETE CASCADE,
-        FOREIGN KEY (category_id) REFERENCES menu_categories (id) ON DELETE CASCADE
-    );
+        CREATE TABLE IF NOT EXISTS menu_items (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            restaurant_id INTEGER NOT NULL,
+            category_id INTEGER NOT NULL,
+            title TEXT NOT NULL,
+            description TEXT,
+            price INTEGER NOT NULL,
+            weight TEXT,
+            image_url TEXT,
+            is_available INTEGER DEFAULT 1,
+            FOREIGN KEY (restaurant_id) REFERENCES restaurants (id) ON DELETE CASCADE,
+            FOREIGN KEY (category_id) REFERENCES menu_categories (id) ON DELETE CASCADE
+        );
 
-    CREATE TABLE IF NOT EXISTS tables (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        restaurant_id INTEGER NOT NULL,
-        table_number INTEGER NOT NULL,
-        seats INTEGER NOT NULL,
-        zone_type TEXT DEFAULT 'Зал',
-        description TEXT,
-        position_x INTEGER DEFAULT 0,
-        position_y INTEGER DEFAULT 0,
-        shape TEXT DEFAULT 'circle',
-        FOREIGN KEY (restaurant_id) REFERENCES restaurants (id) ON DELETE CASCADE,
-        UNIQUE (restaurant_id, table_number)
-    );
+        CREATE TABLE IF NOT EXISTS tables (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            restaurant_id INTEGER NOT NULL,
+            table_number INTEGER NOT NULL,
+            seats INTEGER NOT NULL,
+            zone_type TEXT DEFAULT 'Зал',
+            description TEXT,
+            position_x INTEGER DEFAULT 0,
+            position_y INTEGER DEFAULT 0,
+            shape TEXT DEFAULT 'circle',
+            FOREIGN KEY (restaurant_id) REFERENCES restaurants (id) ON DELETE CASCADE,
+            UNIQUE (restaurant_id, table_number)
+        );
 
-    CREATE TABLE IF NOT EXISTS bookings (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        restaurant_id INTEGER NOT NULL,
-        table_id INTEGER NOT NULL,
-        guest_tg_id INTEGER,
-        guest_username TEXT,
-        guest_name TEXT NOT NULL,
-        guest_phone TEXT NOT NULL,
-        booking_date TEXT NOT NULL,
-        booking_time TEXT NOT NULL,
-        guests_count INTEGER NOT NULL,
-        wishes TEXT,
-        status TEXT DEFAULT 'pending',
-        created_at TEXT NOT NULL,
-        FOREIGN KEY (restaurant_id) REFERENCES restaurants (id) ON DELETE CASCADE,
-        FOREIGN KEY (table_id) REFERENCES tables (id) ON DELETE CASCADE
-    );
+        CREATE TABLE IF NOT EXISTS bookings (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            restaurant_id INTEGER NOT NULL,
+            table_id INTEGER NOT NULL,
+            guest_tg_id INTEGER,
+            guest_username TEXT,
+            guest_name TEXT NOT NULL,
+            guest_phone TEXT NOT NULL,
+            booking_date TEXT NOT NULL,
+            booking_time TEXT NOT NULL,
+            guests_count INTEGER NOT NULL,
+            wishes TEXT,
+            status TEXT DEFAULT 'pending',
+            created_at TEXT NOT NULL,
+            FOREIGN KEY (restaurant_id) REFERENCES restaurants (id) ON DELETE CASCADE,
+            FOREIGN KEY (table_id) REFERENCES tables (id) ON DELETE CASCADE
+        );
 
-    -- Performance indexes for frequently queried columns
-    CREATE INDEX IF NOT EXISTS idx_bookings_restaurant_date
-        ON bookings (restaurant_id, booking_date);
+        -- Performance indexes for frequently queried columns
+        CREATE INDEX IF NOT EXISTS idx_bookings_restaurant_date
+            ON bookings (restaurant_id, booking_date);
 
-    CREATE INDEX IF NOT EXISTS idx_bookings_guest_tg_id
-        ON bookings (guest_tg_id);
+        CREATE INDEX IF NOT EXISTS idx_bookings_guest_tg_id
+            ON bookings (guest_tg_id);
 
-    CREATE INDEX IF NOT EXISTS idx_bookings_table_id
-        ON bookings (table_id);
+        CREATE INDEX IF NOT EXISTS idx_bookings_table_id
+            ON bookings (table_id);
 
-    CREATE INDEX IF NOT EXISTS idx_bookings_status
-        ON bookings (status);
+        CREATE INDEX IF NOT EXISTS idx_bookings_status
+            ON bookings (status);
 
-    CREATE INDEX IF NOT EXISTS idx_menu_items_restaurant
-        ON menu_items (restaurant_id, category_id);
+        CREATE INDEX IF NOT EXISTS idx_menu_items_restaurant
+            ON menu_items (restaurant_id, category_id);
 
-    CREATE INDEX IF NOT EXISTS idx_tables_restaurant
-        ON tables (restaurant_id);
-    """)
+        CREATE INDEX IF NOT EXISTS idx_tables_restaurant
+            ON tables (restaurant_id);
+        """)
 
-    conn.commit()
+        conn.commit()
 
-    # Check if restaurants already exist
-    cursor.execute("SELECT COUNT(*) as cnt FROM restaurants")
-    count = cursor.fetchone()["cnt"]
+        # Check if restaurants already exist
+        cursor.execute("SELECT COUNT(*) as cnt FROM restaurants")
+        count = cursor.fetchone()["cnt"]
 
-    if count == 0:
-        seed_data(conn)
-
-    conn.close()
+        if count == 0:
+            seed_data(conn)
+    finally:
+        conn.close()
 
 def seed_data(conn: sqlite3.Connection):
     """Populates authentic demo data for popular restaurants in Kazakhstan."""
@@ -311,68 +315,75 @@ def seed_data(conn: sqlite3.Connection):
 
 def get_all_restaurants(city: Optional[str] = None, search: Optional[str] = None) -> List[Dict[str, Any]]:
     conn = get_db_connection()
-    cursor = conn.cursor()
+    try:
+        cursor = conn.cursor()
+        query = "SELECT * FROM restaurants WHERE 1=1"
+        params = []
 
-    query = "SELECT * FROM restaurants WHERE 1=1"
-    params = []
+        if city and city != "Все" and city.lower() != "all":
+            query += " AND city = ?"
+            params.append(city)
 
-    if city and city != "Все" and city.lower() != "all":
-        query += " AND city = ?"
-        params.append(city)
+        if search:
+            query += " AND (name LIKE ? OR cuisine LIKE ? OR address LIKE ?)"
+            term = f"%{search}%"
+            params.extend([term, term, term])
 
-    if search:
-        query += " AND (name LIKE ? OR cuisine LIKE ? OR address LIKE ?)"
-        term = f"%{search}%"
-        params.extend([term, term, term])
-
-    query += " ORDER BY rating DESC"
-    cursor.execute(query, params)
-    rows = cursor.fetchall()
-    conn.close()
-    return [dict(r) for r in rows]
+        query += " ORDER BY rating DESC"
+        cursor.execute(query, params)
+        rows = cursor.fetchall()
+        return [dict(r) for r in rows]
+    finally:
+        conn.close()
 
 def get_restaurant_by_id(restaurant_id: int) -> Optional[Dict[str, Any]]:
     conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM restaurants WHERE id = ?", (restaurant_id,))
-    row = cursor.fetchone()
-    conn.close()
-    return dict(row) if row else None
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM restaurants WHERE id = ?", (restaurant_id,))
+        row = cursor.fetchone()
+        return dict(row) if row else None
+    finally:
+        conn.close()
 
 def get_restaurant_menu(restaurant_id: int) -> List[Dict[str, Any]]:
     conn = get_db_connection()
-    cursor = conn.cursor()
+    try:
+        cursor = conn.cursor()
 
-    cursor.execute("""
-        SELECT * FROM menu_categories 
-        WHERE restaurant_id = ? 
-        ORDER BY sort_order ASC, id ASC
-    """, (restaurant_id,))
-    categories = [dict(c) for c in cursor.fetchall()]
+        cursor.execute("""
+            SELECT * FROM menu_categories 
+            WHERE restaurant_id = ? 
+            ORDER BY sort_order ASC, id ASC
+        """, (restaurant_id,))
+        categories = [dict(c) for c in cursor.fetchall()]
 
-    cursor.execute("""
-        SELECT * FROM menu_items 
-        WHERE restaurant_id = ? AND is_available = 1
-        ORDER BY id ASC
-    """, (restaurant_id,))
-    items = [dict(item) for item in cursor.fetchall()]
-    conn.close()
+        cursor.execute("""
+            SELECT * FROM menu_items 
+            WHERE restaurant_id = ? AND is_available = 1
+            ORDER BY id ASC
+        """, (restaurant_id,))
+        items = [dict(item) for item in cursor.fetchall()]
 
-    # Nest items into categories
-    result = []
-    for cat in categories:
-        cat_items = [it for it in items if it["category_id"] == cat["id"]]
-        cat["items"] = cat_items
-        result.append(cat)
-    return result
+        # Nest items into categories
+        result = []
+        for cat in categories:
+            cat_items = [it for it in items if it["category_id"] == cat["id"]]
+            cat["items"] = cat_items
+            result.append(cat)
+        return result
+    finally:
+        conn.close()
 
 def get_table_by_number(restaurant_id: int, table_number: int) -> Optional[Dict[str, Any]]:
     conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM tables WHERE restaurant_id = ? AND table_number = ?", (restaurant_id, table_number))
-    row = cursor.fetchone()
-    conn.close()
-    return dict(row) if row else None
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM tables WHERE restaurant_id = ? AND table_number = ?", (restaurant_id, table_number))
+        row = cursor.fetchone()
+        return dict(row) if row else None
+    finally:
+        conn.close()
 
 def get_restaurant_tables_with_availability(
     restaurant_id: int, 
@@ -384,24 +395,26 @@ def get_restaurant_tables_with_availability(
     based on active bookings on the given date (and optionally within 2 hours of time_slot).
     """
     conn = get_db_connection()
-    cursor = conn.cursor()
+    try:
+        cursor = conn.cursor()
 
-    cursor.execute("SELECT * FROM tables WHERE restaurant_id = ? ORDER BY table_number ASC", (restaurant_id,))
-    tables = [dict(t) for t in cursor.fetchall()]
+        cursor.execute("SELECT * FROM tables WHERE restaurant_id = ? ORDER BY table_number ASC", (restaurant_id,))
+        tables = [dict(t) for t in cursor.fetchall()]
 
-    # Find booked table IDs on this date where status not rejected/cancelled
-    query = """
-        SELECT table_id, booking_time, status, guest_name 
-        FROM bookings 
-        WHERE restaurant_id = ? 
-          AND booking_date = ? 
-          AND status IN ('pending', 'confirmed')
-    """
-    params = [restaurant_id, date]
+        # Find booked table IDs on this date where status not rejected/cancelled
+        query = """
+            SELECT table_id, booking_time, status, guest_name 
+            FROM bookings 
+            WHERE restaurant_id = ? 
+              AND booking_date = ? 
+              AND status IN ('pending', 'confirmed')
+        """
+        params = [restaurant_id, date]
 
-    cursor.execute(query, params)
-    bookings = cursor.fetchall()
-    conn.close()
+        cursor.execute(query, params)
+        bookings = cursor.fetchall()
+    finally:
+        conn.close()
 
     # Determine availability: if a table has a booking within +/- 2 hours of requested time_slot
     # If time_slot is not provided, any booking today marks it as busy for demo
@@ -410,11 +423,11 @@ def get_restaurant_tables_with_availability(
 
     for b in bookings:
         t_id = b["table_id"]
-        b_time = b["booking_time"]
+        b_time = (b["booking_time"] or "")[:5].strip()
         
         if time_slot:
             try:
-                dt_req = datetime.strptime(time_slot, "%H:%M")
+                dt_req = datetime.strptime(time_slot[:5].strip(), "%H:%M")
                 dt_book = datetime.strptime(b_time, "%H:%M")
                 diff_minutes = abs((dt_req - dt_book).total_seconds()) / 60
                 # A standard booking lasts 2 hours (120 mins)
@@ -448,63 +461,64 @@ def create_booking(
     wishes: Optional[str] = ""
 ) -> int:
     conn = get_db_connection()
-    cursor = conn.cursor()
+    try:
+        cursor = conn.cursor()
 
-    cursor.execute("""
-        INSERT INTO bookings 
-        (restaurant_id, table_id, guest_tg_id, guest_username, guest_name, guest_phone, 
-         booking_date, booking_time, guests_count, wishes, status, created_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?)
-    """, (
-        restaurant_id,
-        table_id,
-        guest_tg_id,
-        guest_username,
-        guest_name,
-        guest_phone,
-        booking_date,
-        booking_time,
-        guests_count,
-        wishes,
-        datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    ))
+        cursor.execute("""
+            INSERT INTO bookings 
+            (restaurant_id, table_id, guest_tg_id, guest_username, guest_name, guest_phone, 
+             booking_date, booking_time, guests_count, wishes, status, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?)
+        """, (
+            restaurant_id,
+            table_id,
+            guest_tg_id,
+            guest_username,
+            guest_name,
+            guest_phone,
+            booking_date,
+            booking_time,
+            guests_count,
+            wishes,
+            datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        ))
 
-    booking_id = cursor.lastrowid
-    conn.commit()
-    conn.close()
-    return booking_id
+        booking_id = cursor.lastrowid
+        conn.commit()
+        return booking_id
+    finally:
+        conn.close()
 
 def get_booking_details(booking_id: int) -> Optional[Dict[str, Any]]:
     conn = get_db_connection()
-    cursor = conn.cursor()
+    try:
+        cursor = conn.cursor()
 
-    cursor.execute("""
-        SELECT b.*, 
-               r.name as restaurant_name, 
-               r.address as restaurant_address,
-               r.phone as restaurant_phone,
-               r.admin_tg_id,
-               t.table_number, 
-               t.seats as table_seats, 
-               t.zone_type as table_zone
-        FROM bookings b
-        JOIN restaurants r ON b.restaurant_id = r.id
-        JOIN tables t ON b.table_id = t.id
-        WHERE b.id = ?
-    """, (booking_id,))
+        cursor.execute("""
+            SELECT b.*, 
+                   r.name as restaurant_name, 
+                   r.address as restaurant_address,
+                   r.phone as restaurant_phone,
+                   r.admin_tg_id,
+                   t.table_number, 
+                   t.seats as table_seats, 
+                   t.zone_type as table_zone
+            FROM bookings b
+            JOIN restaurants r ON b.restaurant_id = r.id
+            JOIN tables t ON b.table_id = t.id
+            WHERE b.id = ?
+        """, (booking_id,))
 
-    row = cursor.fetchone()
-    conn.close()
-    return dict(row) if row else None
+        row = cursor.fetchone()
+        return dict(row) if row else None
+    finally:
+        conn.close()
 
 def get_user_bookings(
     guest_tg_id: Optional[int] = None,
     booking_ids: Optional[List[int]] = None,
     phone: Optional[str] = None
 ) -> List[Dict[str, Any]]:
-    conn = get_db_connection()
-    cursor = conn.cursor()
-
     conditions = []
     params = []
 
@@ -522,7 +536,6 @@ def get_user_bookings(
         params.append(phone)
 
     if not conditions:
-        conn.close()
         return []
 
     where_clause = " OR ".join(conditions)
@@ -540,54 +553,62 @@ def get_user_bookings(
         ORDER BY b.booking_date DESC, b.booking_time DESC, b.id DESC
     """
 
-    cursor.execute(query, params)
-    rows = cursor.fetchall()
-    conn.close()
-    return [dict(r) for r in rows]
+    conn = get_db_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(query, params)
+        rows = cursor.fetchall()
+        return [dict(r) for r in rows]
+    finally:
+        conn.close()
 
 def get_admin_bookings(restaurant_id: Optional[int] = None, date: Optional[str] = None) -> List[Dict[str, Any]]:
     conn = get_db_connection()
-    cursor = conn.cursor()
+    try:
+        cursor = conn.cursor()
 
-    query = """
-        SELECT b.*, 
-               r.name as restaurant_name, 
-               t.table_number, 
-               t.seats as table_seats,
-               t.zone_type as table_zone
-        FROM bookings b
-        JOIN restaurants r ON b.restaurant_id = r.id
-        JOIN tables t ON b.table_id = t.id
-        WHERE 1=1
-    """
-    params = []
+        query = """
+            SELECT b.*, 
+                   r.name as restaurant_name, 
+                   t.table_number, 
+                   t.seats as table_seats,
+                   t.zone_type as table_zone
+            FROM bookings b
+            JOIN restaurants r ON b.restaurant_id = r.id
+            JOIN tables t ON b.table_id = t.id
+            WHERE 1=1
+        """
+        params = []
 
-    if restaurant_id:
-        query += " AND b.restaurant_id = ?"
-        params.append(restaurant_id)
+        if restaurant_id:
+            query += " AND b.restaurant_id = ?"
+            params.append(restaurant_id)
 
-    if date:
-        query += " AND b.booking_date = ?"
-        params.append(date)
+        if date:
+            query += " AND b.booking_date = ?"
+            params.append(date)
 
-    query += " ORDER BY b.booking_date ASC, b.booking_time ASC, b.id DESC"
+        query += " ORDER BY b.booking_date ASC, b.booking_time ASC, b.id DESC"
 
-    cursor.execute(query, params)
-    rows = cursor.fetchall()
-    conn.close()
-    return [dict(r) for r in rows]
+        cursor.execute(query, params)
+        rows = cursor.fetchall()
+        return [dict(r) for r in rows]
+    finally:
+        conn.close()
 
 def update_booking_status(booking_id: int, new_status: str) -> bool:
     conn = get_db_connection()
-    cursor = conn.cursor()
+    try:
+        cursor = conn.cursor()
 
-    cursor.execute("""
-        UPDATE bookings 
-        SET status = ? 
-        WHERE id = ?
-    """, (new_status, booking_id))
+        cursor.execute("""
+            UPDATE bookings 
+            SET status = ? 
+            WHERE id = ?
+        """, (new_status, booking_id))
 
-    affected = cursor.rowcount
-    conn.commit()
-    conn.close()
-    return affected > 0
+        affected = cursor.rowcount
+        conn.commit()
+        return affected > 0
+    finally:
+        conn.close()

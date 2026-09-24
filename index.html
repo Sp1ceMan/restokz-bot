@@ -497,7 +497,7 @@
 
         // PERMANENT backend URL (Railway cloud deployment).
         // This is the fallback when no ?api= query param is provided.
-        const DEFAULT_BACKEND_URL = "https://restokz-app.loca.lt";
+        const DEFAULT_BACKEND_URL = "https://restokz-bot-production.up.railway.app";
 
         let API_BASE = DEFAULT_BACKEND_URL;
 
@@ -1083,7 +1083,7 @@
             const phone = document.getElementById('guestPhoneInput').value.trim();
             const btn = document.getElementById('submitBookingBtn');
 
-            const isPhoneValid = phone.length >= 17; // +7 (7XX) XXX-XX-XX length
+            const isPhoneValid = phone.length >= 18; // Complete +7 (7XX) XXX-XX-XX format (18 chars)
             const isValid = selectedTable && name.length >= 2 && isPhoneValid;
 
             if (isValid) {

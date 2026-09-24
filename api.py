@@ -92,15 +92,30 @@ async def create_booking_endpoint(request: web.Request) -> web.Response:
     except (ValueError, TypeError):
         return web.json_response({"error": "Invalid number format in request"}, status=400)
 
+    if guests_count < 1 or guests_count > 50:
+        return web.json_response({"error": "guests_count must be between 1 and 50"}, status=400)
+
+    guest_name = str(data["guest_name"]).strip()
+    guest_phone = str(data["guest_phone"]).strip()
+    booking_date = str(data["booking_date"]).strip()
+    booking_time = str(data["booking_time"]).strip()
+
+    if len(guest_name) < 2:
+        return web.json_response({"error": "guest_name must be at least 2 characters"}, status=400)
+    if len(guest_phone) < 5:
+        return web.json_response({"error": "guest_phone must be at least 5 characters"}, status=400)
+    if len(booking_date) < 8:
+        return web.json_response({"error": "Invalid booking_date format"}, status=400)
+
     booking_id = database.create_booking(
         restaurant_id=restaurant_id,
         table_id=table_id,
         guest_tg_id=guest_tg_id,
         guest_username=data.get("guest_username"),
-        guest_name=str(data["guest_name"]).strip(),
-        guest_phone=str(data["guest_phone"]).strip(),
-        booking_date=str(data["booking_date"]).strip(),
-        booking_time=str(data["booking_time"]).strip(),
+        guest_name=guest_name,
+        guest_phone=guest_phone,
+        booking_date=booking_date,
+        booking_time=booking_time,
         guests_count=guests_count,
         wishes=data.get("wishes", "")
     )

@@ -228,6 +228,11 @@ async def admin_confirm_booking(callback: CallbackQuery):
         await callback.answer("Бронь не найдена", show_alert=True)
         return
 
+    admin_id = booking.get("admin_tg_id") or ADMIN_CHAT_ID
+    if callback.from_user.id != admin_id and callback.from_user.id != ADMIN_CHAT_ID:
+        await callback.answer("У вас нет прав для управления этой бронью", show_alert=True)
+        return
+
     database.update_booking_status(booking_id, "confirmed")
     updated_booking = database.get_booking_details(booking_id)
 
@@ -254,6 +259,11 @@ async def admin_cancel_booking(callback: CallbackQuery):
     booking = database.get_booking_details(booking_id)
     if not booking:
         await callback.answer("Бронь не найдена", show_alert=True)
+        return
+
+    admin_id = booking.get("admin_tg_id") or ADMIN_CHAT_ID
+    if callback.from_user.id != admin_id and callback.from_user.id != ADMIN_CHAT_ID:
+        await callback.answer("У вас нет прав для управления этой бронью", show_alert=True)
         return
 
     database.update_booking_status(booking_id, "rejected")
@@ -383,6 +393,17 @@ async def notify_guest_status_change(booking: dict, status: str):
             f"😔 <b>Заявка на бронирование отклонена</b>\n\n"
             f"К сожалению, ресторан «{rest_name}» не может принять бронь на <b>Стол №{table_num}</b> ({date_str} в {time_str}).\n\n"
             "Возможно, на это время зал полностью занят. Пожалуйста, откройте каталог и выберите другое время или столик:"
+        )
+    elif status == "completed":
+        text = (
+            f"🍽️ <b>Визит завершен</b>\n\n"
+            f"Спасибо, что посетили ресторан «{rest_name}»! Надеемся, вам всё понравилось.\n"
+            "Будем рады видеть вас снова! ✨"
+        )
+    elif status == "cancelled":
+        text = (
+            f"🚫 <b>Бронирование отменено</b>\n\n"
+            f"Ваша бронь на Стол №{table_num} ({date_str} в {time_str}) в ресторане «{rest_name}» была отменена."
         )
     else:
         text = f"Статус вашей брони #{booking['id']} в «{rest_name}» изменен на: <b>{status}</b>."

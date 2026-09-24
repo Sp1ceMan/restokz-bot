@@ -123,6 +123,18 @@ async def test_api_endpoints():
             assert "error" in data
             print(f"[OK] POST /api/bookings with missing fields returns 400")
 
+        # 10a. Test POST /api/bookings — invalid guests_count (0 or >50)
+        invalid_count_payload = {**payload, "guests_count": 0}
+        async with session.post(f"http://127.0.0.1:{port}/api/bookings", json=invalid_count_payload) as resp:
+            assert resp.status == 400
+            print(f"[OK] POST /api/bookings with guests_count=0 returns 400")
+
+        # 10b. Test POST /api/bookings — too short guest_name
+        invalid_name_payload = {**payload, "guest_name": "A"}
+        async with session.post(f"http://127.0.0.1:{port}/api/bookings", json=invalid_name_payload) as resp:
+            assert resp.status == 400
+            print(f"[OK] POST /api/bookings with 1-char name returns 400")
+
         # 11. Test POST /api/admin/bookings/{id}/status — confirm
         async with session.post(f"http://127.0.0.1:{port}/api/admin/bookings/{booking_id}/status", json={"status": "confirmed"}) as resp:
             assert resp.status == 200
