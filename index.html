@@ -244,23 +244,23 @@
                             </div>
                         </div>
 
-                        <div class="bg-[#16181f] border border-[#252933] rounded-2xl p-3 space-y-3">
+                        <div class="bg-[#16181f] border border-[#252933] rounded-2xl p-3.5 space-y-3.5">
                             <!-- Period Toggle (Day vs Evening vs Custom) -->
-                            <div class="grid grid-cols-3 gap-1.5 p-1 bg-[#0e1013] rounded-xl border border-[#222630]">
+                            <div class="grid grid-cols-3 gap-2 p-1.5 bg-[#0e1013] rounded-2xl border border-[#222630]">
                                 <button type="button" onclick="setTimePeriod('day')" id="periodBtn-day" 
-                                        class="period-tab-btn py-2 px-2 rounded-lg text-center transition-all text-[#8c93a0] hover:text-[#f3efe9]">
-                                    <span class="block text-xs font-bold leading-tight">☀️ День</span>
-                                    <span class="block text-[9px] opacity-75 mt-0.5">11:00 – 16:30</span>
+                                        class="period-tab-btn min-h-[54px] py-2.5 px-2 rounded-xl flex flex-col items-center justify-center text-center transition-all text-[#8c93a0] hover:text-[#f3efe9]">
+                                    <span class="block text-xs font-bold leading-snug">☀️ Обед</span>
+                                    <span class="block text-[10px] opacity-80 leading-tight mt-0.5">11:00 – 16:30</span>
                                 </button>
                                 <button type="button" onclick="setTimePeriod('evening')" id="periodBtn-evening" 
-                                        class="period-tab-btn py-2 px-2 rounded-lg text-center bg-[#c5a880] text-[#0e1013] transition-all shadow-sm">
-                                    <span class="block text-xs font-bold leading-tight">🌙 Вечер</span>
-                                    <span class="block text-[9px] opacity-80 mt-0.5">17:00 – 23:00</span>
+                                        class="period-tab-btn min-h-[54px] py-2.5 px-2 rounded-xl flex flex-col items-center justify-center text-center bg-[#c5a880] text-[#0e1013] transition-all shadow-sm">
+                                    <span class="block text-xs font-bold leading-snug">🌙 Ужин</span>
+                                    <span class="block text-[10px] opacity-85 leading-tight mt-0.5">17:00 – 23:00</span>
                                 </button>
                                 <button type="button" onclick="setTimePeriod('custom')" id="periodBtn-custom" 
-                                        class="period-tab-btn py-2 px-2 rounded-lg text-center transition-all text-[#8c93a0] hover:text-[#f3efe9]">
-                                    <span class="block text-xs font-bold leading-tight">⏱️ Своё</span>
-                                    <span class="block text-[9px] opacity-75 mt-0.5">Точное время</span>
+                                        class="period-tab-btn min-h-[54px] py-2.5 px-2 rounded-xl flex flex-col items-center justify-center text-center transition-all text-[#8c93a0] hover:text-[#f3efe9]">
+                                    <span class="block text-xs font-bold leading-snug">⏱️ Своё</span>
+                                    <span class="block text-[10px] opacity-80 leading-tight mt-0.5">Точное время</span>
                                 </button>
                             </div>
 
@@ -559,7 +559,7 @@
 
         // PERMANENT backend URL (Railway cloud deployment).
         // This is the fallback when no ?api= query param is provided.
-        const DEFAULT_BACKEND_URL = "https://restokz-app.loca.lt";
+        const DEFAULT_BACKEND_URL = "https://tasty-rabbit-12.loca.lt";
 
         let API_BASE = DEFAULT_BACKEND_URL;
 
@@ -1010,9 +1010,9 @@
                 const btn = document.getElementById(t.id);
                 if (!btn) return;
                 if (t.key === period) {
-                    btn.className = "period-tab-btn py-2 px-2 rounded-lg text-center bg-[#c5a880] text-[#0e1013] transition-all shadow-sm";
+                    btn.className = "period-tab-btn min-h-[54px] py-2.5 px-2 rounded-xl flex flex-col items-center justify-center text-center bg-[#c5a880] text-[#0e1013] transition-all shadow-sm";
                 } else {
-                    btn.className = "period-tab-btn py-2 px-2 rounded-lg text-center transition-all text-[#8c93a0] hover:text-[#f3efe9]";
+                    btn.className = "period-tab-btn min-h-[54px] py-2.5 px-2 rounded-xl flex flex-col items-center justify-center text-center transition-all text-[#8c93a0] hover:text-[#f3efe9]";
                 }
             });
 
