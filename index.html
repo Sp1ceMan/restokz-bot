@@ -8,24 +8,27 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
                         sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'Georgia', 'serif'],
                     },
                     colors: {
-                        brand: {
-                            50: '#fff7ed',
-                            100: '#ffedd5',
-                            500: '#f97316',
-                            600: '#ea580c',
-                            700: '#c2410c',
-                        },
-                        kzgold: '#F4C430',
-                        kzblue: '#00AFCA'
+                        resto: {
+                            bg: '#0e1013',
+                            surface: '#15171d',
+                            surfaceHover: '#1c1f27',
+                            border: '#252933',
+                            gold: '#c5a880',
+                            goldLight: '#dfcbb5',
+                            goldDark: '#9b7d59',
+                            text: '#f3efe9',
+                            muted: '#8c93a0'
+                        }
                     }
                 }
             }
@@ -35,7 +38,8 @@
         body {
             -webkit-tap-highlight-color: transparent;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #0f172a;
+            background-color: #0e1013;
+            color: #f3efe9;
         }
         .hide-scrollbar::-webkit-scrollbar {
             display: none;
@@ -48,14 +52,14 @@
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .table-node.selected {
-            transform: scale(1.08);
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
-            outline: 3px solid #3b82f6;
+            transform: scale(1.06);
+            box-shadow: 0 0 20px rgba(197, 168, 128, 0.35);
+            outline: 2px solid #c5a880;
         }
         .table-node.busy {
-            opacity: 0.45;
+            opacity: 0.35;
             cursor: not-allowed;
-            filter: grayscale(0.5);
+            filter: grayscale(0.8);
         }
         .badge-pulse {
             animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
@@ -66,24 +70,24 @@
         }
     </style>
 </head>
-<body class="text-slate-100 min-h-screen flex flex-col justify-between pb-20 select-none">
+<body class="text-stone-200 min-h-screen flex flex-col justify-between pb-20 select-none bg-[#0e1013]">
 
     <!-- Top Navigation Bar -->
-    <header class="sticky top-0 z-30 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 py-3">
+    <header class="sticky top-0 z-30 bg-[#0e1013]/95 backdrop-blur-md border-b border-[#20232c] px-4 py-3">
         <div class="max-w-md mx-auto flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-500 flex items-center justify-center text-lg font-bold shadow-lg shadow-orange-500/20">
+            <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-[#16181f] border border-[#c5a880]/30 flex items-center justify-center text-base shadow-sm">
                     🍽️
                 </div>
                 <div>
-                    <h1 class="text-base font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-amber-200 bg-clip-text text-transparent leading-tight">RestoKZ</h1>
-                    <p class="text-[10px] text-slate-400 font-medium">Казахстан • Бронирование столов</p>
+                    <h1 class="text-base font-serif font-bold tracking-wide bg-gradient-to-r from-stone-100 via-[#dfcbb5] to-[#c5a880] bg-clip-text text-transparent leading-tight">RestoKZ</h1>
+                    <p class="text-[10px] text-[#8c93a0] font-medium tracking-tight">Гастрономический гид • Бронирование столов</p>
                 </div>
             </div>
 
             <!-- City Selector -->
             <div class="relative">
-                <select id="citySelect" onchange="onCityChange(this.value)" class="bg-slate-800 text-xs text-amber-300 font-medium py-1.5 px-3 rounded-lg border border-slate-700 outline-none focus:border-amber-500 transition-colors">
+                <select id="citySelect" onchange="onCityChange(this.value)" class="bg-[#15171d] text-xs text-[#dfcbb5] font-medium py-1.5 px-3 rounded-lg border border-[#252933] outline-none focus:border-[#c5a880] transition-colors cursor-pointer">
                     <option value="Все" selected>🇰🇿 Все города</option>
                     <option value="Алматы">Алматы</option>
                     <option value="Астана">Астана</option>
@@ -103,31 +107,31 @@
             <div class="space-y-3">
                 <div class="relative">
                     <input type="text" id="searchInput" oninput="onSearchInput(this.value)" placeholder="Поиск ресторана, кухни, адреса..." 
-                           class="w-full bg-slate-800/80 border border-slate-700 rounded-xl py-2.5 pl-10 pr-4 text-xs placeholder-slate-400 text-white outline-none focus:border-amber-500 transition-all">
-                    <span class="absolute left-3.5 top-2.5 text-slate-400 text-sm">🔍</span>
+                           class="w-full bg-[#15171d] border border-[#252933] rounded-xl py-2.5 pl-10 pr-4 text-xs placeholder-[#8c93a0] text-[#f3efe9] outline-none focus:border-[#c5a880] transition-all">
+                    <span class="absolute left-3.5 top-2.5 text-[#8c93a0] text-sm">🔍</span>
                 </div>
 
                 <!-- Cuisine Chips -->
                 <div class="flex gap-2 overflow-x-auto hide-scrollbar pb-1 text-xs">
-                    <button onclick="filterCuisine('Все')" class="cuisine-btn active px-3 py-1.5 rounded-full bg-amber-500 text-slate-950 font-semibold whitespace-nowrap transition-all">Все</button>
-                    <button onclick="filterCuisine('Казахская')" class="cuisine-btn px-3 py-1.5 rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 whitespace-nowrap transition-all">🥩 Казахская</button>
-                    <button onclick="filterCuisine('Итальянская')" class="cuisine-btn px-3 py-1.5 rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 whitespace-nowrap transition-all">🍝 Итальянская</button>
-                    <button onclick="filterCuisine('Восточная')" class="cuisine-btn px-3 py-1.5 rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 whitespace-nowrap transition-all">🫖 Восточная</button>
+                    <button onclick="filterCuisine('Все')" class="cuisine-btn active px-3.5 py-1.5 rounded-full bg-[#c5a880] text-[#0e1013] font-semibold whitespace-nowrap transition-all shadow-sm">Все</button>
+                    <button onclick="filterCuisine('Казахская')" class="cuisine-btn px-3.5 py-1.5 rounded-full bg-[#15171d] text-[#8c93a0] border border-[#252933] hover:text-[#f3efe9] whitespace-nowrap transition-all">🥩 Казахская</button>
+                    <button onclick="filterCuisine('Итальянская')" class="cuisine-btn px-3.5 py-1.5 rounded-full bg-[#15171d] text-[#8c93a0] border border-[#252933] hover:text-[#f3efe9] whitespace-nowrap transition-all">🍝 Итальянская</button>
+                    <button onclick="filterCuisine('Восточная')" class="cuisine-btn px-3.5 py-1.5 rounded-full bg-[#15171d] text-[#8c93a0] border border-[#252933] hover:text-[#f3efe9] whitespace-nowrap transition-all">🫖 Восточная</button>
                 </div>
             </div>
 
             <!-- Restaurants List Feed -->
             <div id="restaurantsList" class="space-y-4">
                 <!-- Injected via JavaScript -->
-                <div class="text-center py-12 text-slate-400 text-sm animate-pulse">Загрузка ресторанов...</div>
+                <div class="text-center py-12 text-[#8c93a0] text-sm animate-pulse">Загрузка ресторанов...</div>
             </div>
         </section>
 
         <!-- TAB 2: MY BOOKINGS -->
         <section id="tab-my-bookings" class="hidden space-y-4">
             <div class="flex items-center justify-between">
-                <h2 class="text-lg font-bold">📋 Мои бронирования</h2>
-                <button onclick="loadMyBookings()" class="text-xs text-amber-400 hover:underline">Обновить</button>
+                <h2 class="text-base font-serif font-bold text-[#f3efe9]">📋 Мои бронирования</h2>
+                <button onclick="loadMyBookings()" class="text-xs text-[#c5a880] hover:underline font-medium">Обновить</button>
             </div>
             <div id="myBookingsList" class="space-y-3">
                 <!-- Injected via JavaScript -->
@@ -136,22 +140,22 @@
 
         <!-- TAB 3: ADMIN PANEL (FOR RESTAURANT HOSTESS / MANAGER) -->
         <section id="tab-admin" class="hidden space-y-4">
-            <div class="bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 rounded-2xl p-4">
+            <div class="bg-gradient-to-r from-[#171920] to-[#13141a] border border-[#262a36] rounded-2xl p-4 shadow-md">
                 <div class="flex items-center justify-between mb-2">
-                    <div class="flex items-center gap-2">
-                        <span class="text-xl">👑</span>
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-lg">👑</span>
                         <div>
-                            <h2 class="text-sm font-bold text-amber-400">Панель управления заведения</h2>
-                            <p class="text-[10px] text-slate-400">Рабочее место хостес и администратора</p>
+                            <h2 class="text-sm font-serif font-bold text-[#dfcbb5]">Панель управления заведения</h2>
+                            <p class="text-[10px] text-[#8c93a0]">Рабочее место хостес и администратора</p>
                         </div>
                     </div>
-                    <span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-[10px] font-bold px-2 py-0.5 rounded-full">В сети</span>
+                    <span class="bg-emerald-950/40 text-emerald-300 border border-emerald-700/50 text-[10px] font-medium px-2 py-0.5 rounded-full">В сети</span>
                 </div>
 
                 <!-- Select Restaurant for Admin -->
                 <div class="mt-3">
-                    <label class="text-[11px] text-slate-400 font-medium block mb-1">Выбрать ресторан:</label>
-                    <select id="adminRestaurantSelect" onchange="loadAdminBookings()" class="w-full bg-slate-800 text-xs text-white rounded-lg p-2 border border-slate-700 outline-none">
+                    <label class="text-[11px] text-[#8c93a0] font-medium block mb-1">Выбрать ресторан:</label>
+                    <select id="adminRestaurantSelect" onchange="loadAdminBookings()" class="w-full bg-[#181a20] text-xs text-[#f3efe9] rounded-xl p-2.5 border border-[#252933] outline-none focus:border-[#c5a880] cursor-pointer">
                         <option value="all" selected>🏢 Все рестораны (общий список)</option>
                         <option value="1">La Terrazza (Алматы)</option>
                         <option value="2">Чайхана NAVAT (Алматы)</option>
@@ -164,11 +168,11 @@
             <!-- Date Filter & Refresh for Admin -->
             <div class="flex items-center justify-between gap-2 text-xs">
                 <div class="flex gap-2">
-                    <button onclick="filterAdminDate('all', this)" class="admin-date-btn px-3 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-bold">Все даты</button>
-                    <button onclick="filterAdminDate('today', this)" class="admin-date-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300">Сегодня</button>
-                    <button onclick="filterAdminDate('tomorrow', this)" class="admin-date-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300">Завтра</button>
+                    <button onclick="filterAdminDate('all', this)" class="admin-date-btn px-3 py-1.5 rounded-lg bg-[#c5a880] text-[#0e1013] font-bold shadow-sm">Все даты</button>
+                    <button onclick="filterAdminDate('today', this)" class="admin-date-btn px-3 py-1.5 rounded-lg bg-[#15171d] text-[#8c93a0] border border-[#252933] hover:text-[#f3efe9]">Сегодня</button>
+                    <button onclick="filterAdminDate('tomorrow', this)" class="admin-date-btn px-3 py-1.5 rounded-lg bg-[#15171d] text-[#8c93a0] border border-[#252933] hover:text-[#f3efe9]">Завтра</button>
                 </div>
-                <button onclick="loadAdminBookings()" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-400 font-bold flex items-center gap-1 border border-slate-700 text-xs">
+                <button onclick="loadAdminBookings()" class="px-2.5 py-1.5 rounded-lg bg-[#15171d] hover:bg-[#1e212b] text-[#c5a880] font-medium flex items-center gap-1 border border-[#252933] text-xs transition-colors">
                     🔄 Обновить
                 </button>
             </div>
@@ -177,7 +181,7 @@
 
             <!-- Admin Bookings List -->
             <div id="adminBookingsList" class="space-y-3">
-                <div class="text-center py-8 text-slate-400 text-sm">Загрузка броней...</div>
+                <div class="text-center py-8 text-[#8c93a0] text-sm">Загрузка броней...</div>
             </div>
         </section>
 
@@ -185,31 +189,31 @@
 
     <!-- RESTAURANT DETAILS MODAL -->
     <div id="restaurantModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex flex-col justify-end">
-        <div class="bg-slate-900 border-t border-slate-800 rounded-t-3xl max-h-[92vh] flex flex-col overflow-hidden max-w-md mx-auto w-full">
+        <div class="bg-[#121419] border-t border-[#252933] rounded-t-3xl max-h-[92vh] flex flex-col overflow-hidden max-w-md mx-auto w-full">
             
             <!-- Modal Header / Cover -->
-            <div class="relative h-44 bg-slate-800 flex-shrink-0">
+            <div class="relative h-44 bg-[#181a20] flex-shrink-0">
                 <img id="modalCover" src="" class="w-full h-full object-cover" alt="Restaurant Cover">
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-black/40"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-[#121419] via-transparent to-black/50"></div>
                 
-                <button onclick="closeRestaurantModal()" class="absolute top-3 right-3 w-8 h-8 bg-black/60 rounded-full flex items-center justify-center text-white text-sm backdrop-blur-md">✕</button>
+                <button onclick="closeRestaurantModal()" class="absolute top-3 right-3 w-8 h-8 bg-black/60 hover:bg-black/80 rounded-full flex items-center justify-center text-stone-200 text-sm backdrop-blur-md transition-colors">✕</button>
 
                 <div class="absolute bottom-3 left-4 right-4">
-                    <span id="modalCuisineBadge" class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 bg-amber-500 text-slate-950 rounded-md">Итальянская</span>
-                    <h2 id="modalTitle" class="text-xl font-extrabold text-white mt-1">La Terrazza</h2>
-                    <p id="modalAddress" class="text-xs text-slate-300 flex items-center gap-1 mt-0.5">📍 ул. Сатпаева 29</p>
+                    <span id="modalCuisineBadge" class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 bg-[#c5a880]/20 text-[#dfcbb5] border border-[#c5a880]/30 rounded-md">Итальянская</span>
+                    <h2 id="modalTitle" class="text-xl font-serif font-bold text-[#f3efe9] mt-1">La Terrazza</h2>
+                    <p id="modalAddress" class="text-xs text-[#8c93a0] flex items-center gap-1 mt-0.5">📍 ул. Сатпаева 29</p>
                 </div>
             </div>
 
             <!-- Tabs Switcher inside Modal -->
-            <div class="flex border-b border-slate-800 bg-slate-900 px-4 pt-2">
-                <button id="modalTabBtn-book" onclick="switchModalTab('book')" class="flex-1 py-2.5 text-xs font-bold border-b-2 border-amber-500 text-amber-400 text-center transition-all">
+            <div class="flex border-b border-[#20232c] bg-[#121419] px-4 pt-2">
+                <button id="modalTabBtn-book" onclick="switchModalTab('book')" class="flex-1 py-2.5 text-xs font-bold border-b-2 border-[#c5a880] text-[#c5a880] text-center transition-all">
                     🪑 Забронировать стол
                 </button>
-                <button id="modalTabBtn-menu" onclick="switchModalTab('menu')" class="flex-1 py-2.5 text-xs font-bold border-b-2 border-transparent text-slate-400 text-center hover:text-slate-200 transition-all">
+                <button id="modalTabBtn-menu" onclick="switchModalTab('menu')" class="flex-1 py-2.5 text-xs font-bold border-b-2 border-transparent text-[#8c93a0] text-center hover:text-stone-200 transition-all">
                     📖 Меню заведения
                 </button>
-                <button id="modalTabBtn-about" onclick="switchModalTab('about')" class="flex-1 py-2.5 text-xs font-bold border-b-2 border-transparent text-slate-400 text-center hover:text-slate-200 transition-all">
+                <button id="modalTabBtn-about" onclick="switchModalTab('about')" class="flex-1 py-2.5 text-xs font-bold border-b-2 border-transparent text-[#8c93a0] text-center hover:text-stone-200 transition-all">
                     ℹ️ Инфо
                 </button>
             </div>
@@ -222,38 +226,60 @@
                     
                     <!-- Date Picker -->
                     <div>
-                        <label class="text-xs font-bold text-slate-300 block mb-1.5">1. Выберите дату</label>
+                        <label class="text-xs font-semibold text-stone-300 block mb-1.5">1. Выберите дату</label>
                         <div class="flex gap-2">
-                            <button type="button" onclick="selectDateQuick('today')" id="dateBtn-today" class="date-quick-btn flex-1 py-2 rounded-xl bg-amber-500 text-slate-950 text-xs font-bold transition-all">Сегодня</button>
-                            <button type="button" onclick="selectDateQuick('tomorrow')" id="dateBtn-tomorrow" class="date-quick-btn flex-1 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold transition-all">Завтра</button>
-                            <input type="date" id="bookingDateInput" onchange="onCustomDateChange(this.value)" class="flex-1 bg-slate-800 border border-slate-700 text-xs text-slate-200 rounded-xl px-2.5 py-2 outline-none">
+                            <button type="button" onclick="selectDateQuick('today')" id="dateBtn-today" class="date-quick-btn flex-1 py-2 rounded-xl bg-[#c5a880] text-[#0e1013] text-xs font-bold transition-all shadow-sm">Сегодня</button>
+                            <button type="button" onclick="selectDateQuick('tomorrow')" id="dateBtn-tomorrow" class="date-quick-btn flex-1 py-2 rounded-xl bg-[#181a20] text-[#8c93a0] border border-[#252933] text-xs font-medium transition-all hover:text-stone-200">Завтра</button>
+                            <input type="date" id="bookingDateInput" onchange="onCustomDateChange(this.value)" class="flex-1 bg-[#181a20] border border-[#252933] text-xs text-[#dfcbb5] rounded-xl px-2.5 py-2 outline-none focus:border-[#c5a880] cursor-pointer">
                         </div>
                     </div>
 
-                    <!-- Time Slots -->
+                    <!-- Time Selection (Full Day / Evening / Custom) -->
                     <div>
-                        <label class="text-xs font-bold text-slate-300 block mb-1.5">2. Выберите время</label>
-                        <div class="grid grid-cols-4 gap-2 text-xs" id="timeSlotsContainer">
-                            <button type="button" onclick="selectTime('18:00', this)" class="time-slot-btn py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium">18:00</button>
-                            <button type="button" onclick="selectTime('18:30', this)" class="time-slot-btn py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium">18:30</button>
-                            <button type="button" onclick="selectTime('19:00', this)" class="time-slot-btn py-2 rounded-xl bg-amber-500 text-slate-950 font-bold selected">19:00</button>
-                            <button type="button" onclick="selectTime('19:30', this)" class="time-slot-btn py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium">19:30</button>
-                            <button type="button" onclick="selectTime('20:00', this)" class="time-slot-btn py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium">20:00</button>
-                            <button type="button" onclick="selectTime('20:30', this)" class="time-slot-btn py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium">20:30</button>
-                            <button type="button" onclick="selectTime('21:00', this)" class="time-slot-btn py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium">21:00</button>
-                            <button type="button" onclick="selectTime('21:30', this)" class="time-slot-btn py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium">21:30</button>
+                        <div class="flex items-center justify-between mb-1.5">
+                            <label class="text-xs font-semibold text-stone-300">2. Время визита</label>
+                            <span class="text-xs font-serif font-bold text-[#dfcbb5]" id="selectedTimeDisplay">19:00</span>
+                        </div>
+
+                        <!-- Period Toggle (Day vs Evening vs Custom) -->
+                        <div class="flex p-1 bg-[#181a20] rounded-xl border border-[#252933] mb-2 text-xs">
+                            <button type="button" onclick="setTimePeriod('day')" id="periodBtn-day" 
+                                    class="period-tab-btn flex-1 py-1.5 rounded-lg text-[11px] font-medium transition-all text-[#8c93a0] hover:text-stone-200">
+                                ☀️ Обед (11:00 - 16:30)
+                            </button>
+                            <button type="button" onclick="setTimePeriod('evening')" id="periodBtn-evening" 
+                                    class="period-tab-btn flex-1 py-1.5 rounded-lg text-[11px] font-bold bg-[#c5a880] text-[#0e1013] transition-all shadow-sm">
+                                🌙 Ужин (17:00 - 23:00)
+                            </button>
+                            <button type="button" onclick="setTimePeriod('custom')" id="periodBtn-custom" 
+                                    class="period-tab-btn px-3 py-1.5 rounded-lg text-[11px] font-medium transition-all text-[#8c93a0] hover:text-stone-200">
+                                ⏱️ Своё
+                            </button>
+                        </div>
+
+                        <!-- Slots Grid -->
+                        <div id="timeSlotsContainer" class="grid grid-cols-4 gap-1.5 text-xs max-h-36 overflow-y-auto hide-scrollbar p-0.5">
+                            <!-- Injected dynamically via renderTimeSlots() -->
+                        </div>
+
+                        <!-- Custom Exact Time Input (Shown when 'custom' is active) -->
+                        <div id="customTimeWrapper" class="hidden mt-2 flex items-center justify-between bg-[#181a20] border border-[#252933] rounded-xl p-2.5">
+                            <span class="text-xs text-[#8c93a0]">Укажите любое точное время:</span>
+                            <input type="time" id="customTimeInput" onchange="onCustomTimeChange(this.value)" 
+                                   min="10:00" max="23:45" step="900"
+                                   class="bg-[#121419] border border-[#2d3240] text-xs text-[#dfcbb5] font-semibold rounded-lg px-3 py-1.5 outline-none focus:border-[#c5a880]">
                         </div>
                     </div>
 
                     <!-- Guests Count -->
                     <div>
-                        <label class="text-xs font-bold text-slate-300 block mb-1.5">3. Количество гостей</label>
-                        <div class="flex items-center justify-between bg-slate-800 border border-slate-700 rounded-xl p-2">
-                            <span class="text-xs text-slate-400 pl-2">Персон за столиком:</span>
+                        <label class="text-xs font-semibold text-stone-300 block mb-1.5">3. Количество гостей</label>
+                        <div class="flex items-center justify-between bg-[#181a20] border border-[#252933] rounded-xl p-2">
+                            <span class="text-xs text-[#8c93a0] pl-2">Персон за столиком:</span>
                             <div class="flex items-center gap-3">
-                                <button type="button" onclick="changeGuestCount(-1)" class="w-8 h-8 rounded-lg bg-slate-700 text-white font-bold flex items-center justify-center hover:bg-slate-600">-</button>
-                                <span id="guestsCountValue" class="text-base font-extrabold text-amber-400 w-6 text-center">2</span>
-                                <button type="button" onclick="changeGuestCount(1)" class="w-8 h-8 rounded-lg bg-slate-700 text-white font-bold flex items-center justify-center hover:bg-slate-600">+</button>
+                                <button type="button" onclick="changeGuestCount(-1)" class="w-8 h-8 rounded-lg bg-[#222631] hover:bg-[#2c3140] text-stone-200 font-bold flex items-center justify-center transition-colors">-</button>
+                                <span id="guestsCountValue" class="text-base font-serif font-bold text-[#dfcbb5] w-6 text-center">2</span>
+                                <button type="button" onclick="changeGuestCount(1)" class="w-8 h-8 rounded-lg bg-[#222631] hover:bg-[#2c3140] text-stone-200 font-bold flex items-center justify-center transition-colors">+</button>
                             </div>
                         </div>
                     </div>
@@ -261,79 +287,79 @@
                     <!-- Interactive Hall Scheme -->
                     <div>
                         <div class="flex items-center justify-between mb-1.5">
-                            <label class="text-xs font-bold text-slate-300">4. Выберите столик на схеме зала</label>
-                            <span class="text-[10px] text-amber-400">Нажмите на стол</span>
+                            <label class="text-xs font-semibold text-stone-300">4. Выберите столик на схеме зала</label>
+                            <span class="text-[10px] text-[#c5a880] font-medium">Нажмите на стол</span>
                         </div>
 
                         <!-- Legend -->
-                        <div class="flex items-center justify-center gap-4 text-[10px] text-slate-400 mb-2">
-                            <div class="flex items-center gap-1">
-                                <div class="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
+                        <div class="flex items-center justify-center gap-4 text-[10px] text-[#8c93a0] mb-2">
+                            <div class="flex items-center gap-1.5">
+                                <div class="w-2.5 h-2.5 rounded-full bg-emerald-500/70"></div>
                                 <span>Свободен</span>
                             </div>
-                            <div class="flex items-center gap-1">
-                                <div class="w-2.5 h-2.5 rounded-full bg-rose-500"></div>
+                            <div class="flex items-center gap-1.5">
+                                <div class="w-2.5 h-2.5 rounded-full bg-stone-600"></div>
                                 <span>Занят</span>
                             </div>
-                            <div class="flex items-center gap-1">
-                                <div class="w-2.5 h-2.5 rounded-full bg-blue-500"></div>
-                                <span>Выбран вами</span>
+                            <div class="flex items-center gap-1.5">
+                                <div class="w-2.5 h-2.5 rounded-full bg-[#c5a880]"></div>
+                                <span>Выбран</span>
                             </div>
                         </div>
 
                         <!-- Hall Grid Map Container -->
-                        <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 min-h-[240px] relative flex flex-col justify-between">
-                            <div class="text-[10px] text-slate-500 text-center uppercase tracking-wider font-semibold border-b border-slate-800 pb-1 mb-3">
+                        <div class="bg-[#0b0d10] border border-[#20232c] rounded-2xl p-4 min-h-[240px] relative flex flex-col justify-between shadow-inner">
+                            <div class="text-[10px] text-[#8c93a0]/80 text-center uppercase tracking-wider font-semibold border-b border-[#1c1f27] pb-1.5 mb-3">
                                 🪟 Панорамные окна / Вид на город
                             </div>
 
                             <div id="hallTablesGrid" class="grid grid-cols-3 gap-3 justify-items-center items-center py-2">
                                 <!-- Tables injected dynamically -->
-                                <div class="col-span-3 text-center text-xs text-slate-500">Загрузка столиков...</div>
+                                <div class="col-span-3 text-center text-xs text-[#8c93a0]">Загрузка столиков...</div>
                             </div>
 
-                            <div class="text-[10px] text-slate-500 text-center uppercase tracking-wider font-semibold border-t border-slate-800 pt-1 mt-3">
+                            <div class="text-[10px] text-[#8c93a0]/80 text-center uppercase tracking-wider font-semibold border-t border-[#1c1f27] pt-1.5 mt-3">
                                 🚪 Вход в заведение • Барная стойка
                             </div>
                         </div>
 
                         <!-- Selected Table Info Banner -->
-                        <div id="selectedTableBanner" class="mt-2 p-3 bg-blue-500/10 border border-blue-500/30 rounded-xl text-xs text-blue-300 flex items-center justify-between">
+                        <div id="selectedTableBanner" class="mt-2 p-3 bg-[#181a20] border border-[#252933] rounded-xl text-xs text-[#dfcbb5] flex items-center justify-between">
                             <div>
-                                <span class="font-bold text-white" id="selectedTableTitle">Столик не выбран</span>
-                                <p class="text-[10px] text-slate-400" id="selectedTableDesc">Нажмите на свободный зеленый столик выше</p>
+                                <span class="font-bold text-[#f3efe9]" id="selectedTableTitle">Столик не выбран</span>
+                                <p class="text-[10px] text-[#8c93a0]" id="selectedTableDesc">Нажмите на свободный столик выше</p>
                             </div>
                             <span class="text-lg">🪑</span>
                         </div>
                     </div>
 
                     <!-- Contact Details Form -->
-                    <div class="space-y-2 pt-1 border-t border-slate-800">
-                        <label class="text-xs font-bold text-slate-300 block">5. Контактные данные гостя</label>
+                    <div class="space-y-2 pt-2 border-t border-[#20232c]">
+                        <label class="text-xs font-semibold text-stone-300 block">5. Контактные данные гостя</label>
                         
                         <div>
                             <input type="text" id="guestNameInput" placeholder="Ваше имя" 
-                                   class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs text-white placeholder-slate-400 outline-none focus:border-amber-500">
+                                   class="w-full bg-[#181a20] border border-[#252933] rounded-xl p-2.5 text-xs text-[#f3efe9] placeholder-[#8c93a0] outline-none focus:border-[#c5a880] transition-colors">
                         </div>
 
                         <div>
                             <div class="relative">
-                                <span class="absolute left-3 top-2.5 text-xs text-slate-400">🇰🇿</span>
+                                <span class="absolute left-3 top-2.5 text-xs text-[#8c93a0]">🇰🇿</span>
                                 <input type="tel" id="guestPhoneInput" oninput="formatKZPhone(this)" placeholder="+7 (701) 000-00-00" 
-                                       class="w-full bg-slate-800 border border-slate-700 rounded-xl py-2.5 pl-9 pr-3 text-xs text-white placeholder-slate-400 outline-none focus:border-amber-500 font-mono">
+                                       class="w-full bg-[#181a20] border border-[#252933] rounded-xl py-2.5 pl-9 pr-3 text-xs text-[#f3efe9] placeholder-[#8c93a0] outline-none focus:border-[#c5a880] font-mono transition-colors">
                             </div>
-                            <span class="text-[10px] text-slate-400 mt-0.5 block pl-1">Ресторан перезвонит или напишет для подтверждения</span>
+                            <span class="text-[10px] text-[#8c93a0] mt-0.5 block pl-1">Ресторан перезвонит или напишет для подтверждения</span>
                         </div>
 
                         <div>
-                            <input type="text" id="guestWishesInput" placeholder="Пожелания (день рождения, детский стул, тихое место...)" 
-                                   class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs text-white placeholder-slate-400 outline-none focus:border-amber-500">
+                            <input type="text" id="guestWishesInput" placeholder="Пожелания (день рождения, тихий угол, детский стульчик...)" 
+                                   class="w-full bg-[#181a20] border border-[#252933] rounded-xl p-2.5 text-xs text-[#f3efe9] placeholder-[#8c93a0] outline-none focus:border-[#c5a880] transition-colors">
                         </div>
                     </div>
 
                     <!-- Submit Button -->
                     <button type="button" id="submitBookingBtn" onclick="submitBooking()" disabled 
-                            class="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 disabled:from-slate-800 disabled:to-slate-800 disabled:text-slate-500 text-slate-950 font-extrabold text-sm shadow-lg shadow-orange-500/20 transition-all opacity-50 cursor-not-allowed">
+                            class="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#c5a880] to-[#b3936a] disabled:from-[#1b1e26] disabled:to-[#1b1e26] disabled:text-[#8c93a0] text-[#0e1013] font-bold text-sm shadow-md transition-all opacity-50 cursor-not-allowed">
                         Подтвердить бронирование
                     </button>
 
@@ -351,28 +377,28 @@
 
                 <!-- 3. ABOUT SUB-VIEW -->
                 <div id="modalSubTab-about" class="hidden space-y-4 text-xs">
-                    <div class="bg-slate-800/60 rounded-xl p-3 space-y-2 border border-slate-700/60">
-                        <h4 class="font-bold text-amber-400">О заведении</h4>
-                        <p id="modalAboutDescription" class="text-slate-300 leading-relaxed"></p>
+                    <div class="bg-[#181a20] rounded-2xl p-3.5 space-y-2 border border-[#252933]">
+                        <h4 class="font-serif font-bold text-[#dfcbb5] text-sm">О заведении</h4>
+                        <p id="modalAboutDescription" class="text-[#c9c5bd] leading-relaxed text-xs"></p>
                     </div>
 
-                    <div class="bg-slate-800/60 rounded-xl p-3 space-y-2 border border-slate-700/60">
+                    <div class="bg-[#181a20] rounded-2xl p-3.5 space-y-2.5 border border-[#252933]">
                         <div class="flex items-center justify-between">
-                            <span class="text-slate-400">Режим работы:</span>
-                            <span id="modalAboutHours" class="font-bold text-white">11:00 - 00:00</span>
+                            <span class="text-[#8c93a0]">Режим работы:</span>
+                            <span id="modalAboutHours" class="font-semibold text-[#f3efe9]">11:00 - 00:00</span>
                         </div>
                         <div class="flex items-center justify-between">
-                            <span class="text-slate-400">Средний чек:</span>
-                            <span id="modalAboutCheck" class="font-bold text-amber-400">~8 000 ₸</span>
+                            <span class="text-[#8c93a0]">Средний чек:</span>
+                            <span id="modalAboutCheck" class="font-serif font-bold text-[#dfcbb5]">~8 000 ₸</span>
                         </div>
                         <div class="flex items-center justify-between">
-                            <span class="text-slate-400">Телефон:</span>
-                            <a id="modalAboutPhone" href="" class="font-bold text-blue-400 underline">+7 (727) ...</a>
+                            <span class="text-[#8c93a0]">Телефон:</span>
+                            <a id="modalAboutPhone" href="" class="font-medium text-[#c5a880] hover:underline">+7 (727) ...</a>
                         </div>
                     </div>
 
                     <div class="pt-2">
-                        <a id="modal2GisBtn" href="https://2gis.kz" target="_blank" class="block text-center py-2.5 rounded-xl bg-emerald-600/20 border border-emerald-500/40 text-emerald-300 font-bold hover:bg-emerald-600/30 transition-all">
+                        <a id="modal2GisBtn" href="https://2gis.kz" target="_blank" class="block text-center py-3 rounded-xl bg-[#1c1f27] hover:bg-[#252933] border border-[#c5a880]/30 text-[#dfcbb5] font-semibold transition-all">
                             🗺️ Открыть адрес в 2GIS / Карты
                         </a>
                     </div>
@@ -384,42 +410,42 @@
 
     <!-- SUCCESS BOOKING MODAL -->
     <div id="successModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-700 rounded-3xl p-6 max-w-sm w-full text-center space-y-4 shadow-2xl">
-            <div class="w-16 h-16 bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 rounded-full flex items-center justify-center text-3xl mx-auto shadow-lg shadow-emerald-500/20">
+        <div class="bg-[#15171d] border border-[#252933] rounded-3xl p-6 max-w-sm w-full text-center space-y-4 shadow-2xl">
+            <div class="w-16 h-16 bg-[#c5a880]/15 text-[#dfcbb5] border border-[#c5a880]/30 rounded-full flex items-center justify-center text-3xl mx-auto shadow-lg shadow-[#c5a880]/10">
                 ✓
             </div>
             
             <div>
-                <h3 class="text-lg font-extrabold text-white">Заявка на бронь принята!</h3>
-                <p class="text-xs text-slate-300 mt-1" id="successModalSubtext">Администратор заведения получил вашу заявку.</p>
+                <h3 class="text-lg font-serif font-bold text-[#f3efe9]">Заявка на бронь принята!</h3>
+                <p class="text-xs text-[#8c93a0] mt-1" id="successModalSubtext">Администратор заведения получил вашу заявку.</p>
             </div>
 
-            <div class="bg-slate-800/80 rounded-2xl p-3 text-left text-xs space-y-1.5 border border-slate-700/60" id="successBookingDetails">
+            <div class="bg-[#101217] rounded-2xl p-3.5 text-left text-xs space-y-2 border border-[#20232c]" id="successBookingDetails">
                 <!-- Injected via JS -->
             </div>
 
-            <button onclick="closeSuccessModal()" class="w-full py-3 rounded-xl bg-amber-500 text-slate-950 font-extrabold text-xs shadow-md">
+            <button onclick="closeSuccessModal()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#c5a880] to-[#b3936a] text-[#0e1013] font-bold text-xs shadow-md hover:brightness-105 transition-all">
                 Отлично, понятно
             </button>
         </div>
     </div>
 
     <!-- Bottom Mobile Navigation Bar -->
-    <nav class="fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 backdrop-blur-md border-t border-slate-800 py-2 px-6">
+    <nav class="fixed bottom-0 left-0 right-0 z-40 bg-[#0e1013]/95 backdrop-blur-md border-t border-[#20232c] py-2.5 px-6">
         <div class="max-w-md mx-auto flex justify-around items-center">
             
-            <button onclick="switchTab('restaurants')" id="navBtn-restaurants" class="nav-btn flex flex-col items-center gap-1 text-amber-400 font-bold text-[11px] transition-colors">
+            <button onclick="switchTab('restaurants')" id="navBtn-restaurants" class="nav-btn flex flex-col items-center gap-1 text-[#c5a880] font-bold text-[11px] transition-colors">
                 <span class="text-xl">🏠</span>
                 <span>Рестораны</span>
             </button>
 
-            <button onclick="switchTab('my-bookings')" id="navBtn-my-bookings" class="nav-btn flex flex-col items-center gap-1 text-slate-400 font-medium text-[11px] hover:text-slate-200 transition-colors relative">
+            <button onclick="switchTab('my-bookings')" id="navBtn-my-bookings" class="nav-btn flex flex-col items-center gap-1 text-[#8c93a0] font-medium text-[11px] hover:text-[#f3efe9] transition-colors relative">
                 <span class="text-xl">📋</span>
                 <span>Мои брони</span>
-                <span id="myBookingsBadge" class="hidden absolute top-0 right-1 w-2 h-2 rounded-full bg-amber-500"></span>
+                <span id="myBookingsBadge" class="hidden absolute top-0 right-1 w-2 h-2 rounded-full bg-[#c5a880]"></span>
             </button>
 
-            <button onclick="switchTab('admin')" id="navBtn-admin" class="nav-btn flex flex-col items-center gap-1 text-slate-400 font-medium text-[11px] hover:text-slate-200 transition-colors">
+            <button onclick="switchTab('admin')" id="navBtn-admin" class="nav-btn flex flex-col items-center gap-1 text-[#8c93a0] font-medium text-[11px] hover:text-[#f3efe9] transition-colors">
                 <span class="text-xl">👑</span>
                 <span>Для ресторана</span>
             </button>
@@ -453,10 +479,22 @@
         let selectedRestaurant = null;
         let selectedDate = getTodayDateString();
         let selectedTimeSlot = "19:00";
+        let currentTimePeriod = 'evening'; // 'day' | 'evening' | 'custom'
         let currentGuestCount = 2;
         let currentTables = [];
         let selectedTable = null;
         let restaurantMenu = [];
+
+        // All-day restaurant time slots
+        const dayTimeSlots = [
+            '11:00', '11:30', '12:00', '12:30', '13:00', '13:30',
+            '14:00', '14:30', '15:00', '15:30', '16:00', '16:30'
+        ];
+
+        const eveningTimeSlots = [
+            '17:00', '17:30', '18:00', '18:30', '19:00', '19:30',
+            '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00'
+        ];
 
         function getTodayDateString() {
             const d = new Date();
@@ -484,6 +522,8 @@
             document.getElementById('bookingDateInput').value = selectedDate;
             document.getElementById('bookingDateInput').min = selectedDate;
 
+            renderTimeSlots();
+            updateTimeDisplay();
             loadRestaurants();
 
             if (tabParam === 'my_bookings') {
@@ -711,7 +751,7 @@
 
             if (filtered.length === 0) {
                 listContainer.innerHTML = `
-                    <div class="text-center py-10 text-slate-400 space-y-2">
+                    <div class="text-center py-12 text-[#8c93a0] space-y-2">
                         <span class="text-3xl">🔍</span>
                         <p class="text-xs">Рестораны по вашему запросу не найдены</p>
                     </div>
@@ -720,35 +760,35 @@
             }
 
             listContainer.innerHTML = filtered.map(r => `
-                <div class="bg-slate-800/90 border border-slate-700/80 rounded-2xl overflow-hidden shadow-lg hover:border-amber-500/50 transition-all flex flex-col">
-                    <div class="relative h-36 bg-slate-700 cursor-pointer" onclick="openRestaurantModal(${r.id}, 'book')">
+                <div class="bg-[#15171d] border border-[#252933] rounded-2xl overflow-hidden shadow-sm hover:border-[#c5a880]/50 transition-all flex flex-col">
+                    <div class="relative h-36 bg-[#181a20] cursor-pointer" onclick="openRestaurantModal(${r.id}, 'book')">
                         <img src="${r.cover_image}" alt="${r.name}" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-black/30"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#15171d] via-transparent to-black/30"></div>
                         
-                        <div class="absolute top-2.5 right-2.5 bg-slate-900/80 backdrop-blur-md px-2 py-1 rounded-lg text-amber-400 text-xs font-bold flex items-center gap-1 border border-slate-700">
+                        <div class="absolute top-2.5 right-2.5 bg-[#0e1013]/80 backdrop-blur-md px-2 py-1 rounded-lg text-[#dfcbb5] text-xs font-semibold flex items-center gap-1 border border-[#252933]">
                             ⭐ ${r.rating}
                         </div>
 
                         <div class="absolute bottom-2.5 left-3">
-                            <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 bg-amber-500/90 text-slate-950 rounded-md">
+                            <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 bg-[#c5a880] text-[#0e1013] rounded-md">
                                 ${r.city}
                             </span>
-                            <h3 class="text-base font-extrabold text-white mt-1 leading-tight">${r.name}</h3>
+                            <h3 class="text-base font-serif font-bold text-[#f3efe9] mt-1 leading-tight">${r.name}</h3>
                         </div>
                     </div>
 
                     <div class="p-3.5 flex flex-col justify-between flex-1 space-y-3">
                         <div class="space-y-1">
-                            <p class="text-xs text-amber-300/90 font-medium">${r.cuisine}</p>
-                            <p class="text-[11px] text-slate-400 flex items-center gap-1">📍 ${r.address}</p>
-                            <p class="text-[11px] text-slate-300">Средний чек: <b class="text-amber-400">~${formatPrice(r.avg_check)}</b></p>
+                            <p class="text-xs text-[#c5a880] font-medium">${r.cuisine}</p>
+                            <p class="text-[11px] text-[#8c93a0] flex items-center gap-1">📍 ${r.address}</p>
+                            <p class="text-[11px] text-[#8c93a0]">Средний чек: <b class="text-[#dfcbb5] font-semibold">~${formatPrice(r.avg_check)}</b></p>
                         </div>
 
                         <div class="flex gap-2 pt-1">
-                            <button onclick="openRestaurantModal(${r.id}, 'menu')" class="flex-1 py-2 rounded-xl bg-slate-700/80 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-600/60 transition-all">
+                            <button onclick="openRestaurantModal(${r.id}, 'menu')" class="flex-1 py-2.5 rounded-xl bg-[#1c1f27] hover:bg-[#252933] text-[#dfcbb5] text-xs font-semibold border border-[#252933] transition-all">
                                 📖 Меню
                             </button>
-                            <button onclick="openRestaurantModal(${r.id}, 'book')" class="flex-[1.5] py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 text-xs font-extrabold shadow-md shadow-orange-500/20 hover:brightness-110 transition-all">
+                            <button onclick="openRestaurantModal(${r.id}, 'book')" class="flex-[1.5] py-2.5 rounded-xl bg-gradient-to-r from-[#c5a880] to-[#b3936a] text-[#0e1013] text-xs font-bold shadow-sm hover:brightness-105 transition-all">
                                 🪑 Бронь стола
                             </button>
                         </div>
@@ -788,11 +828,11 @@
             currentCuisine = cuisine;
             document.querySelectorAll('.cuisine-btn').forEach(btn => {
                 if (btn.innerText.includes(cuisine)) {
-                    btn.classList.add('active', 'bg-amber-500', 'text-slate-950', 'font-semibold');
-                    btn.classList.remove('bg-slate-800', 'text-slate-300');
+                    btn.classList.add('active', 'bg-[#c5a880]', 'text-[#0e1013]', 'font-semibold');
+                    btn.classList.remove('bg-[#15171d]', 'text-[#8c93a0]');
                 } else {
-                    btn.classList.remove('active', 'bg-amber-500', 'text-slate-950', 'font-semibold');
-                    btn.classList.add('bg-slate-800', 'text-slate-300');
+                    btn.classList.remove('active', 'bg-[#c5a880]', 'text-[#0e1013]', 'font-semibold');
+                    btn.classList.add('bg-[#15171d]', 'text-[#8c93a0]');
                 }
             });
             renderRestaurants();
@@ -807,14 +847,14 @@
             document.getElementById('tab-admin').classList.add('hidden');
 
             document.querySelectorAll('.nav-btn').forEach(b => {
-                b.classList.remove('text-amber-400', 'font-bold');
-                b.classList.add('text-slate-400', 'font-medium');
+                b.classList.remove('text-[#c5a880]', 'font-bold');
+                b.classList.add('text-[#8c93a0]', 'font-medium');
             });
 
             const activeBtn = document.getElementById(`navBtn-${tabId}`);
             if (activeBtn) {
-                activeBtn.classList.remove('text-slate-400', 'font-medium');
-                activeBtn.classList.add('text-amber-400', 'font-bold');
+                activeBtn.classList.remove('text-[#8c93a0]', 'font-medium');
+                activeBtn.classList.add('text-[#c5a880]', 'font-bold');
             }
 
             document.getElementById(`tab-${tabId}`).classList.remove('hidden');
@@ -865,6 +905,10 @@
 
             document.getElementById('restaurantModal').classList.remove('hidden');
 
+            // Initialize time slots according to active period
+            renderTimeSlots();
+            updateTimeDisplay();
+
             switchModalTab(defaultSubTab);
             loadTablesForCurrentSlot();
             loadRestaurantMenu(restaurantId);
@@ -876,31 +920,45 @@
 
         function switchModalTab(subTab) {
             ['book', 'menu', 'about'].forEach(t => {
-                document.getElementById(`modalSubTab-${t}`).classList.add('hidden');
-                document.getElementById(`modalTabBtn-${t}`).classList.remove('border-amber-500', 'text-amber-400');
-                document.getElementById(`modalTabBtn-${t}`).classList.add('border-transparent', 'text-slate-400');
+                const subEl = document.getElementById(`modalSubTab-${t}`);
+                const btnEl = document.getElementById(`modalTabBtn-${t}`);
+                if (subEl) subEl.classList.add('hidden');
+                if (btnEl) {
+                    btnEl.classList.remove('border-[#c5a880]', 'text-[#c5a880]');
+                    btnEl.classList.add('border-transparent', 'text-[#8c93a0]');
+                }
             });
 
-            document.getElementById(`modalSubTab-${subTab}`).classList.remove('hidden');
-            document.getElementById(`modalTabBtn-${subTab}`).classList.add('border-amber-500', 'text-amber-400');
-            document.getElementById(`modalTabBtn-${subTab}`).classList.remove('border-transparent', 'text-slate-400');
+            const activeSub = document.getElementById(`modalSubTab-${subTab}`);
+            const activeBtn = document.getElementById(`modalTabBtn-${subTab}`);
+            if (activeSub) activeSub.classList.remove('hidden');
+            if (activeBtn) {
+                activeBtn.classList.add('border-[#c5a880]', 'text-[#c5a880]');
+                activeBtn.classList.remove('border-transparent', 'text-[#8c93a0]');
+            }
         }
 
         // Quick date pickers
         function selectDateQuick(type) {
             document.querySelectorAll('.date-quick-btn').forEach(b => {
-                b.classList.remove('bg-amber-500', 'text-slate-950');
-                b.classList.add('bg-slate-800', 'text-slate-300');
+                b.classList.remove('bg-[#c5a880]', 'text-[#0e1013]', 'font-bold');
+                b.classList.add('bg-[#181a20]', 'text-[#8c93a0]');
             });
 
             if (type === 'today') {
                 selectedDate = getTodayDateString();
-                document.getElementById('dateBtn-today').classList.add('bg-amber-500', 'text-slate-950');
-                document.getElementById('dateBtn-today').classList.remove('bg-slate-800', 'text-slate-300');
+                const btn = document.getElementById('dateBtn-today');
+                if (btn) {
+                    btn.classList.add('bg-[#c5a880]', 'text-[#0e1013]', 'font-bold');
+                    btn.classList.remove('bg-[#181a20]', 'text-[#8c93a0]');
+                }
             } else if (type === 'tomorrow') {
                 selectedDate = getTomorrowDateString();
-                document.getElementById('dateBtn-tomorrow').classList.add('bg-amber-500', 'text-slate-950');
-                document.getElementById('dateBtn-tomorrow').classList.remove('bg-slate-800', 'text-slate-300');
+                const btn = document.getElementById('dateBtn-tomorrow');
+                if (btn) {
+                    btn.classList.add('bg-[#c5a880]', 'text-[#0e1013]', 'font-bold');
+                    btn.classList.remove('bg-[#181a20]', 'text-[#8c93a0]');
+                }
             }
             document.getElementById('bookingDateInput').value = selectedDate;
             loadTablesForCurrentSlot();
@@ -910,34 +968,105 @@
             if (!val) return;
             selectedDate = val;
             document.querySelectorAll('.date-quick-btn').forEach(b => {
-                b.classList.remove('bg-amber-500', 'text-slate-950');
-                b.classList.add('bg-slate-800', 'text-slate-300');
+                b.classList.remove('bg-[#c5a880]', 'text-[#0e1013]', 'font-bold');
+                b.classList.add('bg-[#181a20]', 'text-[#8c93a0]');
             });
             loadTablesForCurrentSlot();
         }
 
+        // --- Time Period Selection Logic (Day / Evening / Custom) ---
+        function setTimePeriod(period) {
+            currentTimePeriod = period;
+
+            const tabs = [
+                { id: 'periodBtn-day', key: 'day' },
+                { id: 'periodBtn-evening', key: 'evening' },
+                { id: 'periodBtn-custom', key: 'custom' }
+            ];
+
+            tabs.forEach(t => {
+                const btn = document.getElementById(t.id);
+                if (!btn) return;
+                if (t.key === period) {
+                    btn.className = "period-tab-btn flex-1 py-1.5 rounded-lg text-[11px] font-bold bg-[#c5a880] text-[#0e1013] transition-all shadow-sm";
+                } else {
+                    btn.className = "period-tab-btn flex-1 py-1.5 rounded-lg text-[11px] font-medium transition-all text-[#8c93a0] hover:text-[#f3efe9]";
+                }
+            });
+
+            const slotsContainer = document.getElementById('timeSlotsContainer');
+            const customWrapper = document.getElementById('customTimeWrapper');
+
+            if (period === 'custom') {
+                if (slotsContainer) slotsContainer.classList.add('hidden');
+                if (customWrapper) customWrapper.classList.remove('hidden');
+                const customInput = document.getElementById('customTimeInput');
+                if (customInput && !customInput.value) {
+                    customInput.value = selectedTimeSlot || "19:00";
+                }
+                if (customInput) onCustomTimeChange(customInput.value);
+            } else {
+                if (slotsContainer) slotsContainer.classList.remove('hidden');
+                if (customWrapper) customWrapper.classList.add('hidden');
+
+                const list = period === 'day' ? dayTimeSlots : eveningTimeSlots;
+                if (!list.includes(selectedTimeSlot)) {
+                    selectedTimeSlot = period === 'day' ? '13:00' : '19:00';
+                }
+                renderTimeSlots();
+                updateTimeDisplay();
+                loadTablesForCurrentSlot();
+            }
+        }
+
+        function renderTimeSlots() {
+            const container = document.getElementById('timeSlotsContainer');
+            if (!container) return;
+            const slots = currentTimePeriod === 'day' ? dayTimeSlots : eveningTimeSlots;
+
+            container.innerHTML = slots.map(timeStr => {
+                const isSelected = selectedTimeSlot === timeStr;
+                const activeClass = isSelected
+                    ? 'bg-[#c5a880] text-[#0e1013] font-bold shadow-sm'
+                    : 'bg-[#181a20] text-[#c9c5bd] border border-[#252933] hover:border-[#c5a880]/60 hover:text-[#f3efe9]';
+                return `
+                    <button type="button" onclick="selectTime('${timeStr}', this)" 
+                            class="time-slot-btn py-2 px-1 rounded-xl text-center text-xs transition-all ${activeClass}">
+                        ${timeStr}
+                    </button>
+                `;
+            }).join('');
+        }
+
         function selectTime(timeStr, btn) {
             selectedTimeSlot = timeStr;
-            document.querySelectorAll('.time-slot-btn').forEach(b => {
-                b.classList.remove('bg-amber-500', 'text-slate-950', 'font-bold');
-                b.classList.add('bg-slate-800', 'text-slate-200');
-            });
-            btn.classList.add('bg-amber-500', 'text-slate-950', 'font-bold');
-            btn.classList.remove('bg-slate-800', 'text-slate-200');
+            updateTimeDisplay();
+            renderTimeSlots();
             loadTablesForCurrentSlot();
+        }
+
+        function onCustomTimeChange(val) {
+            if (!val) return;
+            selectedTimeSlot = val;
+            updateTimeDisplay();
+            loadTablesForCurrentSlot();
+        }
+
+        function updateTimeDisplay() {
+            const el = document.getElementById('selectedTimeDisplay');
+            if (el) el.innerText = selectedTimeSlot;
         }
 
         function changeGuestCount(delta) {
             currentGuestCount = Math.max(1, Math.min(12, currentGuestCount + delta));
             document.getElementById('guestsCountValue').innerText = currentGuestCount;
-            // Highlight matching tables if any
         }
 
         // --- Interactive Tables Scheme ---
         async function loadTablesForCurrentSlot() {
             if (!selectedRestaurant) return;
             const container = document.getElementById('hallTablesGrid');
-            container.innerHTML = '<div class="col-span-3 text-center text-xs text-slate-400 py-4 animate-pulse">Обновление схемы зала...</div>';
+            container.innerHTML = '<div class="col-span-3 text-center text-xs text-[#8c93a0] py-4 animate-pulse">Обновление схемы зала...</div>';
 
             const data = await apiFetch(`/api/restaurants/${selectedRestaurant.id}/tables?date=${selectedDate}&time=${selectedTimeSlot}`);
             
@@ -988,10 +1117,10 @@
                 const card = document.createElement('div');
                 card.className = `table-node w-24 h-20 rounded-2xl flex flex-col items-center justify-center p-1.5 cursor-pointer relative border transition-all ${
                     isBusy 
-                        ? 'busy bg-rose-500/10 border-rose-500/40 text-rose-300' 
+                        ? 'busy bg-[#181a20] border-[#252933] text-[#5e6677]' 
                         : isSelected 
-                            ? 'selected bg-blue-600 text-white border-blue-400' 
-                            : 'bg-emerald-500/15 border-emerald-500/50 text-emerald-300 hover:bg-emerald-500/25'
+                            ? 'selected bg-[#c5a880] text-[#0e1013] border-[#e0cbb2] shadow-lg shadow-[#c5a880]/20' 
+                            : 'bg-emerald-950/30 border-emerald-700/50 text-emerald-300 hover:bg-emerald-900/40'
                 }`;
 
                 let zoneIcon = "🍽️";
@@ -1006,7 +1135,7 @@
                     </div>
                     <span class="text-[10px] font-medium opacity-80 mt-0.5">${pluralizeSeats(t.seats)}</span>
                     <span class="text-[9px] mt-0.5 px-1.5 py-0.2 rounded font-bold ${
-                        isBusy ? 'bg-rose-500/30 text-rose-200' : isSelected ? 'bg-white/20 text-white' : 'bg-emerald-500/30 text-emerald-200'
+                        isBusy ? 'bg-stone-800 text-[#8c93a0]' : isSelected ? 'bg-[#0e1013]/25 text-[#0e1013]' : 'bg-emerald-900/60 text-emerald-200'
                     }">${isBusy ? 'Занят' : isSelected ? 'Выбран' : 'Свободен'}</span>
                 `;
 
@@ -1031,15 +1160,13 @@
             const desc = document.getElementById('selectedTableDesc');
 
             if (selectedTable) {
-                banner.classList.remove('bg-blue-500/10', 'border-blue-500/30', 'text-blue-300');
-                banner.classList.add('bg-emerald-500/15', 'border-emerald-500/50', 'text-emerald-300');
+                banner.className = "mt-2 p-3 bg-[#181a20] border border-[#c5a880]/50 rounded-xl text-xs text-[#dfcbb5] flex items-center justify-between";
                 title.innerText = `Стол №${selectedTable.table_number} (${selectedTable.zone_type || 'Зал'})`;
                 desc.innerText = `Вместимость: до ${selectedTable.seats} человек • ${selectedTable.description || 'Отличный выбор'}`;
             } else {
-                banner.classList.add('bg-blue-500/10', 'border-blue-500/30', 'text-blue-300');
-                banner.classList.remove('bg-emerald-500/15', 'border-emerald-500/50', 'text-emerald-300');
+                banner.className = "mt-2 p-3 bg-[#181a20] border border-[#252933] rounded-xl text-xs text-[#8c93a0] flex items-center justify-between";
                 title.innerText = `Столик не выбран`;
-                desc.innerText = `Нажмите на свободный зеленый столик выше`;
+                desc.innerText = `Нажмите на свободный столик выше`;
             }
         }
 
@@ -1088,12 +1215,12 @@
 
             if (isValid) {
                 btn.disabled = false;
-                btn.classList.remove('opacity-50', 'cursor-not-allowed', 'from-slate-800', 'to-slate-800', 'text-slate-500');
-                btn.classList.add('from-amber-500', 'to-orange-500', 'text-slate-950');
+                btn.classList.remove('opacity-50', 'cursor-not-allowed', 'from-[#1b1e26]', 'to-[#1b1e26]', 'text-[#8c93a0]');
+                btn.classList.add('from-[#c5a880]', 'to-[#b3936a]', 'text-[#0e1013]');
             } else {
                 btn.disabled = true;
-                btn.classList.add('opacity-50', 'cursor-not-allowed', 'from-slate-800', 'to-slate-800', 'text-slate-500');
-                btn.classList.remove('from-amber-500', 'to-orange-500', 'text-slate-950');
+                btn.classList.add('opacity-50', 'cursor-not-allowed', 'from-[#1b1e26]', 'to-[#1b1e26]', 'text-[#8c93a0]');
+                btn.classList.remove('from-[#c5a880]', 'to-[#b3936a]', 'text-[#0e1013]');
             }
         }
 
@@ -1153,6 +1280,7 @@
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerText = "Подтвердить бронирование";
+            }
             closeRestaurantModal();
             showSuccessModal(bookingPayload, bookingPayload.id);
         }
@@ -1160,29 +1288,29 @@
         function showSuccessModal(payload, bookingId) {
             const details = document.getElementById('successBookingDetails');
             details.innerHTML = `
-                <div class="flex justify-between border-b border-slate-700/60 pb-1">
-                    <span class="text-slate-400">Номер брони:</span>
-                    <span class="font-bold text-amber-400">#${bookingId}</span>
+                <div class="flex justify-between border-b border-[#20232c] pb-1.5">
+                    <span class="text-[#8c93a0]">Номер брони:</span>
+                    <span class="font-serif font-bold text-[#dfcbb5]">#${bookingId}</span>
                 </div>
-                <div class="flex justify-between border-b border-slate-700/60 py-1">
-                    <span class="text-slate-400">Ресторан:</span>
-                    <span class="font-bold text-white">${selectedRestaurant.name}</span>
+                <div class="flex justify-between border-b border-[#20232c] py-1.5">
+                    <span class="text-[#8c93a0]">Ресторан:</span>
+                    <span class="font-bold text-[#f3efe9]">${selectedRestaurant.name}</span>
                 </div>
-                <div class="flex justify-between border-b border-slate-700/60 py-1">
-                    <span class="text-slate-400">Дата и время:</span>
-                    <span class="font-bold text-white">${payload.booking_date}, ${payload.booking_time}</span>
+                <div class="flex justify-between border-b border-[#20232c] py-1.5">
+                    <span class="text-[#8c93a0]">Дата и время:</span>
+                    <span class="font-bold text-[#dfcbb5]">${payload.booking_date}, ${payload.booking_time}</span>
                 </div>
-                <div class="flex justify-between border-b border-slate-700/60 py-1">
-                    <span class="text-slate-400">Столик:</span>
+                <div class="flex justify-between border-b border-[#20232c] py-1.5">
+                    <span class="text-[#8c93a0]">Столик:</span>
                     <span class="font-bold text-emerald-400">№${payload.table_number} (${selectedTable.zone_type || 'Зал'})</span>
                 </div>
-                <div class="flex justify-between border-b border-slate-700/60 py-1">
-                    <span class="text-slate-400">Гостей:</span>
-                    <span class="font-bold text-white">${payload.guests_count} чел.</span>
+                <div class="flex justify-between border-b border-[#20232c] py-1.5">
+                    <span class="text-[#8c93a0]">Гостей:</span>
+                    <span class="font-bold text-[#f3efe9]">${payload.guests_count} чел.</span>
                 </div>
-                <div class="flex justify-between pt-1">
-                    <span class="text-slate-400">Гость:</span>
-                    <span class="font-bold text-white">${payload.guest_name}</span>
+                <div class="flex justify-between pt-1.5">
+                    <span class="text-[#8c93a0]">Гость:</span>
+                    <span class="font-bold text-[#f3efe9]">${payload.guest_name}</span>
                 </div>
             `;
             document.getElementById('successModal').classList.remove('hidden');
@@ -1216,7 +1344,7 @@
         function renderMenuCategories() {
             const catBar = document.getElementById('menuCategoriesBar');
             catBar.innerHTML = restaurantMenu.map((cat, idx) => `
-                <button onclick="renderMenuItems(${idx})" class="menu-cat-btn px-3 py-1.5 rounded-full ${idx === 0 ? 'bg-amber-500 text-slate-950 font-bold' : 'bg-slate-800 text-slate-300'} whitespace-nowrap transition-all">
+                <button onclick="renderMenuItems(${idx})" class="menu-cat-btn px-3 py-1.5 rounded-full ${idx === 0 ? 'bg-[#c5a880] text-[#0e1013] font-bold shadow-sm' : 'bg-[#181a20] text-[#8c93a0] border border-[#252933]'} whitespace-nowrap transition-all">
                     ${cat.icon || '🍽️'} ${cat.name}
                 </button>
             `).join('');
@@ -1227,31 +1355,31 @@
         function renderMenuItems(catIndex) {
             document.querySelectorAll('.menu-cat-btn').forEach((b, idx) => {
                 if (idx === catIndex) {
-                    b.classList.add('bg-amber-500', 'text-slate-950', 'font-bold');
-                    b.classList.remove('bg-slate-800', 'text-slate-300');
+                    b.classList.add('bg-[#c5a880]', 'text-[#0e1013]', 'font-bold', 'shadow-sm');
+                    b.classList.remove('bg-[#181a20]', 'text-[#8c93a0]', 'border', 'border-[#252933]');
                 } else {
-                    b.classList.remove('bg-amber-500', 'text-slate-950', 'font-bold');
-                    b.classList.add('bg-slate-800', 'text-slate-300');
+                    b.classList.remove('bg-[#c5a880]', 'text-[#0e1013]', 'font-bold', 'shadow-sm');
+                    b.classList.add('bg-[#181a20]', 'text-[#8c93a0]', 'border', 'border-[#252933]');
                 }
             });
 
             const list = document.getElementById('menuDishesList');
             const category = restaurantMenu[catIndex];
             if (!category || !category.items || category.items.length === 0) {
-                list.innerHTML = '<div class="text-center py-6 text-slate-400 text-xs">В данной категории нет блюд</div>';
+                list.innerHTML = '<div class="text-center py-6 text-[#8c93a0] text-xs">В данной категории нет блюд</div>';
                 return;
             }
 
             list.innerHTML = category.items.map(dish => `
-                <div class="bg-slate-800/80 border border-slate-700/60 rounded-xl p-2.5 flex gap-3 items-center">
-                    <img src="${dish.image_url}" alt="${dish.title}" class="w-16 h-16 rounded-lg object-cover flex-shrink-0 bg-slate-700">
+                <div class="bg-[#15171d] border border-[#252933] rounded-xl p-2.5 flex gap-3 items-center shadow-sm">
+                    <img src="${dish.image_url}" alt="${dish.title}" class="w-16 h-16 rounded-xl object-cover flex-shrink-0 bg-[#1e212b]">
                     <div class="flex-1 min-w-0">
                         <div class="flex justify-between items-start gap-1">
-                            <h4 class="text-xs font-bold text-white truncate">${dish.title}</h4>
-                            <span class="text-xs font-extrabold text-amber-400 whitespace-nowrap">${formatPrice(dish.price)}</span>
+                            <h4 class="text-xs font-serif font-bold text-[#f3efe9] truncate">${dish.title}</h4>
+                            <span class="text-xs font-serif font-bold text-[#dfcbb5] whitespace-nowrap">${formatPrice(dish.price)}</span>
                         </div>
-                        <p class="text-[10px] text-slate-400 line-clamp-2 mt-0.5">${dish.description || ''}</p>
-                        <span class="text-[9px] text-slate-500 mt-1 inline-block">${dish.weight || ''}</span>
+                        <p class="text-[10px] text-[#8c93a0] line-clamp-2 mt-0.5">${dish.description || ''}</p>
+                        <span class="text-[9px] text-[#8c93a0]/80 mt-1 inline-block">${dish.weight || ''}</span>
                     </div>
                 </div>
             `).join('');
@@ -1261,7 +1389,7 @@
         async function loadMyBookings(silent = false) {
             const list = document.getElementById('myBookingsList');
             if (!silent) {
-                list.innerHTML = '<div class="text-center py-8 text-slate-400 text-xs animate-pulse">Загрузка ваших бронирований...</div>';
+                list.innerHTML = '<div class="text-center py-8 text-[#8c93a0] text-xs animate-pulse">Загрузка ваших бронирований...</div>';
             }
 
             // 1. Get from localStorage
@@ -1295,11 +1423,11 @@
 
             if (!bookings || bookings.length === 0) {
                 list.innerHTML = `
-                    <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-6 text-center space-y-3">
+                    <div class="bg-[#15171d] border border-[#252933] rounded-2xl p-6 text-center space-y-3">
                         <span class="text-3xl">🍽️</span>
-                        <h3 class="text-xs font-bold text-white">У вас пока нет активных броней</h3>
-                        <p class="text-[11px] text-slate-400">Выберите ресторан в каталоге и забронируйте любимый столик за пару секунд!</p>
-                        <button onclick="switchTab('restaurants')" class="px-4 py-2 bg-amber-500 text-slate-950 font-bold rounded-xl text-xs">
+                        <h3 class="text-xs font-serif font-bold text-[#f3efe9]">У вас пока нет активных броней</h3>
+                        <p class="text-[11px] text-[#8c93a0]">Выберите ресторан в каталоге и забронируйте любимый столик за пару секунд!</p>
+                        <button onclick="switchTab('restaurants')" class="px-4 py-2.5 bg-gradient-to-r from-[#c5a880] to-[#b3936a] text-[#0e1013] font-bold rounded-xl text-xs shadow-sm">
                             Перейти в каталог
                         </button>
                     </div>
@@ -1310,37 +1438,37 @@
             list.innerHTML = bookings.map(b => {
                 let statusBadge = '';
                 if (b.status === 'confirmed') {
-                    statusBadge = '<span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-[10px] font-bold px-2 py-0.5 rounded-full">✅ Подтверждено</span>';
+                    statusBadge = '<span class="bg-emerald-950/40 text-emerald-300 border border-emerald-700/50 text-[10px] font-medium px-2.5 py-0.5 rounded-full">✅ Подтверждено</span>';
                 } else if (b.status === 'pending') {
-                    statusBadge = '<span class="bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] font-bold px-2 py-0.5 rounded-full">⏳ В ожидании</span>';
+                    statusBadge = '<span class="bg-[#c5a880]/15 text-[#dfcbb5] border border-[#c5a880]/40 text-[10px] font-medium px-2.5 py-0.5 rounded-full badge-pulse">⏳ В ожидании</span>';
                 } else if (b.status === 'rejected') {
-                    statusBadge = '<span class="bg-rose-500/20 text-rose-400 border border-rose-500/40 text-[10px] font-bold px-2 py-0.5 rounded-full">❌ Отклонено</span>';
+                    statusBadge = '<span class="bg-rose-950/40 text-rose-300 border border-rose-800/40 text-[10px] font-medium px-2.5 py-0.5 rounded-full">❌ Отклонено</span>';
                 } else {
-                    statusBadge = '<span class="bg-slate-700 text-slate-300 text-[10px] font-bold px-2 py-0.5 rounded-full">🏁 Завершено</span>';
+                    statusBadge = '<span class="bg-[#1c1f27] text-[#8c93a0] border border-[#252933] text-[10px] font-medium px-2.5 py-0.5 rounded-full">🏁 Завершено</span>';
                 }
 
                 return `
-                    <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-3.5 space-y-2">
+                    <div class="bg-[#15171d] border border-[#252933] rounded-2xl p-3.5 space-y-2.5 shadow-sm">
                         <div class="flex items-center justify-between">
-                            <span class="text-xs font-bold text-white flex items-center gap-1.5">
+                            <span class="text-xs font-serif font-bold text-[#f3efe9] flex items-center gap-1.5">
                                 📍 ${b.restaurant_name}
                             </span>
                             ${statusBadge}
                         </div>
-                        <p class="text-[11px] text-slate-400">🏢 ${b.restaurant_address || ''}</p>
+                        <p class="text-[11px] text-[#8c93a0]">🏢 ${b.restaurant_address || ''}</p>
 
-                        <div class="bg-slate-900/60 rounded-xl p-2.5 grid grid-cols-2 gap-2 text-[11px] border border-slate-700/50">
+                        <div class="bg-[#0e1013] rounded-xl p-2.5 grid grid-cols-2 gap-2 text-[11px] border border-[#20232c]">
                             <div>
-                                <span class="text-slate-400 block text-[10px]">Дата и время:</span>
-                                <span class="font-bold text-white">${b.booking_date} в ${b.booking_time}</span>
+                                <span class="text-[#8c93a0] block text-[10px]">Дата и время:</span>
+                                <span class="font-semibold text-[#f3efe9]">${b.booking_date} в ${b.booking_time}</span>
                             </div>
                             <div>
-                                <span class="text-slate-400 block text-[10px]">Столик и гости:</span>
-                                <span class="font-bold text-amber-400">Стол №${b.table_number} (${b.guests_count} чел.)</span>
+                                <span class="text-[#8c93a0] block text-[10px]">Столик и гости:</span>
+                                <span class="font-bold text-[#dfcbb5]">Стол №${b.table_number} (${b.guests_count} чел.)</span>
                             </div>
                         </div>
 
-                        ${b.wishes ? `<p class="text-[10px] text-slate-400 italic">💬 «${b.wishes}»</p>` : ''}
+                        ${b.wishes ? `<p class="text-[10px] text-[#8c93a0] italic">💬 «${b.wishes}»</p>` : ''}
                     </div>
                 `;
             }).join('');
@@ -1352,12 +1480,12 @@
         function filterAdminDate(type, btnEl) {
             adminFilterDate = type;
             document.querySelectorAll('.admin-date-btn').forEach(btn => {
-                btn.classList.remove('bg-amber-500', 'text-slate-950', 'font-bold');
-                btn.classList.add('bg-slate-800', 'text-slate-300');
+                btn.classList.remove('bg-[#c5a880]', 'text-[#0e1013]', 'font-bold', 'shadow-sm');
+                btn.classList.add('bg-[#15171d]', 'text-[#8c93a0]', 'border', 'border-[#252933]');
             });
             if (btnEl) {
-                btnEl.classList.add('bg-amber-500', 'text-slate-950', 'font-bold');
-                btnEl.classList.remove('bg-slate-800', 'text-slate-300');
+                btnEl.classList.add('bg-[#c5a880]', 'text-[#0e1013]', 'font-bold', 'shadow-sm');
+                btnEl.classList.remove('bg-[#15171d]', 'text-[#8c93a0]', 'border', 'border-[#252933]');
             }
             loadAdminBookings();
         }
@@ -1406,11 +1534,11 @@
                 const localOnly = localList.filter(b => !apiIds.has(b.id));
                 bookings = [...apiBookings, ...localOnly];
                 if (statusEl) {
-                    statusEl.innerHTML = `<span class="text-emerald-400 font-bold">🟢 База данных подключена (${bookings.length} заявок)</span>`;
+                    statusEl.innerHTML = `<span class="text-emerald-400 font-medium">🟢 Подключено к серверу (${bookings.length} заявок)</span>`;
                 }
             } else {
                 if (statusEl) {
-                    statusEl.innerHTML = `<span class="text-amber-400 font-medium">⚠️ Ожидание связи с сервером (${bookings.length} в памяти)</span>`;
+                    statusEl.innerHTML = `<span class="text-[#dfcbb5] font-medium">⚠️ Режим памяти устройства (${bookings.length} заявок)</span>`;
                 }
             }
 
@@ -1418,7 +1546,7 @@
             bookings.sort((a, b) => b.id - a.id);
 
             if (!bookings || bookings.length === 0) {
-                list.innerHTML = '<div class="text-center py-8 text-slate-400 text-xs">Заявок на бронирование пока нет</div>';
+                list.innerHTML = '<div class="text-center py-8 text-[#8c93a0] text-xs">Заявок на бронирование пока нет</div>';
                 return;
             }
 
@@ -1428,46 +1556,46 @@
                 const isConfirmed = b.status === 'confirmed';
 
                 return `
-                    <div class="bg-slate-800/90 border ${isPending ? 'border-amber-500/50 shadow-md shadow-amber-500/10' : 'border-slate-700'} rounded-2xl p-3.5 space-y-3">
+                    <div class="bg-[#15171d] border ${isPending ? 'border-[#c5a880]/50 shadow-sm shadow-[#c5a880]/10' : 'border-[#252933]'} rounded-2xl p-3.5 space-y-3">
                         
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-2">
-                                <span class="text-sm font-extrabold text-amber-400">#${b.id}</span>
-                                <span class="text-xs font-bold text-white">Стол №${b.table_number} (${b.table_zone || 'Зал'})</span>
+                                <span class="text-sm font-serif font-bold text-[#dfcbb5]">#${b.id}</span>
+                                <span class="text-xs font-bold text-[#f3efe9]">Стол №${b.table_number} (${b.table_zone || 'Зал'})</span>
                             </div>
-                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                                b.status === 'confirmed' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40' :
-                                b.status === 'pending' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 badge-pulse' :
-                                b.status === 'rejected' ? 'bg-rose-500/20 text-rose-400 border border-rose-500/40' :
-                                'bg-slate-700 text-slate-300'
+                            <span class="text-[10px] font-medium px-2 py-0.5 rounded-full ${
+                                b.status === 'confirmed' ? 'bg-emerald-950/40 text-emerald-300 border border-emerald-700/50' :
+                                b.status === 'pending' ? 'bg-[#c5a880]/15 text-[#dfcbb5] border border-[#c5a880]/40 badge-pulse' :
+                                b.status === 'rejected' ? 'bg-rose-950/40 text-rose-300 border border-rose-800/40' :
+                                'bg-[#1c1f27] text-[#8c93a0] border border-[#252933]'
                             }">
                                 ${b.status === 'confirmed' ? '✅ Подтверждена' : b.status === 'pending' ? '⏳ Ожидает решения' : b.status === 'rejected' ? '❌ Отклонена' : '🏁 Завершена'}
                             </span>
                         </div>
 
                         <!-- Guest Info Block -->
-                        <div class="bg-slate-900/60 rounded-xl p-2.5 space-y-1.5 border border-slate-700/50 text-xs">
+                        <div class="bg-[#0e1013] rounded-xl p-2.5 space-y-1.5 border border-[#20232c] text-xs">
                             <div class="flex justify-between items-center">
-                                <span class="text-slate-400">Гость:</span>
-                                <span class="font-bold text-white">${b.guest_name}</span>
+                                <span class="text-[#8c93a0]">Гость:</span>
+                                <span class="font-semibold text-[#f3efe9]">${b.guest_name}</span>
                             </div>
                             <div class="flex justify-between items-center">
-                                <span class="text-slate-400">Телефон:</span>
-                                <a href="tel:${phoneClean}" class="font-mono font-bold text-blue-400 underline flex items-center gap-1">
+                                <span class="text-[#8c93a0]">Телефон:</span>
+                                <a href="tel:${phoneClean}" class="font-mono font-medium text-[#c5a880] hover:underline flex items-center gap-1">
                                     📞 ${b.guest_phone}
                                 </a>
                             </div>
                             <div class="flex justify-between items-center">
-                                <span class="text-slate-400">Время визита:</span>
-                                <span class="font-bold text-amber-300">📅 ${b.booking_date} в ${b.booking_time}</span>
+                                <span class="text-[#8c93a0]">Время визита:</span>
+                                <span class="font-serif font-bold text-[#dfcbb5]">📅 ${b.booking_date} в ${b.booking_time}</span>
                             </div>
                             <div class="flex justify-between items-center">
-                                <span class="text-slate-400">Гостей:</span>
-                                <span class="font-bold text-white">${b.guests_count} чел.</span>
+                                <span class="text-[#8c93a0]">Гостей:</span>
+                                <span class="font-semibold text-[#f3efe9]">${b.guests_count} чел.</span>
                             </div>
                             ${b.wishes ? `
-                                <div class="pt-1 border-t border-slate-800 text-[11px] text-slate-300">
-                                    <span class="text-slate-500 block text-[10px]">Пожелания:</span>
+                                <div class="pt-1 border-t border-[#20232c] text-[11px] text-[#c9c5bd]">
+                                    <span class="text-[#8c93a0] block text-[10px]">Пожелания:</span>
                                     «${b.wishes}»
                                 </div>
                             ` : ''}
@@ -1476,21 +1604,21 @@
                         <!-- Hostess Action Buttons -->
                         <div class="flex gap-2">
                             ${isPending ? `
-                                <button onclick="setBookingStatus(${b.id}, 'confirmed')" class="flex-1 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md transition-all">
+                                <button onclick="setBookingStatus(${b.id}, 'confirmed')" class="flex-1 py-2 rounded-xl bg-emerald-700/80 hover:bg-emerald-600 text-[#f3efe9] font-bold text-xs shadow-sm transition-all">
                                     ✅ Подтвердить
                                 </button>
-                                <button onclick="setBookingStatus(${b.id}, 'rejected')" class="flex-1 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs transition-all">
+                                <button onclick="setBookingStatus(${b.id}, 'rejected')" class="flex-1 py-2 rounded-xl bg-rose-950/60 hover:bg-rose-900 text-rose-200 border border-rose-800/40 font-medium text-xs transition-all">
                                     ❌ Отклонить
                                 </button>
                             ` : isConfirmed ? `
-                                <button onclick="setBookingStatus(${b.id}, 'completed')" class="flex-1 py-2 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold text-xs transition-all">
+                                <button onclick="setBookingStatus(${b.id}, 'completed')" class="flex-1 py-2 rounded-xl bg-[#1c1f27] hover:bg-[#252933] text-[#dfcbb5] border border-[#2c3140] font-medium text-xs transition-all">
                                     🍽 Гости пришли
                                 </button>
-                                <a href="tel:${phoneClean}" class="px-3 py-2 rounded-xl bg-blue-600 text-white font-bold text-xs flex items-center justify-center">
+                                <a href="tel:${phoneClean}" class="px-3.5 py-2 rounded-xl bg-[#18202f] hover:bg-[#202b3f] text-blue-300 border border-blue-900/50 font-medium text-xs flex items-center justify-center">
                                     📞 Позвонить
                                 </a>
                             ` : `
-                                <button onclick="setBookingStatus(${b.id}, 'confirmed')" class="flex-1 py-1.5 rounded-xl bg-slate-700 text-slate-300 text-xs">
+                                <button onclick="setBookingStatus(${b.id}, 'confirmed')" class="flex-1 py-2 rounded-xl bg-[#1c1f27] text-[#8c93a0] border border-[#252933] text-xs hover:text-[#f3efe9]">
                                     Вернуть в подтвержденные
                                 </button>
                             `}
