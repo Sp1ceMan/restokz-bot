@@ -451,7 +451,7 @@
         </div>
     </div>
 
-    <!-- Bottom Mobile Navigation Bar -->
+    <!-- Bottom Mobile Navigation Bar (Guest Only) -->
     <nav class="fixed bottom-0 left-0 right-0 z-40 bg-[#0e1013]/95 backdrop-blur-md border-t border-[#20232c] py-2.5 px-6">
         <div class="max-w-md mx-auto flex justify-around items-center">
             
@@ -462,13 +462,8 @@
 
             <button onclick="switchTab('my-bookings')" id="navBtn-my-bookings" class="nav-btn flex flex-col items-center gap-1 text-[#8c93a0] font-medium text-[11px] hover:text-[#f3efe9] transition-colors relative">
                 <span class="text-xl">📋</span>
-                <span>Мои брони</span>
-                <span id="myBookingsBadge" class="hidden absolute top-0 right-1 w-2 h-2 rounded-full bg-[#c5a880]"></span>
-            </button>
-
-            <button onclick="switchTab('admin')" id="navBtn-admin" class="nav-btn flex flex-col items-center gap-1 text-[#8c93a0] font-medium text-[11px] hover:text-[#f3efe9] transition-colors">
-                <span class="text-xl">👑</span>
-                <span>Для ресторана</span>
+                <span>Мои бронирования</span>
+                <span id="myBookingsBadge" class="hidden absolute top-0 right-2 w-2 h-2 rounded-full bg-[#c5a880]"></span>
             </button>
 
         </div>
@@ -535,6 +530,12 @@
             const urlParams = new URLSearchParams(window.location.search);
             const tabParam = urlParams.get('tab');
 
+            // If launched with ?tab=admin, automatically redirect to the dedicated Restaurant Terminal
+            if (tabParam === 'admin') {
+                window.location.replace('admin.html' + window.location.search);
+                return;
+            }
+
             // Prefill guest name from Telegram if available
             if (tgUser && tgUser.first_name) {
                 const fullName = tgUser.first_name + (tgUser.last_name ? ' ' + tgUser.last_name : '');
@@ -550,8 +551,6 @@
 
             if (tabParam === 'my_bookings') {
                 switchTab('my-bookings');
-            } else if (tabParam === 'admin') {
-                switchTab('admin');
             }
         });
 
@@ -559,7 +558,7 @@
 
         // PERMANENT backend URL (Railway cloud deployment).
         // This is the fallback when no ?api= query param is provided.
-        const DEFAULT_BACKEND_URL = "https://tasty-rabbit-12.loca.lt";
+        const DEFAULT_BACKEND_URL = "https://restokz-bot-production.up.railway.app";
 
         let API_BASE = DEFAULT_BACKEND_URL;
 

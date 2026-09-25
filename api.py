@@ -198,6 +198,11 @@ async def index_page(request: web.Request) -> web.FileResponse:
     index_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.html")
     return web.FileResponse(index_path)
 
+async def admin_page(request: web.Request) -> web.FileResponse:
+    import os
+    admin_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "admin.html")
+    return web.FileResponse(admin_path)
+
 def create_web_app(notify_booking_func=None, notify_status_func=None) -> web.Application:
     app = web.Application(middlewares=[cors_middleware])
 
@@ -219,5 +224,7 @@ def create_web_app(notify_booking_func=None, notify_status_func=None) -> web.App
     # Static HTML
     app.router.add_get("/", index_page)
     app.router.add_get("/index.html", index_page)
+    app.router.add_get("/admin", admin_page)
+    app.router.add_get("/admin.html", admin_page)
 
     return app

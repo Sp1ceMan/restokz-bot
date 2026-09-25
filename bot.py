@@ -88,7 +88,10 @@ def get_api_url() -> str:
 def get_webapp_url(tab: str = None) -> str:
     """Builds the full WebApp URL with API backend injected as a query parameter."""
     api_url = get_api_url()
-    url = f"{WEBAPP_BASE_URL}?api={api_url}"
+    base = WEBAPP_BASE_URL.rstrip("/")
+    if tab == "admin":
+        return f"{base}/admin.html?api={api_url}"
+    url = f"{base}/?api={api_url}"
     if tab:
         url += f"&tab={tab}"
     return url
