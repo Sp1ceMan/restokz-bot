@@ -47,6 +47,10 @@ def init_db():
             description TEXT,
             working_hours TEXT DEFAULT '11:00 - 00:00',
             two_gis_url TEXT,
+            instagram_url TEXT,
+            whatsapp_url TEXT,
+            telegram_url TEXT,
+            website_url TEXT,
             admin_tg_id INTEGER
         );
 
@@ -125,6 +129,14 @@ def init_db():
             ON tables (restaurant_id);
         """)
 
+        conn.commit()
+
+        # Migrate existing DB: ensure social media & 2GIS columns exist
+        for col_name in ["instagram_url", "whatsapp_url", "telegram_url", "website_url"]:
+            try:
+                cursor.execute(f"ALTER TABLE restaurants ADD COLUMN {col_name} TEXT")
+            except sqlite3.OperationalError:
+                pass
         conn.commit()
 
         # Check if restaurants already exist
@@ -607,6 +619,200 @@ def update_booking_status(booking_id: int, new_status: str) -> bool:
             WHERE id = ?
         """, (new_status, booking_id))
 
+        affected = cursor.rowcount
+        conn.commit()
+        return affected > 0
+    finally:
+        conn.close()
+
+def create_restaurant(
+    name: str,
+    city: str,
+    cuisine: str,
+    address: str,
+    phone: str,
+    rating: float = 4.8,
+    avg_check: int = 8000,
+    cover_image: str = "",
+    description: str = "",
+    working_hours: str = "11:00 - 00:00",
+    two_gis_url: str = "",
+    instagram_url: str = "",
+    whatsapp_url: str = "",
+    telegram_url: str = "",
+    website_url: str = "",
+    admin_tg_id: Optional[int] = None,
+    **kwargs
+) -> int:
+    """Registers a new restaurant in the system and provisions default starter tables and menu categories."""
+    if not cover_image and "photo_url" in kwargs:
+        cover_image = kwargs["photo_url"]
+
+    conn = get_db_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO restaurants 
+            (name, city, cuisine, address, phone, rating, avg_check, cover_image, description, 
+             working_hours, two_gis_url, instagram_url, whatsapp_url, telegram_url, website_url, admin_tg_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            name, city, cuisine, address, phone, rating, avg_check, cover_image, description,
+            working_hours, two_gis_url, instagram_url, whatsapp_url, telegram_url, website_url, admin_tg_id
+        ))
+        rest_id = cursor.lastrowid
+
+        # Provision starter menu categories
+        starter_cats = [
+            ("Закуски и Салаты", "🥗", 1),
+            ("Основные блюда", "🥩", 2),
+            ("Десерты", "🍰", 3),
+            ("Напитки", "🍹", 4)
+        ]
+        for cat_name, icon, sort_o in starter_cats:
+            cursor.execute("""
+                INSERT INTO menu_categories (restaurant_id, name, icon, sort_order)
+                VALUES (?, ?, ?, ?)
+            """, (rest_id, cat_name, icon, sort_o))
+
+        # Provision default tables (8 tables of varying zones)
+        starter_tables = [
+            (1, 2, "У окна", "Уютный столик у окна"),
+            (2, 2, "У окна", "Панорамный столик"),
+            (3, 4, "Основной зал", "Семейный столик"),
+            (4, 4, "Основной зал", "Столик в центре зала"),
+            (5, 6, "Диванная зона", "Комфортный стол с диваном"),
+            (6, 6, "Летняя терраса", "Столик на свежем воздухе"),
+            (7, 8, "VIP-кабина", "Приватный зал"),
+            (8, 10, "Банкетная зона", "Большой праздничный стол")
+        ]
+        for num, seats, zone, desc in starter_tables:
+            cursor.execute("""
+                INSERT INTO tables (restaurant_id, table_number, seats, zone_type, description)
+                VALUES (?, ?, ?, ?, ?)
+            """, (rest_id, num, seats, zone, desc))
+
+        conn.commit()
+        return rest_id
+    finally:
+        conn.close()
+
+def update_restaurant(restaurant_id: int, **fields) -> bool:
+    """Updates restaurant profile fields including social links, working hours, 2GIS, etc."""
+    if "photo_url" in fields and "cover_image" not in fields:
+        fields["cover_image"] = fields.pop("photo_url")
+    allowed = {
+        "name", "city", "cuisine", "address", "phone", "rating", "avg_check",
+        "cover_image", "description", "working_hours", "two_gis_url",
+        "instagram_url", "whatsapp_url", "telegram_url", "website_url"
+    }
+    updates = {k: v for k, v in fields.items() if k in allowed}
+    if not updates:
+        return False
+
+    set_clause = ", ".join(f"{k} = ?" for k in updates.keys())
+    values = list(updates.values())
+    values.append(restaurant_id)
+
+    conn = get_db_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"UPDATE restaurants SET {set_clause} WHERE id = ?", values)
+        affected = cursor.rowcount
+        conn.commit()
+        return affected > 0
+    finally:
+        conn.close()
+
+def add_menu_item(
+    restaurant_id: int,
+    category_name: str,
+    title: str = "",
+    price: int = 0,
+    description: str = "",
+    weight: str = "",
+    image_url: str = "",
+    **kwargs
+) -> int:
+    """Adds a new dish into the restaurant menu, creating the category if needed."""
+    if not title and "name" in kwargs:
+        title = kwargs["name"]
+    if not image_url and "photo_url" in kwargs:
+        image_url = kwargs["photo_url"]
+
+    conn = get_db_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT id FROM menu_categories WHERE restaurant_id = ? AND LOWER(name) = LOWER(?)
+        """, (restaurant_id, category_name.strip()))
+        row = cursor.fetchone()
+
+        if row:
+            cat_id = row["id"]
+        else:
+            cursor.execute("""
+                INSERT INTO menu_categories (restaurant_id, name, icon, sort_order)
+                VALUES (?, ?, '🍽️', 99)
+            """, (restaurant_id, category_name.strip()))
+            cat_id = cursor.lastrowid
+
+        cursor.execute("""
+            INSERT INTO menu_items (restaurant_id, category_id, title, description, price, weight, image_url, is_available)
+            VALUES (?, ?, ?, ?, ?, ?, ?, 1)
+        """, (restaurant_id, cat_id, title.strip(), description.strip(), price, weight.strip(), image_url.strip()))
+        item_id = cursor.lastrowid
+        conn.commit()
+        return item_id
+    finally:
+        conn.close()
+
+def delete_menu_item(item_id: int) -> bool:
+    """Removes a dish from the menu."""
+    conn = get_db_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM menu_items WHERE id = ?", (item_id,))
+        affected = cursor.rowcount
+        conn.commit()
+        return affected > 0
+    finally:
+        conn.close()
+
+def add_table(
+    restaurant_id: int,
+    table_number: int,
+    seats: int = 4,
+    zone_type: str = "Основной зал",
+    description: str = "",
+    shape: str = "rect",
+    **kwargs
+) -> int:
+    """Adds a table to the restaurant floor plan."""
+    if "capacity" in kwargs and not seats:
+        seats = int(kwargs["capacity"])
+    if "zone" in kwargs and (zone_type == "Основной зал" or not zone_type):
+        zone_type = kwargs["zone"]
+
+    conn = get_db_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO tables (restaurant_id, table_number, seats, zone_type, description, shape)
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (restaurant_id, table_number, seats, zone_type, description, shape))
+        table_id = cursor.lastrowid
+        conn.commit()
+        return table_id
+    finally:
+        conn.close()
+
+def delete_table(table_id: int) -> bool:
+    """Deletes a table from the restaurant."""
+    conn = get_db_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM tables WHERE id = ?", (table_id,))
         affected = cursor.rowcount
         conn.commit()
         return affected > 0

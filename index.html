@@ -81,18 +81,28 @@
                 </div>
                 <div>
                     <h1 class="text-base font-serif font-bold tracking-wide bg-gradient-to-r from-stone-100 via-[#dfcbb5] to-[#c5a880] bg-clip-text text-transparent leading-tight">RestoKZ</h1>
-                    <p class="text-[10px] text-[#8c93a0] font-medium tracking-tight">Гастрономический гид • Бронирование столов</p>
+                    <p id="headerTagline" class="text-[10px] text-[#8c93a0] font-medium tracking-tight">Гастрономический гид • Бронирование столов</p>
                 </div>
             </div>
 
-            <!-- City Selector -->
-            <div class="relative">
-                <select id="citySelect" onchange="onCityChange(this.value)" class="bg-[#15171d] text-xs text-[#dfcbb5] font-medium py-1.5 px-3 rounded-lg border border-[#252933] outline-none focus:border-[#c5a880] transition-colors cursor-pointer">
-                    <option value="Все" selected>🇰🇿 Все города</option>
-                    <option value="Алматы">Алматы</option>
-                    <option value="Астана">Астана</option>
-                    <option value="Шымкент">Шымкент</option>
-                </select>
+            <!-- Language & City Selectors -->
+            <div class="flex items-center gap-1.5">
+                <!-- Language Toggle (RU / KZ / EN) -->
+                <div class="flex items-center bg-[#15171d] border border-[#252933] rounded-lg p-0.5 shadow-sm">
+                    <button type="button" onclick="setLanguage('ru')" id="langBtn-ru" class="px-1.5 py-1 text-[10px] font-bold rounded-md bg-[#c5a880] text-[#0e1013] transition">RU</button>
+                    <button type="button" onclick="setLanguage('kz')" id="langBtn-kz" class="px-1.5 py-1 text-[10px] font-bold rounded-md text-[#8c93a0] hover:text-white transition">KZ</button>
+                    <button type="button" onclick="setLanguage('en')" id="langBtn-en" class="px-1.5 py-1 text-[10px] font-bold rounded-md text-[#8c93a0] hover:text-white transition">EN</button>
+                </div>
+
+                <!-- City Selector (Clean: NO 'kz' prefix) -->
+                <div class="relative">
+                    <select id="citySelect" onchange="onCityChange(this.value)" class="bg-[#15171d] text-xs text-[#dfcbb5] font-medium py-1.5 px-2.5 rounded-lg border border-[#252933] outline-none focus:border-[#c5a880] transition-colors cursor-pointer">
+                        <option value="Все" selected id="optCityAll">Все города</option>
+                        <option value="Алматы">Алматы</option>
+                        <option value="Астана">Астана</option>
+                        <option value="Шымкент">Шымкент</option>
+                    </select>
+                </div>
             </div>
         </div>
     </header>
@@ -399,29 +409,42 @@
                 <!-- 3. ABOUT SUB-VIEW -->
                 <div id="modalSubTab-about" class="hidden space-y-4 text-xs">
                     <div class="bg-[#181a20] rounded-2xl p-3.5 space-y-2 border border-[#252933]">
-                        <h4 class="font-serif font-bold text-[#dfcbb5] text-sm">О заведении</h4>
+                        <h4 id="labelAboutTitle" class="font-serif font-bold text-[#dfcbb5] text-sm">О заведении</h4>
                         <p id="modalAboutDescription" class="text-[#c9c5bd] leading-relaxed text-xs"></p>
                     </div>
 
                     <div class="bg-[#181a20] rounded-2xl p-3.5 space-y-2.5 border border-[#252933]">
                         <div class="flex items-center justify-between">
-                            <span class="text-[#8c93a0]">Режим работы:</span>
+                            <span class="text-[#8c93a0]" id="labelAboutHours">Режим работы:</span>
                             <span id="modalAboutHours" class="font-semibold text-[#f3efe9]">11:00 - 00:00</span>
                         </div>
                         <div class="flex items-center justify-between">
-                            <span class="text-[#8c93a0]">Средний чек:</span>
+                            <span class="text-[#8c93a0]" id="labelAboutCheck">Средний чек:</span>
                             <span id="modalAboutCheck" class="font-serif font-bold text-[#dfcbb5]">~8 000 ₸</span>
                         </div>
                         <div class="flex items-center justify-between">
-                            <span class="text-[#8c93a0]">Телефон:</span>
+                            <span class="text-[#8c93a0]" id="labelAboutPhone">Телефон:</span>
                             <a id="modalAboutPhone" href="" class="font-medium text-[#c5a880] hover:underline">+7 (727) ...</a>
                         </div>
                     </div>
 
-                    <div class="pt-2">
-                        <a id="modal2GisBtn" href="https://2gis.kz" target="_blank" class="block text-center py-3 rounded-xl bg-[#1c1f27] hover:bg-[#252933] border border-[#c5a880]/30 text-[#dfcbb5] font-semibold transition-all">
-                            🗺️ Открыть адрес в 2GIS / Карты
-                        </a>
+                    <!-- Social Media & 2GIS Interactive Grid -->
+                    <div class="space-y-2 pt-1">
+                        <h5 id="labelAboutSocials" class="text-[10px] font-bold text-[#8c93a0] uppercase tracking-wider">Контакты, Соцсети & 2GIS</h5>
+                        <div class="grid grid-cols-2 gap-2" id="modalSocialLinksContainer">
+                            <a id="modal2GisBtn" href="https://2gis.kz" target="_blank" class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-[#1c1f27] hover:bg-[#252933] border border-[#c5a880]/30 text-[#dfcbb5] font-semibold transition-all">
+                                <span>🗺️</span> <span id="txtGisBtn">2GIS / Карты</span>
+                            </a>
+                            <a id="modalInstagramBtn" href="#" target="_blank" class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-[#1c1f27] hover:bg-[#252933] border border-pink-500/30 text-pink-300 font-semibold transition-all">
+                                <span>📸</span> <span id="txtIgBtn">Instagram</span>
+                            </a>
+                            <a id="modalWhatsAppBtn" href="#" target="_blank" class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-[#1c1f27] hover:bg-[#252933] border border-emerald-500/30 text-emerald-300 font-semibold transition-all">
+                                <span>💬</span> <span id="txtWaBtn">WhatsApp</span>
+                            </a>
+                            <a id="modalCallBtn" href="#" class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-[#1c1f27] hover:bg-[#252933] border border-blue-500/30 text-blue-300 font-semibold transition-all">
+                                <span>📞</span> <span id="txtCallBtn">Позвонить</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
 
@@ -488,6 +511,7 @@
         }
 
         // --- Application State ---
+        let currentLang = localStorage.getItem('restokz_lang') || 'ru';
         let currentCity = "Все";
         let currentCuisine = "Все";
         let currentSearchQuery = "";
@@ -500,6 +524,259 @@
         let currentTables = [];
         let selectedTable = null;
         let restaurantMenu = [];
+
+        const I18N = {
+            ru: {
+                tagline: "Гастрономический гид • Бронирование столов",
+                all_cities: "Все города",
+                search_ph: "Поиск ресторана, кухни, адреса...",
+                cuisine_all: "Все",
+                cuisine_kz: "🥩 Казахская",
+                cuisine_it: "🍝 Итальянская",
+                cuisine_east: "🫖 Восточная",
+                cuisine_eu: "🍷 Европейская",
+                avg_check: "Средний чек:",
+                rating: "Рейтинг",
+                book_btn: "🪑 Бронь стола",
+                menu_btn: "📖 Меню",
+                modal_book: "🪑 Бронь стола",
+                modal_menu: "📖 Меню",
+                modal_info: "ℹ️ Инфо",
+                step1_date: "1. Выберите дату",
+                date_today: "Сегодня",
+                date_tomorrow: "Завтра",
+                step2_time: "2. Время визита",
+                time_selected: "Выбрано:",
+                time_lunch: "☀️ Обед",
+                time_dinner: "🌙 Ужин",
+                time_custom: "⏱️ Своё время",
+                step3_guests: "3. Количество гостей",
+                guests_unit: "чел.",
+                step4_table: "4. Выберите столик в зале",
+                table_free: "Свободен",
+                table_busy: "Занят",
+                table_selected: "Выбран",
+                table_none: "Столик не выбран",
+                table_hint: "Нажмите на свободный столик выше",
+                step5_contact: "5. Контактные данные гостя",
+                name_ph: "Ваше имя",
+                phone_ph: "+7 (701) 000-00-00",
+                phone_note: "Ресторан свяжется для подтверждения",
+                wishes_ph: "Пожелания (день рождения, тихий угол, стульчик...)",
+                submit_btn: "Подтвердить бронирование",
+                about_title: "О заведении",
+                hours_label: "Режим работы:",
+                check_label: "Средний чек:",
+                phone_label: "Телефон:",
+                socials_label: "Контакты, Соцсети & 2GIS",
+                gis_btn: "2GIS / Карты",
+                ig_btn: "Instagram",
+                wa_btn: "WhatsApp",
+                call_btn: "Позвонить",
+                nav_rests: "Рестораны",
+                nav_my: "Мои бронирования",
+                my_title: "Мои бронирования",
+                status_pending: "⏳ Ожидает подтверждения",
+                status_confirmed: "✅ Подтверждена",
+                status_arrived: "🥂 Гости за столом",
+                status_rejected: "❌ Отклонена",
+                booked_success: "Заявка на бронь принята!",
+                booked_subtext: "Администратор заведения получил вашу заявку.",
+                ok_btn: "Отлично, понятно",
+                seats_up_to: (n) => `до ${n} персон`,
+                no_restaurants: "Рестораны по вашему запросу не найдены"
+            },
+            kz: {
+                tagline: "Гастрономиялық гид • Үстел брондау",
+                all_cities: "Барлық қалалар",
+                search_ph: "Мейрамхана, тағам, мекенжай іздеу...",
+                cuisine_all: "Барлығы",
+                cuisine_kz: "🥩 Қазақ",
+                cuisine_it: "🍝 Итальян",
+                cuisine_east: "🫖 Шығыс",
+                cuisine_eu: "🍷 Еуропалық",
+                avg_check: "Орташа чек:",
+                rating: "Рейтинг",
+                book_btn: "🪑 Үстел брондау",
+                menu_btn: "📖 Мәзір",
+                modal_book: "🪑 Брондау",
+                modal_menu: "📖 Мәзір",
+                modal_info: "ℹ️ Ақпарат",
+                step1_date: "1. Күнді таңдаңыз",
+                date_today: "Бүгін",
+                date_tomorrow: "Ертең",
+                step2_time: "2. Келу уақыты",
+                time_selected: "Таңдалды:",
+                time_lunch: "☀️ Түскі ас",
+                time_dinner: "🌙 Кешкі ас",
+                time_custom: "⏱️ Нақты уақыт",
+                step3_guests: "3. Қонақтар саны",
+                guests_unit: "адам",
+                step4_table: "4. Залдағы үстелді таңдаңыз",
+                table_free: "Бос",
+                table_busy: "Бос емес",
+                table_selected: "Таңдалды",
+                table_none: "Үстел таңдалмады",
+                table_hint: "Жоғарыдағы бос үстелді басыңыз",
+                step5_contact: "5. Қонақтың байланыс деректері",
+                name_ph: "Атыңыз",
+                phone_ph: "+7 (701) 000-00-00",
+                phone_note: "Мейрамхана растау үшін хабарласады",
+                wishes_ph: "Қосымша тілектер (туған күн, тыныш орын...)",
+                submit_btn: "Үстелді брондау",
+                about_title: "Мейрамхана туралы",
+                hours_label: "Жұмыс кестесі:",
+                check_label: "Орташа чек:",
+                phone_label: "Телефон:",
+                socials_label: "Байланыс, Желілер & 2GIS",
+                gis_btn: "2GIS / Карта",
+                ig_btn: "Instagram",
+                wa_btn: "WhatsApp",
+                call_btn: "Қоңырау шалу",
+                nav_rests: "Мейрамханалар",
+                nav_my: "Менің брондарым",
+                my_title: "Менің брондарым",
+                status_pending: "⏳ Растау күтілуде",
+                status_confirmed: "✅ Брондау расталды",
+                status_arrived: "🥂 Қонақтар үстелде",
+                status_rejected: "❌ Бас тартылды",
+                booked_success: "Брондау өтінімі қабылданды!",
+                booked_subtext: "Мейрамхана әкімшісі өтініміңізді алды.",
+                ok_btn: "Түсінікті",
+                seats_up_to: (n) => `${n} адамға дейін`,
+                no_restaurants: "Сұранысыңыз бойынша мейрамханалар табылмады"
+            },
+            en: {
+                tagline: "Gastronomic Guide • Table Reservation",
+                all_cities: "All cities",
+                search_ph: "Search restaurant, cuisine, address...",
+                cuisine_all: "All",
+                cuisine_kz: "🥩 Kazakh",
+                cuisine_it: "🍝 Italian",
+                cuisine_east: "🫖 Oriental",
+                cuisine_eu: "🍷 European",
+                avg_check: "Average check:",
+                rating: "Rating",
+                book_btn: "🪑 Book a Table",
+                menu_btn: "📖 Menu",
+                modal_book: "🪑 Book Table",
+                modal_menu: "📖 Menu",
+                modal_info: "ℹ️ Info",
+                step1_date: "1. Select date",
+                date_today: "Today",
+                date_tomorrow: "Tomorrow",
+                step2_time: "2. Visit time",
+                time_selected: "Selected:",
+                time_lunch: "☀️ Lunch",
+                time_dinner: "🌙 Dinner",
+                time_custom: "⏱️ Custom time",
+                step3_guests: "3. Number of guests",
+                guests_unit: "guests",
+                step4_table: "4. Select a table in the hall",
+                table_free: "Available",
+                table_busy: "Occupied",
+                table_selected: "Selected",
+                table_none: "No table selected",
+                table_hint: "Tap an available table above",
+                step5_contact: "5. Guest Details",
+                name_ph: "Your name",
+                phone_ph: "+7 (701) 000-00-00",
+                phone_note: "Restaurant will contact you to confirm",
+                wishes_ph: "Special requests (birthday, quiet table...)",
+                submit_btn: "Confirm Reservation",
+                about_title: "About restaurant",
+                hours_label: "Opening hours:",
+                check_label: "Average bill:",
+                phone_label: "Phone:",
+                socials_label: "Contacts, Socials & 2GIS",
+                gis_btn: "2GIS / Maps",
+                ig_btn: "Instagram",
+                wa_btn: "WhatsApp",
+                call_btn: "Call Now",
+                nav_rests: "Restaurants",
+                nav_my: "My Bookings",
+                my_title: "My Reservations",
+                status_pending: "⏳ Awaiting confirmation",
+                status_confirmed: "✅ Confirmed",
+                status_arrived: "🥂 Seated at table",
+                status_rejected: "❌ Declined",
+                booked_success: "Reservation request received!",
+                booked_subtext: "Restaurant administrator received your booking.",
+                ok_btn: "Got it",
+                seats_up_to: (n) => `up to ${n} guests`,
+                no_restaurants: "No restaurants found matching your query"
+            }
+        };
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            try { localStorage.setItem('restokz_lang', lang); } catch(e){}
+
+            ['ru', 'kz', 'en'].forEach(l => {
+                const btn = document.getElementById(`langBtn-${l}`);
+                if (!btn) return;
+                if (l === lang) {
+                    btn.className = "px-1.5 py-1 text-[10px] font-bold rounded-md bg-[#c5a880] text-[#0e1013] transition shadow-sm";
+                } else {
+                    btn.className = "px-1.5 py-1 text-[10px] font-bold rounded-md text-[#8c93a0] hover:text-white transition";
+                }
+            });
+
+            applyTranslations();
+            renderRestaurants();
+        }
+
+        function applyTranslations() {
+            const t = I18N[currentLang] || I18N.ru;
+            const el = (id) => document.getElementById(id);
+
+            if (el('headerTagline')) el('headerTagline').innerText = t.tagline;
+            if (el('optCityAll')) el('optCityAll').innerText = t.all_cities;
+            if (el('searchInput')) el('searchInput').placeholder = t.search_ph;
+
+            if (el('modalTabBtn-book')) el('modalTabBtn-book').innerText = t.modal_book;
+            if (el('modalTabBtn-menu')) el('modalTabBtn-menu').innerText = t.modal_menu;
+            if (el('modalTabBtn-about')) el('modalTabBtn-about').innerText = t.modal_info;
+
+            if (el('dateBtn-today')) el('dateBtn-today').innerText = t.date_today;
+            if (el('dateBtn-tomorrow')) el('dateBtn-tomorrow').innerText = t.date_tomorrow;
+
+            const periodDay = el('periodBtn-day');
+            if (periodDay) periodDay.innerHTML = `<span class="block text-xs font-bold leading-snug">${t.time_lunch}</span><span class="block text-[10px] opacity-80 leading-tight mt-0.5">11:00 – 16:30</span>`;
+
+            const periodEve = el('periodBtn-evening');
+            if (periodEve) periodEve.innerHTML = `<span class="block text-xs font-bold leading-snug">${t.time_dinner}</span><span class="block text-[10px] opacity-85 leading-tight mt-0.5">17:00 – 23:00</span>`;
+
+            const periodCust = el('periodBtn-custom');
+            if (periodCust) periodCust.innerHTML = `<span class="block text-xs font-bold leading-snug">${t.time_custom}</span><span class="block text-[10px] opacity-80 leading-tight mt-0.5">11:00 – 23:30</span>`;
+
+            if (el('guestNameInput')) el('guestNameInput').placeholder = t.name_ph;
+            if (el('guestPhoneInput')) el('guestPhoneInput').placeholder = t.phone_ph;
+            if (el('guestWishesInput')) el('guestWishesInput').placeholder = t.wishes_ph;
+            if (el('submitBookingBtn')) el('submitBookingBtn').innerText = t.submit_btn;
+
+            if (el('labelAboutTitle')) el('labelAboutTitle').innerText = t.about_title;
+            if (el('labelAboutHours')) el('labelAboutHours').innerText = t.hours_label;
+            if (el('labelAboutCheck')) el('labelAboutCheck').innerText = t.check_label;
+            if (el('labelAboutPhone')) el('labelAboutPhone').innerText = t.phone_label;
+            if (el('labelAboutSocials')) el('labelAboutSocials').innerText = t.socials_label;
+
+            if (el('txtGisBtn')) el('txtGisBtn').innerText = t.gis_btn;
+            if (el('txtIgBtn')) el('txtIgBtn').innerText = t.ig_btn;
+            if (el('txtWaBtn')) el('txtWaBtn').innerText = t.wa_btn;
+            if (el('txtCallBtn')) el('txtCallBtn').innerText = t.call_btn;
+
+            const navRest = el('navBtn-restaurants');
+            if (navRest) {
+                const s = navRest.querySelector('span:last-child');
+                if (s) s.innerText = t.nav_rests;
+            }
+            const navMy = el('navBtn-my-bookings');
+            if (navMy) {
+                const spans = navMy.querySelectorAll('span');
+                if (spans.length >= 2) spans[1].innerText = t.nav_my;
+            }
+        }
 
         // All-day restaurant time slots
         const dayTimeSlots = [
@@ -547,6 +824,7 @@
 
             renderTimeSlots();
             updateTimeDisplay();
+            setLanguage(currentLang);
             loadRestaurants();
 
             if (tabParam === 'my_bookings') {
@@ -770,11 +1048,13 @@
                 );
             }
 
+            const t = I18N[currentLang] || I18N.ru;
+
             if (filtered.length === 0) {
                 listContainer.innerHTML = `
                     <div class="text-center py-12 text-[#8c93a0] space-y-2">
                         <span class="text-3xl">🔍</span>
-                        <p class="text-xs">Рестораны по вашему запросу не найдены</p>
+                        <p class="text-xs">${t.no_restaurants}</p>
                     </div>
                 `;
                 return;
@@ -802,15 +1082,15 @@
                         <div class="space-y-1">
                             <p class="text-xs text-[#c5a880] font-medium">${r.cuisine}</p>
                             <p class="text-[11px] text-[#8c93a0] flex items-center gap-1">📍 ${r.address}</p>
-                            <p class="text-[11px] text-[#8c93a0]">Средний чек: <b class="text-[#dfcbb5] font-semibold">~${formatPrice(r.avg_check)}</b></p>
+                            <p class="text-[11px] text-[#8c93a0]">${t.avg_check} <b class="text-[#dfcbb5] font-semibold">~${formatPrice(r.avg_check)}</b></p>
                         </div>
 
                         <div class="flex gap-2 pt-1">
                             <button onclick="openRestaurantModal(${r.id}, 'menu')" class="flex-1 py-2.5 rounded-xl bg-[#1c1f27] hover:bg-[#252933] text-[#dfcbb5] text-xs font-semibold border border-[#252933] transition-all">
-                                📖 Меню
+                                ${t.menu_btn}
                             </button>
                             <button onclick="openRestaurantModal(${r.id}, 'book')" class="flex-[1.5] py-2.5 rounded-xl bg-gradient-to-r from-[#c5a880] to-[#b3936a] text-[#0e1013] text-xs font-bold shadow-sm hover:brightness-105 transition-all">
-                                🪑 Бронь стола
+                                ${t.book_btn}
                             </button>
                         </div>
                     </div>
@@ -913,12 +1193,55 @@
             document.getElementById('modalCuisineBadge').innerText = selectedRestaurant.cuisine.split(',')[0];
             
             // About tab prefill
-            document.getElementById('modalAboutDescription').innerText = selectedRestaurant.description;
+            document.getElementById('modalAboutDescription').innerText = selectedRestaurant.description || '';
             document.getElementById('modalAboutHours').innerText = selectedRestaurant.working_hours || "11:00 - 00:00";
             document.getElementById('modalAboutCheck').innerText = `~${formatPrice(selectedRestaurant.avg_check)}`;
-            document.getElementById('modalAboutPhone').innerText = selectedRestaurant.phone;
-            document.getElementById('modalAboutPhone').href = `tel:${selectedRestaurant.phone.replace(/[^0-9+]/g, '')}`;
-            document.getElementById('modal2GisBtn').href = selectedRestaurant.two_gis_url || `https://2gis.kz/search/${encodeURIComponent(selectedRestaurant.name)}`;
+            
+            // Phone & Call links
+            const cleanPhone = (selectedRestaurant.phone || '').replace(/[^0-9+]/g, '');
+            const phoneEl = document.getElementById('modalAboutPhone');
+            if (phoneEl) {
+                phoneEl.innerText = selectedRestaurant.phone || 'Не указан';
+                phoneEl.href = cleanPhone ? `tel:${cleanPhone}` : '#';
+            }
+            const callBtn = document.getElementById('modalCallBtn');
+            if (callBtn) callBtn.href = cleanPhone ? `tel:${cleanPhone}` : '#';
+
+            // 2GIS link
+            const gisBtn = document.getElementById('modal2GisBtn');
+            if (gisBtn) {
+                gisBtn.href = selectedRestaurant.two_gis_url || `https://2gis.kz/search/${encodeURIComponent(selectedRestaurant.name + ' ' + selectedRestaurant.city)}`;
+            }
+
+            // Instagram link
+            const igBtn = document.getElementById('modalInstagramBtn');
+            if (igBtn) {
+                let ig = selectedRestaurant.instagram_url || '';
+                if (ig) {
+                    if (!ig.startsWith('http')) ig = `https://instagram.com/${ig.replace('@', '').trim()}`;
+                    igBtn.href = ig;
+                } else {
+                    igBtn.href = `https://instagram.com/explore/tags/${encodeURIComponent(selectedRestaurant.name.replace(/\s+/g, ''))}`;
+                }
+            }
+
+            // WhatsApp link
+            const waBtn = document.getElementById('modalWhatsAppBtn');
+            if (waBtn) {
+                let wa = selectedRestaurant.whatsapp_url || '';
+                if (wa) {
+                    if (!wa.startsWith('http')) {
+                        const num = wa.replace(/[^0-9]/g, '');
+                        wa = `https://wa.me/${num}`;
+                    }
+                    waBtn.href = wa;
+                } else if (cleanPhone) {
+                    const num = cleanPhone.replace('+', '');
+                    waBtn.href = `https://wa.me/${num}`;
+                } else {
+                    waBtn.href = '#';
+                }
+            }
 
             // Reset table selection
             selectedTable = null;

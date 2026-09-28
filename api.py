@@ -193,6 +193,114 @@ async def update_booking_status_endpoint(request: web.Request) -> web.Response:
 
     return web.json_response({"success": True, "booking": booking})
 
+async def create_restaurant_endpoint(request: web.Request) -> web.Response:
+    try:
+        data = await request.json()
+    except Exception:
+        return web.json_response({"error": "Invalid JSON"}, status=400)
+
+    name = str(data.get("name", "")).strip()
+    city = str(data.get("city", "Алматы")).strip()
+    cuisine = str(data.get("cuisine", "Европейская")).strip()
+    address = str(data.get("address", "")).strip()
+    phone = str(data.get("phone", "")).strip()
+
+    if not name or len(name) < 2:
+        return web.json_response({"error": "Name is required (at least 2 chars)"}, status=400)
+
+    rest_id = database.create_restaurant(
+        name=name,
+        city=city,
+        cuisine=cuisine,
+        address=address,
+        phone=phone,
+        rating=float(data.get("rating", 4.9)),
+        avg_check=int(data.get("avg_check", 8000)),
+        cover_image=data.get("cover_image", "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80"),
+        description=data.get("description", ""),
+        working_hours=data.get("working_hours", "11:00 - 00:00"),
+        two_gis_url=data.get("two_gis_url", ""),
+        instagram_url=data.get("instagram_url", ""),
+        whatsapp_url=data.get("whatsapp_url", ""),
+        telegram_url=data.get("telegram_url", ""),
+        website_url=data.get("website_url", "")
+    )
+    rest = database.get_restaurant_by_id(rest_id)
+    return web.json_response({"success": True, "id": rest_id, "restaurant": rest})
+
+async def update_restaurant_endpoint(request: web.Request) -> web.Response:
+    try:
+        restaurant_id = int(request.match_info["id"])
+        data = await request.json()
+    except Exception:
+        return web.json_response({"error": "Invalid request parameters"}, status=400)
+
+    ok = database.update_restaurant(restaurant_id, **data)
+    rest = database.get_restaurant_by_id(restaurant_id)
+    return web.json_response({"success": ok, "restaurant": rest})
+
+async def add_menu_item_endpoint(request: web.Request) -> web.Response:
+    try:
+        restaurant_id = int(request.match_info["id"])
+        data = await request.json()
+    except Exception:
+        return web.json_response({"error": "Invalid JSON"}, status=400)
+
+    title = str(data.get("title", "")).strip()
+    price = int(data.get("price", 0))
+    category_name = str(data.get("category", data.get("category_name", "Основные блюда"))).strip()
+
+    if not title or price <= 0:
+        return web.json_response({"error": "Title and positive price required"}, status=400)
+
+    item_id = database.add_menu_item(
+        restaurant_id=restaurant_id,
+        category_name=category_name,
+        title=title,
+        price=price,
+        description=data.get("description", ""),
+        weight=data.get("weight", ""),
+        image_url=data.get("image_url", "")
+    )
+    menu = database.get_restaurant_menu(restaurant_id)
+    return web.json_response({"success": True, "item_id": item_id, "menu": menu})
+
+async def delete_menu_item_endpoint(request: web.Request) -> web.Response:
+    try:
+        item_id = int(request.match_info["id"])
+    except ValueError:
+        return web.json_response({"error": "Invalid item ID"}, status=400)
+
+    ok = database.delete_menu_item(item_id)
+    return web.json_response({"success": ok})
+
+async def add_table_endpoint(request: web.Request) -> web.Response:
+    try:
+        restaurant_id = int(request.match_info["id"])
+        data = await request.json()
+        table_number = int(data["table_number"])
+        seats = int(data.get("seats", 4))
+    except Exception:
+        return web.json_response({"error": "Invalid parameters"}, status=400)
+
+    table_id = database.add_table(
+        restaurant_id=restaurant_id,
+        table_number=table_number,
+        seats=seats,
+        zone_type=data.get("zone_type", "Основной зал"),
+        description=data.get("description", "")
+    )
+    return web.json_response({"success": True, "table_id": table_id})
+
+async def delete_table_endpoint(request: web.Request) -> web.Response:
+    try:
+        table_id = int(request.match_info["id"])
+    except ValueError:
+        return web.json_response({"error": "Invalid table ID"}, status=400)
+
+    ok = database.delete_table(table_id)
+    return web.json_response({"success": ok})
+
 async def index_page(request: web.Request) -> web.FileResponse:
     import os
     index_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.html")
@@ -213,9 +321,15 @@ def create_web_app(notify_booking_func=None, notify_status_func=None) -> web.App
 
     # API routes
     app.router.add_get("/api/restaurants", get_restaurants)
+    app.router.add_post("/api/restaurants", create_restaurant_endpoint)
     app.router.add_get("/api/restaurants/{id}", get_restaurant)
+    app.router.add_put("/api/restaurants/{id}", update_restaurant_endpoint)
     app.router.add_get("/api/restaurants/{id}/menu", get_restaurant_menu)
+    app.router.add_post("/api/restaurants/{id}/menu", add_menu_item_endpoint)
+    app.router.add_delete("/api/menu/{id}", delete_menu_item_endpoint)
     app.router.add_get("/api/restaurants/{id}/tables", get_restaurant_tables)
+    app.router.add_post("/api/restaurants/{id}/tables", add_table_endpoint)
+    app.router.add_delete("/api/tables/{id}", delete_table_endpoint)
     app.router.add_post("/api/bookings", create_booking_endpoint)
     app.router.add_get("/api/bookings/my", get_my_bookings)
     app.router.add_get("/api/admin/bookings", get_admin_bookings_endpoint)

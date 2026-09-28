@@ -87,26 +87,33 @@
                             <h1 class="font-bold text-base tracking-tight text-[#f3f1ed] font-serif-luxury">RestoKZ <span class="text-[#c5a880]">PRO</span></h1>
                             <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
                                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                                Смена активна
+                                <span id="lblShiftActive">Смена активна</span>
                             </span>
                         </div>
-                        <p class="text-[11px] text-[#98948c]">Терминал хостес и управления посадкой</p>
+                        <p id="lblHeaderSubtitle" class="text-[11px] text-[#98948c]">Терминал хостес и управления посадкой</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-1.5">
-                    <button onclick="manualRefresh()" class="w-9 h-9 rounded-xl bg-[#15171d] hover:bg-[#1c1f26] border border-white/10 flex items-center justify-center text-sm text-[#c5a880] active:scale-95 transition" title="Обновить данные">
+                    <!-- Language selector (RU / KZ / EN) -->
+                    <div class="flex items-center bg-[#15171d] border border-white/10 rounded-lg p-0.5 shadow-sm">
+                        <button type="button" onclick="setAdminLanguage('ru')" id="adminLangBtn-ru" class="px-1.5 py-1 text-[10px] font-bold rounded-md bg-[#c5a880] text-[#0e1013] transition">RU</button>
+                        <button type="button" onclick="setAdminLanguage('kz')" id="adminLangBtn-kz" class="px-1.5 py-1 text-[10px] font-bold rounded-md text-zinc-400 hover:text-white transition">KZ</button>
+                        <button type="button" onclick="setAdminLanguage('en')" id="adminLangBtn-en" class="px-1.5 py-1 text-[10px] font-bold rounded-md text-zinc-400 hover:text-white transition">EN</button>
+                    </div>
+
+                    <button onclick="manualRefresh()" class="w-8 h-8 rounded-xl bg-[#15171d] hover:bg-[#1c1f26] border border-white/10 flex items-center justify-center text-xs text-[#c5a880] active:scale-95 transition" title="Обновить данные">
                         🔄
                     </button>
-                    <a href="index.html" class="px-2.5 h-9 rounded-xl bg-[#15171d] hover:bg-[#1c1f26] border border-white/10 flex items-center gap-1 text-[11px] font-medium text-zinc-400 hover:text-white transition" title="Открыть витрину гостя">
+                    <a href="index.html" class="px-2 h-8 rounded-xl bg-[#15171d] hover:bg-[#1c1f26] border border-white/10 flex items-center gap-1 text-[11px] font-medium text-zinc-400 hover:text-white transition" title="Открыть витрину гостя">
                         <span>🍽</span>
-                        <span class="hidden sm:inline">Гость</span>
+                        <span class="hidden sm:inline" id="lblGuestBtn">Гость</span>
                     </a>
                 </div>
             </div>
 
             <!-- ВЫБОР РЕСТОРАНА (ТОЧКИ) -->
             <div class="flex items-center gap-2 bg-[#15171d] border border-[#c5a880]/20 rounded-xl px-3 py-2">
-                <span class="text-xs text-[#c5a880] font-semibold whitespace-nowrap">🏛 Заведение:</span>
+                <span id="lblRestDropdown" class="text-xs text-[#c5a880] font-semibold whitespace-nowrap">🏛 Заведение:</span>
                 <select id="adminRestSelect" onchange="onRestaurantChange()" class="w-full bg-transparent text-xs font-bold text-[#f3f1ed] focus:outline-none cursor-pointer">
                     <option value="all" class="bg-[#15171d] text-white">🌐 Все рестораны сети (6 точек)</option>
                 </select>
@@ -300,25 +307,280 @@
             </div>
         </section>
 
+        <!-- ================= ВКЛАДКА 4: УПРАВЛЕНИЕ РЕСТОРАНОМ & РЕГИСТРАЦИЯ ================= -->
+        <section id="tab-manage" class="hidden space-y-4 fade-in">
+            <!-- Header of Manage Tab -->
+            <div class="bg-[#15171d] border border-[#c5a880]/25 rounded-2xl p-4 space-y-3">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 id="lblManageTitle" class="text-base font-bold text-[#f3f1ed] font-serif-luxury">🏛 Управление рестораном & Регистрация</h2>
+                        <p id="lblManageSub" class="text-xs text-[#98948c]">Редактируйте профиль, соцсети, 2GIS, меню и схему столов</p>
+                    </div>
+                </div>
+
+                <!-- Select Restaurant or Register New -->
+                <div class="space-y-2 pt-1 border-t border-white/5">
+                    <div class="flex items-center justify-between gap-2">
+                        <label id="lblSelectRestToEdit" class="text-xs text-zinc-400 font-semibold whitespace-nowrap">Заведение:</label>
+                        <button type="button" onclick="startNewRestaurantMode()" id="btnStartNewRest" class="px-2.5 py-1 text-[11px] font-bold rounded-lg bg-[#c5a880]/20 hover:bg-[#c5a880]/30 text-[#dfcaab] border border-[#c5a880]/40 transition">
+                            ➕ Зарегистрировать новое
+                        </button>
+                    </div>
+                    <select id="manageRestSelect" onchange="onManageRestSelectChange()" class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-3 py-2 text-xs font-semibold text-white focus:outline-none focus:border-[#c5a880]"></select>
+                </div>
+            </div>
+
+            <!-- CARD 1: Профиль и Соцсети -->
+            <div class="bg-[#15171d] border border-white/10 rounded-2xl p-4 space-y-3.5">
+                <div class="flex items-center justify-between border-b border-white/5 pb-2">
+                    <h3 id="lblProfileSection" class="text-sm font-bold text-[#dfcaab] flex items-center gap-1.5">
+                        <span>📝</span> <span>Профиль заведения</span>
+                    </h3>
+                    <span id="badgeRestMode" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">Редактирование</span>
+                </div>
+
+                <div class="space-y-2.5">
+                    <div>
+                        <label id="lblRestName" class="text-xs text-zinc-400 block mb-1">Название ресторана *</label>
+                        <input id="editRestName" type="text" placeholder="Например: Sandyq" class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label id="lblRestCity" class="text-xs text-zinc-400 block mb-1">Город *</label>
+                            <select id="editRestCity" class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-2.5 py-2 text-xs text-white focus:outline-none focus:border-[#c5a880]">
+                                <option value="Алматы">Алматы</option>
+                                <option value="Астана">Астана</option>
+                                <option value="Шымкент">Шымкент</option>
+                                <option value="Караганда">Караганда</option>
+                                <option value="Актобе">Актобе</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label id="lblRestCuisine" class="text-xs text-zinc-400 block mb-1">Кухня / Концепт *</label>
+                            <input id="editRestCuisine" type="text" placeholder="Например: Казахская, Мясная" class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label id="lblRestPhone" class="text-xs text-zinc-400 block mb-1">Телефон бронирования *</label>
+                            <input id="editRestPhone" type="text" placeholder="+7 (701) 000-00-00" class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
+                        </div>
+                        <div>
+                            <label id="lblRestAvgCheck" class="text-xs text-zinc-400 block mb-1">Средний чек (₸)</label>
+                            <input id="editRestAvgCheck" type="number" placeholder="8500" class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label id="lblRestAddress" class="text-xs text-zinc-400 block mb-1">Точный адрес *</label>
+                        <input id="editRestAddress" type="text" placeholder="ул. Сатпаева, 29/6" class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label id="lblRestHours" class="text-xs text-zinc-400 block mb-1">Время работы</label>
+                            <input id="editRestHours" type="text" placeholder="11:00 - 00:00" class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
+                        </div>
+                        <div>
+                            <label id="lblRestCover" class="text-xs text-zinc-400 block mb-1">Фото обложки (URL)</label>
+                            <input id="editRestCover" type="url" placeholder="https://images.unsplash.com/..." class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label id="lblRestDesc" class="text-xs text-zinc-400 block mb-1">Описание заведения</label>
+                        <textarea id="editRestDesc" rows="2" placeholder="Атмосфера, фирменные блюда, особенности..." class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]"></textarea>
+                    </div>
+
+                    <!-- Social Media & 2GIS -->
+                    <div class="pt-2 border-t border-white/5 space-y-2">
+                        <div id="lblSocialHeader" class="text-[11px] font-bold text-[#c5a880] uppercase tracking-wider flex items-center gap-1">
+                            <span>🌐</span> <span>Социальные сети, 2GIS и Карты</span>
+                        </div>
+
+                        <div>
+                            <label class="text-[11px] text-zinc-400 block mb-0.5">🗺️ Ссылка на 2GIS / Карты</label>
+                            <input id="editRest2Gis" type="url" placeholder="https://2gis.kz/almaty/firm/..." class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="text-[11px] text-zinc-400 block mb-0.5">📸 Instagram</label>
+                                <input id="editRestInstagram" type="text" placeholder="@restaurant или ссылка" class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
+                            </div>
+                            <div>
+                                <label class="text-[11px] text-zinc-400 block mb-0.5">💬 WhatsApp</label>
+                                <input id="editRestWhatsApp" type="text" placeholder="+7 (701) 000-00-00" class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="text-[11px] text-zinc-400 block mb-0.5">✈️ Telegram</label>
+                                <input id="editRestTelegram" type="text" placeholder="@channel или ссылка" class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
+                            </div>
+                            <div>
+                                <label class="text-[11px] text-zinc-400 block mb-0.5">🌐 Веб-сайт</label>
+                                <input id="editRestWebsite" type="url" placeholder="https://mysite.kz" class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" onclick="saveRestaurantProfile()" id="btnSaveRestProfile" class="w-full py-3 rounded-xl font-bold text-xs luxury-gold-btn transition mt-2">
+                        💾 Сохранить изменения профиля
+                    </button>
+                </div>
+            </div>
+
+            <!-- CARD 2: Управление Меню -->
+            <div id="manageMenuCard" class="bg-[#15171d] border border-white/10 rounded-2xl p-4 space-y-3.5">
+                <div class="flex items-center justify-between border-b border-white/5 pb-2">
+                    <h3 id="lblMenuSection" class="text-sm font-bold text-[#dfcaab] flex items-center gap-1.5">
+                        <span>🍽</span> <span>Управление Меню</span>
+                    </h3>
+                    <span id="badgeMenuCount" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/10 text-zinc-300">0 блюд</span>
+                </div>
+
+                <!-- Dishes List for Selected Restaurant -->
+                <div id="adminDishesList" class="space-y-2 max-h-60 overflow-y-auto pr-1"></div>
+
+                <!-- Add New Dish Form -->
+                <div class="bg-[#0e1013] border border-white/5 rounded-xl p-3 space-y-2.5">
+                    <h4 id="lblAddDishTitle" class="text-xs font-bold text-white flex items-center gap-1">
+                        <span>➕</span> <span>Добавить блюдо в меню</span>
+                    </h4>
+                    
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="text-[10px] text-zinc-400 block mb-0.5">Категория</label>
+                            <select id="newDishCategory" class="w-full bg-[#15171d] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#c5a880]">
+                                <option value="Закуски и Салаты">Закуски и Салаты</option>
+                                <option value="Основные блюда">Основные блюда</option>
+                                <option value="Стейки и Гриль">Стейки и Гриль</option>
+                                <option value="Выпечка и Пицца">Выпечка и Пицца</option>
+                                <option value="Десерты">Десерты</option>
+                                <option value="Напитки">Напитки</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-[10px] text-zinc-400 block mb-0.5">Название блюда *</label>
+                            <input id="newDishTitle" type="text" placeholder="Например: Салат Ачичук" class="w-full bg-[#15171d] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="text-[10px] text-zinc-400 block mb-0.5">Цена (₸) *</label>
+                            <input id="newDishPrice" type="number" placeholder="3500" class="w-full bg-[#15171d] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
+                        </div>
+                        <div>
+                            <label class="text-[10px] text-zinc-400 block mb-0.5">Вес / Выход</label>
+                            <input id="newDishWeight" type="text" placeholder="250 г" class="w-full bg-[#15171d] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="text-[10px] text-zinc-400 block mb-0.5">Описание / Состав</label>
+                        <input id="newDishDesc" type="text" placeholder="Свежие томаты, ялтинский лук, базилик" class="w-full bg-[#15171d] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
+                    </div>
+
+                    <div>
+                        <label class="text-[10px] text-zinc-400 block mb-0.5">Ссылка на фото блюда (URL)</label>
+                        <input id="newDishPhoto" type="url" placeholder="https://..." class="w-full bg-[#15171d] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
+                    </div>
+
+                    <button type="button" onclick="submitNewDish()" id="btnAddDishBtn" class="w-full py-2.5 rounded-xl font-bold text-xs bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 transition">
+                        ➕ Добавить блюдо в меню
+                    </button>
+                </div>
+            </div>
+
+            <!-- CARD 3: Конструктор Столиков -->
+            <div id="manageTablesCard" class="bg-[#15171d] border border-white/10 rounded-2xl p-4 space-y-3.5">
+                <div class="flex items-center justify-between border-b border-white/5 pb-2">
+                    <h3 id="lblTablesSection" class="text-sm font-bold text-[#dfcaab] flex items-center gap-1.5">
+                        <span>🪑</span> <span>Управление Столиками Зала</span>
+                    </h3>
+                    <span id="badgeTablesCount" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/10 text-zinc-300">0 столов</span>
+                </div>
+
+                <!-- Tables List for Selected Restaurant -->
+                <div id="adminTablesList" class="grid grid-cols-2 gap-2 max-h-60 overflow-y-auto pr-1"></div>
+
+                <!-- Add New Table Form -->
+                <div class="bg-[#0e1013] border border-white/5 rounded-xl p-3 space-y-2.5">
+                    <h4 id="lblAddTableTitle" class="text-xs font-bold text-white flex items-center gap-1">
+                        <span>➕</span> <span>Добавить новый стол</span>
+                    </h4>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="text-[10px] text-zinc-400 block mb-0.5">Номер стола *</label>
+                            <input id="newTableNumber" type="number" placeholder="9" class="w-full bg-[#15171d] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
+                        </div>
+                        <div>
+                            <label class="text-[10px] text-zinc-400 block mb-0.5">Вместимость (персон) *</label>
+                            <select id="newTableSeats" class="w-full bg-[#15171d] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#c5a880]">
+                                <option value="2">2 персоны</option>
+                                <option value="4" selected>4 персоны</option>
+                                <option value="6">6 персон</option>
+                                <option value="8">8 персон (Банкетный)</option>
+                                <option value="10">10 персон (VIP)</option>
+                                <option value="12">12+ персон</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="text-[10px] text-zinc-400 block mb-0.5">Зона зала *</label>
+                        <select id="newTableZone" class="w-full bg-[#15171d] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#c5a880]">
+                            <option value="Основной зал">Основной зал</option>
+                            <option value="У панорамного окна">У панорамного окна</option>
+                            <option value="Летняя терраса">Летняя терраса</option>
+                            <option value="Диванная зона">Диванная зона</option>
+                            <option value="VIP-кабина">VIP-кабина</option>
+                            <option value="Топчан / Этно-зона">Топчан / Этно-зона</option>
+                            <option value="Банкетный зал">Банкетный зал</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="text-[10px] text-zinc-400 block mb-0.5">Описание / Пожелание</label>
+                        <input id="newTableDesc" type="text" placeholder="Уютный столик у камина, вид на город" class="w-full bg-[#15171d] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
+                    </div>
+
+                    <button type="button" onclick="submitNewTable()" id="btnAddTableBtn" class="w-full py-2.5 rounded-xl font-bold text-xs bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/40 transition">
+                        ➕ Добавить столик в зал
+                    </button>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <!-- НИЖНЯЯ НАВИГАЦИЯ ТЕРМИНАЛА РЕСТОРАНА -->
-    <nav class="fixed bottom-0 left-0 right-0 z-40 glass-header border-t border-[#c5a880]/20 px-4 py-2">
-        <div class="max-w-md mx-auto grid grid-cols-3 gap-2">
+    <nav class="fixed bottom-0 left-0 right-0 z-40 glass-header border-t border-[#c5a880]/20 px-3 py-2">
+        <div class="max-w-md mx-auto grid grid-cols-4 gap-1.5">
             <button onclick="switchTab('orders')" id="navBtn-orders" class="flex flex-col items-center justify-center py-1.5 rounded-xl bg-[#c5a880]/15 text-[#dfcaab] border border-[#c5a880]/30 transition">
                 <div class="relative">
                     <span class="text-base">📋</span>
                     <span id="navBadgePending" class="hidden absolute -top-1 -right-3 px-1.5 py-0.2 rounded-full text-[9px] font-bold bg-[#c5a880] text-[#0e1013]">0</span>
                 </div>
-                <span class="text-[10px] font-semibold mt-0.5">Журнал заявок</span>
+                <span id="lblNavOrders" class="text-[9px] font-semibold mt-0.5">Заявки</span>
             </button>
             <button onclick="switchTab('floor')" id="navBtn-floor" class="flex flex-col items-center justify-center py-1.5 rounded-xl text-zinc-400 hover:text-white transition">
                 <span class="text-base">🪑</span>
-                <span class="text-[10px] font-medium mt-0.5">Зал и Посадка</span>
+                <span id="lblNavFloor" class="text-[9px] font-medium mt-0.5">Зал/Столы</span>
             </button>
             <button onclick="switchTab('walkin')" id="navBtn-walkin" class="flex flex-col items-center justify-center py-1.5 rounded-xl text-zinc-400 hover:text-white transition">
                 <span class="text-base">➕</span>
-                <span class="text-[10px] font-medium mt-0.5">Бронь по звонку</span>
+                <span id="lblNavWalkin" class="text-[9px] font-medium mt-0.5">По звонку</span>
+            </button>
+            <button onclick="switchTab('manage')" id="navBtn-manage" class="flex flex-col items-center justify-center py-1.5 rounded-xl text-zinc-400 hover:text-white transition">
+                <span class="text-base">🏛</span>
+                <span id="lblNavManage" class="text-[9px] font-medium mt-0.5">Мой Ресторан</span>
             </button>
         </div>
     </nav>
@@ -439,11 +701,290 @@
             } catch(e){}
         }
 
+        let currentAdminLang = localStorage.getItem('restokz_admin_lang') || localStorage.getItem('restokz_lang') || 'ru';
+        let isNewRestaurantMode = false;
+        let manageSelectedRestId = 1;
         let bookings = [];
         let selectedRestId = 'all';
         let currentStatusFilter = 'all';
         let currentDateFilter = 'all';
         let currentTab = 'orders';
+
+        const ADMIN_I18N = {
+            ru: {
+                app_title: "RestoKZ PRO",
+                shift_active: "Смена активна",
+                shift_sub: "Терминал хостес и управления посадкой",
+                guest_btn: "Гость",
+                rest_label: "🏛 Заведение:",
+                all_chain: "🌐 Все рестораны сети",
+                kpi_pending: "Ждут ответа",
+                kpi_pending_sub: "Новые заявки",
+                kpi_confirmed: "Подтверждено",
+                kpi_confirmed_sub: "Столов в брони",
+                kpi_guests: "Гостей в смене",
+                kpi_guests_sub: "Посмотреть зал →",
+                search_ph: "Поиск по имени, телефону или #ID...",
+                days_all: "Все дни",
+                days_today: "Сегодня",
+                days_tomorrow: "Завтра",
+                test_booking: "+ Тест-бронь",
+                status_all: "Все",
+                status_pending: "⏳ Новые",
+                status_confirmed: "✅ Подтверждены",
+                status_arrived: "🥂 За столом",
+                status_rejected: "❌ Отмена",
+                btn_confirm: "✅ Подтвердить",
+                btn_seat: "🥂 Посадить",
+                btn_arrived: "🥂 Пришли",
+                btn_release: "🔓 Освободить",
+                btn_cancel: "❌ Отмена",
+                btn_delete: "🗑 Удалить",
+                nav_orders: "Заявки",
+                nav_floor: "Зал/Столы",
+                nav_walkin: "По звонку",
+                nav_manage: "Мой Ресторан",
+                manage_title: "🏛 Управление рестораном & Регистрация",
+                manage_sub: "Редактируйте профиль, соцсети, 2GIS, меню и схему столов",
+                select_rest_edit: "Заведение:",
+                btn_start_new: "➕ Зарегистрировать новое",
+                profile_section: "Профиль заведения",
+                mode_edit: "Редактирование",
+                mode_new: "Регистрация нового заведения",
+                name_label: "Название ресторана *",
+                city_label: "Город *",
+                cuisine_label: "Кухня / Концепт *",
+                phone_label: "Телефон бронирования *",
+                check_label: "Средний чек (₸)",
+                address_label: "Точный адрес *",
+                hours_label: "Время работы",
+                cover_label: "Фото обложки (URL)",
+                desc_label: "Описание заведения",
+                social_header: "Социальные сети, 2GIS и Карты",
+                save_profile_btn: "💾 Сохранить изменения профиля",
+                create_profile_btn: "✨ Зарегистрировать ресторан в системе",
+                menu_section: "Управление Меню",
+                add_dish_title: "Добавить блюдо в меню",
+                add_dish_btn: "➕ Добавить блюдо в меню",
+                tables_section: "Управление Столиками Зала",
+                add_table_title: "Добавить новый стол",
+                add_table_btn: "➕ Добавить столик в зал",
+                saved_toast: "Профиль заведения сохранён",
+                created_toast: "Ресторан успешно зарегистрирован!",
+                dish_added_toast: "Блюдо добавлено в меню",
+                dish_deleted_toast: "Блюдо удалено из меню",
+                table_added_toast: "Столик добавлен в зал",
+                table_deleted_toast: "Столик удалён"
+            },
+            kz: {
+                app_title: "RestoKZ PRO",
+                shift_active: "Ауысым белсенді",
+                shift_sub: "Хостес және мейрамхананы басқару терминалы",
+                guest_btn: "Қонақ",
+                rest_label: "🏛 Мейрамхана:",
+                all_chain: "🌐 Желідегі барлық мейрамханалар",
+                kpi_pending: "Жауап күтуде",
+                kpi_pending_sub: "Жаңа өтінімдер",
+                kpi_confirmed: "Расталды",
+                kpi_confirmed_sub: "Брондалған үстелдер",
+                kpi_guests: "Ауысымдағы қонақтар",
+                kpi_guests_sub: "Залды қарау →",
+                search_ph: "Аты, телефоны немесе #ID бойынша іздеу...",
+                days_all: "Барлық күндер",
+                days_today: "Бүгін",
+                days_tomorrow: "Ертең",
+                test_booking: "+ Тест-бронь",
+                status_all: "Барлығы",
+                status_pending: "⏳ Жаңа",
+                status_confirmed: "✅ Расталған",
+                status_arrived: "🥂 Үстелде",
+                status_rejected: "❌ Бас тартылды",
+                btn_confirm: "✅ Растау",
+                btn_seat: "🥂 Отырғызу",
+                btn_arrived: "🥂 Келді",
+                btn_release: "🔓 Босату",
+                btn_cancel: "❌ Бас тарту",
+                btn_delete: "🗑 Жою",
+                nav_orders: "Өтінімдер",
+                nav_floor: "Зал/Үстелдер",
+                nav_walkin: "Қоңырау арқылы",
+                nav_manage: "Мейрамханам",
+                manage_title: "🏛 Мейрамхананы басқару & Тіркеу",
+                manage_sub: "Профильді, әлеуметтік желілерді, 2GIS, мәзірді және үстелдерді өңдеңіз",
+                select_rest_edit: "Мейрамхана:",
+                btn_start_new: "➕ Жаңа мейрамхана тіркеу",
+                profile_section: "Мейрамхана профилі",
+                mode_edit: "Өңдеу",
+                mode_new: "Жаңа мейрамхананы тіркеу",
+                name_label: "Мейрамхана аты *",
+                city_label: "Қала *",
+                cuisine_label: "Тағам түрі / Тұжырымдама *",
+                phone_label: "Байланыс телефоны *",
+                check_label: "Орташа чек (₸)",
+                address_label: "Нақты мекенжайы *",
+                hours_label: "Жұмыс уақыты",
+                cover_label: "Мұқаба фотосы (URL)",
+                desc_label: "Мейрамхана сипаттамасы",
+                social_header: "Әлеуметтік желілер, 2GIS және Карталар",
+                save_profile_btn: "💾 Профиль өзгерістерін сақтау",
+                create_profile_btn: "✨ Мейрамхананы жүйеге тіркеу",
+                menu_section: "Мәзірді басқару",
+                add_dish_title: "Мәзірге тағам қосу",
+                add_dish_btn: "➕ Мәзірге тағам қосу",
+                tables_section: "Үстелдерді басқару",
+                add_table_title: "Жаңа үстел қосу",
+                add_table_btn: "➕ Залға үстел қосу",
+                saved_toast: "Мейрамхана профилі сақталды",
+                created_toast: "Мейрамхана сәтті тіркелді!",
+                dish_added_toast: "Тағам мәзірге қосылды",
+                dish_deleted_toast: "Тағам мәзірден өшірілді",
+                table_added_toast: "Үстел залға қосылды",
+                table_deleted_toast: "Үстел өшірілді"
+            },
+            en: {
+                app_title: "RestoKZ PRO",
+                shift_active: "Shift Active",
+                shift_sub: "Hostess & Restaurant Management Terminal",
+                guest_btn: "Guest",
+                rest_label: "🏛 Restaurant:",
+                all_chain: "🌐 All chain restaurants",
+                kpi_pending: "Pending",
+                kpi_pending_sub: "New requests",
+                kpi_confirmed: "Confirmed",
+                kpi_confirmed_sub: "Booked tables",
+                kpi_guests: "Shift guests",
+                kpi_guests_sub: "View floor map →",
+                search_ph: "Search by name, phone or #ID...",
+                days_all: "All days",
+                days_today: "Today",
+                days_tomorrow: "Tomorrow",
+                test_booking: "+ Test Booking",
+                status_all: "All",
+                status_pending: "⏳ New",
+                status_confirmed: "✅ Confirmed",
+                status_arrived: "🥂 Seated",
+                status_rejected: "❌ Declined",
+                btn_confirm: "✅ Confirm",
+                btn_seat: "🥂 Seat",
+                btn_arrived: "🥂 Arrived",
+                btn_release: "🔓 Free table",
+                btn_cancel: "❌ Cancel",
+                btn_delete: "🗑 Delete",
+                nav_orders: "Orders",
+                nav_floor: "Floor/Tables",
+                nav_walkin: "Walk-in",
+                nav_manage: "My Restaurant",
+                manage_title: "🏛 Restaurant Management & Registration",
+                manage_sub: "Edit profile, social links, 2GIS, menu, and floor layout",
+                select_rest_edit: "Restaurant:",
+                btn_start_new: "➕ Register New",
+                profile_section: "Restaurant Profile",
+                mode_edit: "Editing",
+                mode_new: "New Restaurant Registration",
+                name_label: "Restaurant Name *",
+                city_label: "City *",
+                cuisine_label: "Cuisine / Concept *",
+                phone_label: "Booking Phone *",
+                check_label: "Average Check (₸)",
+                address_label: "Exact Address *",
+                hours_label: "Opening Hours",
+                cover_label: "Cover Photo (URL)",
+                desc_label: "Description",
+                social_header: "Social Networks, 2GIS & Maps",
+                save_profile_btn: "💾 Save Profile Changes",
+                create_profile_btn: "✨ Register Restaurant in System",
+                menu_section: "Menu Management",
+                add_dish_title: "Add Dish to Menu",
+                add_dish_btn: "➕ Add Dish to Menu",
+                tables_section: "Floor & Table Constructor",
+                add_table_title: "Add New Table",
+                add_table_btn: "➕ Add Table to Hall",
+                saved_toast: "Restaurant profile saved",
+                created_toast: "Restaurant successfully registered!",
+                dish_added_toast: "Dish added to menu",
+                dish_deleted_toast: "Dish deleted from menu",
+                table_added_toast: "Table added to floor",
+                table_deleted_toast: "Table deleted"
+            }
+        };
+
+        function setAdminLanguage(lang) {
+            currentAdminLang = lang;
+            try { 
+                localStorage.setItem('restokz_admin_lang', lang);
+                localStorage.setItem('restokz_lang', lang); 
+            } catch(e){}
+
+            ['ru', 'kz', 'en'].forEach(l => {
+                const btn = document.getElementById(`adminLangBtn-${l}`);
+                if (!btn) return;
+                if (l === lang) {
+                    btn.className = "px-1.5 py-1 text-[10px] font-bold rounded-md bg-[#c5a880] text-[#0e1013] transition shadow-sm";
+                } else {
+                    btn.className = "px-1.5 py-1 text-[10px] font-bold rounded-md text-zinc-400 hover:text-white transition";
+                }
+            });
+
+            applyAdminTranslations();
+            renderOrders();
+            renderFloorMap();
+        }
+
+        function applyAdminTranslations() {
+            const t = ADMIN_I18N[currentAdminLang] || ADMIN_I18N.ru;
+            const el = (id) => document.getElementById(id);
+
+            if (el('lblShiftActive')) el('lblShiftActive').innerText = t.shift_active;
+            if (el('lblHeaderSubtitle')) el('lblHeaderSubtitle').innerText = t.shift_sub;
+            if (el('lblGuestBtn')) el('lblGuestBtn').innerText = t.guest_btn;
+            if (el('lblRestDropdown')) el('lblRestDropdown').innerText = t.rest_label;
+
+            if (el('lblNavOrders')) el('lblNavOrders').innerText = t.nav_orders;
+            if (el('lblNavFloor')) el('lblNavFloor').innerText = t.nav_floor;
+            if (el('lblNavWalkin')) el('lblNavWalkin').innerText = t.nav_walkin;
+            if (el('lblNavManage')) el('lblNavManage').innerText = t.nav_manage;
+
+            if (el('lblManageTitle')) el('lblManageTitle').innerText = t.manage_title;
+            if (el('lblManageSub')) el('lblManageSub').innerText = t.manage_sub;
+            if (el('lblSelectRestToEdit')) el('lblSelectRestToEdit').innerText = t.select_rest_edit;
+            if (el('btnStartNewRest')) el('btnStartNewRest').innerText = t.btn_start_new;
+
+            if (el('lblProfileSection')) el('lblProfileSection').innerHTML = `<span>📝</span> <span>${t.profile_section}</span>`;
+            if (el('lblRestName')) el('lblRestName').innerText = t.name_label;
+            if (el('lblRestCity')) el('lblRestCity').innerText = t.city_label;
+            if (el('lblRestCuisine')) el('lblRestCuisine').innerText = t.cuisine_label;
+            if (el('lblRestPhone')) el('lblRestPhone').innerText = t.phone_label;
+            if (el('lblRestAvgCheck')) el('lblRestAvgCheck').innerText = t.check_label;
+            if (el('lblRestAddress')) el('lblRestAddress').innerText = t.address_label;
+            if (el('lblRestHours')) el('lblRestHours').innerText = t.hours_label;
+            if (el('lblRestCover')) el('lblRestCover').innerText = t.cover_label;
+            if (el('lblRestDesc')) el('lblRestDesc').innerText = t.desc_label;
+            if (el('lblSocialHeader')) el('lblSocialHeader').innerHTML = `<span>🌐</span> <span>${t.social_header}</span>`;
+
+            if (el('lblMenuSection')) el('lblMenuSection').innerHTML = `<span>🍽</span> <span>${t.menu_section}</span>`;
+            if (el('lblAddDishTitle')) el('lblAddDishTitle').innerHTML = `<span>➕</span> <span>${t.add_dish_title}</span>`;
+            if (el('btnAddDishBtn')) el('btnAddDishBtn').innerText = t.add_dish_btn;
+
+            if (el('lblTablesSection')) el('lblTablesSection').innerHTML = `<span>🪑</span> <span>${t.tables_section}</span>`;
+            if (el('lblAddTableTitle')) el('lblAddTableTitle').innerHTML = `<span>➕</span> <span>${t.add_table_title}</span>`;
+            if (el('btnAddTableBtn')) el('btnAddTableBtn').innerText = t.add_table_btn;
+
+            const modeBadge = el('badgeRestMode');
+            const saveBtn = el('btnSaveRestProfile');
+            if (isNewRestaurantMode) {
+                if (modeBadge) {
+                    modeBadge.innerText = t.mode_new;
+                    modeBadge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30";
+                }
+                if (saveBtn) saveBtn.innerText = t.create_profile_btn;
+            } else {
+                if (modeBadge) {
+                    modeBadge.innerText = t.mode_edit;
+                    modeBadge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30";
+                }
+                if (saveBtn) saveBtn.innerText = t.save_profile_btn;
+            }
+        }
 
         function getIsoDate(offsetDays = 0) {
             const d = new Date();
@@ -550,19 +1091,38 @@
                         id: sr.id,
                         name: sr.name,
                         city: sr.city || 'Алматы',
-                        cuisine: sr.cuisine || fallback.cuisine,
-                        tables: fallback.tables
+                        cuisine: sr.cuisine || fallback?.cuisine || 'Европейская',
+                        tables: fallback ? fallback.tables : [],
+                        address: sr.address || '',
+                        phone: sr.phone || '',
+                        avg_check: sr.avg_check || 0,
+                        working_hours: sr.working_hours || '',
+                        photo_url: sr.photo_url || '',
+                        description: sr.description || '',
+                        two_gis_url: sr.two_gis_url || '',
+                        instagram_url: sr.instagram_url || '',
+                        whatsapp_url: sr.whatsapp_url || '',
+                        telegram_url: sr.telegram_url || '',
+                        website_url: sr.website_url || ''
                     };
                 });
             }
 
             const restSelect = document.getElementById('adminRestSelect');
             const walkinRestSelect = document.getElementById('walkinRestSelect');
+            const manageRestSelect = document.getElementById('manageRestSelect');
 
             restSelect.innerHTML = `<option value="all" class="bg-[#15171d] text-white">🌐 Все рестораны сети (${RESTAURANTS.length} точек)</option>` +
                 RESTAURANTS.map(r => `<option value="${r.id}" class="bg-[#15171d] text-white">🏛 ${r.name} (${r.city})</option>`).join('');
 
             walkinRestSelect.innerHTML = RESTAURANTS.map(r => `<option value="${r.id}" class="bg-[#15171d] text-white">${r.name} (${r.city})</option>`).join('');
+
+            if (manageRestSelect) {
+                manageRestSelect.innerHTML = RESTAURANTS.map(r => `<option value="${r.id}" class="bg-[#15171d] text-white">🏛 ${r.name} (${r.city})</option>`).join('');
+                if (manageSelectedRestId) {
+                    manageRestSelect.value = String(manageSelectedRestId);
+                }
+            }
 
             const d0 = getIsoDate(0);
             const d1 = getIsoDate(1);
@@ -580,6 +1140,9 @@
             walkinDateSelect.innerHTML = dateOptions.map(d => `<option value="${d.val}">${d.label}</option>`).join('');
 
             await populateWalkinTables();
+            if (manageRestSelect && !isNewRestaurantMode) {
+                await onManageRestSelectChange();
+            }
         }
 
         async function populateWalkinTables() {
@@ -701,7 +1264,7 @@
 
         function switchTab(tab) {
             currentTab = tab;
-            ['orders', 'floor', 'walkin'].forEach(t => {
+            ['orders', 'floor', 'walkin', 'manage'].forEach(t => {
                 const sec = document.getElementById(`tab-${t}`);
                 const btn = document.getElementById(`navBtn-${t}`);
                 if (t === tab) {
@@ -713,6 +1276,7 @@
                 }
             });
             if (tab === 'floor') renderFloorMap();
+            if (tab === 'manage') onManageRestSelectChange();
         }
 
         function getStatusBadge(status) {
@@ -1084,7 +1648,366 @@
             showToast('Синхронизировано с облачным сервером', '🔄');
         }
 
+        // ================= УПРАВЛЕНИЕ РЕСТОРАНОМ, МЕНЮ И СТОЛИКАМИ =================
+        async function onManageRestSelectChange() {
+            const selectEl = document.getElementById('manageRestSelect');
+            if (!selectEl) return;
+            const rId = Number(selectEl.value) || 1;
+            manageSelectedRestId = rId;
+            isNewRestaurantMode = false;
+            applyAdminTranslations();
+
+            const rest = RESTAURANTS.find(r => r.id === rId) || RESTAURANTS[0];
+            if (!rest) return;
+
+            document.getElementById('editRestName').value = rest.name || '';
+            document.getElementById('editRestCity').value = rest.city || 'Алматы';
+            document.getElementById('editRestCuisine').value = rest.cuisine || '';
+            document.getElementById('editRestPhone').value = rest.phone || '';
+            document.getElementById('editRestAvgCheck').value = rest.avg_check || '';
+            document.getElementById('editRestAddress').value = rest.address || '';
+            document.getElementById('editRestHours').value = rest.working_hours || '';
+            document.getElementById('editRestCover').value = rest.photo_url || '';
+            document.getElementById('editRestDesc').value = rest.description || '';
+
+            const defaultGis = rest.address ? `https://2gis.kz/search/${encodeURIComponent(rest.name + ' ' + rest.address)}` : '';
+            document.getElementById('editRest2Gis').value = rest.two_gis_url || defaultGis;
+            document.getElementById('editRestInstagram').value = rest.instagram_url || '';
+            document.getElementById('editRestWhatsApp').value = rest.whatsapp_url || '';
+            document.getElementById('editRestTelegram').value = rest.telegram_url || '';
+            document.getElementById('editRestWebsite').value = rest.website_url || '';
+
+            document.getElementById('manageMenuCard').classList.remove('hidden');
+            document.getElementById('manageTablesCard').classList.remove('hidden');
+
+            await loadAdminMenu(rId);
+            await loadAdminTables(rId);
+        }
+
+        function startNewRestaurantMode() {
+            isNewRestaurantMode = true;
+            applyAdminTranslations();
+
+            document.getElementById('editRestName').value = '';
+            document.getElementById('editRestCity').value = 'Алматы';
+            document.getElementById('editRestCuisine').value = '';
+            document.getElementById('editRestPhone').value = '';
+            document.getElementById('editRestAvgCheck').value = '';
+            document.getElementById('editRestAddress').value = '';
+            document.getElementById('editRestHours').value = '11:00 - 00:00';
+            document.getElementById('editRestCover').value = '';
+            document.getElementById('editRestDesc').value = '';
+            document.getElementById('editRest2Gis').value = '';
+            document.getElementById('editRestInstagram').value = '';
+            document.getElementById('editRestWhatsApp').value = '';
+            document.getElementById('editRestTelegram').value = '';
+            document.getElementById('editRestWebsite').value = '';
+
+            document.getElementById('manageMenuCard').classList.add('hidden');
+            document.getElementById('manageTablesCard').classList.add('hidden');
+
+            document.getElementById('editRestName').focus();
+            showToast('Режим регистрации нового заведения', '✨');
+        }
+
+        async function saveRestaurantProfile() {
+            const name = document.getElementById('editRestName').value.trim();
+            if (!name) {
+                showToast('Укажите название заведения', '⚠️');
+                document.getElementById('editRestName').focus();
+                return;
+            }
+
+            const city = document.getElementById('editRestCity').value.trim() || 'Алматы';
+            const cuisine = document.getElementById('editRestCuisine').value.trim() || 'Европейская';
+            const phone = document.getElementById('editRestPhone').value.trim() || '+7 (701) 000-00-00';
+            const avg_check = Number(document.getElementById('editRestAvgCheck').value) || 5000;
+            const address = document.getElementById('editRestAddress').value.trim() || ('г. ' + city);
+            const working_hours = document.getElementById('editRestHours').value.trim() || '11:00 - 00:00';
+            const photo_url = document.getElementById('editRestCover').value.trim() || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&auto=format&fit=crop&q=80';
+            const description = document.getElementById('editRestDesc').value.trim() || '';
+
+            const two_gis_url = document.getElementById('editRest2Gis').value.trim();
+            const instagram_url = document.getElementById('editRestInstagram').value.trim();
+            const whatsapp_url = document.getElementById('editRestWhatsApp').value.trim();
+            const telegram_url = document.getElementById('editRestTelegram').value.trim();
+            const website_url = document.getElementById('editRestWebsite').value.trim();
+
+            const payload = {
+                name,
+                city,
+                cuisine,
+                phone,
+                avg_check,
+                address,
+                working_hours,
+                photo_url,
+                description,
+                instagram_url,
+                whatsapp_url,
+                telegram_url,
+                website_url
+            };
+
+            const t = ADMIN_I18N[currentAdminLang] || ADMIN_I18N.ru;
+
+            if (isNewRestaurantMode) {
+                const res = await apiFetch('/api/restaurants', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                let newRestId = Date.now();
+                if (res && res.restaurant && res.restaurant.id) {
+                    newRestId = res.restaurant.id;
+                    RESTAURANTS.push({
+                        ...res.restaurant,
+                        two_gis_url,
+                        tables: []
+                    });
+                } else {
+                    RESTAURANTS.push({
+                        id: newRestId,
+                        ...payload,
+                        two_gis_url,
+                        tables: [
+                            { id: newRestId * 10 + 1, number: 1, seats: 2, zone: 'Основной зал' },
+                            { id: newRestId * 10 + 2, number: 2, seats: 4, zone: 'Основной зал' }
+                        ]
+                    });
+                }
+
+                manageSelectedRestId = newRestId;
+                isNewRestaurantMode = false;
+                await initSelectors();
+                document.getElementById('manageRestSelect').value = String(newRestId);
+                await onManageRestSelectChange();
+                showToast(t.created_toast || 'Ресторан успешно зарегистрирован!', '✨');
+            } else {
+                await apiFetch(`/api/restaurants/${manageSelectedRestId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const idx = RESTAURANTS.findIndex(r => r.id === manageSelectedRestId);
+                if (idx !== -1) {
+                    RESTAURANTS[idx] = {
+                        ...RESTAURANTS[idx],
+                        ...payload,
+                        two_gis_url
+                    };
+                }
+
+                await initSelectors();
+                document.getElementById('manageRestSelect').value = String(manageSelectedRestId);
+                showToast(t.saved_toast || 'Профиль заведения сохранён', '💾');
+            }
+        }
+
+        async function loadAdminMenu(restId) {
+            const listEl = document.getElementById('adminDishesList');
+            const badgeEl = document.getElementById('badgeMenuCount');
+            if (!listEl) return;
+
+            listEl.innerHTML = '<div class="text-xs text-zinc-400 py-3 text-center animate-pulse">Загрузка меню...</div>';
+
+            const res = await apiFetch(`/api/restaurants/${restId}/menu`);
+            let dishes = [];
+            if (res && Array.isArray(res.menu)) {
+                if (res.menu.length > 0 && res.menu[0].items) {
+                    res.menu.forEach(cat => {
+                        (cat.items || []).forEach(it => {
+                            dishes.push({
+                                ...it,
+                                category: cat.name || it.category,
+                                name: it.title || it.name,
+                                photo_url: it.image_url || it.photo_url
+                            });
+                        });
+                    });
+                } else {
+                    dishes = res.menu.map(it => ({
+                        ...it,
+                        name: it.title || it.name,
+                        photo_url: it.image_url || it.photo_url
+                    }));
+                }
+            }
+
+            badgeEl.textContent = `${dishes.length} блюд`;
+
+            if (dishes.length === 0) {
+                listEl.innerHTML = `
+                    <div class="text-center py-6 text-zinc-500 bg-[#0e1013] rounded-xl border border-white/5 space-y-1">
+                        <div class="text-2xl">🍽</div>
+                        <div class="text-xs">В меню пока нет блюд</div>
+                        <div class="text-[10px] text-zinc-400">Добавьте первое блюдо с помощью формы ниже</div>
+                    </div>
+                `;
+                return;
+            }
+
+            listEl.innerHTML = dishes.map(d => `
+                <div class="bg-[#0e1013] border border-white/5 rounded-xl p-2.5 flex items-center justify-between gap-3 hover:border-white/10 transition">
+                    <div class="flex items-center gap-2.5 min-w-0">
+                        ${d.photo_url ? `<img src="${d.photo_url}" class="w-10 h-10 rounded-lg object-cover flex-shrink-0" onerror="this.style.display='none'">` : `<div class="w-10 h-10 rounded-lg bg-[#15171d] border border-white/5 flex items-center justify-center text-sm flex-shrink-0">🍽</div>`}
+                        <div class="min-w-0">
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-white/5 text-[#c5a880]">${d.category || 'Меню'}</span>
+                                <h4 class="text-xs font-bold text-white truncate">${d.name}</h4>
+                            </div>
+                            <div class="text-[10px] text-zinc-400 mt-0.5 flex items-center gap-2">
+                                <span class="text-[#dfcaab] font-bold">${Number(d.price).toLocaleString('ru-RU')} ₸</span>
+                                ${d.weight ? `<span>• ${d.weight}</span>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="deleteAdminDish(${d.id})" title="Удалить блюдо" class="p-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 transition flex-shrink-0">
+                        🗑
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        async function submitNewDish() {
+            const category = document.getElementById('newDishCategory').value.trim() || 'Основные блюда';
+            const name = document.getElementById('newDishTitle').value.trim();
+            const price = Number(document.getElementById('newDishPrice').value) || 0;
+            const weight = document.getElementById('newDishWeight').value.trim();
+            const description = document.getElementById('newDishDesc').value.trim();
+            const photo_url = document.getElementById('newDishPhoto').value.trim();
+
+            if (!name) {
+                showToast('Укажите название блюда', '⚠️');
+                document.getElementById('newDishTitle').focus();
+                return;
+            }
+            if (!price) {
+                showToast('Укажите цену блюда', '⚠️');
+                document.getElementById('newDishPrice').focus();
+                return;
+            }
+
+            const payload = { category, name, price, weight, description, photo_url };
+            await apiFetch(`/api/restaurants/${manageSelectedRestId}/menu`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            document.getElementById('newDishTitle').value = '';
+            document.getElementById('newDishPrice').value = '';
+            document.getElementById('newDishWeight').value = '';
+            document.getElementById('newDishDesc').value = '';
+            document.getElementById('newDishPhoto').value = '';
+
+            const t = ADMIN_I18N[currentAdminLang] || ADMIN_I18N.ru;
+            showToast(t.dish_added_toast || 'Блюдо добавлено в меню', '🍲');
+            await loadAdminMenu(manageSelectedRestId);
+        }
+
+        async function deleteAdminDish(dishId) {
+            if (!confirm('Удалить это блюдо из меню?')) return;
+            await apiFetch(`/api/menu/${dishId}`, { method: 'DELETE' });
+            const t = ADMIN_I18N[currentAdminLang] || ADMIN_I18N.ru;
+            showToast(t.dish_deleted_toast || 'Блюдо удалено из меню', '🗑');
+            await loadAdminMenu(manageSelectedRestId);
+        }
+
+        async function loadAdminTables(restId) {
+            const gridEl = document.getElementById('adminTablesList');
+            const badgeEl = document.getElementById('badgeTablesCount');
+            if (!gridEl) return;
+
+            gridEl.innerHTML = '<div class="col-span-2 text-xs text-zinc-400 py-3 text-center animate-pulse">Загрузка столиков...</div>';
+
+            const res = await apiFetch(`/api/restaurants/${restId}/tables`);
+            let tables = (res && Array.isArray(res.tables)) ? res.tables : [];
+
+            badgeEl.textContent = `${tables.length} столов`;
+
+            if (tables.length === 0) {
+                gridEl.innerHTML = `
+                    <div class="col-span-2 text-center py-6 text-zinc-500 bg-[#0e1013] rounded-xl border border-white/5 space-y-1">
+                        <div class="text-2xl">🪑</div>
+                        <div class="text-xs">В зале пока нет столиков</div>
+                        <div class="text-[10px] text-zinc-400">Добавьте столики с помощью формы ниже</div>
+                    </div>
+                `;
+                return;
+            }
+
+            gridEl.innerHTML = tables.map(tbl => `
+                <div class="bg-[#0e1013] border border-white/5 rounded-xl p-2.5 flex flex-col justify-between space-y-2 hover:border-white/10 transition">
+                    <div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-white">🪑 Стол №${tbl.table_number}</span>
+                            <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-white/5 text-[#dfcaab]">до ${tbl.capacity || tbl.seats || 4} чел.</span>
+                        </div>
+                        <div class="text-[10px] text-zinc-400 mt-1">${tbl.zone_type || tbl.zone || 'Основной зал'}</div>
+                        ${tbl.description ? `<div class="text-[9px] text-zinc-500 truncate mt-0.5">${tbl.description}</div>` : ''}
+                    </div>
+                    <div class="pt-1 border-t border-white/5 flex justify-end">
+                        <button onclick="deleteAdminTable(${tbl.id})" title="Удалить столик" class="p-1 px-2 text-[10px] rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 transition flex items-center gap-1">
+                            <span>🗑</span> <span>Удалить</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function submitNewTable() {
+            const table_number = Number(document.getElementById('newTableNumber').value);
+            const capacity = Number(document.getElementById('newTableSeats').value) || 4;
+            const zone = document.getElementById('newTableZone').value;
+            const description = document.getElementById('newTableDesc').value.trim();
+
+            if (!table_number) {
+                showToast('Укажите номер столика', '⚠️');
+                document.getElementById('newTableNumber').focus();
+                return;
+            }
+
+            const payload = { table_number, capacity, zone, description, is_vip: zone.includes('VIP') ? 1 : 0 };
+            await apiFetch(`/api/restaurants/${manageSelectedRestId}/tables`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            document.getElementById('newTableNumber').value = '';
+            document.getElementById('newTableDesc').value = '';
+
+            const t = ADMIN_I18N[currentAdminLang] || ADMIN_I18N.ru;
+            showToast(t.table_added_toast || 'Столик добавлен в зал', '🪑');
+            await loadAdminTables(manageSelectedRestId);
+
+            const rest = RESTAURANTS.find(r => r.id === manageSelectedRestId);
+            if (rest) {
+                const tblRes = await apiFetch(`/api/restaurants/${manageSelectedRestId}/tables`);
+                if (tblRes && Array.isArray(tblRes.tables)) {
+                    rest.tables = tblRes.tables.map(t => ({
+                        id: t.id,
+                        number: t.table_number,
+                        seats: t.capacity,
+                        zone: t.zone
+                    }));
+                }
+            }
+        }
+
+        async function deleteAdminTable(tableId) {
+            if (!confirm('Удалить этот столик из зала?')) return;
+            await apiFetch(`/api/tables/${tableId}`, { method: 'DELETE' });
+            const t = ADMIN_I18N[currentAdminLang] || ADMIN_I18N.ru;
+            showToast(t.table_deleted_toast || 'Столик удалён', '🗑');
+            await loadAdminTables(manageSelectedRestId);
+        }
+
         document.addEventListener('DOMContentLoaded', async () => {
+            setAdminLanguage(currentAdminLang);
             await initSelectors();
             await loadBookingsFromServer();
             setInterval(loadBookingsFromServer, 6000);
