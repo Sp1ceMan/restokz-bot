@@ -70,33 +70,33 @@
         }
     </style>
 </head>
-<body class="text-stone-200 min-h-screen flex flex-col justify-between pb-20 select-none bg-[#0e1013]">
+<body class="text-stone-200 min-h-screen flex flex-col justify-between pb-[max(5rem,calc(env(safe-area-inset-bottom)+4.2rem))] select-none bg-[#0e1013]">
 
     <!-- Top Navigation Bar -->
-    <header class="sticky top-0 z-30 bg-[#0e1013]/95 backdrop-blur-md border-b border-[#20232c] px-4 py-3">
-        <div class="max-w-md mx-auto flex items-center justify-between">
-            <div class="flex items-center gap-2.5">
-                <div class="w-9 h-9 rounded-xl bg-[#16181f] border border-[#c5a880]/30 flex items-center justify-center text-base shadow-sm">
+    <header class="sticky top-0 z-30 bg-[#0e1013]/95 backdrop-blur-md border-b border-[#20232c] px-3 py-2.5">
+        <div class="max-w-md mx-auto flex items-center justify-between gap-1.5">
+            <div class="flex items-center gap-2 min-w-0">
+                <div class="w-8 h-8 rounded-xl bg-[#16181f] border border-[#c5a880]/30 flex items-center justify-center text-sm shadow-sm flex-shrink-0">
                     🍽️
                 </div>
-                <div>
-                    <h1 class="text-base font-serif font-bold tracking-wide bg-gradient-to-r from-stone-100 via-[#dfcbb5] to-[#c5a880] bg-clip-text text-transparent leading-tight">RestoKZ</h1>
-                    <p id="headerTagline" class="text-[10px] text-[#8c93a0] font-medium tracking-tight">Гастрономический гид • Бронирование столов</p>
+                <div class="min-w-0">
+                    <h1 class="text-sm font-serif font-bold tracking-wide bg-gradient-to-r from-stone-100 via-[#dfcbb5] to-[#c5a880] bg-clip-text text-transparent leading-tight truncate">RestoKZ</h1>
+                    <p id="headerTagline" class="text-[9.5px] text-[#8c93a0] font-medium tracking-tight truncate max-w-[140px]">Бронирование столов в Казахстане</p>
                 </div>
             </div>
 
             <!-- Language & City Selectors -->
-            <div class="flex items-center gap-1.5">
+            <div class="flex items-center gap-1.5 flex-shrink-0">
                 <!-- Language Toggle (RU / KZ / EN) -->
                 <div class="flex items-center bg-[#15171d] border border-[#252933] rounded-lg p-0.5 shadow-sm">
-                    <button type="button" onclick="setLanguage('ru')" id="langBtn-ru" class="px-1.5 py-1 text-[10px] font-bold rounded-md bg-[#c5a880] text-[#0e1013] transition">RU</button>
-                    <button type="button" onclick="setLanguage('kz')" id="langBtn-kz" class="px-1.5 py-1 text-[10px] font-bold rounded-md text-[#8c93a0] hover:text-white transition">KZ</button>
-                    <button type="button" onclick="setLanguage('en')" id="langBtn-en" class="px-1.5 py-1 text-[10px] font-bold rounded-md text-[#8c93a0] hover:text-white transition">EN</button>
+                    <button type="button" onclick="setLanguage('ru')" id="langBtn-ru" class="px-1.5 py-0.5 text-[10px] font-bold rounded bg-[#c5a880] text-[#0e1013] transition">RU</button>
+                    <button type="button" onclick="setLanguage('kz')" id="langBtn-kz" class="px-1.5 py-0.5 text-[10px] font-bold rounded text-[#8c93a0] hover:text-white transition">KZ</button>
+                    <button type="button" onclick="setLanguage('en')" id="langBtn-en" class="px-1.5 py-0.5 text-[10px] font-bold rounded text-[#8c93a0] hover:text-white transition">EN</button>
                 </div>
 
                 <!-- City Selector (Clean: NO 'kz' prefix) -->
                 <div class="relative">
-                    <select id="citySelect" onchange="onCityChange(this.value)" class="bg-[#15171d] text-xs text-[#dfcbb5] font-medium py-1.5 px-2.5 rounded-lg border border-[#252933] outline-none focus:border-[#c5a880] transition-colors cursor-pointer">
+                    <select id="citySelect" onchange="onCityChange(this.value)" class="bg-[#15171d] text-xs text-[#dfcbb5] font-medium py-1 px-2 rounded-lg border border-[#252933] outline-none focus:border-[#c5a880] transition-colors cursor-pointer">
                         <option value="Все" selected id="optCityAll">Все города</option>
                         <option value="Алматы">Алматы</option>
                         <option value="Астана">Астана</option>
@@ -475,7 +475,7 @@
     </div>
 
     <!-- Bottom Mobile Navigation Bar (Guest Only) -->
-    <nav class="fixed bottom-0 left-0 right-0 z-40 bg-[#0e1013]/95 backdrop-blur-md border-t border-[#20232c] py-2.5 px-6">
+    <nav class="fixed bottom-0 left-0 right-0 z-40 bg-[#0e1013]/95 backdrop-blur-md border-t border-[#20232c] pt-2 pb-[max(0.6rem,env(safe-area-inset-bottom))] px-6">
         <div class="max-w-md mx-auto flex justify-around items-center">
             
             <button onclick="switchTab('restaurants')" id="navBtn-restaurants" class="nav-btn flex flex-col items-center gap-1 text-[#c5a880] font-bold text-[11px] transition-colors">

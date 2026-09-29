@@ -62,6 +62,14 @@
             transform: scale(0.98);
         }
 
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
         .fade-in {
             animation: fadeIn 0.22s ease-out forwards;
         }
@@ -72,111 +80,116 @@
         }
     </style>
 </head>
-<body class="min-h-screen pb-28">
+<body class="min-h-screen pb-[max(7rem,calc(env(safe-area-inset-bottom)+5.5rem))]">
 
     <!-- ВЕРХНИЙ ХЕДЕР ТЕРМИНАЛА ХОСТЕС -->
-    <header class="sticky top-0 z-40 glass-header border-b border-[#c5a880]/15 px-4 py-3">
-        <div class="max-w-md mx-auto flex flex-col gap-2.5">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-2.5">
-                    <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-[#d1b791] to-[#8f6f40] flex items-center justify-center text-lg shadow-md shadow-black/40">
+    <header class="sticky top-0 z-40 glass-header border-b border-[#c5a880]/15 px-3 py-2.5">
+        <div class="max-w-md mx-auto flex flex-col gap-2">
+            <!-- Строка 1: Логотип, статус смены и панель действий -->
+            <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2 min-w-0">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-[#d1b791] to-[#8f6f40] flex items-center justify-center text-sm shadow-md shadow-black/40 flex-shrink-0">
                         👑
                     </div>
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <h1 class="font-bold text-base tracking-tight text-[#f3f1ed] font-serif-luxury">RestoKZ <span class="text-[#c5a880]">PRO</span></h1>
-                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-1.5">
+                            <h1 class="font-bold text-sm tracking-tight text-[#f3f1ed] font-serif-luxury truncate">RestoKZ <span class="text-[#c5a880]">PRO</span></h1>
+                            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[8.5px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex-shrink-0">
                                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                                <span id="lblShiftActive">Смена активна</span>
+                                <span id="lblShiftActive">Смена</span>
                             </span>
                         </div>
-                        <p id="lblHeaderSubtitle" class="text-[11px] text-[#98948c]">Терминал хостес и управления посадкой</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-1.5">
+
+                <div class="flex items-center gap-1.5 flex-shrink-0">
                     <!-- Language selector (RU / KZ / EN) -->
                     <div class="flex items-center bg-[#15171d] border border-white/10 rounded-lg p-0.5 shadow-sm">
-                        <button type="button" onclick="setAdminLanguage('ru')" id="adminLangBtn-ru" class="px-1.5 py-1 text-[10px] font-bold rounded-md bg-[#c5a880] text-[#0e1013] transition">RU</button>
-                        <button type="button" onclick="setAdminLanguage('kz')" id="adminLangBtn-kz" class="px-1.5 py-1 text-[10px] font-bold rounded-md text-zinc-400 hover:text-white transition">KZ</button>
-                        <button type="button" onclick="setAdminLanguage('en')" id="adminLangBtn-en" class="px-1.5 py-1 text-[10px] font-bold rounded-md text-zinc-400 hover:text-white transition">EN</button>
+                        <button type="button" onclick="setAdminLanguage('ru')" id="adminLangBtn-ru" class="px-1.5 py-0.5 text-[10px] font-bold rounded bg-[#c5a880] text-[#0e1013] transition">RU</button>
+                        <button type="button" onclick="setAdminLanguage('kz')" id="adminLangBtn-kz" class="px-1.5 py-0.5 text-[10px] font-bold rounded text-zinc-400 hover:text-white transition">KZ</button>
+                        <button type="button" onclick="setAdminLanguage('en')" id="adminLangBtn-en" class="px-1.5 py-0.5 text-[10px] font-bold rounded text-zinc-400 hover:text-white transition">EN</button>
                     </div>
 
-                    <button onclick="manualRefresh()" class="w-8 h-8 rounded-xl bg-[#15171d] hover:bg-[#1c1f26] border border-white/10 flex items-center justify-center text-xs text-[#c5a880] active:scale-95 transition" title="Обновить данные">
+                    <button onclick="manualRefresh()" class="w-7 h-7 rounded-lg bg-[#15171d] hover:bg-[#1c1f26] border border-white/10 flex items-center justify-center text-xs text-[#c5a880] active:scale-95 transition" title="Обновить">
                         🔄
                     </button>
-                    <a href="index.html" class="px-2 h-8 rounded-xl bg-[#15171d] hover:bg-[#1c1f26] border border-white/10 flex items-center gap-1 text-[11px] font-medium text-zinc-400 hover:text-white transition" title="Открыть витрину гостя">
+                    <a href="index.html" class="h-7 px-2 rounded-lg bg-[#15171d] hover:bg-[#1c1f26] border border-white/10 flex items-center gap-1 text-[10px] font-medium text-zinc-400 hover:text-white transition" title="Открыть витрину гостя">
                         <span>🍽</span>
-                        <span class="hidden sm:inline" id="lblGuestBtn">Гость</span>
+                        <span id="lblGuestBtn">Гость</span>
                     </a>
                 </div>
             </div>
 
-            <!-- ВЫБОР РЕСТОРАНА (ТОЧКИ) -->
-            <div class="flex items-center gap-2 bg-[#15171d] border border-[#c5a880]/20 rounded-xl px-3 py-2">
-                <span id="lblRestDropdown" class="text-xs text-[#c5a880] font-semibold whitespace-nowrap">🏛 Заведение:</span>
-                <select id="adminRestSelect" onchange="onRestaurantChange()" class="w-full bg-transparent text-xs font-bold text-[#f3f1ed] focus:outline-none cursor-pointer">
-                    <option value="all" class="bg-[#15171d] text-white">🌐 Все рестораны сети (6 точек)</option>
+            <!-- Строка 2: ВЫБОР РЕСТОРАНА (ТОЧКИ) -->
+            <div class="relative flex items-center bg-[#15171d] border border-[#c5a880]/20 rounded-xl px-2.5 py-1.5">
+                <span id="lblRestDropdown" class="text-[11px] text-[#c5a880] font-semibold whitespace-nowrap mr-1.5 flex items-center gap-1 flex-shrink-0">
+                    <span>🏛</span> <span>Заведение:</span>
+                </span>
+                <select id="adminRestSelect" onchange="onRestaurantChange()" class="w-full bg-transparent text-[11px] font-bold text-[#f3f1ed] focus:outline-none cursor-pointer truncate pr-4">
+                    <option value="all" class="bg-[#15171d] text-white">🌐 Все рестораны сети</option>
                 </select>
+                <span class="pointer-events-none absolute right-2.5 text-[10px] text-zinc-400">▾</span>
             </div>
         </div>
     </header>
 
     <!-- ОСНОВНОЙ КОНТЕЙНЕР -->
-    <main class="max-w-md mx-auto px-4 pt-3 space-y-4">
+    <main class="max-w-md mx-auto px-3 pt-2.5 space-y-3">
 
         <!-- KPI ДАШБОРД СМЕНЫ -->
-        <div class="grid grid-cols-3 gap-2">
-            <div onclick="setQuickFilter('pending')" class="cursor-pointer bg-[#15171d] hover:bg-[#1c1f26] border border-[#c5a880]/25 rounded-2xl p-2.5 text-center transition">
-                <div class="text-[10px] uppercase tracking-wider text-[#98948c]">Ждут ответа</div>
-                <div id="kpiPending" class="text-xl font-bold text-[#dfcaab] mt-0.5">0</div>
-                <div class="text-[9px] text-[#c5a880]/80 mt-0.5">Новые заявки</div>
+        <div class="grid grid-cols-3 gap-1.5">
+            <div onclick="setQuickFilter('pending')" class="cursor-pointer bg-[#15171d] hover:bg-[#1c1f26] border border-[#c5a880]/25 rounded-xl p-2 text-center transition">
+                <div class="text-[9px] uppercase tracking-wider text-[#98948c] truncate">Ждут ответа</div>
+                <div id="kpiPending" class="text-lg font-bold text-[#dfcaab] mt-0.5">0</div>
+                <div class="text-[8.5px] text-[#c5a880]/80 mt-0.5 truncate">Новые заявки</div>
             </div>
-            <div onclick="setQuickFilter('confirmed')" class="cursor-pointer bg-[#15171d] hover:bg-[#1c1f26] border border-emerald-500/25 rounded-2xl p-2.5 text-center transition">
-                <div class="text-[10px] uppercase tracking-wider text-[#98948c]">Подтверждено</div>
-                <div id="kpiConfirmed" class="text-xl font-bold text-emerald-400 mt-0.5">0</div>
-                <div class="text-[9px] text-emerald-400/80 mt-0.5">Столов в брони</div>
+            <div onclick="setQuickFilter('confirmed')" class="cursor-pointer bg-[#15171d] hover:bg-[#1c1f26] border border-emerald-500/25 rounded-xl p-2 text-center transition">
+                <div class="text-[9px] uppercase tracking-wider text-[#98948c] truncate">В брони</div>
+                <div id="kpiConfirmed" class="text-lg font-bold text-emerald-400 mt-0.5">0</div>
+                <div class="text-[8.5px] text-emerald-400/80 mt-0.5 truncate">Столов занято</div>
             </div>
-            <div onclick="switchTab('floor')" class="cursor-pointer bg-[#15171d] hover:bg-[#1c1f26] border border-sky-500/25 rounded-2xl p-2.5 text-center transition">
-                <div class="text-[10px] uppercase tracking-wider text-[#98948c]">Гостей в смене</div>
-                <div id="kpiGuests" class="text-xl font-bold text-sky-400 mt-0.5">0</div>
-                <div class="text-[9px] text-sky-400/80 mt-0.5">Посмотреть зал →</div>
+            <div onclick="switchTab('floor')" class="cursor-pointer bg-[#15171d] hover:bg-[#1c1f26] border border-sky-500/25 rounded-xl p-2 text-center transition">
+                <div class="text-[9px] uppercase tracking-wider text-[#98948c] truncate">Гостей</div>
+                <div id="kpiGuests" class="text-lg font-bold text-sky-400 mt-0.5">0</div>
+                <div class="text-[8.5px] text-sky-400/80 mt-0.5 truncate">В смене →</div>
             </div>
         </div>
 
         <!-- ================= ВКЛАДКА 1: ЖУРНАЛ ЗАЯВОК ================= -->
-        <section id="tab-orders" class="space-y-3 fade-in">
+        <section id="tab-orders" class="space-y-2.5 fade-in">
             <!-- Поиск и фильтры -->
-            <div class="bg-[#15171d] border border-white/5 rounded-2xl p-3 space-y-2.5">
-                <div class="relative">
-                    <input
-                        id="searchOrdersInput"
-                        type="text"
-                        oninput="renderOrders()"
-                        placeholder="Поиск по имени, телефону или #ID..."
-                        class="w-full bg-[#0e1013] border border-white/10 focus:border-[#c5a880] rounded-xl pl-9 pr-8 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none"
-                    >
-                    <span class="absolute left-3 top-2 text-zinc-500 text-xs">🔍</span>
-                </div>
-
-                <!-- Фильтр по дате -->
-                <div class="flex items-center justify-between gap-1.5">
-                    <div class="flex gap-1 overflow-x-auto pb-0.5">
-                        <button onclick="setDateFilter('all')" id="dateBtn-all" class="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-[#c5a880] text-[#0e1013] transition whitespace-nowrap">Все дни</button>
-                        <button onclick="setDateFilter('today')" id="dateBtn-today" class="px-2.5 py-1 rounded-lg text-[11px] font-medium bg-[#0e1013] text-zinc-400 border border-white/5 transition whitespace-nowrap">Сегодня</button>
-                        <button onclick="setDateFilter('tomorrow')" id="dateBtn-tomorrow" class="px-2.5 py-1 rounded-lg text-[11px] font-medium bg-[#0e1013] text-zinc-400 border border-white/5 transition whitespace-nowrap">Завтра</button>
+            <div class="bg-[#15171d] border border-white/5 rounded-2xl p-2.5 space-y-2">
+                <!-- Строка 1: Поиск + Кнопка Тест -->
+                <div class="flex items-center gap-1.5">
+                    <div class="relative flex-1">
+                        <input
+                            id="searchOrdersInput"
+                            type="text"
+                            oninput="renderOrders()"
+                            placeholder="Поиск по имени, телефону или #ID..."
+                            class="w-full bg-[#0e1013] border border-white/10 focus:border-[#c5a880] rounded-xl pl-8 pr-3 py-1.5 text-xs text-white placeholder-zinc-500 focus:outline-none"
+                        >
+                        <span class="absolute left-2.5 top-2 text-zinc-500 text-xs">🔍</span>
                     </div>
-                    <button onclick="createDemoBooking()" class="px-2.5 py-1 rounded-lg text-[10px] font-semibold bg-[#c5a880]/15 text-[#dfcaab] border border-[#c5a880]/30 hover:bg-[#c5a880]/25 transition whitespace-nowrap">
-                        + Тест-бронь
+                    <button onclick="createDemoBooking()" title="Создать тестовую бронь" class="h-8 px-2.5 rounded-xl text-[10px] font-bold bg-[#c5a880]/15 text-[#dfcaab] border border-[#c5a880]/30 hover:bg-[#c5a880]/25 transition whitespace-nowrap flex items-center gap-1 flex-shrink-0">
+                        <span>+ Тест</span>
                     </button>
                 </div>
 
-                <!-- Фильтр по статусу -->
-                <div class="flex gap-1.5 overflow-x-auto pb-0.5">
-                    <button onclick="setStatusFilter('all')" id="statusBtn-all" class="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-white/10 text-white transition whitespace-nowrap">Все</button>
-                    <button onclick="setStatusFilter('pending')" id="statusBtn-pending" class="px-2.5 py-1 rounded-lg text-[11px] font-medium bg-[#0e1013] text-amber-300 border border-amber-500/20 transition whitespace-nowrap">⏳ Новые</button>
-                    <button onclick="setStatusFilter('confirmed')" id="statusBtn-confirmed" class="px-2.5 py-1 rounded-lg text-[11px] font-medium bg-[#0e1013] text-emerald-400 border border-emerald-500/20 transition whitespace-nowrap">✅ Подтверждены</button>
-                    <button onclick="setStatusFilter('arrived')" id="statusBtn-arrived" class="px-2.5 py-1 rounded-lg text-[11px] font-medium bg-[#0e1013] text-sky-400 border border-sky-500/20 transition whitespace-nowrap">🥂 За столом</button>
-                    <button onclick="setStatusFilter('rejected')" id="statusBtn-rejected" class="px-2.5 py-1 rounded-lg text-[11px] font-medium bg-[#0e1013] text-rose-400 border border-rose-500/20 transition whitespace-nowrap">❌ Отмена</button>
+                <!-- Строка 2: Фильтр по дате (полная ширина 3 колонки) -->
+                <div class="grid grid-cols-3 gap-1 bg-[#0e1013] p-1 rounded-xl border border-white/5">
+                    <button onclick="setDateFilter('all')" id="dateBtn-all" class="py-1.5 rounded-lg text-[11px] font-bold bg-[#c5a880] text-[#0e1013] transition text-center">Все дни</button>
+                    <button onclick="setDateFilter('today')" id="dateBtn-today" class="py-1.5 rounded-lg text-[11px] font-medium text-zinc-400 hover:text-white transition text-center">Сегодня</button>
+                    <button onclick="setDateFilter('tomorrow')" id="dateBtn-tomorrow" class="py-1.5 rounded-lg text-[11px] font-medium text-zinc-400 hover:text-white transition text-center">Завтра</button>
+                </div>
+
+                <!-- Строка 3: Фильтр по статусу (плавный скролл) -->
+                <div class="flex gap-1.5 overflow-x-auto hide-scrollbar pb-0.5 -mx-0.5 px-0.5">
+                    <button onclick="setStatusFilter('all')" id="statusBtn-all" class="px-2.5 py-1 rounded-lg text-[10.5px] font-bold bg-white/15 text-white transition whitespace-nowrap flex-shrink-0">Все</button>
+                    <button onclick="setStatusFilter('pending')" id="statusBtn-pending" class="px-2.5 py-1 rounded-lg text-[10.5px] font-medium bg-[#0e1013] text-amber-300 border border-amber-500/20 transition whitespace-nowrap flex-shrink-0">⏳ Новые</button>
+                    <button onclick="setStatusFilter('confirmed')" id="statusBtn-confirmed" class="px-2.5 py-1 rounded-lg text-[10.5px] font-medium bg-[#0e1013] text-emerald-400 border border-emerald-500/20 transition whitespace-nowrap flex-shrink-0">✅ В брони</button>
+                    <button onclick="setStatusFilter('arrived')" id="statusBtn-arrived" class="px-2.5 py-1 rounded-lg text-[10.5px] font-medium bg-[#0e1013] text-sky-400 border border-sky-500/20 transition whitespace-nowrap flex-shrink-0">🥂 За столом</button>
+                    <button onclick="setStatusFilter('rejected')" id="statusBtn-rejected" class="px-2.5 py-1 rounded-lg text-[10.5px] font-medium bg-[#0e1013] text-rose-400 border border-rose-500/20 transition whitespace-nowrap flex-shrink-0">❌ Отмена</button>
                 </div>
             </div>
 
@@ -561,26 +574,26 @@
     </main>
 
     <!-- НИЖНЯЯ НАВИГАЦИЯ ТЕРМИНАЛА РЕСТОРАНА -->
-    <nav class="fixed bottom-0 left-0 right-0 z-40 glass-header border-t border-[#c5a880]/20 px-3 py-2">
-        <div class="max-w-md mx-auto grid grid-cols-4 gap-1.5">
-            <button onclick="switchTab('orders')" id="navBtn-orders" class="flex flex-col items-center justify-center py-1.5 rounded-xl bg-[#c5a880]/15 text-[#dfcaab] border border-[#c5a880]/30 transition">
+    <nav class="fixed bottom-0 left-0 right-0 z-40 glass-header border-t border-[#c5a880]/20 px-2 pt-1.5 pb-[max(0.6rem,env(safe-area-inset-bottom))]">
+        <div class="max-w-md mx-auto grid grid-cols-4 gap-1">
+            <button onclick="switchTab('orders')" id="navBtn-orders" class="flex flex-col items-center justify-center py-1 rounded-xl bg-[#c5a880]/15 text-[#dfcaab] border border-[#c5a880]/30 transition">
                 <div class="relative">
                     <span class="text-base">📋</span>
                     <span id="navBadgePending" class="hidden absolute -top-1 -right-3 px-1.5 py-0.2 rounded-full text-[9px] font-bold bg-[#c5a880] text-[#0e1013]">0</span>
                 </div>
-                <span id="lblNavOrders" class="text-[9px] font-semibold mt-0.5">Заявки</span>
+                <span id="lblNavOrders" class="text-[9.5px] font-semibold mt-0.5">Заявки</span>
             </button>
-            <button onclick="switchTab('floor')" id="navBtn-floor" class="flex flex-col items-center justify-center py-1.5 rounded-xl text-zinc-400 hover:text-white transition">
+            <button onclick="switchTab('floor')" id="navBtn-floor" class="flex flex-col items-center justify-center py-1 rounded-xl text-zinc-400 hover:text-white transition">
                 <span class="text-base">🪑</span>
-                <span id="lblNavFloor" class="text-[9px] font-medium mt-0.5">Зал/Столы</span>
+                <span id="lblNavFloor" class="text-[9.5px] font-medium mt-0.5">Зал</span>
             </button>
-            <button onclick="switchTab('walkin')" id="navBtn-walkin" class="flex flex-col items-center justify-center py-1.5 rounded-xl text-zinc-400 hover:text-white transition">
-                <span class="text-base">➕</span>
-                <span id="lblNavWalkin" class="text-[9px] font-medium mt-0.5">По звонку</span>
+            <button onclick="switchTab('walkin')" id="navBtn-walkin" class="flex flex-col items-center justify-center py-1 rounded-xl text-zinc-400 hover:text-white transition">
+                <span class="text-base">📞</span>
+                <span id="lblNavWalkin" class="text-[9.5px] font-medium mt-0.5">По звонку</span>
             </button>
-            <button onclick="switchTab('manage')" id="navBtn-manage" class="flex flex-col items-center justify-center py-1.5 rounded-xl text-zinc-400 hover:text-white transition">
+            <button onclick="switchTab('manage')" id="navBtn-manage" class="flex flex-col items-center justify-center py-1 rounded-xl text-zinc-400 hover:text-white transition">
                 <span class="text-base">🏛</span>
-                <span id="lblNavManage" class="text-[9px] font-medium mt-0.5">Мой Ресторан</span>
+                <span id="lblNavManage" class="text-[9.5px] font-medium mt-0.5">Ресторан</span>
             </button>
         </div>
     </nav>
@@ -713,25 +726,25 @@
         const ADMIN_I18N = {
             ru: {
                 app_title: "RestoKZ PRO",
-                shift_active: "Смена активна",
+                shift_active: "Смена",
                 shift_sub: "Терминал хостес и управления посадкой",
                 guest_btn: "Гость",
                 rest_label: "🏛 Заведение:",
                 all_chain: "🌐 Все рестораны сети",
                 kpi_pending: "Ждут ответа",
                 kpi_pending_sub: "Новые заявки",
-                kpi_confirmed: "Подтверждено",
-                kpi_confirmed_sub: "Столов в брони",
-                kpi_guests: "Гостей в смене",
-                kpi_guests_sub: "Посмотреть зал →",
+                kpi_confirmed: "В брони",
+                kpi_confirmed_sub: "Столов занято",
+                kpi_guests: "Гостей",
+                kpi_guests_sub: "В смене →",
                 search_ph: "Поиск по имени, телефону или #ID...",
                 days_all: "Все дни",
                 days_today: "Сегодня",
                 days_tomorrow: "Завтра",
-                test_booking: "+ Тест-бронь",
+                test_booking: "+ Тест",
                 status_all: "Все",
                 status_pending: "⏳ Новые",
-                status_confirmed: "✅ Подтверждены",
+                status_confirmed: "✅ В брони",
                 status_arrived: "🥂 За столом",
                 status_rejected: "❌ Отмена",
                 btn_confirm: "✅ Подтвердить",
@@ -741,9 +754,9 @@
                 btn_cancel: "❌ Отмена",
                 btn_delete: "🗑 Удалить",
                 nav_orders: "Заявки",
-                nav_floor: "Зал/Столы",
+                nav_floor: "Зал",
                 nav_walkin: "По звонку",
-                nav_manage: "Мой Ресторан",
+                nav_manage: "Ресторан",
                 manage_title: "🏛 Управление рестораном & Регистрация",
                 manage_sub: "Редактируйте профиль, соцсети, 2GIS, меню и схему столов",
                 select_rest_edit: "Заведение:",
@@ -778,25 +791,25 @@
             },
             kz: {
                 app_title: "RestoKZ PRO",
-                shift_active: "Ауысым белсенді",
+                shift_active: "Ауысым",
                 shift_sub: "Хостес және мейрамхананы басқару терминалы",
                 guest_btn: "Қонақ",
                 rest_label: "🏛 Мейрамхана:",
                 all_chain: "🌐 Желідегі барлық мейрамханалар",
                 kpi_pending: "Жауап күтуде",
                 kpi_pending_sub: "Жаңа өтінімдер",
-                kpi_confirmed: "Расталды",
-                kpi_confirmed_sub: "Брондалған үстелдер",
-                kpi_guests: "Ауысымдағы қонақтар",
-                kpi_guests_sub: "Залды қарау →",
+                kpi_confirmed: "Бронда",
+                kpi_confirmed_sub: "Бос емес үстелдер",
+                kpi_guests: "Қонақтар",
+                kpi_guests_sub: "Ауысымда →",
                 search_ph: "Аты, телефоны немесе #ID бойынша іздеу...",
                 days_all: "Барлық күндер",
                 days_today: "Бүгін",
                 days_tomorrow: "Ертең",
-                test_booking: "+ Тест-бронь",
+                test_booking: "+ Тест",
                 status_all: "Барлығы",
                 status_pending: "⏳ Жаңа",
-                status_confirmed: "✅ Расталған",
+                status_confirmed: "✅ Бронда",
                 status_arrived: "🥂 Үстелде",
                 status_rejected: "❌ Бас тартылды",
                 btn_confirm: "✅ Растау",
@@ -806,9 +819,9 @@
                 btn_cancel: "❌ Бас тарту",
                 btn_delete: "🗑 Жою",
                 nav_orders: "Өтінімдер",
-                nav_floor: "Зал/Үстелдер",
-                nav_walkin: "Қоңырау арқылы",
-                nav_manage: "Мейрамханам",
+                nav_floor: "Зал",
+                nav_walkin: "Қоңырау",
+                nav_manage: "Мейрамхана",
                 manage_title: "🏛 Мейрамхананы басқару & Тіркеу",
                 manage_sub: "Профильді, әлеуметтік желілерді, 2GIS, мәзірді және үстелдерді өңдеңіз",
                 select_rest_edit: "Мейрамхана:",
@@ -843,25 +856,25 @@
             },
             en: {
                 app_title: "RestoKZ PRO",
-                shift_active: "Shift Active",
+                shift_active: "Shift",
                 shift_sub: "Hostess & Restaurant Management Terminal",
                 guest_btn: "Guest",
                 rest_label: "🏛 Restaurant:",
                 all_chain: "🌐 All chain restaurants",
                 kpi_pending: "Pending",
                 kpi_pending_sub: "New requests",
-                kpi_confirmed: "Confirmed",
-                kpi_confirmed_sub: "Booked tables",
-                kpi_guests: "Shift guests",
-                kpi_guests_sub: "View floor map →",
+                kpi_confirmed: "Booked",
+                kpi_confirmed_sub: "Tables occupied",
+                kpi_guests: "Guests",
+                kpi_guests_sub: "On shift →",
                 search_ph: "Search by name, phone or #ID...",
                 days_all: "All days",
                 days_today: "Today",
                 days_tomorrow: "Tomorrow",
-                test_booking: "+ Test Booking",
+                test_booking: "+ Test",
                 status_all: "All",
                 status_pending: "⏳ New",
-                status_confirmed: "✅ Confirmed",
+                status_confirmed: "✅ Booked",
                 status_arrived: "🥂 Seated",
                 status_rejected: "❌ Declined",
                 btn_confirm: "✅ Confirm",
@@ -871,9 +884,9 @@
                 btn_cancel: "❌ Cancel",
                 btn_delete: "🗑 Delete",
                 nav_orders: "Orders",
-                nav_floor: "Floor/Tables",
+                nav_floor: "Floor",
                 nav_walkin: "Walk-in",
-                nav_manage: "My Restaurant",
+                nav_manage: "Restaurant",
                 manage_title: "🏛 Restaurant Management & Registration",
                 manage_sub: "Edit profile, social links, 2GIS, menu, and floor layout",
                 select_rest_edit: "Restaurant:",
@@ -1331,75 +1344,102 @@
             }
 
             container.innerHTML = list.map(b => `
-                <div class="bg-[#15171d] border ${b.status === 'pending' ? 'border-amber-500/40 shadow-lg shadow-amber-500/5' : 'border-white/10'} rounded-2xl p-3.5 space-y-3 transition">
+                <div class="bg-[#15171d] border ${b.status === 'pending' ? 'border-amber-500/40 shadow-lg shadow-amber-500/5' : 'border-white/10'} rounded-2xl p-3 space-y-2.5 transition">
                     <div class="flex items-start justify-between gap-2">
-                        <div>
+                        <div class="min-w-0">
                             <div class="flex items-center gap-1.5">
-                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-[#0e1013] text-[#c5a880] border border-[#c5a880]/25">🏛 ${b.restName}</span>
-                                <span class="text-[10px] text-zinc-500 font-mono">#${b.id}</span>
+                                <span class="text-[9.5px] font-bold px-1.5 py-0.5 rounded-md bg-[#0e1013] text-[#c5a880] border border-[#c5a880]/25 truncate max-w-[150px]">🏛 ${b.restName}</span>
+                                <span class="text-[9.5px] text-zinc-500 font-mono">#${b.id}</span>
                             </div>
-                            <h3 class="text-sm font-bold text-white mt-1.5 flex items-center gap-1.5">
+                            <h3 class="text-sm font-bold text-white mt-1 flex items-center gap-1 truncate">
                                 👤 ${b.guestName}
                             </h3>
                             <a href="tel:${b.guestPhone}" class="text-xs text-[#dfcaab] hover:underline flex items-center gap-1 mt-0.5">
                                 📞 ${b.guestPhone}
                             </a>
                         </div>
-                        <div class="text-right">
+                        <div class="text-right flex-shrink-0">
                             ${getStatusBadge(b.status)}
-                            <div class="text-[10px] text-zinc-500 mt-1">${b.createdAt || 'Только что'}</div>
+                            <div class="text-[9.5px] text-zinc-500 mt-1">${b.createdAt || 'Только что'}</div>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-3 gap-1.5 bg-[#0e1013] rounded-xl p-2.5 border border-white/5 text-center">
+                    <div class="grid grid-cols-3 gap-1 bg-[#0e1013] rounded-xl p-2 border border-white/5 text-center">
                         <div>
-                            <div class="text-[9px] text-zinc-500 uppercase">Дата и Время</div>
-                            <div class="text-xs font-bold text-[#dfcaab] mt-0.5">${b.date} • ${b.time}</div>
+                            <div class="text-[8.5px] text-zinc-500 uppercase tracking-tight">Дата и Время</div>
+                            <div class="text-[11px] font-bold text-[#dfcaab] mt-0.5 truncate">${b.date} • ${b.time}</div>
                         </div>
                         <div class="border-x border-white/5">
-                            <div class="text-[9px] text-zinc-500 uppercase">Персон</div>
-                            <div class="text-xs font-bold text-white mt-0.5">👥 ${b.guests} чел.</div>
+                            <div class="text-[8.5px] text-zinc-500 uppercase tracking-tight">Персон</div>
+                            <div class="text-[11px] font-bold text-white mt-0.5">👥 ${b.guests} чел.</div>
                         </div>
                         <div>
-                            <div class="text-[9px] text-zinc-500 uppercase">Столик</div>
-                            <div class="text-xs font-bold text-emerald-400 mt-0.5 truncate px-1">🪑 Стол №${b.table_number}</div>
+                            <div class="text-[8.5px] text-zinc-500 uppercase tracking-tight">Столик</div>
+                            <div class="text-[11px] font-bold text-emerald-400 mt-0.5 truncate px-1">🪑 Стол №${b.table_number}</div>
                         </div>
                     </div>
 
                     ${b.comment ? `
-                        <div class="bg-[#0e1013]/80 border border-[#c5a880]/20 rounded-xl px-3 py-2 text-xs text-[#dfcaab]">
+                        <div class="bg-[#0e1013]/80 border border-[#c5a880]/20 rounded-xl px-2.5 py-1.5 text-xs text-[#dfcaab]">
                             💬 <span class="text-zinc-400">Пожелание:</span> ${b.comment}
                         </div>
                     ` : ''}
 
-                    <!-- Кнопки управления статусом -->
-                    <div class="grid grid-cols-3 gap-1.5 pt-0.5">
-                        ${b.status !== 'confirmed' ? `
-                            <button onclick="changeStatus('${b.id}', 'confirmed')" class="py-2 rounded-xl text-xs font-bold bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 transition">
-                                ✅ Подтвердить
-                            </button>
+                    <!-- Контекстные кнопки управления статусом -->
+                    <div class="pt-0.5">
+                        ${b.status === 'pending' ? `
+                            <div class="grid grid-cols-3 gap-1.5">
+                                <button onclick="changeStatus('${b.id}', 'confirmed')" class="col-span-2 py-2 rounded-xl text-xs font-bold bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 transition active:scale-[0.98]">
+                                    ✅ Подтвердить
+                                </button>
+                                <button onclick="changeStatus('${b.id}', 'rejected')" class="py-2 rounded-xl text-xs font-semibold bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 border border-rose-500/30 transition active:scale-[0.98]">
+                                    ❌ Отказ
+                                </button>
+                            </div>
+                        ` : b.status === 'confirmed' ? `
+                            <div class="grid grid-cols-3 gap-1.5">
+                                <button onclick="changeStatus('${b.id}', 'arrived')" class="col-span-2 py-2 rounded-xl text-xs font-bold bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/40 transition active:scale-[0.98]">
+                                    🥂 Посадить за стол
+                                </button>
+                                <button onclick="changeStatus('${b.id}', 'rejected')" class="py-2 rounded-xl text-xs font-semibold bg-white/5 hover:bg-rose-500/20 text-zinc-400 hover:text-rose-300 border border-white/10 transition active:scale-[0.98]">
+                                    Отмена
+                                </button>
+                            </div>
+                        ` : b.status === 'arrived' ? `
+                            <div class="grid grid-cols-3 gap-1.5">
+                                <button onclick="changeStatus('${b.id}', 'rejected')" class="col-span-2 py-2 rounded-xl text-xs font-bold bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 transition active:scale-[0.98]">
+                                    🔓 Стол освободился
+                                </button>
+                                <button onclick="changeStatus('${b.id}', 'confirmed')" class="py-2 rounded-xl text-xs font-semibold bg-white/5 text-zinc-400 border border-white/10 transition active:scale-[0.98]">
+                                    ↩ В бронь
+                                </button>
+                            </div>
                         ` : `
-                            <button onclick="changeStatus('${b.id}', 'arrived')" class="py-2 rounded-xl text-xs font-bold bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/30 transition">
-                                🥂 За столом
-                            </button>
+                            <!-- Для отклонённых/завершённых заявок -->
+                            <div class="flex items-center justify-between gap-1.5 bg-[#0e1013] rounded-xl px-2.5 py-1.5 border border-white/5">
+                                <span class="text-[10px] text-zinc-500">Заявка отменена</span>
+                                <div class="flex gap-1.5">
+                                    <button onclick="changeStatus('${b.id}', 'confirmed')" class="px-2.5 py-1 rounded-lg text-[10px] font-semibold bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/25 transition">
+                                        ↩ Восстановить
+                                    </button>
+                                    <button onclick="deleteBookingLocal('${b.id}')" class="px-2 py-1 rounded-lg text-[10px] font-semibold bg-white/5 hover:bg-rose-500/20 text-zinc-400 hover:text-rose-300 transition" title="Удалить">
+                                        🗑
+                                    </button>
+                                </div>
+                            </div>
                         `}
-
-                        ${b.status !== 'arrived' ? `
-                            <button onclick="changeStatus('${b.id}', 'arrived')" class="py-2 rounded-xl text-xs font-bold bg-sky-500/15 hover:bg-sky-500/25 text-sky-300 border border-sky-500/25 transition">
-                                🥂 Пришли
-                            </button>
-                        ` : `
-                            <button onclick="changeStatus('${b.id}', 'confirmed')" class="py-2 rounded-xl text-xs font-medium bg-white/5 hover:bg-white/10 text-zinc-300 border border-white/10 transition">
-                                ↩ В бронь
-                            </button>
-                        `}
-
-                        <button onclick="changeStatus('${b.id}', 'rejected')" class="py-2 rounded-xl text-xs font-bold bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 border border-rose-500/25 transition">
-                            ❌ Отмена
-                        </button>
                     </div>
                 </div>
             `).join('');
+        }
+
+        function deleteBookingLocal(id) {
+            bookings = bookings.filter(b => String(b.id) !== String(id));
+            saveToSharedStorage(bookings);
+            updateKPIs();
+            renderOrders();
+            renderFloorMap();
+            showToast('Заявка удалена', '🗑');
         }
 
         async function changeStatus(id, newStatus) {
