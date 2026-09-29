@@ -70,6 +70,41 @@
             scrollbar-width: none;
         }
 
+        /* Luxury Drawer & Bottom Sheet transitions */
+        #sideDrawerPanel {
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        #sideDrawerPanel.drawer-open {
+            transform: translateX(0);
+        }
+        #drawerBackdrop,
+        #restPickerBackdrop,
+        #shiftModalBackdrop {
+            transition: opacity 0.25s ease-out;
+        }
+        #drawerBackdrop.backdrop-open,
+        #restPickerBackdrop.backdrop-open,
+        #shiftModalBackdrop.backdrop-open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #restPickerSheetPanel,
+        #shiftModalPanel {
+            transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        #restPickerSheetPanel.sheet-open,
+        #shiftModalPanel.sheet-open {
+            transform: translateY(0);
+        }
+
+        .tap-scale {
+            transition: transform 0.15s ease-out;
+        }
+        .tap-scale:active {
+            transform: scale(0.97);
+        }
+
         .fade-in {
             animation: fadeIn 0.22s ease-out forwards;
         }
@@ -83,113 +118,359 @@
 <body class="min-h-screen pb-[max(7rem,calc(env(safe-area-inset-bottom)+5.5rem))]">
 
     <!-- ВЕРХНИЙ ХЕДЕР ТЕРМИНАЛА ХОСТЕС -->
-    <header class="sticky top-0 z-40 glass-header border-b border-[#c5a880]/15 px-3 py-2.5">
-        <div class="max-w-md mx-auto flex flex-col gap-2">
-            <!-- Строка 1: Логотип, статус смены и панель действий -->
+    <header class="sticky top-0 z-40 glass-header border-b border-[#c5a880]/20 px-3.5 py-2.5">
+        <div class="max-w-md mx-auto flex flex-col gap-2.5">
+            <!-- Строка 1: Бренд + Интерактивная смена + Обновление + Гамбургер меню -->
             <div class="flex items-center justify-between gap-2">
                 <div class="flex items-center gap-2 min-w-0">
-                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-[#d1b791] to-[#8f6f40] flex items-center justify-center text-sm shadow-md shadow-black/40 flex-shrink-0">
+                    <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-[#d1b791] to-[#8f6f40] flex items-center justify-center text-sm shadow-md shadow-black/50 flex-shrink-0">
                         👑
                     </div>
                     <div class="min-w-0">
-                        <div class="flex items-center gap-1.5">
+                        <div class="flex items-center gap-2">
                             <h1 class="font-bold text-sm tracking-tight text-[#f3f1ed] font-serif-luxury truncate">RestoKZ <span class="text-[#c5a880]">PRO</span></h1>
-                            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[8.5px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex-shrink-0">
-                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                                <span id="lblShiftActive">Смена</span>
-                            </span>
+                            <!-- Интерактивная кнопка смены -->
+                            <button type="button" onclick="openShiftModal()" id="btnHeaderShift" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/25 active:scale-95 transition shadow-sm flex-shrink-0" title="Управление рабочей сменой">
+                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" id="shiftStatusDot"></span>
+                                <span id="lblHeaderShiftText">Смена активна</span>
+                            </button>
                         </div>
                     </div>
                 </div>
 
                 <div class="flex items-center gap-1.5 flex-shrink-0">
-                    <!-- Language selector (RU / KZ / EN) -->
-                    <div class="flex items-center bg-[#15171d] border border-white/10 rounded-lg p-0.5 shadow-sm">
-                        <button type="button" onclick="setAdminLanguage('ru')" id="adminLangBtn-ru" class="px-1.5 py-0.5 text-[10px] font-bold rounded bg-[#c5a880] text-[#0e1013] transition">RU</button>
-                        <button type="button" onclick="setAdminLanguage('kz')" id="adminLangBtn-kz" class="px-1.5 py-0.5 text-[10px] font-bold rounded text-zinc-400 hover:text-white transition">KZ</button>
-                        <button type="button" onclick="setAdminLanguage('en')" id="adminLangBtn-en" class="px-1.5 py-0.5 text-[10px] font-bold rounded text-zinc-400 hover:text-white transition">EN</button>
-                    </div>
-
-                    <button onclick="manualRefresh()" class="w-7 h-7 rounded-lg bg-[#15171d] hover:bg-[#1c1f26] border border-white/10 flex items-center justify-center text-xs text-[#c5a880] active:scale-95 transition" title="Обновить">
-                        🔄
+                    <!-- Быстрое обновление данных -->
+                    <button onclick="manualRefresh()" class="w-8 h-8 rounded-xl bg-[#15171d] hover:bg-[#1c1f26] border border-white/10 flex items-center justify-center text-xs text-[#c5a880] active:scale-95 transition shadow-sm" title="Синхронизировать">
+                        <span id="refreshIcon">🔄</span>
                     </button>
-                    <a href="index.html" class="h-7 px-2 rounded-lg bg-[#15171d] hover:bg-[#1c1f26] border border-white/10 flex items-center gap-1 text-[10px] font-medium text-zinc-400 hover:text-white transition" title="Открыть витрину гостя">
-                        <span>🍽</span>
-                        <span id="lblGuestBtn">Гость</span>
-                    </a>
+                    <!-- Кнопка бокового меню (Гамбургер) -->
+                    <button onclick="openSideDrawer()" class="w-8 h-8 rounded-xl bg-[#15171d] hover:bg-[#1c1f26] border border-[#c5a880]/30 flex items-center justify-center text-base text-[#dfcaab] active:scale-95 transition shadow-sm" title="Меню терминала">
+                        ☰
+                    </button>
                 </div>
             </div>
 
-            <!-- Строка 2: ВЫБОР РЕСТОРАНА (ТОЧКИ) -->
-            <div class="relative flex items-center bg-[#15171d] border border-[#c5a880]/20 rounded-xl px-2.5 py-1.5">
-                <span id="lblRestDropdown" class="text-[11px] text-[#c5a880] font-semibold whitespace-nowrap mr-1.5 flex items-center gap-1 flex-shrink-0">
-                    <span>🏛</span> <span>Заведение:</span>
-                </span>
-                <select id="adminRestSelect" onchange="onRestaurantChange()" class="w-full bg-transparent text-[11px] font-bold text-[#f3f1ed] focus:outline-none cursor-pointer truncate pr-4">
-                    <option value="all" class="bg-[#15171d] text-white">🌐 Все рестораны сети</option>
-                </select>
-                <span class="pointer-events-none absolute right-2.5 text-[10px] text-zinc-400">▾</span>
-            </div>
+            <!-- Строка 2: КАСТОМНЫЙ СОВРЕМЕННЫЙ СЕЛЕКТОР ЗАВЕДЕНИЯ (ВМЕСТО УСТАРЕВШЕГО SELECT) -->
+            <button type="button" onclick="openRestaurantPicker()" id="customRestTriggerBtn" class="w-full flex items-center justify-between bg-gradient-to-r from-[#15171d] to-[#1a1d24] hover:to-[#222631] border border-[#c5a880]/25 hover:border-[#c5a880]/50 rounded-xl px-3 py-2 shadow-md active:scale-[0.99] transition group">
+                <div class="flex items-center gap-2.5 min-w-0">
+                    <span class="text-base text-[#c5a880]">🏛</span>
+                    <div class="text-left min-w-0">
+                        <div class="text-[9.5px] uppercase tracking-wider text-zinc-400 font-semibold truncate" id="lblPickerSub">Филиал / Заведение</div>
+                        <div id="lblCurrentRestDisplay" class="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#dfcaab] transition">
+                            🌐 Все рестораны сети
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-1.5 text-[#c5a880] flex-shrink-0 pl-2">
+                    <span class="text-[10.5px] font-semibold px-2 py-0.5 rounded-md bg-[#0e1013] border border-white/10" id="lblCurrentRestCityTag">Все города</span>
+                    <span class="text-xs transition-transform group-hover:translate-y-0.5">▾</span>
+                </div>
+            </button>
+            <!-- Скрытый нативный select для совместимости с API -->
+            <select id="adminRestSelect" onchange="onRestaurantChange()" class="hidden"></select>
         </div>
     </header>
+
+    <!-- ================= БОКОВОЕ МЕНЮ (SIDE DRAWER) ================= -->
+    <div id="drawerBackdrop" onclick="closeSideDrawer()" class="fixed inset-0 bg-black/75 backdrop-blur-md z-50 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+
+    <aside id="sideDrawerPanel" class="fixed top-0 bottom-0 right-0 w-[320px] max-w-[85vw] bg-[#12141a] border-l border-[#c5a880]/25 z-50 flex flex-col justify-between shadow-2xl translate-x-full overflow-y-auto pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+        <div class="p-5 space-y-5">
+            <!-- Шапка бокового меню -->
+            <div class="flex items-center justify-between border-b border-white/10 pb-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#d1b791] to-[#8f6f40] flex items-center justify-center text-lg shadow-lg">
+                        👑
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-sm text-white font-serif-luxury">RestoKZ PRO</h3>
+                        <p class="text-[11px] text-[#c5a880]" id="lblDrawerRole">Администратор / Хостес</p>
+                    </div>
+                </div>
+                <button onclick="closeSideDrawer()" class="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white flex items-center justify-center text-sm transition" title="Закрыть">
+                    ✕
+                </button>
+            </div>
+
+            <!-- Карточка смены в боковом меню -->
+            <div class="bg-[#181b22] border border-[#c5a880]/25 rounded-2xl p-4 space-y-3 shadow-md">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs text-zinc-400 font-semibold" id="lblDrawerShiftTitle">Рабочая смена</span>
+                    <span id="drawerShiftBadge" class="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                        ● Смена открыта
+                    </span>
+                </div>
+                <div class="text-xs text-zinc-300 flex items-center justify-between">
+                    <span class="text-zinc-400">⏱ В работе:</span>
+                    <strong class="text-[#dfcaab] font-bold" id="drawerShiftDuration">3 ч 25 мин</strong>
+                </div>
+                <button onclick="closeSideDrawer(); openShiftModal();" class="w-full py-2.5 rounded-xl font-bold text-xs bg-[#c5a880]/20 hover:bg-[#c5a880]/30 text-[#dfcaab] border border-[#c5a880]/40 transition active:scale-[0.98] flex items-center justify-center gap-1.5">
+                    <span>⚙️</span> <span id="lblDrawerShiftBtn">Управление сменой & Отчёт</span>
+                </button>
+            </div>
+
+            <!-- Выбор языка интерфейса (Крупные удобные кнопки) -->
+            <div class="space-y-2">
+                <label class="text-xs font-bold text-zinc-400 uppercase tracking-wider block" id="lblDrawerLangTitle">
+                    🌐 Язык интерфейса
+                </label>
+                <div class="grid grid-cols-3 gap-2">
+                    <button type="button" onclick="setAdminLanguage('ru')" id="drawerLangBtn-ru" class="py-2.5 rounded-xl text-xs font-bold bg-[#c5a880] text-[#0e1013] transition text-center shadow-md">
+                        🇷🇺 RU
+                    </button>
+                    <button type="button" onclick="setAdminLanguage('kz')" id="drawerLangBtn-kz" class="py-2.5 rounded-xl text-xs font-bold bg-[#181b22] text-zinc-400 hover:text-white border border-white/5 transition text-center">
+                        🇰🇿 KZ
+                    </button>
+                    <button type="button" onclick="setAdminLanguage('en')" id="drawerLangBtn-en" class="py-2.5 rounded-xl text-xs font-bold bg-[#181b22] text-zinc-400 hover:text-white border border-white/5 transition text-center">
+                        🇬🇧 EN
+                    </button>
+                </div>
+            </div>
+
+            <!-- Быстрый переход в витрину гостя -->
+            <div class="space-y-2">
+                <label class="text-xs font-bold text-zinc-400 uppercase tracking-wider block" id="lblDrawerNavTitle">
+                    🧭 Быстрый переход
+                </label>
+                <a href="index.html" class="flex items-center justify-between p-3 rounded-2xl bg-gradient-to-r from-sky-500/10 to-sky-500/5 hover:from-sky-500/20 border border-sky-500/30 transition group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">🍽️</span>
+                        <div>
+                            <div class="text-xs font-bold text-white group-hover:text-sky-300 transition" id="lblDrawerGuestLinkTitle">Витрина гостя (Клиентское меню)</div>
+                            <div class="text-[11px] text-zinc-400" id="lblDrawerGuestLinkSub">Просмотр каталога глазами посетителя</div>
+                        </div>
+                    </div>
+                    <span class="text-sky-400 text-sm font-bold group-hover:translate-x-1 transition-transform">→</span>
+                </a>
+            </div>
+
+            <!-- Настройки звука и подключения -->
+            <div class="space-y-2.5 pt-2 border-t border-white/10">
+                <label class="text-xs font-bold text-zinc-400 uppercase tracking-wider block" id="lblDrawerSettingsTitle">
+                    ⚙️ Опции терминала
+                </label>
+                
+                <!-- Переключатель звука новых заявок -->
+                <div class="flex items-center justify-between p-3 rounded-2xl bg-[#181b22] border border-white/5">
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-base">🔔</span>
+                        <div>
+                            <div class="text-xs font-medium text-white" id="lblSoundNotifTitle">Звук новых заявок</div>
+                            <div class="text-[10px] text-zinc-400" id="lblSoundNotifSub">Приятный гонг при новой брони</div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="toggleSoundNotification()" id="btnSoundToggle" class="w-11 h-6 rounded-full bg-emerald-500 p-0.5 transition-colors relative cursor-pointer">
+                        <div id="soundToggleThumb" class="w-5 h-5 rounded-full bg-white transition-transform translate-x-5 shadow-sm"></div>
+                    </button>
+                </div>
+
+                <!-- Статус облака -->
+                <div class="flex items-center justify-between p-3 rounded-2xl bg-[#181b22] border border-white/5 text-xs">
+                    <div class="flex items-center gap-2 text-zinc-300">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span>Cloud Server (Railway)</span>
+                    </div>
+                    <span class="text-[11px] font-semibold text-emerald-400">Онлайн</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Подвал меню -->
+        <div class="p-4 border-t border-white/10 bg-[#0e1013] text-center space-y-1">
+            <div class="text-xs font-semibold text-[#dfcaab]">RestoKZ PRO Platform v2.4</div>
+            <div class="text-[10px] text-zinc-500">Система бронирования и управления посадкой</div>
+        </div>
+    </aside>
+
+    <!-- ================= ВСПЛЫВАЮЩИЙ СЕЛЕКТОР РЕСТОРАНА (BOTTOM SHEET) ================= -->
+    <div id="restPickerBackdrop" onclick="closeRestaurantPicker()" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+
+    <div id="restPickerSheetPanel" class="fixed bottom-0 left-0 right-0 max-w-lg mx-auto bg-[#14171f] border-t border-[#c5a880]/30 rounded-t-3xl z-50 p-4 pt-3 space-y-3.5 shadow-2xl translate-y-full max-h-[85vh] flex flex-col pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+        <!-- Полоса свайпа -->
+        <div class="w-12 h-1 bg-white/20 rounded-full mx-auto"></div>
+
+        <div class="flex items-center justify-between border-b border-white/10 pb-2.5">
+            <div>
+                <h3 class="text-base font-bold text-white font-serif-luxury" id="lblPickerModalTitle">🏛 Выберите филиал / ресторан</h3>
+                <p class="text-xs text-zinc-400" id="lblPickerModalSub">Фильтрация броней и карты зала по заведению</p>
+            </div>
+            <button onclick="closeRestaurantPicker()" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white flex items-center justify-center text-sm transition">
+                ✕
+            </button>
+        </div>
+
+        <!-- Поиск внутри списка ресторанов -->
+        <div class="relative">
+            <input type="text" id="restPickerSearchInput" oninput="filterRestPickerList(this.value)" placeholder="Поиск по названию или городу..." class="w-full bg-[#0e1013] border border-white/10 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
+            <span class="absolute left-3 top-2.5 text-zinc-500 text-xs">🔍</span>
+        </div>
+
+        <!-- Контейнер карточек ресторанов -->
+        <div id="restPickerListContainer" class="space-y-2 overflow-y-auto max-h-[50vh] pr-1 flex-1">
+            <!-- Динамически заполняется через renderRestPickerList() -->
+        </div>
+    </div>
+
+    <!-- ================= МОДАЛЬНОЕ ОКНО УПРАВЛЕНИЯ СМЕНОЙ (SHIFT MANAGEMENT) ================= -->
+    <div id="shiftModalBackdrop" onclick="closeShiftModal()" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+
+    <div id="shiftModalPanel" class="fixed bottom-0 left-0 right-0 max-w-lg mx-auto bg-[#14171f] border-t border-[#c5a880]/30 rounded-t-3xl z-50 p-5 pt-3.5 space-y-4 shadow-2xl translate-y-full max-h-[90vh] overflow-y-auto pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+        <!-- Полоса свайпа -->
+        <div class="w-12 h-1 bg-white/20 rounded-full mx-auto"></div>
+
+        <div class="flex items-center justify-between border-b border-white/10 pb-3">
+            <div class="flex items-center gap-2.5">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#c5a880] to-[#8f6f40] flex items-center justify-center text-lg">
+                    ⏱️
+                </div>
+                <div>
+                    <h3 class="text-base font-bold text-white font-serif-luxury" id="lblShiftModalHeading">Управление рабочей сменой</h3>
+                    <p class="text-xs text-zinc-400" id="lblShiftModalSub">Текущий статус и статистика хостес</p>
+                </div>
+            </div>
+            <button onclick="closeShiftModal()" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white flex items-center justify-center text-sm transition">
+                ✕
+            </button>
+        </div>
+
+        <!-- Карточка статуса текущей смены -->
+        <div id="shiftCardStatusArea" class="bg-[#0e1013] border border-white/10 rounded-2xl p-4 space-y-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse" id="shiftModalDot"></span>
+                    <span class="text-sm font-bold text-emerald-400" id="shiftModalStatusText">Смена активна</span>
+                </div>
+                <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-white/5 text-[#dfcaab]" id="shiftHostessTag">
+                    Хостес: Айгерим
+                </span>
+            </div>
+
+            <!-- Метрики времени смены -->
+            <div class="grid grid-cols-2 gap-2 pt-1 border-t border-white/5 text-center">
+                <div class="bg-[#15171d] rounded-xl p-2.5">
+                    <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold" id="lblShiftStartedAt">Начало смены</div>
+                    <div class="text-sm font-bold text-white mt-0.5" id="shiftModalStartTime">Сегодня, 10:00</div>
+                </div>
+                <div class="bg-[#15171d] rounded-xl p-2.5">
+                    <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold" id="lblShiftDuration">В работе</div>
+                    <div class="text-sm font-bold text-[#dfcaab] mt-0.5" id="shiftModalTimer">3 ч 25 мин</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Живая статистика смены -->
+        <div class="space-y-2">
+            <div class="text-xs font-bold text-zinc-400 uppercase tracking-wider" id="lblShiftStatsTitle">
+                📊 Результаты текущей смены
+            </div>
+            <div class="grid grid-cols-3 gap-2 text-center">
+                <div class="bg-[#0e1013] border border-white/5 rounded-xl p-2.5">
+                    <div class="text-[10px] text-zinc-400" id="lblShiftStat1">Заявок принято</div>
+                    <div class="text-lg font-bold text-[#dfcaab] mt-0.5" id="shiftStatProcessed">0</div>
+                </div>
+                <div class="bg-[#0e1013] border border-white/5 rounded-xl p-2.5">
+                    <div class="text-[10px] text-zinc-400" id="lblShiftStat2">Посажено гостей</div>
+                    <div class="text-lg font-bold text-emerald-400 mt-0.5" id="shiftStatGuests">0 чел.</div>
+                </div>
+                <div class="bg-[#0e1013] border border-white/5 rounded-xl p-2.5">
+                    <div class="text-[10px] text-zinc-400" id="lblShiftStat3">Отмен / No-Show</div>
+                    <div class="text-lg font-bold text-rose-400 mt-0.5" id="shiftStatRejected">0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Кнопки завершения или открытия смены -->
+        <div id="shiftActionArea" class="pt-2">
+            <button type="button" onclick="confirmEndShift()" id="btnEndShiftModal" class="w-full py-3.5 rounded-2xl font-bold text-xs bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 transition active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg shadow-rose-900/20">
+                <span>🛑</span> <span id="lblBtnEndShift">Завершить рабочую смену</span>
+            </button>
+            <button type="button" onclick="startNewShift()" id="btnStartShiftModal" class="hidden w-full py-3.5 rounded-2xl font-bold text-xs luxury-gold-btn transition active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg">
+                <span>🟢</span> <span id="lblBtnStartShift">Начать новую смену</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ДИАЛОГ ПОДТВЕРЖДЕНИЯ ЗАКРЫТИЯ СМЕНЫ & Z-ОТЧЕТ -->
+    <div id="shiftConfirmModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-[#15171d] border border-[#c5a880]/30 rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-2xl text-center">
+            <div class="w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 text-2xl mx-auto flex items-center justify-center border border-rose-500/30">
+                🛑
+            </div>
+            <div class="space-y-1">
+                <h4 class="text-base font-bold text-white" id="lblConfirmEndShiftTitle">Завершить рабочую смену?</h4>
+                <p class="text-xs text-zinc-400" id="lblConfirmEndShiftSub">Будет зафиксирован итоговый отчёт за смену и сброшен таймер хостес.</p>
+            </div>
+            <div class="bg-[#0e1013] rounded-xl p-3 text-xs text-zinc-300 text-left space-y-1.5" id="shiftSummaryPreview">
+                <!-- Заполняется динамически -->
+            </div>
+            <div class="grid grid-cols-2 gap-2 pt-1">
+                <button onclick="closeShiftConfirmModal()" class="py-2.5 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/15 text-zinc-300 transition">
+                    Отмена
+                </button>
+                <button onclick="executeEndShift()" class="py-2.5 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-500 text-white transition shadow-lg shadow-rose-900/30">
+                    Да, завершить
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- ОСНОВНОЙ КОНТЕЙНЕР -->
     <main class="max-w-md mx-auto px-3 pt-2.5 space-y-3">
 
         <!-- KPI ДАШБОРД СМЕНЫ -->
-        <div class="grid grid-cols-3 gap-1.5">
-            <div onclick="setQuickFilter('pending')" class="cursor-pointer bg-[#15171d] hover:bg-[#1c1f26] border border-[#c5a880]/25 rounded-xl p-2 text-center transition">
-                <div class="text-[9px] uppercase tracking-wider text-[#98948c] truncate">Ждут ответа</div>
-                <div id="kpiPending" class="text-lg font-bold text-[#dfcaab] mt-0.5">0</div>
-                <div class="text-[8.5px] text-[#c5a880]/80 mt-0.5 truncate">Новые заявки</div>
+        <div class="grid grid-cols-3 gap-2">
+            <div onclick="setQuickFilter('pending')" class="cursor-pointer bg-[#15171d] hover:bg-[#1c1f26] border border-amber-500/30 hover:border-amber-500/50 rounded-2xl p-2.5 text-center transition active:scale-[0.97] shadow-sm">
+                <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold truncate" id="lblKpiPending">Ждут ответа</div>
+                <div id="kpiPending" class="text-2xl font-black text-[#dfcaab] mt-0.5">0</div>
+                <div class="text-[10px] text-amber-300/90 font-medium mt-0.5 truncate" id="lblKpiPendingSub">Новые заявки</div>
             </div>
-            <div onclick="setQuickFilter('confirmed')" class="cursor-pointer bg-[#15171d] hover:bg-[#1c1f26] border border-emerald-500/25 rounded-xl p-2 text-center transition">
-                <div class="text-[9px] uppercase tracking-wider text-[#98948c] truncate">В брони</div>
-                <div id="kpiConfirmed" class="text-lg font-bold text-emerald-400 mt-0.5">0</div>
-                <div class="text-[8.5px] text-emerald-400/80 mt-0.5 truncate">Столов занято</div>
+            <div onclick="setQuickFilter('confirmed')" class="cursor-pointer bg-[#15171d] hover:bg-[#1c1f26] border border-emerald-500/30 hover:border-emerald-500/50 rounded-2xl p-2.5 text-center transition active:scale-[0.97] shadow-sm">
+                <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold truncate" id="lblKpiConfirmed">В брони</div>
+                <div id="kpiConfirmed" class="text-2xl font-black text-emerald-400 mt-0.5">0</div>
+                <div class="text-[10px] text-emerald-400/90 font-medium mt-0.5 truncate" id="lblKpiConfirmedSub">Столов занято</div>
             </div>
-            <div onclick="switchTab('floor')" class="cursor-pointer bg-[#15171d] hover:bg-[#1c1f26] border border-sky-500/25 rounded-xl p-2 text-center transition">
-                <div class="text-[9px] uppercase tracking-wider text-[#98948c] truncate">Гостей</div>
-                <div id="kpiGuests" class="text-lg font-bold text-sky-400 mt-0.5">0</div>
-                <div class="text-[8.5px] text-sky-400/80 mt-0.5 truncate">В смене →</div>
+            <div onclick="switchTab('floor')" class="cursor-pointer bg-[#15171d] hover:bg-[#1c1f26] border border-sky-500/30 hover:border-sky-500/50 rounded-2xl p-2.5 text-center transition active:scale-[0.97] shadow-sm">
+                <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold truncate" id="lblKpiGuests">Гостей</div>
+                <div id="kpiGuests" class="text-2xl font-black text-sky-400 mt-0.5">0</div>
+                <div class="text-[10px] text-sky-400/90 font-medium mt-0.5 truncate" id="lblKpiGuestsSub">В смене →</div>
             </div>
         </div>
 
         <!-- ================= ВКЛАДКА 1: ЖУРНАЛ ЗАЯВОК ================= -->
         <section id="tab-orders" class="space-y-2.5 fade-in">
             <!-- Поиск и фильтры -->
-            <div class="bg-[#15171d] border border-white/5 rounded-2xl p-2.5 space-y-2">
+            <div class="bg-[#15171d] border border-white/5 rounded-2xl p-3 space-y-2.5">
                 <!-- Строка 1: Поиск + Кнопка Тест -->
-                <div class="flex items-center gap-1.5">
+                <div class="flex items-center gap-2">
                     <div class="relative flex-1">
                         <input
                             id="searchOrdersInput"
                             type="text"
                             oninput="renderOrders()"
                             placeholder="Поиск по имени, телефону или #ID..."
-                            class="w-full bg-[#0e1013] border border-white/10 focus:border-[#c5a880] rounded-xl pl-8 pr-3 py-1.5 text-xs text-white placeholder-zinc-500 focus:outline-none"
+                            class="w-full bg-[#0e1013] border border-white/10 focus:border-[#c5a880] rounded-xl pl-9 pr-3 py-2 text-xs sm:text-sm text-white placeholder-zinc-500 focus:outline-none transition shadow-inner"
                         >
-                        <span class="absolute left-2.5 top-2 text-zinc-500 text-xs">🔍</span>
+                        <span class="absolute left-3 top-2.5 text-zinc-400 text-xs">🔍</span>
                     </div>
-                    <button onclick="createDemoBooking()" title="Создать тестовую бронь" class="h-8 px-2.5 rounded-xl text-[10px] font-bold bg-[#c5a880]/15 text-[#dfcaab] border border-[#c5a880]/30 hover:bg-[#c5a880]/25 transition whitespace-nowrap flex items-center gap-1 flex-shrink-0">
+                    <button onclick="createDemoBooking()" title="Создать тестовую бронь" class="h-9 px-3 rounded-xl text-xs font-bold bg-[#c5a880]/15 text-[#dfcaab] border border-[#c5a880]/30 hover:bg-[#c5a880]/25 transition whitespace-nowrap flex items-center gap-1.5 flex-shrink-0 active:scale-95">
                         <span>+ Тест</span>
                     </button>
                 </div>
 
                 <!-- Строка 2: Фильтр по дате (полная ширина 3 колонки) -->
                 <div class="grid grid-cols-3 gap-1 bg-[#0e1013] p-1 rounded-xl border border-white/5">
-                    <button onclick="setDateFilter('all')" id="dateBtn-all" class="py-1.5 rounded-lg text-[11px] font-bold bg-[#c5a880] text-[#0e1013] transition text-center">Все дни</button>
-                    <button onclick="setDateFilter('today')" id="dateBtn-today" class="py-1.5 rounded-lg text-[11px] font-medium text-zinc-400 hover:text-white transition text-center">Сегодня</button>
-                    <button onclick="setDateFilter('tomorrow')" id="dateBtn-tomorrow" class="py-1.5 rounded-lg text-[11px] font-medium text-zinc-400 hover:text-white transition text-center">Завтра</button>
+                    <button onclick="setDateFilter('all')" id="dateBtn-all" class="py-2 rounded-lg text-xs font-bold bg-[#c5a880] text-[#0e1013] transition text-center shadow-sm active:scale-95">Все дни</button>
+                    <button onclick="setDateFilter('today')" id="dateBtn-today" class="py-2 rounded-lg text-xs font-medium text-zinc-400 hover:text-white transition text-center active:scale-95">Сегодня</button>
+                    <button onclick="setDateFilter('tomorrow')" id="dateBtn-tomorrow" class="py-2 rounded-lg text-xs font-medium text-zinc-400 hover:text-white transition text-center active:scale-95">Завтра</button>
                 </div>
 
                 <!-- Строка 3: Фильтр по статусу (плавный скролл) -->
-                <div class="flex gap-1.5 overflow-x-auto hide-scrollbar pb-0.5 -mx-0.5 px-0.5">
-                    <button onclick="setStatusFilter('all')" id="statusBtn-all" class="px-2.5 py-1 rounded-lg text-[10.5px] font-bold bg-white/15 text-white transition whitespace-nowrap flex-shrink-0">Все</button>
-                    <button onclick="setStatusFilter('pending')" id="statusBtn-pending" class="px-2.5 py-1 rounded-lg text-[10.5px] font-medium bg-[#0e1013] text-amber-300 border border-amber-500/20 transition whitespace-nowrap flex-shrink-0">⏳ Новые</button>
-                    <button onclick="setStatusFilter('confirmed')" id="statusBtn-confirmed" class="px-2.5 py-1 rounded-lg text-[10.5px] font-medium bg-[#0e1013] text-emerald-400 border border-emerald-500/20 transition whitespace-nowrap flex-shrink-0">✅ В брони</button>
-                    <button onclick="setStatusFilter('arrived')" id="statusBtn-arrived" class="px-2.5 py-1 rounded-lg text-[10.5px] font-medium bg-[#0e1013] text-sky-400 border border-sky-500/20 transition whitespace-nowrap flex-shrink-0">🥂 За столом</button>
-                    <button onclick="setStatusFilter('rejected')" id="statusBtn-rejected" class="px-2.5 py-1 rounded-lg text-[10.5px] font-medium bg-[#0e1013] text-rose-400 border border-rose-500/20 transition whitespace-nowrap flex-shrink-0">❌ Отмена</button>
+                <div class="flex gap-2 overflow-x-auto hide-scrollbar pb-0.5 -mx-0.5 px-0.5">
+                    <button onclick="setStatusFilter('all')" id="statusBtn-all" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white/15 text-white transition whitespace-nowrap flex-shrink-0 active:scale-95">Все</button>
+                    <button onclick="setStatusFilter('pending')" id="statusBtn-pending" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#0e1013] text-amber-300 border border-amber-500/25 transition whitespace-nowrap flex-shrink-0 active:scale-95">⏳ Новые</button>
+                    <button onclick="setStatusFilter('confirmed')" id="statusBtn-confirmed" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#0e1013] text-emerald-400 border border-emerald-500/25 transition whitespace-nowrap flex-shrink-0 active:scale-95">✅ В брони</button>
+                    <button onclick="setStatusFilter('arrived')" id="statusBtn-arrived" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#0e1013] text-sky-400 border border-sky-500/25 transition whitespace-nowrap flex-shrink-0 active:scale-95">🥂 За столом</button>
+                    <button onclick="setStatusFilter('rejected')" id="statusBtn-rejected" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#0e1013] text-rose-400 border border-rose-500/25 transition whitespace-nowrap flex-shrink-0 active:scale-95">❌ Отмена</button>
                 </div>
             </div>
 
@@ -730,7 +1011,35 @@
                 shift_sub: "Терминал хостес и управления посадкой",
                 guest_btn: "Гость",
                 rest_label: "🏛 Заведение:",
-                all_chain: "🌐 Все рестораны сети",
+                all_chain: "Все рестораны сети",
+                all_cities: "Все города",
+                drawer_role: "Администратор / Хостес",
+                drawer_shift_title: "Рабочая смена",
+                drawer_shift_btn: "Управление сменой & Отчёт",
+                drawer_lang_title: "🌐 Язык интерфейса",
+                drawer_nav_title: "🧭 Быстрый переход",
+                drawer_guest_link_title: "Витрина гостя (Клиентское меню)",
+                drawer_guest_link_sub: "Просмотр каталога глазами посетителя",
+                drawer_settings_title: "⚙️ Опции терминала",
+                sound_notif_title: "Звук новых заявок",
+                sound_notif_sub: "Приятный гонг при новой брони",
+                picker_modal_title: "🏛 Выберите филиал / ресторан",
+                picker_modal_sub: "Фильтрация броней и карты зала по заведению",
+                picker_sub: "Филиал / Заведение",
+                shift_modal_heading: "Управление рабочей сменой",
+                shift_modal_sub: "Текущий статус и статистика хостес",
+                shift_open: "Смена открыта",
+                shift_closed: "Смена закрыта",
+                shift_duration_lbl: "В работе",
+                shift_started_at_lbl: "Начало смены",
+                shift_stats_title: "📊 Результаты текущей смены",
+                shift_stat1: "Заявок принято",
+                shift_stat2: "Посажено гостей",
+                shift_stat3: "Отмен / No-Show",
+                btn_end_shift: "Завершить рабочую смену",
+                btn_start_shift: "Начать новую смену",
+                confirm_end_shift_title: "Завершить рабочую смену?",
+                confirm_end_shift_sub: "Будет зафиксирован итоговый отчёт за смену и сброшен таймер хостес.",
                 kpi_pending: "Ждут ответа",
                 kpi_pending_sub: "Новые заявки",
                 kpi_confirmed: "В брони",
@@ -795,7 +1104,35 @@
                 shift_sub: "Хостес және мейрамхананы басқару терминалы",
                 guest_btn: "Қонақ",
                 rest_label: "🏛 Мейрамхана:",
-                all_chain: "🌐 Желідегі барлық мейрамханалар",
+                all_chain: "Барлық мейрамханалар",
+                all_cities: "Барлық қалалар",
+                drawer_role: "Әкімші / Хостес",
+                drawer_shift_title: "Жұмыс ауысымы",
+                drawer_shift_btn: "Ауысымды басқару & Есеп",
+                drawer_lang_title: "🌐 Интерфейс тілі",
+                drawer_nav_title: "🧭 Жылдам өту",
+                drawer_guest_link_title: "Қонақ витринасы (Клиент мәзірі)",
+                drawer_guest_link_sub: "Каталогты қонақ көзімен қарау",
+                drawer_settings_title: "⚙️ Терминал баптаулары",
+                sound_notif_title: "Жаңа өтінімдер дыбысы",
+                sound_notif_sub: "Жаңа бронда жағымды гонг",
+                picker_modal_title: "🏛 Филиалды / мейрамхананы таңдаңыз",
+                picker_modal_sub: "Брондар мен зал сызбасын сүзу",
+                picker_sub: "Филиал / Мейрамхана",
+                shift_modal_heading: "Жұмыс ауысымын басқару",
+                shift_modal_sub: "Ағымдағы мәртебе және хостес статистикасы",
+                shift_open: "Ауысым ашық",
+                shift_closed: "Ауысым жабық",
+                shift_duration_lbl: "Жұмыста",
+                shift_started_at_lbl: "Ауысым басы",
+                shift_stats_title: "📊 Ағымдағы ауысым нәтижелері",
+                shift_stat1: "Қабылданған өтінімдер",
+                shift_stat2: "Отырғызылған қонақтар",
+                shift_stat3: "Бас тартулар / No-Show",
+                btn_end_shift: "Жұмыс ауысымын аяқтау",
+                btn_start_shift: "Жаңа ауысымды бастау",
+                confirm_end_shift_title: "Жұмыс ауысымын аяқтау керек пе?",
+                confirm_end_shift_sub: "Ауысым бойынша қорытынды есеп бекітіледі және хостес таймері қайта қосылады.",
                 kpi_pending: "Жауап күтуде",
                 kpi_pending_sub: "Жаңа өтінімдер",
                 kpi_confirmed: "Бронда",
@@ -860,7 +1197,35 @@
                 shift_sub: "Hostess & Restaurant Management Terminal",
                 guest_btn: "Guest",
                 rest_label: "🏛 Restaurant:",
-                all_chain: "🌐 All chain restaurants",
+                all_chain: "All chain restaurants",
+                all_cities: "All cities",
+                drawer_role: "Administrator / Hostess",
+                drawer_shift_title: "Work Shift",
+                drawer_shift_btn: "Shift Management & Report",
+                drawer_lang_title: "🌐 Interface Language",
+                drawer_nav_title: "🧭 Quick Navigation",
+                drawer_guest_link_title: "Guest Booking App",
+                drawer_guest_link_sub: "View catalog from customer perspective",
+                drawer_settings_title: "⚙️ Terminal Options",
+                sound_notif_title: "New Booking Chime",
+                sound_notif_sub: "Pleasant chime upon new bookings",
+                picker_modal_title: "🏛 Select Branch / Restaurant",
+                picker_modal_sub: "Filter bookings and floor layout by venue",
+                picker_sub: "Branch / Restaurant",
+                shift_modal_heading: "Work Shift Management",
+                shift_modal_sub: "Live status and hostess metrics",
+                shift_open: "Shift Open",
+                shift_closed: "Shift Closed",
+                shift_duration_lbl: "Elapsed",
+                shift_started_at_lbl: "Shift Start",
+                shift_stats_title: "📊 Shift Performance",
+                shift_stat1: "Processed Bookings",
+                shift_stat2: "Seated Guests",
+                shift_stat3: "Declined / No-Show",
+                btn_end_shift: "End Work Shift",
+                btn_start_shift: "Start New Shift",
+                confirm_end_shift_title: "End current shift?",
+                confirm_end_shift_sub: "Final shift report will be generated and hostess timer reset.",
                 kpi_pending: "Pending",
                 kpi_pending_sub: "New requests",
                 kpi_confirmed: "Booked",
@@ -930,33 +1295,77 @@
 
             ['ru', 'kz', 'en'].forEach(l => {
                 const btn = document.getElementById(`adminLangBtn-${l}`);
-                if (!btn) return;
-                if (l === lang) {
-                    btn.className = "px-1.5 py-1 text-[10px] font-bold rounded-md bg-[#c5a880] text-[#0e1013] transition shadow-sm";
-                } else {
-                    btn.className = "px-1.5 py-1 text-[10px] font-bold rounded-md text-zinc-400 hover:text-white transition";
+                if (btn) {
+                    if (l === lang) {
+                        btn.className = "px-1.5 py-1 text-[10px] font-bold rounded-md bg-[#c5a880] text-[#0e1013] transition shadow-sm";
+                    } else {
+                        btn.className = "px-1.5 py-1 text-[10px] font-bold rounded-md text-zinc-400 hover:text-white transition";
+                    }
+                }
+                const dBtn = document.getElementById(`drawerLangBtn-${l}`);
+                if (dBtn) {
+                    if (l === lang) {
+                        dBtn.className = "py-2.5 rounded-xl text-xs font-bold bg-[#c5a880] text-[#0e1013] transition text-center shadow-md";
+                    } else {
+                        dBtn.className = "py-2.5 rounded-xl text-xs font-bold bg-[#181b22] text-zinc-400 hover:text-white border border-white/5 transition text-center";
+                    }
                 }
             });
 
             applyAdminTranslations();
             renderOrders();
             renderFloorMap();
+            updateRestTriggerDisplay();
+            renderRestPickerList();
+            renderShiftUI();
         }
 
         function applyAdminTranslations() {
             const t = ADMIN_I18N[currentAdminLang] || ADMIN_I18N.ru;
             const el = (id) => document.getElementById(id);
 
-            if (el('lblShiftActive')) el('lblShiftActive').innerText = t.shift_active;
             if (el('lblHeaderSubtitle')) el('lblHeaderSubtitle').innerText = t.shift_sub;
             if (el('lblGuestBtn')) el('lblGuestBtn').innerText = t.guest_btn;
             if (el('lblRestDropdown')) el('lblRestDropdown').innerText = t.rest_label;
 
+            // Drawer
+            if (el('lblDrawerRole')) el('lblDrawerRole').innerText = t.drawer_role;
+            if (el('lblDrawerShiftTitle')) el('lblDrawerShiftTitle').innerText = t.drawer_shift_title;
+            if (el('lblDrawerShiftBtn')) el('lblDrawerShiftBtn').innerText = t.drawer_shift_btn;
+            if (el('lblDrawerLangTitle')) el('lblDrawerLangTitle').innerText = t.drawer_lang_title;
+            if (el('lblDrawerNavTitle')) el('lblDrawerNavTitle').innerText = t.drawer_nav_title;
+            if (el('lblDrawerGuestLinkTitle')) el('lblDrawerGuestLinkTitle').innerText = t.drawer_guest_link_title;
+            if (el('lblDrawerGuestLinkSub')) el('lblDrawerGuestLinkSub').innerText = t.drawer_guest_link_sub;
+            if (el('lblDrawerSettingsTitle')) el('lblDrawerSettingsTitle').innerText = t.drawer_settings_title;
+            if (el('lblSoundNotifTitle')) el('lblSoundNotifTitle').innerText = t.sound_notif_title;
+            if (el('lblSoundNotifSub')) el('lblSoundNotifSub').innerText = t.sound_notif_sub;
+
+            // Restaurant Picker
+            if (el('lblPickerSub')) el('lblPickerSub').innerText = t.picker_sub;
+            if (el('lblPickerModalTitle')) el('lblPickerModalTitle').innerText = t.picker_modal_title;
+            if (el('lblPickerModalSub')) el('lblPickerModalSub').innerText = t.picker_modal_sub;
+
+            // Shift Modal
+            if (el('lblShiftModalHeading')) el('lblShiftModalHeading').innerText = t.shift_modal_heading;
+            if (el('lblShiftModalSub')) el('lblShiftModalSub').innerText = t.shift_modal_sub;
+            if (el('lblShiftStartedAt')) el('lblShiftStartedAt').innerText = t.shift_started_at_lbl;
+            if (el('lblShiftDuration')) el('lblShiftDuration').innerText = t.shift_duration_lbl;
+            if (el('lblShiftStatsTitle')) el('lblShiftStatsTitle').innerText = t.shift_stats_title;
+            if (el('lblShiftStat1')) el('lblShiftStat1').innerText = t.shift_stat1;
+            if (el('lblShiftStat2')) el('lblShiftStat2').innerText = t.shift_stat2;
+            if (el('lblShiftStat3')) el('lblShiftStat3').innerText = t.shift_stat3;
+            if (el('lblBtnEndShift')) el('lblBtnEndShift').innerText = t.btn_end_shift;
+            if (el('lblBtnStartShift')) el('lblBtnStartShift').innerText = t.btn_start_shift;
+            if (el('lblConfirmEndShiftTitle')) el('lblConfirmEndShiftTitle').innerText = t.confirm_end_shift_title;
+            if (el('lblConfirmEndShiftSub')) el('lblConfirmEndShiftSub').innerText = t.confirm_end_shift_sub;
+
+            // Navigation
             if (el('lblNavOrders')) el('lblNavOrders').innerText = t.nav_orders;
             if (el('lblNavFloor')) el('lblNavFloor').innerText = t.nav_floor;
             if (el('lblNavWalkin')) el('lblNavWalkin').innerText = t.nav_walkin;
             if (el('lblNavManage')) el('lblNavManage').innerText = t.nav_manage;
 
+            // Manage Restaurant tab
             if (el('lblManageTitle')) el('lblManageTitle').innerText = t.manage_title;
             if (el('lblManageSub')) el('lblManageSub').innerText = t.manage_sub;
             if (el('lblSelectRestToEdit')) el('lblSelectRestToEdit').innerText = t.select_rest_edit;
@@ -1156,7 +1565,384 @@
             if (manageRestSelect && !isNewRestaurantMode) {
                 await onManageRestSelectChange();
             }
+            updateRestTriggerDisplay();
+            renderRestPickerList();
         }
+
+        // ================= ЗВУКОВЫЕ УВЕДОМЛЕНИЯ (WEBAUDIO) =================
+        let soundNotificationEnabled = localStorage.getItem('restokz_sound_enabled') !== 'false';
+
+        function playLuxuryChime() {
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) return;
+                const ctx = new AudioCtx();
+                const now = ctx.currentTime;
+                
+                const osc1 = ctx.createOscillator();
+                const gain1 = ctx.createGain();
+                osc1.type = 'sine';
+                osc1.frequency.setValueAtTime(587.33, now); // D5
+                gain1.gain.setValueAtTime(0.12, now);
+                gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+                osc1.connect(gain1);
+                gain1.connect(ctx.destination);
+                osc1.start(now);
+                osc1.stop(now + 0.35);
+
+                const osc2 = ctx.createOscillator();
+                const gain2 = ctx.createGain();
+                osc2.type = 'sine';
+                osc2.frequency.setValueAtTime(880.00, now + 0.12); // A5
+                gain2.gain.setValueAtTime(0.12, now + 0.12);
+                gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+                osc2.connect(gain2);
+                gain2.connect(ctx.destination);
+                osc2.start(now + 0.12);
+                osc2.stop(now + 0.55);
+            } catch(e) {}
+        }
+
+        function toggleSoundNotification() {
+            soundNotificationEnabled = !soundNotificationEnabled;
+            try {
+                localStorage.setItem('restokz_sound_enabled', soundNotificationEnabled);
+            } catch(e) {}
+            updateSoundToggleUI();
+            if (soundNotificationEnabled) {
+                playLuxuryChime();
+                showToast('Звуковые уведомления включены', '🔔');
+            } else {
+                showToast('Звук уведомлений отключён', '🔕');
+            }
+        }
+
+        function updateSoundToggleUI() {
+            const btn = document.getElementById('btnSoundToggle');
+            const thumb = document.getElementById('soundToggleThumb');
+            if (!btn || !thumb) return;
+            if (soundNotificationEnabled) {
+                btn.className = "w-11 h-6 rounded-full bg-emerald-500 p-0.5 transition-colors relative cursor-pointer";
+                thumb.className = "w-5 h-5 rounded-full bg-white transition-transform translate-x-5 shadow-sm";
+            } else {
+                btn.className = "w-11 h-6 rounded-full bg-zinc-700 p-0.5 transition-colors relative cursor-pointer";
+                thumb.className = "w-5 h-5 rounded-full bg-zinc-400 transition-transform translate-x-0 shadow-sm";
+            }
+        }
+
+        // ================= БОКОВОЕ МЕНЮ (SIDE DRAWER) =================
+        function openSideDrawer() {
+            const drawer = document.getElementById('sideDrawerPanel');
+            const backdrop = document.getElementById('drawerBackdrop');
+            if (drawer) drawer.classList.add('drawer-open');
+            if (backdrop) backdrop.classList.add('backdrop-open');
+        }
+
+        function closeSideDrawer() {
+            const drawer = document.getElementById('sideDrawerPanel');
+            const backdrop = document.getElementById('drawerBackdrop');
+            if (drawer) drawer.classList.remove('drawer-open');
+            if (backdrop) backdrop.classList.remove('backdrop-open');
+        }
+
+        // ================= КАСТОМНЫЙ ВСПЛЫВАЮЩИЙ СЕЛЕКТОР РЕСТОРАНА =================
+        function openRestaurantPicker() {
+            renderRestPickerList();
+            const sheet = document.getElementById('restPickerSheetPanel');
+            const backdrop = document.getElementById('restPickerBackdrop');
+            if (sheet) sheet.classList.add('sheet-open');
+            if (backdrop) backdrop.classList.add('backdrop-open');
+        }
+
+        function closeRestaurantPicker() {
+            const sheet = document.getElementById('restPickerSheetPanel');
+            const backdrop = document.getElementById('restPickerBackdrop');
+            if (sheet) sheet.classList.remove('sheet-open');
+            if (backdrop) backdrop.classList.remove('backdrop-open');
+        }
+
+        function filterRestPickerList(val) {
+            renderRestPickerList(val);
+        }
+
+        function updateRestTriggerDisplay() {
+            const displayEl = document.getElementById('lblCurrentRestDisplay');
+            const cityTagEl = document.getElementById('lblCurrentRestCityTag');
+            const t = ADMIN_I18N[currentAdminLang] || ADMIN_I18N.ru;
+            if (!displayEl) return;
+
+            if (selectedRestId === 'all') {
+                displayEl.textContent = `🌐 ${t.all_chain} (${RESTAURANTS.length} точек)`;
+                if (cityTagEl) cityTagEl.textContent = t.all_cities;
+            } else {
+                const r = RESTAURANTS.find(x => String(x.id) === String(selectedRestId));
+                if (r) {
+                    displayEl.textContent = `🏛 ${r.name}`;
+                    if (cityTagEl) cityTagEl.textContent = r.city || '';
+                }
+            }
+        }
+
+        function renderRestPickerList(filterText = '') {
+            const container = document.getElementById('restPickerListContainer');
+            if (!container) return;
+            const query = (filterText || '').toLowerCase().trim();
+            const t = ADMIN_I18N[currentAdminLang] || ADMIN_I18N.ru;
+
+            let html = `
+                <div onclick="selectRestaurantFromPicker('all')" class="cursor-pointer p-3.5 rounded-2xl border ${selectedRestId === 'all' ? 'border-[#c5a880] bg-[#c5a880]/15 shadow-md shadow-[#c5a880]/10' : 'border-white/5 bg-[#0e1013] hover:border-white/20'} flex items-center justify-between transition active:scale-[0.98]">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500/20 to-blue-600/30 text-sky-300 border border-sky-500/30 flex items-center justify-center text-lg shadow-sm">
+                            🌐
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-white">${t.all_chain}</h4>
+                            <p class="text-xs text-zinc-400">${RESTAURANTS.length} филиалов во всех городах</p>
+                        </div>
+                    </div>
+                    ${selectedRestId === 'all' ? '<span class="text-xs font-bold text-[#c5a880] px-2.5 py-1 rounded-full bg-[#c5a880]/20 border border-[#c5a880]/40">✓ Выбрано</span>' : '<span class="text-xs text-zinc-500">Выбрать →</span>'}
+                </div>
+            `;
+
+            RESTAURANTS.forEach(r => {
+                if (query && !r.name.toLowerCase().includes(query) && !(r.city || '').toLowerCase().includes(query)) {
+                    return;
+                }
+                const isSelected = String(r.id) === String(selectedRestId);
+                const tableCount = (r.tables || []).length;
+                html += `
+                    <div onclick="selectRestaurantFromPicker(${r.id})" class="cursor-pointer p-3.5 rounded-2xl border ${isSelected ? 'border-[#c5a880] bg-[#c5a880]/15 shadow-md shadow-[#c5a880]/10' : 'border-white/5 bg-[#0e1013] hover:border-white/20'} flex items-center justify-between transition active:scale-[0.98]">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#c5a880]/20 to-[#9c7e54]/30 text-[#dfcaab] border border-[#c5a880]/30 flex items-center justify-center text-lg flex-shrink-0 shadow-sm">
+                                🏛
+                            </div>
+                            <div class="min-w-0">
+                                <div class="flex items-center gap-2">
+                                    <h4 class="text-sm font-bold text-white truncate">${r.name}</h4>
+                                    <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-white/5 text-zinc-300 border border-white/5 flex-shrink-0">${r.city}</span>
+                                </div>
+                                <p class="text-xs text-[#c5a880] mt-0.5 truncate">${r.cuisine || 'Ресторан'} • ${tableCount} столов</p>
+                            </div>
+                        </div>
+                        ${isSelected ? '<span class="text-xs font-bold text-[#c5a880] px-2.5 py-1 rounded-full bg-[#c5a880]/20 border border-[#c5a880]/40 flex-shrink-0 ml-2">✓ Выбрано</span>' : '<span class="text-xs text-zinc-500 flex-shrink-0 ml-2">Выбрать →</span>'}
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function selectRestaurantFromPicker(id) {
+            selectedRestId = String(id);
+            const selectEl = document.getElementById('adminRestSelect');
+            if (selectEl) selectEl.value = String(id);
+            onRestaurantChange();
+            updateRestTriggerDisplay();
+            closeRestaurantPicker();
+            const rName = id === 'all' ? (ADMIN_I18N[currentAdminLang]?.all_chain || 'Все рестораны') : (RESTAURANTS.find(r => String(r.id) === String(id))?.name || '');
+            showToast(`Выбрано: ${rName}`, '🏛');
+        }
+
+        // ================= УПРАВЛЕНИЕ РАБОЧЕЙ СМЕНОЙ (SHIFT MANAGEMENT) =================
+        let shiftState = {
+            isOpen: true,
+            startTime: Date.now() - (3 * 3600 * 1000 + 35 * 60 * 1000), // ~3h 35m default
+            hostessName: "Айгерим (Хостес)",
+            endedAt: null
+        };
+
+        function initShiftState() {
+            try {
+                const saved = localStorage.getItem('restokz_shift_data');
+                if (saved) {
+                    shiftState = JSON.parse(saved);
+                } else {
+                    localStorage.setItem('restokz_shift_data', JSON.stringify(shiftState));
+                }
+            } catch(e) {}
+            renderShiftUI();
+            setInterval(updateShiftTimerDisplay, 1000);
+        }
+
+        function saveShiftState() {
+            try {
+                localStorage.setItem('restokz_shift_data', JSON.stringify(shiftState));
+            } catch(e) {}
+            renderShiftUI();
+        }
+
+        function getShiftDurationFormatted() {
+            if (!shiftState.isOpen) return "0 ч 00 мин";
+            const diffMs = Math.max(0, Date.now() - Number(shiftState.startTime));
+            const hours = Math.floor(diffMs / 3600000);
+            const mins = Math.floor((diffMs % 3600000) / 60000);
+            return `${hours} ч ${mins < 10 ? '0' : ''}${mins} мин`;
+        }
+
+        function updateShiftTimerDisplay() {
+            if (!shiftState.isOpen) return;
+            const durStr = getShiftDurationFormatted();
+            const timerModalEl = document.getElementById('shiftModalTimer');
+            const drawerDurEl = document.getElementById('drawerShiftDuration');
+            const headerShiftEl = document.getElementById('lblHeaderShiftText');
+
+            if (timerModalEl) timerModalEl.textContent = durStr;
+            if (drawerDurEl) drawerDurEl.textContent = durStr;
+            if (headerShiftEl) headerShiftEl.textContent = `Смена ${durStr.replace(' мин', 'м').replace(' ч ', 'ч ')}`;
+        }
+
+        function renderShiftUI() {
+            const t = ADMIN_I18N[currentAdminLang] || ADMIN_I18N.ru;
+            const btnHeaderShift = document.getElementById('btnHeaderShift');
+            const shiftDot = document.getElementById('shiftStatusDot');
+            const lblHeaderShift = document.getElementById('lblHeaderShiftText');
+            const drawerBadge = document.getElementById('drawerShiftBadge');
+            const shiftModalDot = document.getElementById('shiftModalDot');
+            const shiftModalStatus = document.getElementById('shiftModalStatusText');
+            const btnEnd = document.getElementById('btnEndShiftModal');
+            const btnStart = document.getElementById('btnStartShiftModal');
+
+            if (shiftState.isOpen) {
+                if (btnHeaderShift) {
+                    btnHeaderShift.className = "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/25 active:scale-95 transition shadow-sm flex-shrink-0";
+                }
+                if (shiftDot) shiftDot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
+                if (lblHeaderShift) lblHeaderShift.textContent = `Смена ${getShiftDurationFormatted().replace(' мин', 'м').replace(' ч ', 'ч ')}`;
+                if (drawerBadge) {
+                    drawerBadge.className = "text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30";
+                    drawerBadge.textContent = `● ${t.shift_open}`;
+                }
+                if (shiftModalDot) shiftModalDot.className = "w-3 h-3 rounded-full bg-emerald-400 animate-pulse";
+                if (shiftModalStatus) {
+                    shiftModalStatus.className = "text-sm font-bold text-emerald-400";
+                    shiftModalStatus.textContent = t.shift_open;
+                }
+                if (btnEnd) btnEnd.classList.remove('hidden');
+                if (btnStart) btnStart.classList.add('hidden');
+            } else {
+                if (btnHeaderShift) {
+                    btnHeaderShift.className = "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-zinc-800 text-zinc-400 border border-white/10 hover:bg-zinc-700 active:scale-95 transition shadow-sm flex-shrink-0";
+                }
+                if (shiftDot) shiftDot.className = "w-2 h-2 rounded-full bg-zinc-500";
+                if (lblHeaderShift) lblHeaderShift.textContent = t.shift_closed;
+                if (drawerBadge) {
+                    drawerBadge.className = "text-xs font-bold px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-400 border border-white/10";
+                    drawerBadge.textContent = `○ ${t.shift_closed}`;
+                }
+                if (shiftModalDot) shiftModalDot.className = "w-3 h-3 rounded-full bg-zinc-500";
+                if (shiftModalStatus) {
+                    shiftModalStatus.className = "text-sm font-bold text-zinc-400";
+                    shiftModalStatus.textContent = t.shift_closed;
+                }
+                if (btnEnd) btnEnd.classList.add('hidden');
+                if (btnStart) btnStart.classList.remove('hidden');
+            }
+
+            const startDate = new Date(Number(shiftState.startTime));
+            const startStr = `${String(startDate.getHours()).padStart(2, '0')}:${String(startDate.getMinutes()).padStart(2, '0')}`;
+            const startEl = document.getElementById('shiftModalStartTime');
+            if (startEl) startEl.textContent = shiftState.isOpen ? `Сегодня, ${startStr}` : `Закрыта`;
+
+            updateShiftModalStats();
+        }
+
+        function updateShiftModalStats() {
+            const list = getFilteredByRestaurant();
+            const confirmedList = list.filter(b => b.status === 'confirmed' || b.status === 'arrived');
+            const totalGuests = confirmedList.reduce((acc, b) => acc + (Number(b.guests) || 2), 0);
+            const rejectedCount = list.filter(b => b.status === 'rejected').length;
+
+            const statProcessed = document.getElementById('shiftStatProcessed');
+            const statGuests = document.getElementById('shiftStatGuests');
+            const statRejected = document.getElementById('shiftStatRejected');
+
+            if (statProcessed) statProcessed.textContent = list.length;
+            if (statGuests) statGuests.textContent = `${totalGuests} чел.`;
+            if (statRejected) statRejected.textContent = rejectedCount;
+        }
+
+        function openShiftModal() {
+            updateShiftModalStats();
+            updateShiftTimerDisplay();
+            const modal = document.getElementById('shiftModalPanel');
+            const backdrop = document.getElementById('shiftModalBackdrop');
+            if (modal) modal.classList.add('sheet-open');
+            if (backdrop) backdrop.classList.add('backdrop-open');
+        }
+
+        function closeShiftModal() {
+            const modal = document.getElementById('shiftModalPanel');
+            const backdrop = document.getElementById('shiftModalBackdrop');
+            if (modal) modal.classList.remove('sheet-open');
+            if (backdrop) backdrop.classList.remove('backdrop-open');
+        }
+
+        function confirmEndShift() {
+            const list = getFilteredByRestaurant();
+            const confirmedList = list.filter(b => b.status === 'confirmed' || b.status === 'arrived');
+            const totalGuests = confirmedList.reduce((acc, b) => acc + (Number(b.guests) || 2), 0);
+            const durStr = getShiftDurationFormatted();
+
+            const summaryEl = document.getElementById('shiftSummaryPreview');
+            if (summaryEl) {
+                summaryEl.innerHTML = `
+                    <div class="flex justify-between py-1 border-b border-white/5">
+                        <span class="text-zinc-400">⏱ Отработано времени:</span>
+                        <span class="font-bold text-[#dfcaab]">${durStr}</span>
+                    </div>
+                    <div class="flex justify-between py-1 border-b border-white/5">
+                        <span class="text-zinc-400">📋 Всего заявок в смене:</span>
+                        <span class="font-bold text-white">${list.length}</span>
+                    </div>
+                    <div class="flex justify-between py-1 border-b border-white/5">
+                        <span class="text-zinc-400">🥂 Посажено гостей:</span>
+                        <span class="font-bold text-emerald-400">${totalGuests} гостей</span>
+                    </div>
+                    <div class="flex justify-between py-1">
+                        <span class="text-zinc-400">👤 Ответственный хостес:</span>
+                        <span class="font-bold text-white">${shiftState.hostessName}</span>
+                    </div>
+                `;
+            }
+
+            const modal = document.getElementById('shiftConfirmModal');
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function closeShiftConfirmModal() {
+            const modal = document.getElementById('shiftConfirmModal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function executeEndShift() {
+            closeShiftConfirmModal();
+            shiftState.isOpen = false;
+            shiftState.endedAt = Date.now();
+            saveShiftState();
+            closeShiftModal();
+            showToast('Смена успешно завершена! Сформирован Z-отчёт', '🏁');
+            if (soundNotificationEnabled) playLuxuryChime();
+        }
+
+        function startNewShift() {
+            shiftState.isOpen = true;
+            shiftState.startTime = Date.now();
+            shiftState.endedAt = null;
+            saveShiftState();
+            closeShiftModal();
+            showToast('Новая рабочая смена открыта! Удачной работы 🍀', '🟢');
+            if (soundNotificationEnabled) playLuxuryChime();
+        }
+
+        // Клавиша Escape закрывает любые открытые шторки
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeSideDrawer();
+                closeRestaurantPicker();
+                closeShiftModal();
+                closeShiftConfirmModal();
+            }
+        });
 
         async function populateWalkinTables() {
             const restId = Number(document.getElementById('walkinRestSelect').value) || 1;
@@ -1191,9 +1977,19 @@
                 const serverNormalized = data.bookings.map(normalizeBooking);
                 const serverIds = new Set(serverNormalized.map(b => String(b.id)));
                 const localOnly = localList.filter(b => !serverIds.has(String(b.id)));
+                
+                // Проверяем, появились ли новые необработанные заявки
+                const prevPendingIds = new Set(bookings.filter(b => b.status === 'pending').map(b => String(b.id)));
+                const hasNewPending = serverNormalized.some(b => b.status === 'pending' && !prevPendingIds.has(String(b.id)));
+
                 bookings = [...serverNormalized, ...localOnly];
                 bookings.sort((a, b) => Number(b.id) - Number(a.id));
                 saveToSharedStorage(bookings);
+
+                if (hasNewPending && soundNotificationEnabled && prevPendingIds.size > 0) {
+                    playLuxuryChime();
+                    showToast('Поступила новая онлайн-бронь!', '🔔');
+                }
             } else {
                 bookings = localList;
             }
@@ -1229,6 +2025,8 @@
             } else {
                 navBadge.classList.add('hidden');
             }
+
+            updateShiftModalStats();
         }
 
         function onRestaurantChange() {
@@ -1237,6 +2035,8 @@
                 document.getElementById('walkinRestSelect').value = selectedRestId;
                 populateWalkinTables();
             }
+            updateRestTriggerDisplay();
+            renderRestPickerList();
             updateKPIs();
             renderOrders();
             renderFloorMap();
@@ -1248,9 +2048,9 @@
                 const btn = document.getElementById(`statusBtn-${st}`);
                 if (!btn) return;
                 if (st === status) {
-                    btn.className = "px-2.5 py-1 rounded-lg text-[11px] font-bold bg-[#c5a880] text-[#0e1013] transition whitespace-nowrap";
+                    btn.className = "px-3 py-1.5 rounded-xl text-xs font-bold bg-[#c5a880] text-[#0e1013] transition whitespace-nowrap shadow-sm";
                 } else {
-                    btn.className = "px-2.5 py-1 rounded-lg text-[11px] font-medium bg-[#0e1013] text-zinc-400 border border-white/5 transition whitespace-nowrap";
+                    btn.className = "px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#0e1013] text-zinc-400 border border-white/5 transition whitespace-nowrap";
                 }
             });
             renderOrders();
@@ -1262,9 +2062,9 @@
                 const btn = document.getElementById(`dateBtn-${dm}`);
                 if (!btn) return;
                 if (dm === dateMode) {
-                    btn.className = "px-2.5 py-1 rounded-lg text-[11px] font-bold bg-[#c5a880] text-[#0e1013] transition whitespace-nowrap";
+                    btn.className = "py-2 rounded-lg text-xs font-bold bg-[#c5a880] text-[#0e1013] transition text-center shadow-sm";
                 } else {
-                    btn.className = "px-2.5 py-1 rounded-lg text-[11px] font-medium bg-[#0e1013] text-zinc-400 border border-white/5 transition whitespace-nowrap";
+                    btn.className = "py-2 rounded-lg text-xs font-medium text-zinc-400 hover:text-white transition text-center";
                 }
             });
             renderOrders();
@@ -1295,13 +2095,13 @@
         function getStatusBadge(status) {
             switch (status) {
                 case 'confirmed':
-                    return `<span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">✅ Подтверждена</span>`;
+                    return `<span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">✅ В брони</span>`;
                 case 'arrived':
-                    return `<span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-sky-500/15 text-sky-300 border border-sky-500/30">🥂 Гости за столом</span>`;
+                    return `<span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-sky-500/15 text-sky-300 border border-sky-500/30">🥂 За столом</span>`;
                 case 'rejected':
-                    return `<span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-rose-500/15 text-rose-400 border border-rose-500/30">❌ Отклонена</span>`;
+                    return `<span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-rose-500/15 text-rose-400 border border-rose-500/30">❌ Отклонена</span>`;
                 default:
-                    return `<span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30 animate-pulse">⏳ Ждёт подтверждения</span>`;
+                    return `<span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30 animate-pulse">⏳ Ждёт подтверждения</span>`;
             }
         }
 
@@ -1337,92 +2137,92 @@
                     <div class="bg-[#15171d] border border-white/5 rounded-2xl p-8 text-center space-y-2">
                         <div class="text-3xl">🍽</div>
                         <div class="text-sm font-bold text-[#f3f1ed]">Заявок по выбранному фильтру нет</div>
-                        <p class="text-xs text-[#98948c]">Вы можете создать бронь по звонку во вкладке «➕ Бронь по звонку» или нажать «+ Тест-бронь»</p>
+                        <p class="text-xs text-[#98948c]">Вы можете создать бронь по звонку во вкладке «По звонку» или нажать «+ Тест»</p>
                     </div>
                 `;
                 return;
             }
 
             container.innerHTML = list.map(b => `
-                <div class="bg-[#15171d] border ${b.status === 'pending' ? 'border-amber-500/40 shadow-lg shadow-amber-500/5' : 'border-white/10'} rounded-2xl p-3 space-y-2.5 transition">
+                <div class="bg-[#15171d] border ${b.status === 'pending' ? 'border-amber-500/40 shadow-lg shadow-amber-500/10' : 'border-white/10'} rounded-2xl p-3.5 space-y-3 transition">
                     <div class="flex items-start justify-between gap-2">
                         <div class="min-w-0">
                             <div class="flex items-center gap-1.5">
-                                <span class="text-[9.5px] font-bold px-1.5 py-0.5 rounded-md bg-[#0e1013] text-[#c5a880] border border-[#c5a880]/25 truncate max-w-[150px]">🏛 ${b.restName}</span>
-                                <span class="text-[9.5px] text-zinc-500 font-mono">#${b.id}</span>
+                                <span class="text-[11px] font-bold px-2 py-0.5 rounded-lg bg-[#0e1013] text-[#c5a880] border border-[#c5a880]/25 truncate max-w-[170px]">🏛 ${b.restName}</span>
+                                <span class="text-xs text-zinc-500 font-mono">#${b.id}</span>
                             </div>
-                            <h3 class="text-sm font-bold text-white mt-1 flex items-center gap-1 truncate">
-                                👤 ${b.guestName}
+                            <h3 class="text-sm sm:text-base font-bold text-white mt-1 flex items-center gap-1.5 truncate">
+                                <span>👤</span> <span>${b.guestName}</span>
                             </h3>
-                            <a href="tel:${b.guestPhone}" class="text-xs text-[#dfcaab] hover:underline flex items-center gap-1 mt-0.5">
-                                📞 ${b.guestPhone}
+                            <a href="tel:${b.guestPhone}" class="text-xs sm:text-sm text-[#dfcaab] hover:underline font-semibold flex items-center gap-1 mt-0.5">
+                                <span>📞</span> <span>${b.guestPhone}</span>
                             </a>
                         </div>
                         <div class="text-right flex-shrink-0">
                             ${getStatusBadge(b.status)}
-                            <div class="text-[9.5px] text-zinc-500 mt-1">${b.createdAt || 'Только что'}</div>
+                            <div class="text-[11px] text-zinc-500 mt-1">${b.createdAt || 'Только что'}</div>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-3 gap-1 bg-[#0e1013] rounded-xl p-2 border border-white/5 text-center">
+                    <div class="grid grid-cols-3 gap-1.5 bg-[#0e1013] rounded-xl p-2.5 border border-white/5 text-center">
                         <div>
-                            <div class="text-[8.5px] text-zinc-500 uppercase tracking-tight">Дата и Время</div>
-                            <div class="text-[11px] font-bold text-[#dfcaab] mt-0.5 truncate">${b.date} • ${b.time}</div>
+                            <div class="text-[10px] text-zinc-400 font-semibold uppercase tracking-tight">Дата и Время</div>
+                            <div class="text-xs sm:text-sm font-bold text-[#dfcaab] mt-0.5 truncate">${b.date} • ${b.time}</div>
                         </div>
                         <div class="border-x border-white/5">
-                            <div class="text-[8.5px] text-zinc-500 uppercase tracking-tight">Персон</div>
-                            <div class="text-[11px] font-bold text-white mt-0.5">👥 ${b.guests} чел.</div>
+                            <div class="text-[10px] text-zinc-400 font-semibold uppercase tracking-tight">Персон</div>
+                            <div class="text-xs sm:text-sm font-bold text-white mt-0.5">👥 ${b.guests} чел.</div>
                         </div>
                         <div>
-                            <div class="text-[8.5px] text-zinc-500 uppercase tracking-tight">Столик</div>
-                            <div class="text-[11px] font-bold text-emerald-400 mt-0.5 truncate px-1">🪑 Стол №${b.table_number}</div>
+                            <div class="text-[10px] text-zinc-400 font-semibold uppercase tracking-tight">Столик</div>
+                            <div class="text-xs sm:text-sm font-bold text-emerald-400 mt-0.5 truncate px-1">🪑 №${b.table_number}</div>
                         </div>
                     </div>
 
                     ${b.comment ? `
-                        <div class="bg-[#0e1013]/80 border border-[#c5a880]/20 rounded-xl px-2.5 py-1.5 text-xs text-[#dfcaab]">
-                            💬 <span class="text-zinc-400">Пожелание:</span> ${b.comment}
+                        <div class="bg-[#0e1013]/90 border border-[#c5a880]/20 rounded-xl px-3 py-2 text-xs sm:text-sm text-[#dfcaab] leading-relaxed">
+                            💬 <span class="text-zinc-400 font-medium">Пожелание:</span> ${b.comment}
                         </div>
                     ` : ''}
 
                     <!-- Контекстные кнопки управления статусом -->
                     <div class="pt-0.5">
                         ${b.status === 'pending' ? `
-                            <div class="grid grid-cols-3 gap-1.5">
-                                <button onclick="changeStatus('${b.id}', 'confirmed')" class="col-span-2 py-2 rounded-xl text-xs font-bold bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 transition active:scale-[0.98]">
+                            <div class="grid grid-cols-3 gap-2">
+                                <button onclick="changeStatus('${b.id}', 'confirmed')" class="col-span-2 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 transition active:scale-[0.98]">
                                     ✅ Подтвердить
                                 </button>
-                                <button onclick="changeStatus('${b.id}', 'rejected')" class="py-2 rounded-xl text-xs font-semibold bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 border border-rose-500/30 transition active:scale-[0.98]">
+                                <button onclick="changeStatus('${b.id}', 'rejected')" class="py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 border border-rose-500/30 transition active:scale-[0.98]">
                                     ❌ Отказ
                                 </button>
                             </div>
                         ` : b.status === 'confirmed' ? `
-                            <div class="grid grid-cols-3 gap-1.5">
-                                <button onclick="changeStatus('${b.id}', 'arrived')" class="col-span-2 py-2 rounded-xl text-xs font-bold bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/40 transition active:scale-[0.98]">
+                            <div class="grid grid-cols-3 gap-2">
+                                <button onclick="changeStatus('${b.id}', 'arrived')" class="col-span-2 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/40 transition active:scale-[0.98]">
                                     🥂 Посадить за стол
                                 </button>
-                                <button onclick="changeStatus('${b.id}', 'rejected')" class="py-2 rounded-xl text-xs font-semibold bg-white/5 hover:bg-rose-500/20 text-zinc-400 hover:text-rose-300 border border-white/10 transition active:scale-[0.98]">
+                                <button onclick="changeStatus('${b.id}', 'rejected')" class="py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-white/5 hover:bg-rose-500/20 text-zinc-400 hover:text-rose-300 border border-white/10 transition active:scale-[0.98]">
                                     Отмена
                                 </button>
                             </div>
                         ` : b.status === 'arrived' ? `
-                            <div class="grid grid-cols-3 gap-1.5">
-                                <button onclick="changeStatus('${b.id}', 'rejected')" class="col-span-2 py-2 rounded-xl text-xs font-bold bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 transition active:scale-[0.98]">
+                            <div class="grid grid-cols-3 gap-2">
+                                <button onclick="changeStatus('${b.id}', 'rejected')" class="col-span-2 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 transition active:scale-[0.98]">
                                     🔓 Стол освободился
                                 </button>
-                                <button onclick="changeStatus('${b.id}', 'confirmed')" class="py-2 rounded-xl text-xs font-semibold bg-white/5 text-zinc-400 border border-white/10 transition active:scale-[0.98]">
+                                <button onclick="changeStatus('${b.id}', 'confirmed')" class="py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-white/5 text-zinc-400 border border-white/10 transition active:scale-[0.98]">
                                     ↩ В бронь
                                 </button>
                             </div>
                         ` : `
                             <!-- Для отклонённых/завершённых заявок -->
-                            <div class="flex items-center justify-between gap-1.5 bg-[#0e1013] rounded-xl px-2.5 py-1.5 border border-white/5">
-                                <span class="text-[10px] text-zinc-500">Заявка отменена</span>
-                                <div class="flex gap-1.5">
-                                    <button onclick="changeStatus('${b.id}', 'confirmed')" class="px-2.5 py-1 rounded-lg text-[10px] font-semibold bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/25 transition">
+                            <div class="flex items-center justify-between gap-2 bg-[#0e1013] rounded-xl px-3 py-2 border border-white/5">
+                                <span class="text-xs text-zinc-400">Заявка отменена</span>
+                                <div class="flex gap-2">
+                                    <button onclick="changeStatus('${b.id}', 'confirmed')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/25 transition active:scale-95">
                                         ↩ Восстановить
                                     </button>
-                                    <button onclick="deleteBookingLocal('${b.id}')" class="px-2 py-1 rounded-lg text-[10px] font-semibold bg-white/5 hover:bg-rose-500/20 text-zinc-400 hover:text-rose-300 transition" title="Удалить">
+                                    <button onclick="deleteBookingLocal('${b.id}')" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-white/5 hover:bg-rose-500/20 text-zinc-400 hover:text-rose-300 transition active:scale-95" title="Удалить">
                                         🗑
                                     </button>
                                 </div>
@@ -1458,6 +2258,9 @@
                 rejected: 'Бронь отменена ❌'
             };
             showToast(labels[newStatus] || 'Статус обновлён');
+            if (soundNotificationEnabled && (newStatus === 'confirmed' || newStatus === 'arrived')) {
+                playLuxuryChime();
+            }
 
             // В API статус "За столом / Гости пришли" хранится как "completed"
             const apiStatus = newStatus === 'arrived' ? 'completed' : newStatus;
@@ -1684,6 +2487,11 @@
         }
 
         function manualRefresh() {
+            const icon = document.getElementById('refreshIcon');
+            if (icon) {
+                icon.classList.add('inline-block', 'animate-spin');
+                setTimeout(() => icon.classList.remove('animate-spin'), 650);
+            }
             loadBookingsFromServer();
             showToast('Синхронизировано с облачным сервером', '🔄');
         }
@@ -2047,6 +2855,8 @@
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
+            initShiftState();
+            updateSoundToggleUI();
             setAdminLanguage(currentAdminLang);
             await initSelectors();
             await loadBookingsFromServer();
