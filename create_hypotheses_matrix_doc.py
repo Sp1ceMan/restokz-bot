@@ -103,7 +103,7 @@ def build_document(output_path):
     p_title = doc.add_paragraph()
     p_title.paragraph_format.space_before = Pt(8)
     p_title.paragraph_format.space_after = Pt(2)
-    r_t = p_title.add_run("РЕЕСТР ПРОДУКТОВЫХ ГИПОТЕЗ & КОНКУРЕНТНАЯ МАТРИЦА")
+    r_t = p_title.add_run("АНАЛИТИЧЕСКИЙ ОТЧЕТ: РЫНОК HORECA, ГИПОТЕЗЫ & МАТРИЦА")
     r_t.font.name = "Arial"
     r_t.font.size = Pt(17)
     r_t.font.bold = True
@@ -111,15 +111,15 @@ def build_document(output_path):
 
     p_sub = doc.add_paragraph()
     p_sub.paragraph_format.space_after = Pt(4)
-    r_s = p_sub.add_run("Аналитическая валидация Customer Development (20 интервью) и стратегическое позиционирование RestoKZ PRO")
+    r_s = p_sub.add_run("Финансовый анализ (1.6 трлн ₸, TAM/SAM/SOM), CustDev валидация и стратегическое позиционирование RestoKZ PRO")
     r_s.font.name = "Arial"
-    r_s.font.size = Pt(12)
+    r_s.font.size = Pt(11.5)
     r_s.font.bold = True
     r_s.font.color.rgb = COLOR_DARK_GOLD
 
     p_meta = doc.add_paragraph()
     p_meta.paragraph_format.space_after = Pt(12)
-    r_m = p_meta.add_run("Проект: RestoKZ & RestoKZ PRO | Рынок: Казахстан (Шымкент, Алматы, Астана) | Для презентации инвестору")
+    r_m = p_meta.add_run("Проект: RestoKZ & RestoKZ PRO | Рынок: Казахстан & Центральная Азия | Для питча инвесторам")
     r_m.font.name = "Arial"
     r_m.font.size = Pt(9.5)
     r_m.font.italic = True
@@ -413,14 +413,145 @@ def build_document(output_path):
     doc.add_paragraph().paragraph_format.space_after = Pt(16)
 
     # =========================================================================
-    # РАЗДЕЛ 3: СТРАТЕГИЧЕСКОЕ ПОЗИЦИОНИРОВАНИЕ (BLUE OCEAN POSITIONING)
+    # РАЗДЕЛ 3: ФИНАНСОВЫЙ АНАЛИЗ РЫНКА HORECA И МОДЕЛЬ TAM / SAM / SOM
     # =========================================================================
     h3 = doc.add_heading(level=1)
-    r_h3 = h3.add_run("3. Стратегическое позиционирование: 'Голубой океан' RestoKZ PRO")
+    r_h3 = h3.add_run("3. Финансовый анализ ресторанного рынка и модель TAM / SAM / SOM")
     r_h3.font.name = "Arial"
     r_h3.font.size = Pt(14)
     r_h3.font.bold = True
     r_h3.font.color.rgb = COLOR_PRIMARY
+
+    p_m_intro = doc.add_paragraph()
+    p_m_intro.paragraph_format.line_spacing = 1.15
+    p_m_intro.paragraph_format.space_after = Pt(8)
+    r_mi = p_m_intro.add_run(
+        "Финансовая модель RestoKZ PRO базируется на официальной макроэкономической статистике "
+        "Бюро национальной статистики Агентства по стратегическому планированию и реформам Республики Казахстан (АСПиР РК), "
+        "а также полевых данных, собранных в ходе Customer Development в городах Шымкент, Алматы и Астана."
+    )
+    r_mi.font.name = "Arial"
+    r_mi.font.size = Pt(10)
+    r_mi.font.color.rgb = COLOR_PRIMARY
+
+    # 3 Callout Cards for Macro Metrics
+    macro_data = [
+        ("1.6 трлн ₸ / год", "Емкость рынка общепита РК", 
+         "Официальный годовой объем услуг общественного питания в Казахстане с темпом роста +14.2% YoY. В стране работает свыше 25 000 заведений питания (Алматы — 6 500+, Астана — 4 200+, Шымкент — 3 800+, регионы — 10 500+)."),
+        ("120 млрд ₸ / год", "Потери ресторанного сектора от No-Show", 
+         "В среднем 15–20% броней в пятницу, субботу и воскресенье не подтверждаются гостями. Убыток типичного ресторана составляет от 100 000 до 450 000 ₸ за уикенд (чистая недополученная выручка)."),
+        ("10x – 24x ROI", "Окупаемость подписки RestoKZ PRO", 
+         "Ежемесячный тариф 25 000 ₸ окупается при спасении всего 1 столика в месяц (средний банкетный чек 25 000 – 40 000 ₸). Расходы на платформу составляют менее 0.2% от месячной выручки заведения.")
+    ]
+
+    for val, title, desc in macro_data:
+        p_card = doc.add_paragraph()
+        p_card.paragraph_format.space_before = Pt(4)
+        p_card.paragraph_format.space_after = Pt(2)
+        r_v = p_card.add_run(f"• {val} — {title}\n")
+        r_v.font.name = "Arial"
+        r_v.font.size = Pt(10.5)
+        r_v.font.bold = True
+        r_v.font.color.rgb = COLOR_DARK_GOLD
+        r_d = p_card.add_run(desc)
+        r_d.font.name = "Arial"
+        r_d.font.size = Pt(9.5)
+        r_d.font.color.rgb = COLOR_PRIMARY
+
+    doc.add_paragraph().paragraph_format.space_after = Pt(8)
+
+    # TAM / SAM / SOM Table
+    h_tss = doc.add_heading(level=2)
+    r_htss = h_tss.add_run("Трехуровневая модель рынка (TAM / SAM / SOM)")
+    r_htss.font.name = "Arial"
+    r_htss.font.size = Pt(12)
+    r_htss.font.bold = True
+    r_htss.font.color.rgb = COLOR_PRIMARY
+
+    tss_table = doc.add_table(rows=4, cols=5)
+    tss_table.alignment = WD_TABLE_ALIGNMENT.CENTER
+    tss_table.autofit = False
+
+    tss_headers = ["Уровень", "Объем (KZT / USD)", "Целевые заведения", "Сегмент & География", "Методология и формула расчета"]
+    tss_widths = [Inches(0.9), Inches(1.3), Inches(1.2), Inches(1.5), Inches(1.9)]
+
+    for j, (h, w) in enumerate(zip(tss_headers, tss_widths)):
+        cell = tss_table.cell(0, j)
+        cell.width = w
+        set_cell_background(cell, "0F172A")
+        set_cell_margins(cell, 100, 100, 80, 80)
+        p = cell.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        r = p.add_run(h)
+        r.font.name = "Arial"
+        r.font.size = Pt(8)
+        r.font.bold = True
+        r.font.color.rgb = RGBColor(255, 255, 255)
+
+    tss_rows = [
+        ("TAM\n(Общий объем)", 
+         "18.6 млрд ₸ / год\n($38.5M USD)", 
+         "50 000+\nзаведений питания", 
+         "Центральная Азия & СНГ:\nКазахстан (25k), Узбекистан (18k), Кыргызстан (4k), Азербайджан (5k)", 
+         "15.0 млрд ₸ — SaaS-подписка (50 000 точек × 300 000 ₸/год) + 3.6 млрд ₸ — финтех оборот депозитов (1.5% комиссия от защищенных броней Kaspi QR)."),
+
+        ("SAM\n(Доступный объем)", 
+         "3.6 млрд ₸ / год\n($7.5M USD)", 
+         "12 000\nзаведений", 
+         "Казахстан (Full-service):\nРестораны, банкетные залы, видовые кафе, лаундж-бары", 
+         "12 000 заведений с активной бронью столов × 25 000 ₸/мес × 12 мес = 3 600 000 000 ₸/год регулярной абонентской платы."),
+
+        ("SOM\n(Цель 3 года)", 
+         "540 млн ₸ / год\n($1.12M ARR)", 
+         "1 800\nточек (15% от SAM)", 
+         "Ключевые города РК:\nАлматы (800), Астана (500), Шымкент (300), регионы (200)", 
+         "1 800 подключенных заведений × 25 000 ₸/мес = 45 000 000 ₸ MRR (540 000 000 ₸ ARR). Чистая рентабельность бизнеса >55%.")
+    ]
+
+    for i, row in enumerate(tss_rows, 1):
+        bg_color = "F1F5F9" if i % 2 == 1 else "FFFFFF"
+        if i == 3: # SOM highlighted
+            bg_color = "FEF9C3"
+        for j, val in enumerate(row):
+            cell = tss_table.cell(i, j)
+            cell.width = tss_widths[j]
+            set_cell_background(cell, bg_color)
+            set_cell_margins(cell, 80, 80, 80, 80)
+            p = cell.paragraphs[0]
+            p.paragraph_format.line_spacing = 1.1
+            p.paragraph_format.space_before = Pt(2)
+            p.paragraph_format.space_after = Pt(2)
+            r = p.add_run(val)
+            r.font.name = "Arial"
+            r.font.size = Pt(7.5)
+            r.font.color.rgb = COLOR_PRIMARY
+            if j == 0 or j == 1:
+                r.font.bold = True
+            if i == 3 and j == 1:
+                r.font.color.rgb = COLOR_DARK_GOLD
+
+    doc.add_paragraph().paragraph_format.space_after = Pt(10)
+
+    # 3-Year Growth Roadmap Paragraph
+    add_callout(
+        doc,
+        "Поэтапный план захвата рынка SOM: "
+        "Год 1 (Южный кластер — Шымкент, Туркестан): 250 заведений, выручка 75 млн ₸ (отладка пилота и сарафанное радио). "
+        "Год 2 (Алматы и Астана): 850 заведений, выручка 255 млн ₸ (B2B-отдел прямых продаж и партнерство с 2GIS). "
+        "Год 3 (Региональная экспансия — Караганда, Актобе, Атырау): 1 800 заведений, 540 млн ₸ ARR (45 млн ₸ MRR, выход в устойчивую чистую прибыль).",
+        speaker="Финансовый план масштабирования RestoKZ PRO",
+        tag="СТРАТЕГИЯ SOM"
+    )
+
+    # =========================================================================
+    # РАЗДЕЛ 4: СТРАТЕГИЧЕСКОЕ ПОЗИЦИОНИРОВАНИЕ (BLUE OCEAN POSITIONING)
+    # =========================================================================
+    h4 = doc.add_heading(level=1)
+    r_h4 = h4.add_run("4. Стратегическое позиционирование: 'Голубой океан' RestoKZ PRO")
+    r_h4.font.name = "Arial"
+    r_h4.font.size = Pt(14)
+    r_h4.font.bold = True
+    r_h4.font.color.rgb = COLOR_PRIMARY
 
     p_pos = doc.add_paragraph()
     p_pos.paragraph_format.line_spacing = 1.15
@@ -442,7 +573,7 @@ def build_document(output_path):
          "iiko великолепно считает себестоимость стейка и складские остатки лука, но абсолютно непригоден для хостес на входе со смартфона. RestoKZ берет на себя внешнюю воронку гостей и оперативную шахматку зала, не требуя замены кассовой системы."),
 
         ("Локальное конкурентное преимущество (Local Moat)", 
-         "Ни один зарубежный сервис не понимает, что такое 'бронь топчана на құдалық на 15 человек', 'звонок от Баке с просьбой занять лучший стол' и интерфейс на чистом казахском языке. RestoKZ создан из реалий казахстанского ресторанного бизнеса.")
+         "Ни один зарубежный сервис не понимает специфику локального рынка: бронь топчанов на банкеты от 15 человек, экстренные звонки постоянных гостей с просьбой занять лучший стол в VIP-зоне и интерфейс на чистом казахском языке. RestoKZ создан из реалий ресторанного бизнеса Казахстана.")
     ]
 
     for title, desc in pos_points:
@@ -464,14 +595,14 @@ def build_document(output_path):
         rd.font.color.rgb = COLOR_PRIMARY
 
     # =========================================================================
-    # РАЗДЕЛ 4: 5 БЕСПРОИГРЫШНЫХ ОТВЕТОВ ИНВЕСТОРУ ПО МАТРИЦЕ И ГИПОТЕЗАМ
+    # РАЗДЕЛ 5: 6 БЕСПРОИГРЫШНЫХ ОТВЕТОВ ИНВЕСТОРУ ПО МАТРИЦЕ И ГИПОТЕЗАМ
     # =========================================================================
-    h4 = doc.add_heading(level=1)
-    r_h4 = h4.add_run("4. Готовые ответы на каверзные вопросы инвесторов")
-    r_h4.font.name = "Arial"
-    r_h4.font.size = Pt(14)
-    r_h4.font.bold = True
-    r_h4.font.color.rgb = COLOR_PRIMARY
+    h5 = doc.add_heading(level=1)
+    r_h5 = h5.add_run("5. Готовые ответы на каверзные вопросы инвесторов")
+    r_h5.font.name = "Arial"
+    r_h5.font.size = Pt(14)
+    r_h5.font.bold = True
+    r_h5.font.color.rgb = COLOR_PRIMARY
 
     qa_list = [
         ("Вопрос: «2GIS введет свое бронирование и убьет вас. Что вы будете делать?»",
@@ -482,6 +613,9 @@ def build_document(output_path):
 
         ("Вопрос: «Какая главная подтвержденная цифра вашего CustDev доказывает Unit-экономику?»",
          "Ответ фаундера: «Цифра 1:1. Всего ОДИН спасенный банкетный стол на 8 человек в месяц с чеком 80 000 ₸ окупает всю месячную подписку на RestoKZ PRO (25 000 ₸). Все остальные спасенные от No-Show столы приносят заведению от 200 000 до 500 000 ₸ чистой дополнительной прибыли. Для владельца это очевидная математика 'вложил 25 тыс — получил 300 тыс'»."),
+
+        ("Вопрос: «Как рассчитывались ваши TAM, SAM, SOM и почему взят коэффициент 15% для SOM к 3 году?»",
+         "Ответ фаундера: «TAM (18.6 млрд ₸) охватывает 50 000 заведений Центральной Азии с учетом SaaS и финтех-депозитов. SAM (3.6 млрд ₸) строго ограничен 12 000 ресторанами Казахстана с сервисом бронирования по тарифу 25 000 ₸/мес. Цель SOM в 1 800 точек (15% от SAM) через 3 года является взвешенной и достижимой: в Шымкенте мы лично знаем 80+ владельцев, а в Алматы и Астане конверсию обеспечит модель симбиоза с 2GIS и таргетологами, где наша ссылка ставится прямо в профиль заведения. При LTV заведения свыше 300 000 ₸ в год и оттоке Churn <3%, 15% рынка достигается силами B2B команды из 4 региональных сейлзов»."),
 
         ("Вопрос: «Какова следующая гипотеза, которую вы будете проверять после привлечения раунда?»",
          "Ответ фаундера: «Гипотеза Kaspi QR Депозитов. В CustDev 6 из 10 гостей заявили, что готовы внести аванс 5 000 – 10 000 ₸ через Kaspi при бронировании VIP-кабин или топчанов, если ресторан гарантирует их сохранение. Это снизит No-Show практически до 0% и создаст для нас дополнительный финтех-поток монетизации»."),

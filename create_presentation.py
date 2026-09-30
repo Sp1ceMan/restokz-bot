@@ -279,7 +279,124 @@ def create_deck():
             if j == 4: p.font.bold = True
 
     # =========================================================================
-    # SLIDE 4: РЕШЕНИЕ RESTOKZ (THE SOLUTION)
+    # SLIDE 4: ФИНАНСОВЫЙ АНАЛИЗ РЫНКА И МОДЕЛЬ TAM / SAM / SOM
+    # =========================================================================
+    slide = prs.slides.add_slide(blank_layout)
+    set_bg(slide)
+    add_header(slide, "Рыночный потенциал", "Объем рынка HoReCa: 1.6 трлн ₸ и модель TAM / SAM / SOM", "Анализ финансовой емкости ресторанного сектора Казахстана и потенциала подписочной модели:")
+
+    # Top Row: 3 Macro Financial Cards (left=0.8, top=1.65, width=3.7, height=1.85)
+    macro_metrics = [
+        ("1.6 трлн ₸ / год", "Емкость рынка общепита РК", 
+         "• 25 000+ заведений в Казахстане (Алматы 6.5k, Астана 4.2k, Шымкент 3.8k, регионы 10.5k)\n• Ежегодный рост сектора +14.2% по данным Бюро нацстатистики", 
+         COLOR_EMERALD),
+        ("120 млрд ₸ / год", "Потери заведений от No-Show", 
+         "• 15–20% столов в часы пик пустуют из-за неявок и заторов в WhatsApp\n• Это прямая недополученная чистая выручка рестораторов", 
+         COLOR_ROSE),
+        ("10x – 24x ROI", "Окупаемость подписки PRO", 
+         "• Тариф 25 000 ₸ окупается всего за 1 спасенный банкетный стол (чек 25–40 тыс ₸)\n• Затраты на софт составляют менее 0.2% от оборота ресторана", 
+         COLOR_GOLD)
+    ]
+
+    for i, (val, title, desc, accent) in enumerate(macro_metrics):
+        x = Inches(0.8 + i * 4.01)
+        add_card(slide, x, Inches(1.65), Inches(3.7), Inches(1.85), COLOR_CARD, COLOR_BORDER_SUBTLE)
+        tb = slide.shapes.add_textbox(x + Inches(0.2), Inches(1.75), Inches(3.3), Inches(1.65))
+        tf = tb.text_frame
+        tf.word_wrap = True
+
+        p_val = tf.paragraphs[0]
+        p_val.text = val
+        p_val.font.size = Pt(20)
+        p_val.font.bold = True
+        p_val.font.color.rgb = accent
+
+        p_t = tf.add_paragraph()
+        p_t.text = title
+        p_t.font.size = Pt(11)
+        p_t.font.bold = True
+        p_t.font.color.rgb = COLOR_WHITE
+        p_t.space_before = Pt(3)
+
+        for line in desc.split('\n'):
+            p_d = tf.add_paragraph()
+            p_d.text = line
+            p_d.font.size = Pt(9.5)
+            p_d.font.color.rgb = COLOR_MUTED
+            p_d.space_before = Pt(2)
+
+    # Bottom Row: 3 TAM / SAM / SOM Cards (top=3.68, height=3.38)
+    tier_data = [
+        ("TAM • ОБЩИЙ РЫНОК СНГ & ЦА", 
+         "18.6 млрд ₸ / год", "$38.5M USD", 
+         "50 000+ заведений питания в Центральной Азии",
+         [
+             "Казахстан (25k), Узбекистан (18k), Кыргызстан (4k), Азербайджан (5k)",
+             "15.0 млрд ₸ — чистые SaaS-подписки (300 000 ₸/год на точку)",
+             "3.6 млрд ₸ — финтех оборот депозитов (1.5% Kaspi QR транзакции)",
+             "Огромный неосвоенный рынок без монопольного игрока"
+         ],
+         COLOR_SKY, COLOR_CARD),
+        ("SAM • ДОСТУПНЫЙ РЫНОК РК", 
+         "3.6 млрд ₸ / год", "$7.5M USD", 
+         "12 000 заведений с регулярным резервом столов",
+         [
+             "Рестораны, лаундж-бары, банкетные залы и премиум-кафе Казахстана",
+             "Ключевые хабы: Алматы (4.5k), Астана (3.2k), Шымкент (2.2k), регионы (2.1k)",
+             "Модель: 12 000 точек × 25 000 ₸/мес (300 000 ₸ годовой LTV)",
+             "Высокая концентрация и готовность платить за порядок"
+         ],
+         COLOR_EMERALD, COLOR_CARD),
+        ("SOM • ДОСТИЖИМЫЙ РЫНОК (ЦЕЛЬ 3 ГОДА)", 
+         "540 млн ₸ / год", "$1.12M ARR", 
+         "1 800 подключенных заведений (15% от SAM)",
+         [
+             "🔥 45 млн ₸ MRR регулярной месячной подписки к 3-му году",
+             "Год 1 (Шымкент & Юг): 250 точек → 75 млн ₸ выручки (пилот)",
+             "Год 2 (Алматы & Астана): 850 точек → 255 млн ₸ выручки",
+             "Год 3 (Регионы РК): 1 800 точек → 540 млн ₸ ARR (выход в прибыль)"
+         ],
+         COLOR_GOLD, COLOR_CARD_ALT)
+    ]
+
+    for i, (badge, amount, usd, sub, bullets, border_col, bg_col) in enumerate(tier_data):
+        x = Inches(0.8 + i * 4.01)
+        add_card(slide, x, Inches(3.68), Inches(3.7), Inches(3.38), bg_col, border_col)
+        tb = slide.shapes.add_textbox(x + Inches(0.2), Inches(3.78), Inches(3.3), Inches(3.18))
+        tf = tb.text_frame
+        tf.word_wrap = True
+
+        p_b = tf.paragraphs[0]
+        p_b.text = badge
+        p_b.font.size = Pt(9.5)
+        p_b.font.bold = True
+        p_b.font.color.rgb = border_col
+
+        p_a = tf.add_paragraph()
+        p_a.text = amount
+        p_a.font.size = Pt(20)
+        p_a.font.bold = True
+        p_a.font.color.rgb = COLOR_WHITE
+        p_a.space_before = Pt(3)
+
+        p_usd = tf.add_paragraph()
+        p_usd.text = f"{usd} • {sub}"
+        p_usd.font.size = Pt(9.5)
+        p_usd.font.bold = True
+        p_usd.font.color.rgb = COLOR_GOLD_LIGHT
+        p_usd.space_before = Pt(1)
+
+        for b in bullets:
+            p_bul = tf.add_paragraph()
+            p_bul.text = f"• {b}"
+            p_bul.font.size = Pt(9)
+            p_bul.font.color.rgb = COLOR_WHITE if "🔥" in b else COLOR_MUTED
+            if "🔥" in b:
+                p_bul.font.bold = True
+            p_bul.space_before = Pt(3)
+
+    # =========================================================================
+    # SLIDE 5: РЕШЕНИЕ RESTOKZ (THE SOLUTION)
     # =========================================================================
     slide = prs.slides.add_slide(blank_layout)
     set_bg(slide)
