@@ -10,16 +10,16 @@ from pptx.enum.shapes import MSO_SHAPE
 # -------------------------------------------------------------
 # PALETTE DEFINITIONS (Quiet Luxury Dark Theme)
 # -------------------------------------------------------------
-COLOR_BG = RGBColor(14, 16, 19)          # #0E1013 (Deep Obsidian)
-COLOR_CARD = RGBColor(21, 23, 29)        # #15171D (Card Charcoal)
-COLOR_CARD_ALT = RGBColor(28, 31, 38)    # #1C1F26 (Elevated Card)
+COLOR_BG = RGBColor(11, 13, 16)          # #0B0D10 (Deep Obsidian)
+COLOR_CARD = RGBColor(20, 23, 30)        # #14171E (Card Charcoal)
+COLOR_CARD_ALT = RGBColor(26, 30, 39)    # #1A1E27 (Elevated Card)
 COLOR_BORDER = RGBColor(197, 168, 128)   # #C5A880 (Luxury Gold)
-COLOR_BORDER_SUBTLE = RGBColor(50, 55, 65)
+COLOR_BORDER_SUBTLE = RGBColor(60, 68, 82)
 
 COLOR_GOLD = RGBColor(197, 168, 128)     # Primary Gold
-COLOR_GOLD_LIGHT = RGBColor(223, 202, 171) # Light Gold Text
-COLOR_WHITE = RGBColor(244, 242, 238)    # Clean Off-White
-COLOR_MUTED = RGBColor(156, 163, 175)    # Slate/Zinc Grey
+COLOR_GOLD_LIGHT = RGBColor(229, 213, 192) # Light Gold Text
+COLOR_WHITE = RGBColor(249, 249, 251)    # Clean Off-White
+COLOR_MUTED = RGBColor(163, 170, 184)    # Slate/Zinc Grey
 
 COLOR_EMERALD = RGBColor(52, 211, 153)   # Green #34D399
 COLOR_SKY = RGBColor(56, 189, 248)       # Blue #38BDF8
@@ -52,26 +52,26 @@ def create_deck():
 
     def add_header(slide, eyebrow, title, subtitle):
         # Eyebrow pill
-        eyebrow_box = slide.shapes.add_textbox(Inches(0.8), Inches(0.4), Inches(11.7), Inches(0.35))
+        eyebrow_box = slide.shapes.add_textbox(Inches(0.8), Inches(0.38), Inches(11.7), Inches(0.35))
         tf = eyebrow_box.text_frame
         tf.word_wrap = True
         tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = 0
         p = tf.paragraphs[0]
         p.text = eyebrow.upper()
         p.font.name = FONT_FALLBACK_BODY
-        p.font.size = Pt(10)
+        p.font.size = Pt(11)
         p.font.bold = True
         p.font.color.rgb = COLOR_GOLD
 
         # Title
-        title_box = slide.shapes.add_textbox(Inches(0.8), Inches(0.72), Inches(11.7), Inches(0.55))
+        title_box = slide.shapes.add_textbox(Inches(0.8), Inches(0.70), Inches(11.7), Inches(0.55))
         tf = title_box.text_frame
         tf.word_wrap = True
         tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = 0
         p = tf.paragraphs[0]
         p.text = title
         p.font.name = FONT_FALLBACK_TITLE
-        p.font.size = Pt(21)
+        p.font.size = Pt(22)
         p.font.bold = True
         p.font.color.rgb = COLOR_WHITE
 
@@ -84,7 +84,7 @@ def create_deck():
             p = tf.paragraphs[0]
             p.text = subtitle
             p.font.name = FONT_FALLBACK_BODY
-            p.font.size = Pt(11.5)
+            p.font.size = Pt(12)
             p.font.color.rgb = COLOR_MUTED
 
     def add_card(slide, left, top, width, height, bg_color=COLOR_CARD, border_color=None):
@@ -93,7 +93,7 @@ def create_deck():
         card.fill.fore_color.rgb = bg_color
         if border_color:
             card.line.color.rgb = border_color
-            card.line.width = Pt(1)
+            card.line.width = Pt(1.2)
         else:
             card.line.fill.background()
         return card
@@ -117,21 +117,21 @@ def create_deck():
     bar.fill.fore_color.rgb = COLOR_GOLD
     bar.line.fill.background()
 
-    tb = slide.shapes.add_textbox(Inches(1.1), Inches(1.4), Inches(7.5), Inches(3.8))
+    tb = slide.shapes.add_textbox(Inches(1.1), Inches(1.35), Inches(7.5), Inches(3.9))
     tf = tb.text_frame
     tf.word_wrap = True
 
     p0 = tf.paragraphs[0]
     p0.text = "👑 RESTOKZ & RESTOKZ PRO"
     p0.font.name = FONT_FALLBACK_BODY
-    p0.font.size = Pt(13)
+    p0.font.size = Pt(13.5)
     p0.font.bold = True
     p0.font.color.rgb = COLOR_GOLD
 
     p1 = tf.add_paragraph()
     p1.text = "Цифровая экосистема бронирования и умного управления посадкой"
     p1.font.name = FONT_FALLBACK_TITLE
-    p1.font.size = Pt(29)
+    p1.font.size = Pt(30)
     p1.font.bold = True
     p1.font.color.rgb = COLOR_WHITE
     p1.space_before = Pt(12)
@@ -139,7 +139,7 @@ def create_deck():
     p2 = tf.add_paragraph()
     p2.text = "Устранение No-Show • Полный контроль зала • Выручка ресторанов без комиссий агрегаторов"
     p2.font.name = FONT_FALLBACK_BODY
-    p2.font.size = Pt(13.5)
+    p2.font.size = Pt(14)
     p2.font.color.rgb = COLOR_GOLD_LIGHT
     p2.space_before = Pt(10)
 
@@ -155,18 +155,18 @@ def create_deck():
         tf_c.word_wrap = True
         p_c1 = tf_c.paragraphs[0]
         p_c1.text = head
-        p_c1.font.size = Pt(11)
+        p_c1.font.size = Pt(11.5)
         p_c1.font.bold = True
         p_c1.font.color.rgb = COLOR_WHITE
         p_c2 = tf_c.add_paragraph()
         p_c2.text = sub
-        p_c2.font.size = Pt(9.5)
+        p_c2.font.size = Pt(10)
         p_c2.font.color.rgb = COLOR_MUTED
         p_c2.space_before = Pt(3)
 
     hero_img = get_asset('admin_terminal_mobile.png')
     if hero_img:
-        add_picture_frame(slide, hero_img, Inches(9.2), Inches(1.2), Inches(2.6), Inches(5.6))
+        add_picture_frame(slide, hero_img, Inches(9.2), Inches(1.2), Inches(2.45), Inches(5.3))
 
     hero_guest = get_asset('guest_catalog_mobile.png')
     if hero_guest:
@@ -184,7 +184,7 @@ def create_deck():
          "📞 Ручная переписка отнимает 3-4 часа хостес в день\n"
          "⏳ В часы пик до 30% входящих звонков и аудио без ответа\n"
          "📝 Потери броней из-за неразборчивых записей в тетрадях\n"
-         "📉 Нет единой базы гостей и истории посещений",
+         "📉 Нет единой цифровой базы гостей и истории их визитов",
          COLOR_ROSE),
 
         ("2. Эпидемия No-Show (неявки)", 
@@ -195,7 +195,7 @@ def create_deck():
          COLOR_AMBER),
 
         ("3. Ловушка комиссий агрегаторов", 
-         "💳 Агрегаторы берут 10-15% с чека или от 500 ₸ за гостя\n"
+         "💳 Агрегаторы требуют 10-15% с чека или 500 ₸ за гостя\n"
          "💻 Кассовые POS (iiko/R-Keeper) тяжелы для смартфонов\n"
          "📱 У хостес нет легкого мобильного терминала для зала\n"
          "🔒 База гостей остается у сторонних сервисов",
@@ -211,64 +211,69 @@ def create_deck():
         
         p = tf.paragraphs[0]
         p.text = title
-        p.font.size = Pt(14)
+        p.font.size = Pt(14.5)
         p.font.bold = True
         p.font.color.rgb = accent
 
         for line in desc.split('\n'):
             p_line = tf.add_paragraph()
             p_line.text = line
-            p_line.font.size = Pt(11)
+            p_line.font.size = Pt(11.5)
             p_line.font.color.rgb = COLOR_WHITE
             p_line.space_before = Pt(8)
 
     # =========================================================================
-    # SLIDE 3: CUSTDEV ВАЛИДАЦИЯ: 6 КЛЮЧЕВЫХ ГИПОТЕЗ (NEW IN-DEPTH SLIDE)
+    # SLIDE 3: CUSTDEV ВАЛИДАЦИЯ ГИПОТЕЗ (РЕАЛЬНЫЕ ЧИСЛА И ПРИЧИНЫ ОТКАЗОВ)
     # =========================================================================
     slide = prs.slides.add_slide(blank_layout)
     set_bg(slide)
-    add_header(slide, "Продуктовая валидация", "Customer Development: 6 гипотез, проверенных на 20 интервью", "10 рестораторов и администраторов (B2B) + 10 реальных гостей (B2C) в г. Шымкент")
+    add_header(slide, "Продуктовая валидация", "Customer Development: 6 гипотез и реальные факты рынка", "20 глубинных интервью (10 рестораторов + 10 гостей). Анализ согласия и причины несогласных:")
 
-    # Table of 6 validated hypotheses
-    table_shape = slide.shapes.add_table(7, 4, Inches(0.8), Inches(1.8), Inches(11.73), Inches(5.1))
+    # Table: 5 columns
+    table_shape = slide.shapes.add_table(7, 5, Inches(0.8), Inches(1.8), Inches(11.73), Inches(5.1))
     t_hyp = table_shape.table
-    t_hyp.columns[0].width = Inches(1.8)
-    t_hyp.columns[1].width = Inches(3.2)
-    t_hyp.columns[2].width = Inches(3.4)
-    t_hyp.columns[3].width = Inches(3.33)
+    t_hyp.columns[0].width = Inches(1.6)
+    t_hyp.columns[1].width = Inches(1.3)
+    t_hyp.columns[2].width = Inches(3.0)
+    t_hyp.columns[3].width = Inches(3.0)
+    t_hyp.columns[4].width = Inches(2.83)
 
-    t_headers = ["Гипотеза / Код", "Исходное предположение", "Факты CustDev & Инсайт", "Решение в RestoKZ PRO"]
+    t_headers = ["Гипотеза", "Результат", "Кто подтвердил & Инсайт", "Кто НЕ согласился и почему?", "Решение RestoKZ PRO"]
     for j, h in enumerate(t_headers):
         cell = t_hyp.cell(0, j)
         cell.fill.solid()
-        cell.fill.fore_color.rgb = COLOR_CARD_ALT if j < 3 else COLOR_GOLD
+        cell.fill.fore_color.rgb = COLOR_CARD_ALT if j < 4 else COLOR_GOLD
         p = cell.text_frame.paragraphs[0]
         p.text = h
         p.font.bold = True
-        p.font.size = Pt(11)
-        p.font.color.rgb = COLOR_GOLD if j < 3 else COLOR_BG
+        p.font.size = Pt(10.5)
+        p.font.color.rgb = COLOR_GOLD if j < 4 else COLOR_BG
         p.alignment = PP_ALIGN.CENTER
 
     hyp_data = [
-        ("H1: Боль No-Show", "Рестораны теряют до 25% столов на неявках гостей без предупреждения", "✅ 10/10 подтвердили. Убытки до 450к₸/уикенд. Инсайт: гостям стыдно звонить отменять", "Пуш за 2ч + кнопка отмены в 1 клик (освобождает стол мгновенно)"),
-        ("H2: Затор WhatsApp", "WhatsApp захлебывается в часы пик из-за десятков голосовых сообщений", "✅ 9/10 подтвердили. Задержка ответа 40-90 мин, слив 15-20 столов за вечер", "Self-service WebApp: прямая бронь со свободного слота за 30 секунд"),
-        ("H3: Барьер AppStore", "Гости откажутся скачивать нативное приложение на 80Мб ради брони", "✅ 10/10 гостей отказались от установки отдельных приложений с СМС", "Telegram Mini App: запуск в 1 касание без установок и регистраций"),
-        ("H4: Менталитет зала", "Важны топчаны, VIP-кабины и звонки директору («от Кайреке»)", "✅ 10/10 подтвердили. Конфликты из-за плохих столов у проходов", "Зонирование (Топчан, VIP, Окно) + модуль 'По звонку' за 3 сек"),
-        ("H5: Готовность платить", "Рестораторы заплатят 35–49 тыс ₸/мес вместо комиссий агрегаторов", "✅ 8/10 готовы платить. Окупается за 1 банкетный стол на 8 персон", "Фиксированная подписка (0% скрытых комиссий с чека или гостей)"),
-        ("H6: Контроль персонала", "Владельцам не хватает контроля смен хостес и защиты гостевой базы", "✅ 10/10 управляющих. Журналы теряются, хостес уходят с номерами", "Живой таймер смены хостес, Z-отчеты и облачная база гостей")
+        ("H1: No-Show\n(пустые столы)", "8 из 10\n(80%)", "Убытки до 450к₸/уикенд. Инсайт: гостям стыдно звонить отменять", "1 элитный VIP-клуб (строго 100% Kaspi предоплата) + 1 фастфуд с живой очередью", "Пуш за 2ч + кнопка отмены в 1 клик (освобождает стол мгновенно)"),
+        ("H2: WhatsApp\n(затор аудио)", "7 из 10\n(70%)", "Задержка ответа 40-90 мин, слив до 20 столов в вечер", "2 мелкие кофейни (мало броней, успевают) + 1 сеть с колл-центром за 380к₸/мес", "Self-service Mini App: прямая бронь со слота за 30 секунд"),
+        ("H3: AppStore\n(отказ от ПО)", "8 из 10\n(80%)", "Гости отказываются ставить приложения на 80Мб с СМС", "2 студента готовы качать ТОЛЬКО ради бонуса 5000 ₸. Без бонуса — удаляют", "Telegram Mini App: запуск в 1 клик без установок и регистраций"),
+        ("H4: Менталитет\n(топчан и Баке)", "8 из 10\n(80%)", "Важность зон (топчан, кабина) и звонков директору", "2 молодежные кофейни («у нас европейский формат, без топчанов и агашек»)", "Зонирование зала + кнопка брони «По звонку» за 3 секунды"),
+        ("H5: WTP\n(подписка)", "7 из 10\n(70%)", "Согласны на 49к₸: окупается за 1 банкетный стол", "1 заведение в кассовом разрыве + 2 мелкие точки боятся фиксы в несезон", "Фиксированная подписка (0% скрытых комиссий с чека или гостей)"),
+        ("H6: Смены\n(контроль)", "8 из 10\n(80%)", "Текучка хостес, потеря записей и номеров гостей", "1 семейное кафе (хостес — сестра владельца) + 1 точка с управляющим на входе", "Живой таймер смены хостес, Z-отчеты и защита базы в облаке")
     ]
 
     for i, row in enumerate(hyp_data):
         for j, val in enumerate(row):
             cell = t_hyp.cell(i + 1, j)
             cell.fill.solid()
-            cell.fill.fore_color.rgb = COLOR_CARD if j < 3 else RGBColor(28, 32, 42)
+            cell.fill.fore_color.rgb = COLOR_CARD if j < 4 else RGBColor(26, 30, 39)
             p = cell.text_frame.paragraphs[0]
             p.text = val
-            p.font.size = Pt(9.5)
-            p.font.color.rgb = COLOR_WHITE if j < 3 else COLOR_GOLD_LIGHT
+            p.font.size = Pt(9)
+            p.font.color.rgb = COLOR_WHITE if j < 4 else COLOR_GOLD_LIGHT
             if j == 0: p.font.bold = True
-            if j == 3: p.font.bold = True
+            if j == 1: 
+                p.font.bold = True
+                p.alignment = PP_ALIGN.CENTER
+                p.font.color.rgb = COLOR_EMERALD
+            if j == 4: p.font.bold = True
 
     # =========================================================================
     # SLIDE 4: РЕШЕНИЕ RESTOKZ (THE SOLUTION)
@@ -284,13 +289,13 @@ def create_deck():
     
     p = tf_g.paragraphs[0]
     p.text = "🍽 ДЛЯ ГОСТЯ (B2C WEBAPP)"
-    p.font.size = Pt(14)
+    p.font.size = Pt(14.5)
     p.font.bold = True
     p.font.color.rgb = COLOR_SKY
 
     p_sub = tf_g.add_paragraph()
     p_sub.text = "Telegram Mini App — открывается мгновенно в 1 клик"
-    p_sub.font.size = Pt(11)
+    p_sub.font.size = Pt(11.5)
     p_sub.font.color.rgb = COLOR_GOLD_LIGHT
     p_sub.space_before = Pt(4)
 
@@ -304,7 +309,7 @@ def create_deck():
     for pt in g_points:
         p_pt = tf_g.add_paragraph()
         p_pt.text = pt
-        p_pt.font.size = Pt(11)
+        p_pt.font.size = Pt(11.5)
         p_pt.font.color.rgb = COLOR_WHITE
         p_pt.space_before = Pt(10)
 
@@ -315,13 +320,13 @@ def create_deck():
 
     p = tf_a.paragraphs[0]
     p.text = "👑 ДЛЯ РЕСТОРАНА (RESTOKZ PRO B2B)"
-    p.font.size = Pt(14)
+    p.font.size = Pt(14.5)
     p.font.bold = True
     p.font.color.rgb = COLOR_GOLD
 
     p_sub = tf_a.add_paragraph()
     p_sub.text = "Мобильный терминал хостес и управляющего"
-    p_sub.font.size = Pt(11)
+    p_sub.font.size = Pt(11.5)
     p_sub.font.color.rgb = COLOR_GOLD_LIGHT
     p_sub.space_before = Pt(4)
 
@@ -335,7 +340,7 @@ def create_deck():
     for pt in a_points:
         p_pt = tf_a.add_paragraph()
         p_pt.text = pt
-        p_pt.font.size = Pt(11)
+        p_pt.font.size = Pt(11.5)
         p_pt.font.color.rgb = COLOR_WHITE
         p_pt.space_before = Pt(10)
 
@@ -362,14 +367,14 @@ def create_deck():
     for i, (title, desc) in enumerate(steps):
         p_h = tf.paragraphs[0] if i == 0 else tf.add_paragraph()
         p_h.text = title
-        p_h.font.size = Pt(12)
+        p_h.font.size = Pt(12.5)
         p_h.font.bold = True
         p_h.font.color.rgb = COLOR_GOLD
         if i > 0: p_h.space_before = Pt(8)
 
         p_d = tf.add_paragraph()
         p_d.text = desc
-        p_d.font.size = Pt(10.5)
+        p_d.font.size = Pt(11)
         p_d.font.color.rgb = COLOR_WHITE
         p_d.space_before = Pt(2)
 
@@ -381,7 +386,7 @@ def create_deck():
         add_picture_frame(slide, img2, Inches(10.3), Inches(1.8), Inches(2.4), Inches(5.1))
 
     # =========================================================================
-    # SLIDE 6: ТЕРМИНАЛ ХОСТЕС (HOSTESS TERMINAL)
+    # SLIDE 6: ТЕРМИНАЛ ХОСТЕС (ФОТО СТРОГО ПО ЦЕНТРУ, БЕЗ СРЕЗОВ)
     # =========================================================================
     slide = prs.slides.add_slide(blank_layout)
     set_bg(slide)
@@ -403,23 +408,21 @@ def create_deck():
     for i, (title, desc) in enumerate(features):
         p_h = tf.paragraphs[0] if i == 0 else tf.add_paragraph()
         p_h.text = title
-        p_h.font.size = Pt(12)
+        p_h.font.size = Pt(12.5)
         p_h.font.bold = True
         p_h.font.color.rgb = COLOR_GOLD
         if i > 0: p_h.space_before = Pt(8)
 
         p_d = tf.add_paragraph()
         p_d.text = desc
-        p_d.font.size = Pt(10)
+        p_d.font.size = Pt(10.5)
         p_d.font.color.rgb = COLOR_WHITE
         p_d.space_before = Pt(2)
 
+    # Smartphone centered and unclipped
     img_admin = get_asset('admin_terminal_mobile.png')
-    img_desk = get_asset('admin_desktop_terminal.png')
     if img_admin:
-        add_picture_frame(slide, img_admin, Inches(7.6), Inches(1.8), Inches(2.4), Inches(5.1))
-    if img_desk:
-        add_picture_frame(slide, img_desk, Inches(10.2), Inches(2.5), Inches(2.6), Inches(3.8))
+        add_picture_frame(slide, img_admin, Inches(8.5), Inches(1.8), Inches(2.45), Inches(5.1))
 
     # =========================================================================
     # SLIDE 7: КАРТА ЗАЛА И ШАХМАТКА СТОЛОВ (FLOOR MAP)
@@ -518,14 +521,14 @@ def create_deck():
     for i, (title, desc) in enumerate(ux_items):
         p_h = tf.paragraphs[0] if i == 0 else tf.add_paragraph()
         p_h.text = title
-        p_h.font.size = Pt(12)
+        p_h.font.size = Pt(12.5)
         p_h.font.bold = True
         p_h.font.color.rgb = COLOR_GOLD_LIGHT
         if i > 0: p_h.space_before = Pt(8)
 
         p_d = tf.add_paragraph()
         p_d.text = desc
-        p_d.font.size = Pt(10)
+        p_d.font.size = Pt(10.5)
         p_d.font.color.rgb = COLOR_WHITE
         p_d.space_before = Pt(2)
 
@@ -575,25 +578,24 @@ def create_deck():
 
         p = tf.paragraphs[0]
         p.text = title
-        p.font.size = Pt(14)
+        p.font.size = Pt(14.5)
         p.font.bold = True
         p.font.color.rgb = color
 
         for line in desc.split('\n'):
             p_line = tf.add_paragraph()
             p_line.text = line
-            p_line.font.size = Pt(11)
+            p_line.font.size = Pt(11.5)
             p_line.font.color.rgb = COLOR_WHITE
             p_line.space_before = Pt(8)
 
     # =========================================================================
-    # SLIDE 11: КОМПЛЕКСНАЯ КОНКУРЕНТНАЯ МАТРИЦА (UPGRADED IN-DEPTH MATRIX)
+    # SLIDE 11: КОМПЛЕКСНАЯ КОНКУРЕНТНАЯ МАТРИЦА (UPGRADED)
     # =========================================================================
     slide = prs.slides.add_slide(blank_layout)
     set_bg(slide)
     add_header(slide, "Конкурентный анализ", "Комплексная матрица: Сравнение 5 ключевых альтернатив", "Прямое сопоставление RestoKZ PRO с существующими решениями на рынке Казахстана по 8 параметрам")
 
-    # Table comparison (6 columns x 9 rows)
     table_shape = slide.shapes.add_table(9, 6, Inches(0.8), Inches(1.8), Inches(11.73), Inches(5.1))
     t_comp = table_shape.table
 
@@ -612,7 +614,7 @@ def create_deck():
         p = cell.text_frame.paragraphs[0]
         p.text = h
         p.font.bold = True
-        p.font.size = Pt(10.5)
+        p.font.size = Pt(11)
         p.font.color.rgb = COLOR_GOLD if j < 5 else COLOR_BG
         p.alignment = PP_ALIGN.CENTER
 
@@ -631,10 +633,10 @@ def create_deck():
         for j, val in enumerate(row):
             cell = t_comp.cell(i + 1, j)
             cell.fill.solid()
-            cell.fill.fore_color.rgb = COLOR_CARD if j < 5 else RGBColor(28, 32, 42)
+            cell.fill.fore_color.rgb = COLOR_CARD if j < 5 else RGBColor(26, 30, 39)
             p = cell.text_frame.paragraphs[0]
             p.text = val
-            p.font.size = Pt(9)
+            p.font.size = Pt(9.5)
             p.font.color.rgb = COLOR_WHITE if j < 5 else COLOR_GOLD_LIGHT
             if j == 0 or j == 5: p.font.bold = True
             if j > 0: p.alignment = PP_ALIGN.CENTER
@@ -646,7 +648,6 @@ def create_deck():
     set_bg(slide)
     add_header(slide, "Стратегия рынка", "Позиционирование: «Голубой океан» RestoKZ PRO", "Мы не конкурируем с монополистами (2GIS, Kaspi, iiko), а создаем с ними взаимовыгодный симбиоз")
 
-    # 3 Strategic pillars
     pos_cards = [
         ("🤝 1. Симбиоз с 2GIS и Instagram", 
          "Заведения тратят до 1.5 млн ₸ на рекламу. Сейчас трафик сливается в WhatsApp с конверсией всего 4%.\n\n"
@@ -673,13 +674,13 @@ def create_deck():
 
         p = tf.paragraphs[0]
         p.text = title
-        p.font.size = Pt(13)
+        p.font.size = Pt(13.5)
         p.font.bold = True
         p.font.color.rgb = color
 
         p_desc = tf.add_paragraph()
         p_desc.text = desc
-        p_desc.font.size = Pt(10.5)
+        p_desc.font.size = Pt(11)
         p_desc.font.color.rgb = COLOR_WHITE
         p_desc.space_before = Pt(12)
 
@@ -729,7 +730,7 @@ def create_deck():
 
         p = tf.paragraphs[0]
         p.text = name
-        p.font.size = Pt(13)
+        p.font.size = Pt(13.5)
         p.font.bold = True
         p.font.color.rgb = name_col
 
@@ -742,14 +743,14 @@ def create_deck():
 
         p_sub = tf.add_paragraph()
         p_sub.text = sub
-        p_sub.font.size = Pt(9.5)
+        p_sub.font.size = Pt(10)
         p_sub.font.color.rgb = COLOR_MUTED
         p_sub.space_before = Pt(2)
 
         for b in bullets:
             p_b = tf.add_paragraph()
             p_b.text = b
-            p_b.font.size = Pt(10.5)
+            p_b.font.size = Pt(11)
             p_b.font.color.rgb = COLOR_WHITE
             p_b.space_before = Pt(8)
 
@@ -792,14 +793,14 @@ def create_deck():
 
         p = tf.paragraphs[0]
         p.text = title
-        p.font.size = Pt(13)
+        p.font.size = Pt(13.5)
         p.font.bold = True
         p.font.color.rgb = color
 
         for line in desc.split('\n'):
             p_line = tf.add_paragraph()
             p_line.text = line
-            p_line.font.size = Pt(10.5)
+            p_line.font.size = Pt(11)
             p_line.font.color.rgb = COLOR_WHITE
             p_line.space_before = Pt(8)
 
@@ -817,7 +818,7 @@ def create_deck():
 
     p = tf_l.paragraphs[0]
     p.text = "🚀 ССЫЛКИ ДЛЯ ТЕСТИРОВАНИЯ В РЕАЛЬНОМ ВРЕМЕНИ"
-    p.font.size = Pt(13)
+    p.font.size = Pt(13.5)
     p.font.bold = True
     p.font.color.rgb = COLOR_GOLD
 
@@ -832,14 +833,14 @@ def create_deck():
     for title, val in demo_info:
         p_t = tf_l.add_paragraph()
         p_t.text = title
-        p_t.font.size = Pt(11)
+        p_t.font.size = Pt(11.5)
         p_t.font.bold = True
         p_t.font.color.rgb = COLOR_GOLD_LIGHT
         p_t.space_before = Pt(10)
 
         p_v = tf_l.add_paragraph()
         p_v.text = val
-        p_v.font.size = Pt(10.5)
+        p_v.font.size = Pt(11)
         p_v.font.color.rgb = COLOR_WHITE
         p_v.space_before = Pt(2)
 
@@ -851,13 +852,13 @@ def create_deck():
 
     p = tf_r.paragraphs[0]
     p.text = "💡 РЕЗЮМЕ ДЛЯ ИНВЕСТОРА"
-    p.font.size = Pt(13)
+    p.font.size = Pt(13.5)
     p.font.bold = True
     p.font.color.rgb = COLOR_GOLD
 
     summary_bullets = [
-        ("Рынок проверен фактами", "Проведено 20 глубинных интервью. Боль No-Show и коллапс WhatsApp подтверждены 100% заведений."),
-        ("Unit-экономика сходится", "Тариф 49 000 ₸ окупается ресторану за 1 банкетный стол в месяц. Очевидный ROI."),
+        ("Рынок проверен фактами", "20 интервью. Боль No-Show и коллапс WhatsApp подтверждены подавляющим большинством заведений."),
+        ("Unit-экономика сходится", "Тариф 49 000 ₸ окупается за 1 спасенный банкетный стол в месяц. Очевидный ROI."),
         ("Защитный ров (Local Moat)", "Учет менталитета Казахстана (топчаны, VIP, язык, звонки Баке) защищает от глобальных гигантов."),
         ("Команда и готовность", "Продукт работает в продакшене. Пилотный запуск 30 ресторанов начинается сразу после раунда.")
     ]
@@ -865,14 +866,14 @@ def create_deck():
     for title, desc in summary_bullets:
         p_st = tf_r.add_paragraph()
         p_st.text = f"• {title}:"
-        p_st.font.size = Pt(11)
+        p_st.font.size = Pt(11.5)
         p_st.font.bold = True
         p_st.font.color.rgb = COLOR_GOLD_LIGHT
         p_st.space_before = Pt(10)
 
         p_sd = tf_r.add_paragraph()
         p_sd.text = desc
-        p_sd.font.size = Pt(10)
+        p_sd.font.size = Pt(10.5)
         p_sd.font.color.rgb = COLOR_WHITE
         p_sd.space_before = Pt(2)
 

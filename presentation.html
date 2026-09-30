@@ -6,19 +6,19 @@
   <title>RestoKZ PRO — Официальная презентация продукта</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0E1013;
-      --card: #15171D;
-      --card-alt: #1C1F26;
-      --border: rgba(197, 168, 128, 0.28);
-      --border-subtle: rgba(255, 255, 255, 0.08);
+      --bg: #0B0D10;
+      --card: #14171E;
+      --card-alt: #1A1E27;
+      --border: rgba(197, 168, 128, 0.35);
+      --border-subtle: rgba(255, 255, 255, 0.1);
       --gold: #C5A880;
-      --gold-light: #DFCAAB;
+      --gold-light: #E5D5C0;
       --gold-dark: #8C7350;
-      --white: #F4F2EE;
-      --muted: #9CA3AF;
+      --white: #F9F9FB;
+      --muted: #A3AAB8;
       --emerald: #34D399;
       --sky: #38BDF8;
       --rose: #FB7185;
@@ -50,37 +50,37 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 60px;
-      background: rgba(14, 16, 19, 0.85);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      height: 64px;
+      background: rgba(11, 13, 16, 0.9);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border-subtle);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 24px;
+      padding: 0 28px;
       z-index: 100;
     }
 
     .brand-logo {
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: 0.05em;
+      gap: 12px;
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
       color: var(--gold);
     }
 
     .brand-logo span.badge {
-      background: rgba(197, 168, 128, 0.15);
+      background: rgba(197, 168, 128, 0.18);
       border: 1px solid var(--gold);
       color: var(--gold-light);
-      font-size: 10px;
-      padding: 2px 7px;
+      font-size: 11px;
+      padding: 3px 9px;
       border-radius: 6px;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
     }
 
     .deck-controls {
@@ -90,22 +90,22 @@
     }
 
     .slide-counter {
-      font-size: 13px;
-      font-weight: 600;
+      font-size: 14px;
+      font-weight: 700;
       color: var(--gold-light);
       background: var(--card-alt);
-      padding: 5px 12px;
+      padding: 6px 14px;
       border-radius: 20px;
-      border: 1px solid var(--border-subtle);
+      border: 1px solid var(--border);
     }
 
     .ctrl-btn {
       background: var(--card);
       border: 1px solid var(--border-subtle);
       color: var(--white);
-      padding: 7px 14px;
-      border-radius: 8px;
-      font-size: 12px;
+      padding: 8px 16px;
+      border-radius: 9px;
+      font-size: 13px;
       font-weight: 600;
       cursor: pointer;
       display: inline-flex;
@@ -122,10 +122,11 @@
     }
 
     .ctrl-btn.primary {
-      background: linear-gradient(135deg, #C5A880, #8C7350);
-      color: #0E1013;
+      background: linear-gradient(135deg, #C5A880, #9E825D);
+      color: #0B0D10;
       border: none;
-      box-shadow: 0 4px 15px rgba(197, 168, 128, 0.25);
+      font-weight: 700;
+      box-shadow: 0 4px 18px rgba(197, 168, 128, 0.3);
     }
 
     .ctrl-btn.primary:hover {
@@ -136,29 +137,29 @@
     /* Main Deck Stage */
     main.deck-stage {
       flex: 1;
-      margin-top: 60px;
-      margin-bottom: 50px;
+      margin-top: 64px;
+      margin-bottom: 54px;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      padding: 24px;
       position: relative;
     }
 
     .slide-wrapper {
       width: 100%;
-      max-width: 1280px;
+      max-width: 1360px;
       aspect-ratio: 16 / 9;
-      min-height: 640px;
+      min-height: 700px;
       background: var(--card);
-      border-radius: 20px;
-      border: 1px solid var(--border-subtle);
-      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 40px rgba(197, 168, 128, 0.04);
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.85), 0 0 50px rgba(197, 168, 128, 0.06);
       position: relative;
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      padding: 40px 48px;
+      padding: 44px 52px;
     }
 
     .slide {
@@ -166,7 +167,7 @@
       width: 100%;
       height: 100%;
       flex-direction: column;
-      animation: fadeIn 0.35s var(--transition) forwards;
+      animation: fadeIn 0.3s var(--transition) forwards;
     }
 
     .slide.active {
@@ -174,15 +175,15 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.985); }
+      from { opacity: 0; transform: scale(0.99); }
       to { opacity: 1; transform: scale(1); }
     }
 
     /* Eyebrow & Headings */
     .slide-eyebrow {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.15em;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--gold);
       margin-bottom: 6px;
@@ -194,16 +195,16 @@
     .slide-eyebrow::before {
       content: '';
       display: inline-block;
-      width: 8px;
-      height: 8px;
+      width: 9px;
+      height: 9px;
       border-radius: 50%;
       background: var(--gold);
-      box-shadow: 0 0 10px var(--gold);
+      box-shadow: 0 0 12px var(--gold);
     }
 
     .slide-title {
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: 26px;
+      font-size: 30px;
       font-weight: 700;
       color: var(--white);
       line-height: 1.25;
@@ -211,16 +212,16 @@
     }
 
     .slide-subtitle {
-      font-size: 13px;
+      font-size: 14.5px;
       color: var(--muted);
-      margin-bottom: 20px;
-      line-height: 1.45;
+      margin-bottom: 22px;
+      line-height: 1.5;
     }
 
     .slide-body {
       flex: 1;
       display: grid;
-      gap: 20px;
+      gap: 22px;
       align-items: stretch;
       min-height: 0;
     }
@@ -234,45 +235,45 @@
     .feature-card {
       background: var(--card-alt);
       border: 1px solid var(--border-subtle);
-      border-radius: 14px;
-      padding: 20px 22px;
+      border-radius: 16px;
+      padding: 24px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
       position: relative;
       overflow: hidden;
     }
 
     .feature-card.gold-accent {
-      border-color: rgba(197, 168, 128, 0.4);
-      background: linear-gradient(180deg, rgba(28, 31, 38, 0.95), rgba(21, 23, 29, 0.98));
+      border-color: rgba(197, 168, 128, 0.45);
+      background: linear-gradient(180deg, #1C2029, #14171E);
     }
 
     .feature-card h3 {
-      font-size: 15px;
+      font-size: 17px;
       font-weight: 700;
       color: var(--gold-light);
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
     .feature-card p, .feature-card li {
-      font-size: 12px;
+      font-size: 13.5px;
       color: #E2E8F0;
-      line-height: 1.55;
+      line-height: 1.6;
     }
 
     .feature-card ul {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 9px;
+      gap: 10px;
     }
 
     .feature-card li {
       position: relative;
-      padding-left: 18px;
+      padding-left: 20px;
     }
 
     .feature-card li::before {
@@ -281,54 +282,57 @@
       left: 4px;
       top: 0;
       color: var(--gold);
-      font-size: 16px;
+      font-size: 18px;
       line-height: 1;
     }
 
-    .feature-card.danger { border-color: rgba(251, 113, 133, 0.35); }
+    .feature-card.danger { border-color: rgba(251, 113, 133, 0.4); }
     .feature-card.danger h3 { color: var(--rose); }
 
-    .feature-card.warning { border-color: rgba(251, 191, 36, 0.35); }
+    .feature-card.warning { border-color: rgba(251, 191, 36, 0.4); }
     .feature-card.warning h3 { color: var(--amber); }
 
-    .feature-card.info { border-color: rgba(56, 189, 248, 0.35); }
+    .feature-card.info { border-color: rgba(56, 189, 248, 0.4); }
     .feature-card.info h3 { color: var(--sky); }
 
-    .feature-card.success { border-color: rgba(52, 211, 153, 0.35); }
+    .feature-card.success { border-color: rgba(52, 211, 153, 0.4); }
     .feature-card.success h3 { color: var(--emerald); }
 
-    /* Screenshot Frame */
+    /* Screenshot Frames */
     .screenshot-frame {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 14px;
+      gap: 16px;
       height: 100%;
+      width: 100%;
     }
 
-    .screenshot-img-wrap {
+    .phone-mockup {
       position: relative;
-      border-radius: 14px;
+      height: 100%;
+      max-height: 420px;
+      aspect-ratio: 412 / 892;
+      border-radius: 28px;
       overflow: hidden;
-      border: 1.5px solid var(--border);
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+      border: 3px solid #2B2F3A;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(197, 168, 128, 0.35);
       background: #000;
-      max-height: 100%;
       cursor: zoom-in;
       transition: transform 0.25s var(--transition), border-color 0.25s;
+      flex-shrink: 0;
     }
 
-    .screenshot-img-wrap:hover {
-      transform: translateY(-3px) scale(1.02);
+    .phone-mockup:hover {
+      transform: translateY(-4px) scale(1.02);
       border-color: var(--gold);
     }
 
-    .screenshot-img-wrap img {
-      display: block;
+    .phone-mockup img {
+      width: 100%;
       height: 100%;
-      max-height: 360px;
-      width: auto;
-      object-fit: contain;
+      object-fit: cover;
+      display: block;
     }
 
     .screenshot-caption {
@@ -336,42 +340,44 @@
       bottom: 0;
       left: 0;
       right: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
-      padding: 6px 10px;
-      font-size: 10.5px;
-      font-weight: 600;
+      background: linear-gradient(to top, rgba(0,0,0,0.92), rgba(0,0,0,0.4), transparent);
+      padding: 10px 12px 8px;
+      font-size: 11.5px;
+      font-weight: 700;
       color: var(--gold-light);
       text-align: center;
+      letter-spacing: 0.02em;
     }
 
     /* Tables */
     .table-container {
       width: 100%;
       border-collapse: collapse;
-      font-size: 11.5px;
+      font-size: 12.5px;
       background: var(--card-alt);
-      border-radius: 12px;
+      border-radius: 14px;
       overflow: hidden;
       border: 1px solid var(--border-subtle);
     }
 
     .table-container th, .table-container td {
-      padding: 10px 14px;
+      padding: 12px 16px;
       text-align: left;
       border-bottom: 1px solid var(--border-subtle);
+      line-height: 1.45;
     }
 
     .table-container th {
-      background: #111319;
+      background: #0F1218;
       color: var(--gold-light);
       font-weight: 700;
       text-transform: uppercase;
-      font-size: 10px;
-      letter-spacing: 0.05em;
+      font-size: 11px;
+      letter-spacing: 0.06em;
     }
 
     .table-container th.highlight-col, .table-container td.highlight-col {
-      background: rgba(197, 168, 128, 0.08);
+      background: rgba(197, 168, 128, 0.09);
       border-left: 1.5px solid var(--gold);
       border-right: 1.5px solid var(--gold);
       font-weight: 600;
@@ -379,16 +385,29 @@
     }
 
     .table-container th.highlight-col {
-      background: rgba(197, 168, 128, 0.18);
+      background: rgba(197, 168, 128, 0.22);
       color: var(--gold);
+      font-weight: 800;
     }
+
+    /* Tag badge */
+    .badge-tag {
+      display: inline-block;
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      margin-bottom: 4px;
+    }
+    .badge-green { background: rgba(52, 211, 153, 0.2); color: var(--emerald); border: 1px solid var(--emerald); }
+    .badge-yellow { background: rgba(251, 191, 36, 0.2); color: var(--amber); border: 1px solid var(--amber); }
 
     /* Pricing Plans */
     .pricing-card {
       background: var(--card-alt);
       border: 1px solid var(--border-subtle);
-      border-radius: 14px;
-      padding: 22px;
+      border-radius: 18px;
+      padding: 28px 24px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -397,60 +416,61 @@
 
     .pricing-card.featured {
       border: 1.5px solid var(--gold);
-      background: linear-gradient(180deg, #1F222B, #16181F);
-      box-shadow: 0 10px 30px rgba(197, 168, 128, 0.15);
+      background: linear-gradient(180deg, #20242E, #14171E);
+      box-shadow: 0 12px 36px rgba(197, 168, 128, 0.16);
       transform: scale(1.02);
     }
 
     .pricing-badge {
       position: absolute;
-      top: -10px;
-      right: 16px;
+      top: -11px;
+      right: 20px;
       background: var(--gold);
-      color: #0E1013;
-      font-size: 9px;
+      color: #0B0D10;
+      font-size: 10px;
       font-weight: 800;
       text-transform: uppercase;
-      padding: 2px 9px;
-      border-radius: 10px;
+      padding: 3px 10px;
+      border-radius: 12px;
+      letter-spacing: 0.05em;
     }
 
     .pricing-title {
-      font-size: 12px;
-      font-weight: 700;
+      font-size: 13px;
+      font-weight: 800;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--gold);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .pricing-price {
-      font-size: 28px;
+      font-size: 34px;
       font-weight: 800;
       color: var(--white);
       margin-bottom: 4px;
     }
 
     .pricing-sub {
-      font-size: 10.5px;
+      font-size: 11.5px;
       color: var(--muted);
-      margin-bottom: 14px;
+      margin-bottom: 18px;
     }
 
     .pricing-features {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      margin-bottom: 18px;
+      gap: 10px;
+      margin-bottom: 22px;
     }
 
     .pricing-features li {
-      font-size: 11.5px;
+      font-size: 13px;
       color: #D1D5DB;
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 9px;
     }
 
     .pricing-features li svg {
@@ -458,52 +478,53 @@
       flex-shrink: 0;
     }
 
-    /* Cover Slide Specific */
+    /* Cover Slide */
     .cover-layout {
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
+      grid-template-columns: 1.25fr 0.75fr;
       height: 100%;
       align-items: center;
-      gap: 36px;
+      gap: 40px;
     }
 
     .cover-left {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 16px;
     }
 
     .cover-tagline {
-      font-size: 13.5px;
+      font-size: 16px;
       color: var(--gold-light);
       font-weight: 500;
-      line-height: 1.5;
+      line-height: 1.55;
     }
 
     .cover-pills {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
+      gap: 12px;
       margin-top: 14px;
     }
 
     .cover-pill-card {
       background: var(--card-alt);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 12px;
+      border-radius: 12px;
+      padding: 14px 16px;
     }
 
     .cover-pill-card h4 {
-      font-size: 11px;
+      font-size: 12.5px;
       color: var(--gold);
-      margin-bottom: 3px;
+      margin-bottom: 4px;
+      font-weight: 700;
     }
 
     .cover-pill-card p {
-      font-size: 9.5px;
+      font-size: 11px;
       color: var(--muted);
-      line-height: 1.35;
+      line-height: 1.4;
     }
 
     /* Bottom Nav Bar */
@@ -512,51 +533,51 @@
       bottom: 0;
       left: 0;
       right: 0;
-      height: 50px;
-      background: rgba(14, 16, 19, 0.9);
-      backdrop-filter: blur(10px);
+      height: 54px;
+      background: rgba(11, 13, 16, 0.92);
+      backdrop-filter: blur(12px);
       border-top: 1px solid var(--border-subtle);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 24px;
+      padding: 0 28px;
       z-index: 100;
     }
 
     .nav-dots {
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 8px;
     }
 
     .nav-dot {
-      width: 9px;
-      height: 9px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.2);
       cursor: pointer;
       transition: all 0.2s;
     }
 
     .nav-dot.active {
-      width: 24px;
+      width: 26px;
       border-radius: 5px;
       background: var(--gold);
-      box-shadow: 0 0 10px rgba(197, 168, 128, 0.5);
+      box-shadow: 0 0 12px rgba(197, 168, 128, 0.6);
     }
 
     .nav-help {
-      font-size: 11px;
+      font-size: 12px;
       color: var(--muted);
     }
 
-    /* Modal Image Lightbox */
+    /* Lightbox */
     #lightbox {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.92);
-      backdrop-filter: blur(8px);
+      background: rgba(0,0,0,0.94);
+      backdrop-filter: blur(10px);
       z-index: 1000;
       align-items: center;
       justify-content: center;
@@ -564,23 +585,21 @@
       padding: 30px;
     }
 
-    #lightbox.active {
-      display: flex;
-    }
+    #lightbox.active { display: flex; }
 
     #lightbox img {
       max-width: 95%;
       max-height: 92vh;
-      border-radius: 12px;
+      border-radius: 14px;
       border: 1px solid var(--gold);
-      box-shadow: 0 0 50px rgba(0,0,0,0.9);
+      box-shadow: 0 0 60px rgba(0,0,0,0.9);
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 960px) {
       .slide-wrapper {
         aspect-ratio: auto;
         min-height: auto;
-        padding: 20px 16px;
+        padding: 24px 20px;
       }
       .grid-2, .grid-3, .grid-left-wide, .cover-layout {
         grid-template-columns: 1fr;
@@ -600,7 +619,7 @@
   <header class="deck-bar">
     <div class="brand-logo">
       <span>👑 RestoKZ</span>
-      <span class="badge">PRO Master Deck</span>
+      <span class="badge">PRO Investor Deck</span>
     </div>
 
     <div class="deck-controls">
@@ -621,9 +640,9 @@
         <div class="cover-layout">
           <div class="cover-left">
             <div class="slide-eyebrow">Официальная презентация продукта</div>
-            <h1 class="slide-title" style="font-size: 36px;">RestoKZ & RestoKZ PRO</h1>
+            <h1 class="slide-title" style="font-size: 40px; margin-bottom: 8px;">RestoKZ & RestoKZ PRO</h1>
             <p class="cover-tagline">Цифровая экосистема онлайн-бронирования столиков и умного управления посадкой зала для заведений Казахстана.</p>
-            <p style="font-size: 13px; color: var(--emerald); font-weight: 600;">✓ Устранение No-Show • Без комиссий агрегаторов • Запуск за 1 день</p>
+            <p style="font-size: 14.5px; color: var(--emerald); font-weight: 700;">✓ Устранение No-Show • Без комиссий агрегаторов • Запуск за 1 день</p>
             <div class="cover-pills">
               <div class="cover-pill-card">
                 <h4>📱 Гостевой Mini App</h4>
@@ -640,13 +659,13 @@
             </div>
           </div>
           <div class="screenshot-frame">
-            <div class="screenshot-img-wrap" onclick="openLightbox(this)">
+            <div class="phone-mockup" onclick="openLightbox(this)">
               <img src="presentation_assets/admin_terminal_mobile.png" alt="Терминал хостес RestoKZ PRO">
-              <div class="screenshot-caption">Терминал хостес RestoKZ PRO</div>
+              <div class="screenshot-caption">Терминал хостес PRO</div>
             </div>
-            <div class="screenshot-img-wrap" onclick="openLightbox(this)">
+            <div class="phone-mockup" onclick="openLightbox(this)">
               <img src="presentation_assets/guest_catalog_mobile.png" alt="Гостевая витрина Mini App">
-              <div class="screenshot-caption">Гостевая витрина Mini App</div>
+              <div class="screenshot-caption">Гостевой Mini App</div>
             </div>
           </div>
         </div>
@@ -661,8 +680,8 @@
           <div class="feature-card danger">
             <h3>📞 1. Хаос в WhatsApp и блокнотах</h3>
             <ul>
-              <li>Хостес тратит до 3-4 часов в день на переписки и звонки</li>
-              <li>В часы пиковой посадки до 30% входящих звонков и аудио без ответа</li>
+              <li>Хостес тратит до 3-4 часов в день на ручные переписки и звонки</li>
+              <li>В часы пиковой посадки до 30% входящих звонков и аудио остаются без ответа</li>
               <li>Потери броней из-за неразборчивых записей в бумажных тетрадях</li>
               <li>Нет единой цифровой базы гостей и истории их визитов</li>
             </ul>
@@ -677,7 +696,7 @@
             </ul>
           </div>
           <div class="feature-card info">
-            <h3>💸 3. Кабальные условия агрегаторов</h3>
+            <h3>💸 3. Кабальные комиссии агрегаторов</h3>
             <ul>
               <li>Агрегаторы требуют 10-15% комиссии с чека или 500 ₸ за каждого гостя</li>
               <li>Тяжелые POS-системы (iiko/R-Keeper) неудобны со смартфонов хостес</li>
@@ -687,57 +706,64 @@
         </div>
       </section>
 
-      <!-- SLIDE 3: CUSTDEV ВАЛИДАЦИЯ ГИПОТЕЗ (NEW) -->
+      <!-- SLIDE 3: CUSTDEV ВАЛИДАЦИЯ ГИПОТЕЗ (ДОСТОВЕРНЫЕ ДАННЫЕ С ПРИЧИНАМИ) -->
       <section class="slide" data-slide="3">
         <div class="slide-eyebrow">Продуктовая валидация</div>
-        <h2 class="slide-title">Customer Development: 6 гипотез, проверенных на 20 интервью</h2>
-        <div class="slide-subtitle">10 рестораторов и управляющих (B2B) + 10 реальных гостей (B2C) в г. Шымкент:</div>
+        <h2 class="slide-title">Customer Development: 6 гипотез и реальные факты рынка</h2>
+        <div class="slide-subtitle">20 глубинных интервью (10 рестораторов + 10 гостей). Анализ согласившихся и причины отказа несогласных:</div>
         <div class="slide-body" style="display: flex; align-items: center;">
           <table class="table-container">
             <thead>
               <tr>
-                <th style="width: 15%;">Гипотеза / Код</th>
-                <th style="width: 27%;">Суть предположения</th>
-                <th style="width: 30%;">Факты CustDev & Инсайт</th>
-                <th class="highlight-col" style="width: 28%;">Решение в RestoKZ PRO</th>
+                <th style="width: 14%;">Гипотеза</th>
+                <th style="width: 13%; text-align: center;">Результат</th>
+                <th style="width: 25%;">Кто подтвердил & Инсайт</th>
+                <th style="width: 24%;">Кто НЕ согласился и почему?</th>
+                <th class="highlight-col" style="width: 24%;">Решение RestoKZ PRO</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td><strong>H1: Боль No-Show</strong></td>
-                <td>Рестораны теряют до 25% столов на неявках гостей без предупреждения</td>
-                <td>✅ 10/10 подтвердили. Убытки до 450к₸/уикенд. <em style="color: var(--gold-light);">Инсайт: гостям стыдно звонить отменять</em></td>
+                <td><strong>H1: No-Show</strong><br><span style="color: var(--muted); font-size: 11px;">Пустые столы</span></td>
+                <td style="text-align: center;"><span class="badge-tag badge-green">8 из 10 (80%)</span></td>
+                <td>Убытки до 450к₸/уикенд. <strong style="color: var(--gold-light);">Инсайт: гостям стыдно звонить отменять.</strong></td>
+                <td><span style="color: var(--muted);">1 закрытый VIP-клуб (работает строго по 100% предоплате депозита Kaspi) + 1 фастфуд с живой очередью.</span></td>
                 <td class="highlight-col">Пуш за 2ч + кнопка отмены в 1 клик (освобождает стол мгновенно)</td>
               </tr>
               <tr>
-                <td><strong>H2: Затор WhatsApp</strong></td>
-                <td>WhatsApp захлебывается в часы пик из-за десятков голосовых сообщений</td>
-                <td>✅ 9/10 подтвердили. Задержка ответа 40-90 мин, слив 15-20 столов за вечер</td>
-                <td class="highlight-col">Self-service WebApp: прямая бронь со свободного слота за 30 секунд</td>
+                <td><strong>H2: WhatsApp</strong><br><span style="color: var(--muted); font-size: 11px;">Затор аудио</span></td>
+                <td style="text-align: center;"><span class="badge-tag badge-green">7 из 10 (70%)</span></td>
+                <td>Задержка ответа 40-90 мин, слив до 20 столов в вечер.</td>
+                <td><span style="color: var(--muted);">2 мелкие кофейни (мало броней, успевают сами) + 1 сеть, нанявшая колл-центр за 380 000 ₸/мес.</span></td>
+                <td class="highlight-col">Self-service Mini App: прямая бронь со слота за 30 секунд</td>
               </tr>
               <tr>
-                <td><strong>H3: Барьер AppStore</strong></td>
-                <td>Гости откажутся скачивать нативное приложение на 80Мб ради брони</td>
-                <td>✅ 10/10 гостей отказались от установки отдельных приложений с СМС</td>
-                <td class="highlight-col">Telegram Mini App: запуск в 1 касание без установок и регистраций</td>
+                <td><strong>H3: AppStore</strong><br><span style="color: var(--muted); font-size: 11px;">Отказ от ПО</span></td>
+                <td style="text-align: center;"><span class="badge-tag badge-green">8 из 10 (80%)</span></td>
+                <td>Гости отказываются ставить приложения на 80Мб с СМС.</td>
+                <td><span style="color: var(--muted);">2 студента готовы качать приложения, ТОЛЬКО если дадут бонус 5000 ₸. Без бонуса — удаляют.</span></td>
+                <td class="highlight-col">Telegram Mini App: запуск в 1 клик без установок и регистраций</td>
               </tr>
               <tr>
-                <td><strong>H4: Менталитет зала</strong></td>
-                <td>Важны топчаны, VIP-кабины и звонки директору («от Кайреке»)</td>
-                <td>✅ 10/10 подтвердили. Конфликты из-за плохих столов у проходов</td>
-                <td class="highlight-col">Зонирование (Топчан, VIP, Окно) + модуль «По звонку» за 3 сек</td>
+                <td><strong>H4: Менталитет</strong><br><span style="color: var(--muted); font-size: 11px;">Топчан и Баке</span></td>
+                <td style="text-align: center;"><span class="badge-tag badge-green">8 из 10 (80%)</span></td>
+                <td>Важность зон (топчан, кабина) и звонков директору.</td>
+                <td><span style="color: var(--muted);">2 модные молодежные кофейни («у нас европейский формат, без топчанов и агашек»).</span></td>
+                <td class="highlight-col">Зонирование зала + кнопка брони «По звонку» за 3 секунды</td>
               </tr>
               <tr>
-                <td><strong>H5: Готовность платить</strong></td>
-                <td>Рестораторы заплатят 35–49 тыс ₸/мес вместо комиссий агрегаторов</td>
-                <td>✅ 8/10 готовы платить. Окупается за 1 банкетный стол на 8 персон</td>
+                <td><strong>H5: WTP</strong><br><span style="color: var(--muted); font-size: 11px;">Подписка</span></td>
+                <td style="text-align: center;"><span class="badge-tag badge-green">7 из 10 (70%)</span></td>
+                <td>Согласны на 49к₸: окупается за 1 банкетный стол.</td>
+                <td><span style="color: var(--muted);">1 заведение в кассовом разрыве + 2 мелкие точки боятся фиксы в низкий сезон.</span></td>
                 <td class="highlight-col">Фиксированная подписка (0% скрытых комиссий с чека или гостей)</td>
               </tr>
               <tr>
-                <td><strong>H6: Контроль хостес</strong></td>
-                <td>Владельцам не хватает контроля смен персонала и защиты базы гостей</td>
-                <td>✅ 10/10 управляющих. Журналы теряются, хостес уходят с базой номеров</td>
-                <td class="highlight-col">Живой таймер смены хостес, Z-отчеты и защищенная база в облаке</td>
+                <td><strong>H6: Смены</strong><br><span style="color: var(--muted); font-size: 11px;">Контроль зала</span></td>
+                <td style="text-align: center;"><span class="badge-tag badge-green">8 из 10 (80%)</span></td>
+                <td>Текучка хостес, потеря записей и номеров гостей.</td>
+                <td><span style="color: var(--muted);">1 семейное кафе (хостес — сестра владельца) + 1 точка, где управляющий сам сидит у входа.</span></td>
+                <td class="highlight-col">Живой таймер смены хостес, Z-отчеты и защита базы в облаке</td>
               </tr>
             </tbody>
           </table>
@@ -752,7 +778,7 @@
         <div class="slide-body grid-2">
           <div class="feature-card info">
             <h3>🍽 ДЛЯ ГОСТЯ (Telegram Mini App)</h3>
-            <p style="color: var(--sky); font-size: 11px; margin-bottom: 6px;">Открывается в 1 клик прямо из Telegram / Instagram / 2GIS</p>
+            <p style="color: var(--sky); font-size: 12px; margin-bottom: 6px;">Открывается в 1 клик прямо из Telegram / Instagram / 2GIS</p>
             <ul>
               <li><strong>Бронирование за 30 секунд:</strong> Без паролей, смс-кодов и регистраций</li>
               <li><strong>Выбор стола:</strong> Интерактивная схема зала (окно, терраса, VIP, топчан)</li>
@@ -763,7 +789,7 @@
           </div>
           <div class="feature-card gold-accent">
             <h3>👑 ДЛЯ РЕСТОРАНА (RestoKZ PRO Terminal)</h3>
-            <p style="color: var(--gold); font-size: 11px; margin-bottom: 6px;">Мобильный веб-терминал администратора и хостес</p>
+            <p style="color: var(--gold); font-size: 12px; margin-bottom: 6px;">Мобильный веб-терминал администратора и хостес</p>
             <ul>
               <li><strong>Живой журнал заявок:</strong> Статусы «Ожидает», «В брони», «Посажен», «Завершен»</li>
               <li><strong>Умные контекстные действия:</strong> Подтверждение или посадка в 1 касание</li>
@@ -787,23 +813,23 @@
               <li><strong>1. Умный каталог ресторанов:</strong> Фильтрация по городам (Шымкент, Алматы, Астана), кухне и среднему чеку.</li>
               <li><strong>2. Выбор даты и слота:</strong> Динамическая сетка доступных часов (обед, ужин) без конфликтов расписания.</li>
               <li><strong>3. Интерактивный столик:</strong> Гость сам видит и бронирует лучшее место — у панорамного окна, VIP или топчан.</li>
-              <li><strong>4. Билет брони:</strong> Электронный билет с QR-кодом и контактами заведения сохраняется в диалоге с ботом.</li>
+              <li><strong>4. Билет брони:</strong> Электронный билет с уникальным ID и контактами заведения сохраняется в Telegram.</li>
             </ul>
           </div>
           <div class="screenshot-frame">
-            <div class="screenshot-img-wrap" onclick="openLightbox(this)">
+            <div class="phone-mockup" onclick="openLightbox(this)">
               <img src="presentation_assets/guest_catalog_mobile.png" alt="Каталог ресторанов">
-              <div class="screenshot-caption">Каталог ресторанов</div>
+              <div class="screenshot-caption">Каталог заведений</div>
             </div>
-            <div class="screenshot-img-wrap" onclick="openLightbox(this)">
+            <div class="phone-mockup" onclick="openLightbox(this)">
               <img src="presentation_assets/guest_restaurant_modal.png" alt="Карточка ресторана">
-              <div class="screenshot-caption">Карточка и выбор стола</div>
+              <div class="screenshot-caption">Карточка и бронь</div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- SLIDE 6: ТЕРМИНАЛ ХОСТЕС PRO -->
+      <!-- SLIDE 6: ТЕРМИНАЛ ХОСТЕС PRO (ФОТО ВЫРОВНЕНО И БЕЗ ОБРЕЗКИ) -->
       <section class="slide" data-slide="6">
         <div class="slide-eyebrow">B2B Управление</div>
         <h2 class="slide-title">Терминал хостес: Оперативная посадка и контекстные действия</h2>
@@ -812,20 +838,16 @@
           <div class="feature-card">
             <h3>⚡ Ключевые возможности терминала:</h3>
             <ul>
-              <li><strong>Умные контекстные кнопки:</strong> Кнопки меняются в зависимости от статуса гостя — [✅ Подтвердить] → [🥂 Посадить за стол] → [🔓 Освободить].</li>
-              <li><strong>Живой KPI-дашборд:</strong> Счетчик ожидающих заявок, занятых столов и принятых за смену гостей на главном экране.</li>
+              <li><strong>Умные контекстные кнопки:</strong> Кнопки динамически подстраиваются под статус гостя — [✅ Подтвердить] → [🥂 Посадить за стол] → [🔓 Освободить].</li>
+              <li><strong>Живой KPI-дашборд смены:</strong> Счетчик ожидающих заявок, занятых столов и обслуженных гостей на главном экране.</li>
               <li><strong>Мгновенный фильтр дат:</strong> Быстрое переключение: «Все дни», «Сегодня», «Завтра».</li>
-              <li><strong>Звуковой гонг (Chime):</strong> Приятное звуковое оповещение при поступлении новой онлайн-брони.</li>
+              <li><strong>Звуковой гонг (Chime):</strong> Мягкое консьерж-оповещение при поступлении новой онлайн-брони.</li>
             </ul>
           </div>
-          <div class="screenshot-frame">
-            <div class="screenshot-img-wrap" onclick="openLightbox(this)">
-              <img src="presentation_assets/admin_terminal_mobile.png" alt="Мобильный терминал">
-              <div class="screenshot-caption">Мобильный терминал хостес</div>
-            </div>
-            <div class="screenshot-img-wrap" onclick="openLightbox(this)">
-              <img src="presentation_assets/admin_desktop_terminal.png" alt="Десктопный терминал">
-              <div class="screenshot-caption">Планшет / Десктоп</div>
+          <div class="screenshot-frame" style="justify-content: center;">
+            <div class="phone-mockup" onclick="openLightbox(this)" style="max-height: 430px;">
+              <img src="presentation_assets/admin_terminal_mobile.png" alt="Мобильный терминал хостес RestoKZ PRO">
+              <div class="screenshot-caption">Мобильный терминал хостес PRO</div>
             </div>
           </div>
         </div>
@@ -846,8 +868,8 @@
               <li><strong>🛡 Защита от коллизий:</strong> Автоматический буфер резерва исключает одновременную посадку двух компаний на один диван.</li>
             </ul>
           </div>
-          <div class="screenshot-frame">
-            <div class="screenshot-img-wrap" onclick="openLightbox(this)">
+          <div class="screenshot-frame" style="justify-content: center;">
+            <div class="phone-mockup" onclick="openLightbox(this)" style="max-height: 430px;">
               <img src="presentation_assets/admin_floor_map.png" alt="Карта зала RestoKZ PRO">
               <div class="screenshot-caption">Интерактивная карта зала</div>
             </div>
@@ -870,8 +892,8 @@
               <li><strong>Исключение потерь:</strong> Владелец заведения видит реальную конверсию и работу каждой смены без обмана.</li>
             </ul>
           </div>
-          <div class="screenshot-frame">
-            <div class="screenshot-img-wrap" onclick="openLightbox(this)">
+          <div class="screenshot-frame" style="justify-content: center;">
+            <div class="phone-mockup" onclick="openLightbox(this)" style="max-height: 430px;">
               <img src="presentation_assets/admin_shift_modal.png" alt="Модальное окно смены">
               <div class="screenshot-caption">Управление сменой & Z-отчет</div>
             </div>
@@ -895,13 +917,13 @@
             </ul>
           </div>
           <div class="screenshot-frame">
-            <div class="screenshot-img-wrap" onclick="openLightbox(this)">
+            <div class="phone-mockup" onclick="openLightbox(this)">
               <img src="presentation_assets/admin_rest_picker.png" alt="Шторка выбора заведения">
-              <div class="screenshot-caption">Bottom Sheet сети</div>
+              <div class="screenshot-caption">Шторка выбора точки сети</div>
             </div>
-            <div class="screenshot-img-wrap" onclick="openLightbox(this)">
+            <div class="phone-mockup" onclick="openLightbox(this)">
               <img src="presentation_assets/admin_drawer_menu.png" alt="Боковое меню">
-              <div class="screenshot-caption">Side Drawer меню</div>
+              <div class="screenshot-caption">Боковое меню (Side Drawer)</div>
             </div>
           </div>
         </div>
@@ -943,7 +965,7 @@
         </div>
       </section>
 
-      <!-- SLIDE 11: КОМПЛЕКСНАЯ КОНКУРЕНТНАЯ МАТРИЦА (UPGRADED) -->
+      <!-- SLIDE 11: КОМПЛЕКСНАЯ КОНКУРЕНТНАЯ МАТРИЦА -->
       <section class="slide" data-slide="11">
         <div class="slide-eyebrow">Конкурентный анализ</div>
         <h2 class="slide-title">Комплексная матрица: Сравнение 5 ключевых альтернатив</h2>
@@ -1030,7 +1052,7 @@
         </div>
       </section>
 
-      <!-- SLIDE 12: СТРАТЕГИЧЕСКОЕ ПОЗИЦИОНИРОВАНИЕ (NEW) -->
+      <!-- SLIDE 12: СТРАТЕГИЧЕСКОЕ ПОЗИЦИОНИРОВАНИЕ -->
       <section class="slide" data-slide="12">
         <div class="slide-eyebrow">Стратегия рынка</div>
         <h2 class="slide-title">Позиционирование: «Голубой океан» RestoKZ PRO</h2>
@@ -1039,17 +1061,17 @@
           <div class="feature-card info">
             <h3>🤝 1. Симбиоз с 2GIS & Insta</h3>
             <p>Заведения тратят до 1.5 млн ₸ на рекламу. Сейчас трафик сливается в WhatsApp с конверсией всего 4%.</p>
-            <p style="color: var(--white); font-size: 11.5px; margin-top: 6px;">Ссылка на RestoKZ Mini App в шапке Instagram и карточке 2GIS увеличивает конверсию рекламы в реальную посадку <strong>в 3-4 раза</strong>. Мы монетизируем их трафик без войны.</p>
+            <p style="color: var(--white); font-size: 13px; margin-top: 6px;">Ссылка на RestoKZ Mini App в шапке Instagram и карточке 2GIS увеличивает конверсию рекламы в реальную посадку <strong>в 3-4 раза</strong>. Мы монетизируем их трафик без войны.</p>
           </div>
           <div class="feature-card gold-accent">
             <h3>💻 2. Симбиоз с кассовыми ERP</h3>
             <p>iiko идеально считает себестоимость стейков на кухне и склад, но слишком громоздка для смартфона хостес у входной двери.</p>
-            <p style="color: var(--white); font-size: 11.5px; margin-top: 6px;">RestoKZ закрывает узкую боль мобильной посадки зала и приема гостей, не требуя от заведения дорогостоящей и болезненной замены касс.</p>
+            <p style="color: var(--white); font-size: 13px; margin-top: 6px;">RestoKZ закрывает узкую боль мобильной посадки зала и приема гостей, не требуя от заведения дорогостоящей и болезненной замены касс.</p>
           </div>
           <div class="feature-card success">
             <h3>🛡 3. Локальный ров (Local Moat)</h3>
             <p>Ни один зарубежный сервис не понимает, что такое «бронь топчана на құдалық на 15 человек» или «звонок от Баке с просьбой занять лучший стол».</p>
-            <p style="color: var(--white); font-size: 11.5px; margin-top: 6px;">Интерфейс на казахском языке и модуль «По звонку» за 3 секунды создают непреодолимый барьер для внешних конкурентов.</p>
+            <p style="color: var(--white); font-size: 13px; margin-top: 6px;">Интерфейс на казахском языке и модуль «По звонку» за 3 секунды создают непреодолимый барьер для внешних конкурентов.</p>
           </div>
         </div>
       </section>
@@ -1066,10 +1088,10 @@
               <div class="pricing-price">35 000 ₸</div>
               <div class="pricing-sub">в месяц за одно заведение</div>
               <ul class="pricing-features">
-                <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> До 12 столиков</li>
-                <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Telegram Mini App для гостей</li>
-                <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Журнал онлайн-заявок</li>
-                <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Авто-напоминания гостям</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> До 12 столиков</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Telegram Mini App для гостей</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Журнал онлайн-заявок</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Авто-напоминания гостям</li>
               </ul>
             </div>
             <button class="ctrl-btn" style="width: 100%; justify-content: center;">Выбрать Старт</button>
@@ -1082,11 +1104,11 @@
               <div class="pricing-price" style="color: var(--gold-light);">49 000 ₸</div>
               <div class="pricing-sub">в месяц за одно заведение</div>
               <ul class="pricing-features">
-                <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Неограниченно столиков</li>
-                <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Интерактивная карта зала</li>
-                <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Управление сменами и Z-отчет</li>
-                <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Звуковые уведомления Chime</li>
-                <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Модуль посадки Walk-in</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Неограниченно столиков</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Интерактивная карта зала</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Управление сменами и Z-отчет</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Звуковые уведомления Chime</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Модуль посадки Walk-in</li>
               </ul>
             </div>
             <button class="ctrl-btn primary" style="width: 100%; justify-content: center;">Подключить PRO</button>
@@ -1098,10 +1120,10 @@
               <div class="pricing-price">65 000 ₸</div>
               <div class="pricing-sub">в месяц за точку (для сетей)</div>
               <ul class="pricing-features">
-                <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Всё из тарифа PRO</li>
-                <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Единый мульти-кабинет сети</li>
-                <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Неограниченно филиалов</li>
-                <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Персональный куратор 24/7</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Всё из тарифа PRO</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Единый мульти-кабинет сети</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Неограниченно филиалов</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Персональный куратор 24/7</li>
               </ul>
             </div>
             <button class="ctrl-btn" style="width: 100%; justify-content: center;">Для ресторанных сетей</button>
@@ -1163,7 +1185,7 @@
           <div class="feature-card gold-accent">
             <h3>💡 Резюме для инвестора:</h3>
             <ul>
-              <li><strong>Рынок проверен фактами:</strong> 20 глубинных интервью. Боль No-Show и коллапс WhatsApp подтверждены 100% заведений.</li>
+              <li><strong>Рынок проверен фактами:</strong> 20 глубинных интервью. Боль No-Show и коллапс WhatsApp подтверждены подавляющим большинством заведений.</li>
               <li><strong>Unit-экономика сходится:</strong> Тариф 49 000 ₸ окупается за 1 спасенный банкетный стол в месяц. Очевидный ROI.</li>
               <li><strong>Защитный ров (Local Moat):</strong> Менталитет Казахстана (топчаны, VIP, язык, звонки Баке) защищает от глобальных гигантов.</li>
               <li><strong>Команда и готовность:</strong> Продукт работает в продакшене. Пилотный запуск начинается сразу после раунда.</li>
@@ -1178,7 +1200,7 @@
   <!-- Bottom Navigator -->
   <footer class="deck-nav">
     <div class="nav-dots" id="dotsContainer"></div>
-    <div class="nav-help">Используйте клавиши ← / → или Пробел для навигации</div>
+    <div class="nav-help">Используйте клавиши ← / → или Пробел для навигации • Нажмите F для полноэкранного режима</div>
   </footer>
 
   <!-- Lightbox -->
@@ -1197,10 +1219,17 @@
     const nextBtn = document.getElementById('nextBtn');
     const fsBtn = document.getElementById('fsBtn');
 
+    // Parse URL parameter ?slide=N
+    const urlParams = new URLSearchParams(window.location.search);
+    const paramSlide = parseInt(urlParams.get('slide'));
+    if (paramSlide >= 1 && paramSlide <= totalSlides) {
+      currentSlide = paramSlide;
+    }
+
     // Generate dots
     for (let i = 1; i <= totalSlides; i++) {
       const dot = document.createElement('div');
-      dot.className = `nav-dot ${i === 1 ? 'active' : ''}`;
+      dot.className = `nav-dot ${i === currentSlide ? 'active' : ''}`;
       dot.title = `Слайд ${i}`;
       dot.addEventListener('click', () => goToSlide(i));
       dotsContainer.appendChild(dot);
