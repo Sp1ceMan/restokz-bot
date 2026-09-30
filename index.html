@@ -830,6 +830,11 @@
             if (tabParam === 'my_bookings') {
                 switchTab('my-bookings');
             }
+
+            const restParam = urlParams.get('rest');
+            if (restParam) {
+                setTimeout(() => openRestaurantModal(Number(restParam)), 200);
+            }
         });
 
         // --- API & Data Handling ---

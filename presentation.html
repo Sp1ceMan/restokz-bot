@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RestoKZ PRO — Презентация платформы</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0E1013;
+      --card: #15171D;
+      --card-alt: #1C1F26;
+      --border: rgba(197, 168, 128, 0.28);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --gold: #C5A880;
+      --gold-light: #DFCAAB;
+      --gold-dark: #8C7350;
+      --white: #F4F2EE;
+      --muted: #9CA3AF;
+      --emerald: #34D399;
+      --sky: #38BDF8;
+      --rose: #FB7185;
+      --amber: #FBBF24;
+      --transition: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--white);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      user-select: none;
+    }
+
+    /* Top Control Bar */
+    header.deck-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: rgba(14, 16, 19, 0.85);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 100;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--gold);
+    }
+
+    .brand-logo span.badge {
+      background: rgba(197, 168, 128, 0.15);
+      border: 1px solid var(--gold);
+      color: var(--gold-light);
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .deck-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .slide-counter {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gold-light);
+      background: var(--card-alt);
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .ctrl-btn {
+      background: var(--card);
+      border: 1px solid var(--border-subtle);
+      color: var(--white);
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s var(--transition);
+    }
+
+    .ctrl-btn:hover {
+      background: var(--card-alt);
+      border-color: var(--gold);
+      color: var(--gold);
+      transform: translateY(-1px);
+    }
+
+    .ctrl-btn.primary {
+      background: linear-gradient(135deg, #C5A880, #8C7350);
+      color: #0E1013;
+      border: none;
+      box-shadow: 0 4px 15px rgba(197, 168, 128, 0.25);
+    }
+
+    .ctrl-btn.primary:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+
+    /* Main Deck Stage */
+    main.deck-stage {
+      flex: 1;
+      margin-top: 60px;
+      margin-bottom: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+    }
+
+    .slide-wrapper {
+      width: 100%;
+      max-width: 1280px;
+      aspect-ratio: 16 / 9;
+      min-height: 640px;
+      background: var(--card);
+      border-radius: 20px;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 40px rgba(197, 168, 128, 0.04);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 44px 52px;
+    }
+
+    .slide {
+      display: none;
+      width: 100%;
+      height: 100%;
+      flex-direction: column;
+      animation: fadeIn 0.35s var(--transition) forwards;
+    }
+
+    .slide.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.985); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Eyebrow & Slide Headings */
+    .slide-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .slide-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 10px var(--gold);
+    }
+
+    .slide-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.25;
+      margin-bottom: 6px;
+    }
+
+    .slide-subtitle {
+      font-size: 13.5px;
+      color: var(--muted);
+      margin-bottom: 24px;
+      line-height: 1.45;
+    }
+
+    .slide-body {
+      flex: 1;
+      display: grid;
+      gap: 24px;
+      align-items: stretch;
+      min-height: 0;
+    }
+
+    /* Grid Layouts */
+    .grid-2 {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .grid-left-wide {
+      grid-template-columns: 1.15fr 0.85fr;
+    }
+
+    .grid-left-narrow {
+      grid-template-columns: 0.85fr 1.15fr;
+    }
+
+    /* Content Cards */
+    .feature-card {
+      background: var(--card-alt);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 22px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card.gold-accent {
+      border-color: rgba(197, 168, 128, 0.4);
+      background: linear-gradient(180deg, rgba(28, 31, 38, 0.95), rgba(21, 23, 29, 0.98));
+    }
+
+    .feature-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--gold-light);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .feature-card p, .feature-card li {
+      font-size: 12.5px;
+      color: #E2E8F0;
+      line-height: 1.55;
+    }
+
+    .feature-card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .feature-card li {
+      position: relative;
+      padding-left: 20px;
+    }
+
+    .feature-card li::before {
+      content: '•';
+      position: absolute;
+      left: 4px;
+      top: 0;
+      color: var(--gold);
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .feature-card.danger {
+      border-color: rgba(251, 113, 133, 0.35);
+    }
+    .feature-card.danger h3 { color: var(--rose); }
+
+    .feature-card.warning {
+      border-color: rgba(251, 191, 36, 0.35);
+    }
+    .feature-card.warning h3 { color: var(--amber); }
+
+    .feature-card.info {
+      border-color: rgba(56, 189, 248, 0.35);
+    }
+    .feature-card.info h3 { color: var(--sky); }
+
+    .feature-card.success {
+      border-color: rgba(52, 211, 153, 0.35);
+    }
+    .feature-card.success h3 { color: var(--emerald); }
+
+    /* Screenshot Container */
+    .screenshot-frame {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      height: 100%;
+    }
+
+    .screenshot-img-wrap {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1.5px solid var(--border);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+      background: #000;
+      max-height: 100%;
+      cursor: zoom-in;
+      transition: transform 0.25s var(--transition), border-color 0.25s;
+    }
+
+    .screenshot-img-wrap:hover {
+      transform: translateY(-4px) scale(1.02);
+      border-color: var(--gold);
+    }
+
+    .screenshot-img-wrap img {
+      display: block;
+      height: 100%;
+      max-height: 380px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .screenshot-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+      padding: 8px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--gold-light);
+      text-align: center;
+    }
+
+    /* Comparison Table */
+    .table-container {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      background: var(--card-alt);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .table-container th, .table-container td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .table-container th {
+      background: #12141A;
+      color: var(--gold-light);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+    }
+
+    .table-container th.highlight-col, .table-container td.highlight-col {
+      background: rgba(197, 168, 128, 0.08);
+      border-left: 1.5px solid var(--gold);
+      border-right: 1.5px solid var(--gold);
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    .table-container th.highlight-col {
+      background: rgba(197, 168, 128, 0.18);
+      color: var(--gold);
+    }
+
+    /* Pricing Plans */
+    .pricing-card {
+      background: var(--card-alt);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .pricing-card.featured {
+      border: 1.5px solid var(--gold);
+      background: linear-gradient(180deg, #1F222B, #16181F);
+      box-shadow: 0 10px 30px rgba(197, 168, 128, 0.15);
+      transform: scale(1.02);
+    }
+
+    .pricing-badge {
+      position: absolute;
+      top: -11px;
+      right: 20px;
+      background: var(--gold);
+      color: #0E1013;
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 12px;
+      letter-spacing: 0.05em;
+    }
+
+    .pricing-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .pricing-price {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+
+    .pricing-sub {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .pricing-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      margin-bottom: 20px;
+    }
+
+    .pricing-features li {
+      font-size: 12px;
+      color: #D1D5DB;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pricing-features li svg {
+      color: var(--emerald);
+      flex-shrink: 0;
+    }
+
+    /* Cover Slide Specific */
+    .cover-layout {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      height: 100%;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .cover-left {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .cover-tagline {
+      font-size: 14px;
+      color: var(--gold-light);
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    .cover-pills {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .cover-pill-card {
+      background: var(--card-alt);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+
+    .cover-pill-card h4 {
+      font-size: 12px;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+
+    .cover-pill-card p {
+      font-size: 10px;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    /* Bottom Navigator Bar */
+    footer.deck-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 50px;
+      background: rgba(14, 16, 19, 0.9);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 100;
+    }
+
+    .nav-dots {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .nav-dot.active {
+      width: 28px;
+      border-radius: 6px;
+      background: var(--gold);
+      box-shadow: 0 0 10px rgba(197, 168, 128, 0.5);
+    }
+
+    .nav-help {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    /* Modal Image Lightbox */
+    #lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+      padding: 30px;
+    }
+
+    #lightbox.active {
+      display: flex;
+    }
+
+    #lightbox img {
+      max-width: 95%;
+      max-height: 92vh;
+      border-radius: 12px;
+      border: 1px solid var(--gold);
+      box-shadow: 0 0 50px rgba(0,0,0,0.9);
+    }
+
+    @media (max-width: 900px) {
+      .slide-wrapper {
+        aspect-ratio: auto;
+        min-height: auto;
+        padding: 24px 20px;
+      }
+      .grid-2, .grid-3, .grid-left-wide, .grid-left-narrow, .cover-layout {
+        grid-template-columns: 1fr;
+      }
+      .screenshot-frame {
+        flex-direction: column;
+      }
+      .cover-pills {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <header class="deck-bar">
+    <div class="brand-logo">
+      <span>👑 RestoKZ</span>
+      <span class="badge">PRO Platform</span>
+    </div>
+
+    <div class="deck-controls">
+      <div class="slide-counter" id="slideNum">Слайд 1 / 12</div>
+      <button class="ctrl-btn" id="prevBtn" title="Предыдущий слайд (Стрелка влево)">‹ Назад</button>
+      <button class="ctrl-btn primary" id="nextBtn" title="Следующий слайд (Стрелка вправо или Пробел)">Вперёд ›</button>
+      <button class="ctrl-btn" id="fsBtn" title="Полноэкранный режим (F)">⛶ На весь экран</button>
+      <button class="ctrl-btn" onclick="window.print()" title="Распечатать или Сохранить в PDF">🖨 PDF</button>
+    </div>
+  </header>
+
+  <!-- Presentation Stage -->
+  <main class="deck-stage">
+    <div class="slide-wrapper" id="deckContainer">
+
+      <!-- SLIDE 1: COVER -->
+      <section class="slide active" data-slide="1">
+        <div class="cover-layout">
+          <div class="cover-left">
+            <div class="slide-eyebrow">Официальная презентация продукта</div>
+            <h1 class="slide-title" style="font-size: 38px;">RestoKZ & RestoKZ PRO</h1>
+            <p class="cover-tagline">Цифровая экосистема онлайн-бронирования столиков и умного управления посадкой зала для ресторанов Казахстана.</p>
+            <p style="font-size: 13px; color: var(--emerald); font-weight: 600;">✓ Устранение No-Show • Без комиссий агрегаторов • Запуск за 1 день</p>
+            <div class="cover-pills">
+              <div class="cover-pill-card">
+                <h4>📱 Гостевой Mini App</h4>
+                <p>Бронь столика за 30 секунд прямо в Telegram</p>
+              </div>
+              <div class="cover-pill-card">
+                <h4>🪑 Терминал PRO</h4>
+                <p>Живая интерактивная карта зала и шахматка</p>
+              </div>
+              <div class="cover-pill-card">
+                <h4>⏱ Z-Отчеты смен</h4>
+                <p>Контроль хостес и полная аналитика владельцу</p>
+              </div>
+            </div>
+          </div>
+          <div class="screenshot-frame">
+            <div class="screenshot-img-wrap" onclick="openLightbox(this)">
+              <img src="presentation_assets/admin_terminal_mobile.png" alt="Терминал хостес RestoKZ PRO">
+              <div class="screenshot-caption">Терминал хостес RestoKZ PRO</div>
+            </div>
+            <div class="screenshot-img-wrap" onclick="openLightbox(this)">
+              <img src="presentation_assets/guest_catalog_mobile.png" alt="Гостевая витрина Mini App">
+              <div class="screenshot-caption">Гостевая витрина Mini App</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 2: ПРОБЛЕМА РЫНКА -->
+      <section class="slide" data-slide="2">
+        <div class="slide-eyebrow">Проблема рынка</div>
+        <h2 class="slide-title">Почему рестораны теряют до 25% выручки каждый уикенд?</h2>
+        <div class="slide-subtitle">Исследование работы заведений в Казахстане (Шымкент, Алматы, Астана) выявило острый кризис ручного управления бронями:</div>
+        <div class="slide-body grid-3">
+          <div class="feature-card danger">
+            <h3>📞 1. Хаос в WhatsApp и тетрадях</h3>
+            <ul>
+              <li>Хостес тратит до 3-4 часов в день на переписки и звонки</li>
+              <li>В часы пиковой посадки до 30% входящих звонков остаются без ответа</li>
+              <li>Потеря броней из-за неразборчивых записей в бумажных журналах</li>
+              <li>Нет единой цифровой базы гостей и истории их посещений</li>
+            </ul>
+          </div>
+          <div class="feature-card warning">
+            <h3>❌ 2. Эпидемия No-Show (неявки)</h3>
+            <ul>
+              <li>20-25% забронированных столов в пятницу и субботу остаются пустыми</li>
+              <li>Гости бронируют сразу 2-3 места и не предупреждают об отмене</li>
+              <li>Ресторан отказывает платежеспособным гостям у двери («всё занято»)</li>
+              <li>Прямой убыток заведения: от 100 000 до 350 000 ₸ за один вечер</li>
+            </ul>
+          </div>
+          <div class="feature-card info">
+            <h3>💸 3. Кабальные условия агрегаторов</h3>
+            <ul>
+              <li>Сторонние агрегаторы требуют 10-15% комиссии с чека или от 500 ₸ за каждого гостя</li>
+              <li>Тяжелые POS-системы (iiko/R-Keeper) неудобны со смартфонов хостес</li>
+              <li>Контакты и предпочтения гостей остаются у агрегатора, а не у ресторана</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 3: РЕШЕНИЕ RESTOKZ -->
+      <section class="slide" data-slide="3">
+        <div class="slide-eyebrow">Наше решение</div>
+        <h2 class="slide-title">RestoKZ: Единая двусторонняя экосистема</h2>
+        <div class="slide-subtitle">Мгновенная синхронизация гостя и хостес в реальном времени без скачивания тяжелых приложений:</div>
+        <div class="slide-body grid-2">
+          <div class="feature-card info">
+            <h3>🍽 ДЛЯ ГОСТЯ (Telegram Mini App)</h3>
+            <p style="color: var(--sky); font-size: 11px; margin-bottom: 6px;">Открывается в 1 клик прямо из Telegram / Instagram</p>
+            <ul>
+              <li><strong>Бронирование за 30 секунд:</strong> Без паролей, смс-кодов и регистрации</li>
+              <li><strong>Выбор стола:</strong> Интерактивная схема зала (окно, терраса, VIP, топчан)</li>
+              <li><strong>Электронное меню:</strong> Фотографии блюд, цены и состав до визита</li>
+              <li><strong>Автоматические напоминания:</strong> Бот вежливо напомнит за 2 часа до времени визита</li>
+              <li><strong>Языки:</strong> Полная поддержка RU, KZ, EN</li>
+            </ul>
+          </div>
+          <div class="feature-card gold-accent">
+            <h3>👑 ДЛЯ РЕСТОРАНА (RestoKZ PRO Terminal)</h3>
+            <p style="color: var(--gold); font-size: 11px; margin-bottom: 6px;">Мобильный веб-терминал администратора и хостес</p>
+            <ul>
+              <li><strong>Живой журнал заявок:</strong> Статусы «Ожидает», «В брони», «Посажен», «Завершен»</li>
+              <li><strong>Умные контекстные действия:</strong> Подтверждение или посадка в 1 касание</li>
+              <li><strong>Интерактивная карта зала:</strong> Цветовая занятость столов в реальном времени</li>
+              <li><strong>Контроль смены и Z-отчет:</strong> Прозрачные KPI и учет выручки за день</li>
+              <li><strong>Консьерж-гонг (Chime):</strong> Мягкие звуковые оповещения о новых бронях</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 4: ИНТЕРФЕЙС ГОСТЯ -->
+      <section class="slide" data-slide="4">
+        <div class="slide-eyebrow">B2C Опыт гостя</div>
+        <h2 class="slide-title">Telegram Mini App: Бронь столика в 3 касания</h2>
+        <div class="slide-subtitle">Максимальная конверсия за счет нулевого порога входа и премиального дизайна:</div>
+        <div class="slide-body grid-left-wide">
+          <div class="feature-card">
+            <h3>📱 Сценарий бронирования:</h3>
+            <ul>
+              <li><strong>1. Умный каталог ресторанов:</strong> Фильтрация по городам (Шымкент, Алматы, Астана), кухне и среднему чеку.</li>
+              <li><strong>2. Выбор даты и слота:</strong> Динамическая сетка доступных часов (обед, ужин) без конфликтов расписания.</li>
+              <li><strong>3. Интерактивный столик:</strong> Гость сам видит и бронирует лучший стол — у панорамного окна или на террасе.</li>
+              <li><strong>4. Билет брони:</strong> Электронный билет с QR-кодом и контактами заведения сохраняется в диалоге с ботом.</li>
+            </ul>
+          </div>
+          <div class="screenshot-frame">
+            <div class="screenshot-img-wrap" onclick="openLightbox(this)">
+              <img src="presentation_assets/guest_catalog_mobile.png" alt="Каталог ресторанов">
+              <div class="screenshot-caption">Каталог ресторанов</div>
+            </div>
+            <div class="screenshot-img-wrap" onclick="openLightbox(this)">
+              <img src="presentation_assets/guest_restaurant_modal.png" alt="Карточка ресторана">
+              <div class="screenshot-caption">Карточка и выбор стола</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 5: ТЕРМИНАЛ ХОСТЕС PRO -->
+      <section class="slide" data-slide="5">
+        <div class="slide-eyebrow">B2B Управление</div>
+        <h2 class="slide-title">Терминал хостес: Оперативная посадка и контекстные действия</h2>
+        <div class="slide-subtitle">Эргономичный интерфейс, спроектированный для мгновенной реакции на смартфоне хостес:</div>
+        <div class="slide-body grid-left-wide">
+          <div class="feature-card">
+            <h3>⚡ Ключевые возможности терминала:</h3>
+            <ul>
+              <li><strong>Умные контекстные кнопки:</strong> Кнопки меняются в зависимости от статуса гостя — [✅ Подтвердить] → [🥂 Посадить за стол] → [🔓 Освободить].</li>
+              <li><strong>Живой KPI-дашборд:</strong> Счетчик ожидающих заявок, занятых столов и принятых за смену гостей на главном экране.</li>
+              <li><strong>Мгновенный фильтр дат:</strong> Быстрое переключение: «Все дни», «Сегодня», «Завтра».</li>
+              <li><strong>Звуковой гонг (Chime):</strong> Приятное звуковое оповещение при поступлении новой онлайн-брони.</li>
+            </ul>
+          </div>
+          <div class="screenshot-frame">
+            <div class="screenshot-img-wrap" onclick="openLightbox(this)">
+              <img src="presentation_assets/admin_terminal_mobile.png" alt="Мобильный терминал">
+              <div class="screenshot-caption">Мобильный терминал хостес</div>
+            </div>
+            <div class="screenshot-img-wrap" onclick="openLightbox(this)">
+              <img src="presentation_assets/admin_desktop_terminal.png" alt="Десктопный терминал">
+              <div class="screenshot-caption">Планшет / Десктоп</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 6: КАРТА ЗАЛА -->
+      <section class="slide" data-slide="6">
+        <div class="slide-eyebrow">Контроль рассадки</div>
+        <h2 class="slide-title">Интерактивная карта зала: Никаких накладок и овербукинга</h2>
+        <div class="slide-subtitle">Наглядная шахматка посадки столов с цветовой дифференциацией в реальном времени:</div>
+        <div class="slide-body grid-left-wide">
+          <div class="feature-card success">
+            <h3>🗺 Статусы столов на карте зала:</h3>
+            <ul>
+              <li><strong style="color: var(--emerald);">🟢 Свободен:</strong> Стол готов к приему гостей. Клик позволяет посадить гостей от двери (Walk-in).</li>
+              <li><strong style="color: var(--gold);">🟡 В брони:</strong> Стол забронирован на текущее время. Система блокирует повторную запись на этот слот.</li>
+              <li><strong style="color: var(--sky);">🔵 За столом:</strong> Гости уже отдыхают. Отображается время с момента посадки.</li>
+              <li><strong>🛡 Защита от коллизий:</strong> Автоматический буфер резерва исключает одновременную посадку двух компаний на один диван.</li>
+            </ul>
+          </div>
+          <div class="screenshot-frame">
+            <div class="screenshot-img-wrap" onclick="openLightbox(this)">
+              <img src="presentation_assets/admin_floor_map.png" alt="Карта зала RestoKZ PRO">
+              <div class="screenshot-caption">Интерактивная карта зала</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 7: УПРАВЛЕНИЕ СМЕНОЙ И Z-ОТЧЕТЫ -->
+      <section class="slide" data-slide="7">
+        <div class="slide-eyebrow">Дисциплина персонала</div>
+        <h2 class="slide-title">Рабочая смена и Z-отчет: Полная прозрачность для владельца</h2>
+        <div class="slide-subtitle">Персональная ответственность администраторов и автоматический сбор статистики за смену:</div>
+        <div class="slide-body grid-left-wide">
+          <div class="feature-card gold-accent">
+            <h3>📊 Что дает модуль смен:</h3>
+            <ul>
+              <li><strong>Пульсирующий таймер:</strong> В шапке терминала отображается имя дежурной хостес и длительность смены (например, «● Смена 3ч 45м»).</li>
+              <li><strong>Закрытие смены по кнопке:</strong> По окончании смены администратор нажимает кнопку закрытия и формирует итоговый Z-отчет.</li>
+              <li><strong>Z-отчетность:</strong> Фиксация общего числа заявок, подтвержденных броней, отказов и общего числа обслуженных гостей.</li>
+              <li><strong>Исключение потерь:</strong> Владелец заведения видит реальную конверсию и работу каждой смены без обмана.</li>
+            </ul>
+          </div>
+          <div class="screenshot-frame">
+            <div class="screenshot-img-wrap" onclick="openLightbox(this)">
+              <img src="presentation_assets/admin_shift_modal.png" alt="Модальное окно смены">
+              <div class="screenshot-caption">Управление сменой & Z-отчет</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 8: МУЛЬТИЛОКАЦИЯ И DRAWER -->
+      <section class="slide" data-slide="8">
+        <div class="slide-eyebrow">Современный UX/UI</div>
+        <h2 class="slide-title">Управление сетью заведений и премиальный Drawer</h2>
+        <div class="slide-subtitle">Переход от устаревших селекторов к современным мобильным шторкам (Bottom Sheet):</div>
+        <div class="slide-body grid-left-wide">
+          <div class="feature-card">
+            <h3>✨ Премиальные компоненты интерфейса:</h3>
+            <ul>
+              <li><strong>Luxury Bottom Sheet:</strong> Шторка выбора ресторанов сети с поиском и бейджами городов вместо архаичных выпадающих списков.</li>
+              <li><strong>Боковое меню (Side Drawer):</strong> Смена языка (RU / KZ / EN), завершение смены и ссылка на витрину гостя аккуратно спрятаны.</li>
+              <li><strong>Трехъязычность:</strong> Крупные сенсорные переключатели для удобства любого сотрудника.</li>
+              <li><strong>Тактильный отклик:</strong> Плавные микроанимации и оптимизация под жестовое управление смартфонов.</li>
+            </ul>
+          </div>
+          <div class="screenshot-frame">
+            <div class="screenshot-img-wrap" onclick="openLightbox(this)">
+              <img src="presentation_assets/admin_rest_picker.png" alt="Шторка выбора заведения">
+              <div class="screenshot-caption">Bottom Sheet сети</div>
+            </div>
+            <div class="screenshot-img-wrap" onclick="openLightbox(this)">
+              <img src="presentation_assets/admin_drawer_menu.png" alt="Боковое меню">
+              <div class="screenshot-caption">Side Drawer меню</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 9: КОНСТРУКТОР РЕСТОРАНА И МЕНЮ -->
+      <section class="slide" data-slide="9">
+        <div class="slide-eyebrow">Гибкая настройка</div>
+        <h2 class="slide-title">Конструктор заведения: Запуск новой точки за 10 минут</h2>
+        <div class="slide-subtitle">Ресторан самостоятельно управляет столами, меню и контактными данными без привлечения программистов:</div>
+        <div class="slide-body grid-3">
+          <div class="feature-card info">
+            <h3>🏢 Профиль & Соцсети</h3>
+            <ul>
+              <li>Редактирование адреса, телефона и режима работы</li>
+              <li>Прямые ссылки на 2GIS, Instagram, WhatsApp</li>
+              <li>Указание среднего чека и концепции кухни</li>
+              <li>Регистрация нового филиала в 1 клик</li>
+            </ul>
+          </div>
+          <div class="feature-card gold-accent">
+            <h3>🍽 Электронное Меню</h3>
+            <ul>
+              <li>Категории (Основные блюда, Салаты, Напитки)</li>
+              <li>Фотографии блюд, цены и граммовка</li>
+              <li>Мгновенный «Стоп-лист» для временно недоступных блюд</li>
+              <li>Мгновенная синхронизация с гостями</li>
+            </ul>
+          </div>
+          <div class="feature-card success">
+            <h3>🪑 Конструктор Столов</h3>
+            <ul>
+              <li>Добавление столов с номерами и зонами</li>
+              <li>Вместимость: 2, 4, 6, 8, 10, 12+ персон</li>
+              <li>Зонирование: Основной зал, Окно, Терраса, VIP, Топчан</li>
+              <li>Заметки по столам для хостес</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 10: СРАВНИТЕЛЬНЫЙ АНАЛИЗ -->
+      <section class="slide" data-slide="10">
+        <div class="slide-eyebrow">Конкурентные преимущества</div>
+        <h2 class="slide-title">Почему RestoKZ PRO выигрывает у конкурентов?</h2>
+        <div class="slide-subtitle">Сравнение классического метода, внешних агрегаторов и экосистемы RestoKZ:</div>
+        <div class="slide-body" style="display: flex; align-items: center;">
+          <table class="table-container">
+            <thead>
+              <tr>
+                <th>Параметр сравнения</th>
+                <th>Тетрадь + WhatsApp</th>
+                <th>Агрегаторы (2GIS / Restolife)</th>
+                <th class="highlight-col">👑 RestoKZ PRO</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Скорость бронирования</strong></td>
+                <td>10-25 минут (долгие ответы)</td>
+                <td>3-5 минут (сторонний сайт)</td>
+                <td class="highlight-col">⚡ 30 секунд в Telegram</td>
+              </tr>
+              <tr>
+                <td><strong>Защита от No-Show</strong></td>
+                <td>❌ 0% (гости просто не приходят)</td>
+                <td>⚠️ Слабая (смс-уведомление)</td>
+                <td class="highlight-col">🛡 Высокая (напоминания ботом)</td>
+              </tr>
+              <tr>
+                <td><strong>Комиссия за гостей</strong></td>
+                <td>0 ₸, но скрытые убытки No-Show</td>
+                <td>💸 10-15% с чека или от 500 ₸/гость</td>
+                <td class="highlight-col">✅ 0% (фиксированная подписка)</td>
+              </tr>
+              <tr>
+                <td><strong>Карта зала и шахматка</strong></td>
+                <td>❌ Нет (ручные каракули)</td>
+                <td>❌ Только сухой список</td>
+                <td class="highlight-col">🗺 Интерактивная живая карта</td>
+              </tr>
+              <tr>
+                <td><strong>Удобство со смартфона</strong></td>
+                <td>❌ Рутина и путаница смен</td>
+                <td>⚠️ Громоздкие десктопные окна</td>
+                <td class="highlight-col">📱 Легкий мобильный веб-терминал</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SLIDE 11: ЭКОНОМИКА И ТАРИФЫ -->
+      <section class="slide" data-slide="11">
+        <div class="slide-eyebrow">Бизнес-модель</div>
+        <h2 class="slide-title">Тарифы и окупаемость для ресторана</h2>
+        <div class="slide-subtitle">Система окупается за 1 спасенную бронь банкета на 8-10 человек в месяц:</div>
+        <div class="slide-body grid-3">
+          <div class="pricing-card">
+            <div>
+              <div class="pricing-title">Тариф «Старт»</div>
+              <div class="pricing-price">35 000 ₸</div>
+              <div class="pricing-sub">в месяц за одно заведение</div>
+              <ul class="pricing-features">
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> До 12 столиков</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Telegram Mini App для гостей</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Журнал онлайн-заявок</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Авто-напоминания гостям</li>
+              </ul>
+            </div>
+            <button class="ctrl-btn" style="width: 100%; justify-content: center;">Выбрать Старт</button>
+          </div>
+
+          <div class="pricing-card featured">
+            <span class="pricing-badge">Самый популярный</span>
+            <div>
+              <div class="pricing-title" style="color: var(--gold);">Тариф «PRO Хит»</div>
+              <div class="pricing-price" style="color: var(--gold-light);">49 000 ₸</div>
+              <div class="pricing-sub">в месяц за одно заведение</div>
+              <ul class="pricing-features">
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Неограниченно столиков</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Интерактивная карта зала</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Управление сменами и Z-отчет</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Звуковые уведомления Chime</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Модуль посадки Walk-in</li>
+              </ul>
+            </div>
+            <button class="ctrl-btn primary" style="width: 100%; justify-content: center;">Подключить PRO</button>
+          </div>
+
+          <div class="pricing-card">
+            <div>
+              <div class="pricing-title" style="color: var(--sky);">Тариф «Сеть / VIP»</div>
+              <div class="pricing-price">65 000 ₸</div>
+              <div class="pricing-sub">в месяц за точку (для сетей)</div>
+              <ul class="pricing-features">
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Всё из тарифа PRO</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Единый мульти-кабинет сети</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Неограниченно филиалов</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Персональный куратор 24/7</li>
+              </ul>
+            </div>
+            <button class="ctrl-btn" style="width: 100%; justify-content: center;">Для ресторанных сетей</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 12: ДОРОЖНАЯ КАРТА И ДЕМО -->
+      <section class="slide" data-slide="12">
+        <div class="slide-eyebrow">Развитие и контакты</div>
+        <h2 class="slide-title">Дорожная карта & Тестирование системы</h2>
+        <div class="slide-subtitle">Система полностью готова к боевому пилотному внедрению уже сегодня:</div>
+        <div class="slide-body grid-2">
+          <div class="feature-card">
+            <h3>🗺 Дорожная карта проекта:</h3>
+            <ul>
+              <li><strong style="color: var(--emerald);">Реализовано (v2.4 Live):</strong> Гостевой WebApp, Терминал хостес, Карта зала, Z-отчетность, Мультилокация, трехъязычие.</li>
+              <li><strong style="color: var(--sky);">Q4 2026: Kaspi QR Депозиты:</strong> Взимание онлайн-предоплаты при бронировании для 100% ликвидации No-Show на банкетах.</li>
+              <li><strong style="color: var(--amber);">Q1 2027: AI-Голосовой консьерж:</strong> Автоматический прием звонков по телефону и официальный WhatsApp Business API.</li>
+            </ul>
+          </div>
+          <div class="feature-card gold-accent">
+            <h3>🚀 Ссылки для живого тестирования:</h3>
+            <ul>
+              <li><strong>🍽 Гостевая витрина:</strong><br><a href="https://sp1ceman.github.io/restokz-bot/" target="_blank" style="color: var(--gold); text-decoration: underline;">sp1ceman.github.io/restokz-bot/</a></li>
+              <li><strong>👑 Терминал хостес PRO:</strong><br><a href="https://sp1ceman.github.io/restokz-bot/admin.html" target="_blank" style="color: var(--gold); text-decoration: underline;">sp1ceman.github.io/restokz-bot/admin.html</a></li>
+              <li><strong>💬 Telegram Бот:</strong><br><span style="color: var(--white);">@RestoKZ_Bot</span></li>
+              <li><strong>⚡ Время запуска пилота:</strong> Менее 1 дня на любом телефоне персонала.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Bottom Navigator -->
+  <footer class="deck-nav">
+    <div class="nav-dots" id="dotsContainer"></div>
+    <div class="nav-help">Используйте клавиши ← / → или Пробел для навигации</div>
+  </footer>
+
+  <!-- Lightbox -->
+  <div id="lightbox" onclick="closeLightbox()">
+    <img id="lightboxImg" src="" alt="Zoomed screenshot">
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    let currentSlide = 1;
+
+    const slideNumEl = document.getElementById('slideNum');
+    const dotsContainer = document.getElementById('dotsContainer');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const fsBtn = document.getElementById('fsBtn');
+
+    // Generate dots
+    for (let i = 1; i <= totalSlides; i++) {
+      const dot = document.createElement('div');
+      dot.className = `nav-dot ${i === 1 ? 'active' : ''}`;
+      dot.title = `Слайд ${i}`;
+      dot.addEventListener('click', () => goToSlide(i));
+      dotsContainer.appendChild(dot);
+    }
+
+    function updateSlide() {
+      slides.forEach((s, idx) => {
+        s.classList.toggle('active', idx + 1 === currentSlide);
+      });
+      document.querySelectorAll('.nav-dot').forEach((d, idx) => {
+        d.classList.toggle('active', idx + 1 === currentSlide);
+      });
+      slideNumEl.textContent = `Слайд ${currentSlide} / ${totalSlides}`;
+      prevBtn.disabled = currentSlide === 1;
+      nextBtn.disabled = currentSlide === totalSlides;
+    }
+
+    function goToSlide(n) {
+      if (n >= 1 && n <= totalSlides) {
+        currentSlide = n;
+        updateSlide();
+      }
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        currentSlide++;
+        updateSlide();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        currentSlide--;
+        updateSlide();
+      }
+    }
+
+    nextBtn.addEventListener('click', nextSlide);
+    prevBtn.addEventListener('click', prevSlide);
+
+    // Keyboard navigation
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFullscreen();
+      } else if (e.key === 'Escape') {
+        closeLightbox();
+      }
+    });
+
+    // Fullscreen toggle
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+    fsBtn.addEventListener('click', toggleFullscreen);
+
+    // Touch Swipe support
+    let touchStartX = 0;
+    document.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    document.addEventListener('touchend', (e) => {
+      let touchEndX = e.changedTouches[0].screenX;
+      if (touchStartX - touchEndX > 50) {
+        nextSlide();
+      } else if (touchEndX - touchStartX > 50) {
+        prevSlide();
+      }
+    }, { passive: true });
+
+    // Lightbox zoom
+    function openLightbox(el) {
+      const img = el.querySelector('img');
+      if (img) {
+        document.getElementById('lightboxImg').src = img.src;
+        document.getElementById('lightbox').classList.add('active');
+      }
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
+    }
+
+    updateSlide();
+  </script>
+</body>
+</html>

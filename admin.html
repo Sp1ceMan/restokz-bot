@@ -2860,6 +2860,14 @@
             setAdminLanguage(currentAdminLang);
             await initSelectors();
             await loadBookingsFromServer();
+
+            const tabParam = urlParams.get('tab');
+            if (tabParam) switchTab(tabParam);
+            const openParam = urlParams.get('open');
+            if (openParam === 'drawer') setTimeout(openSideDrawer, 100);
+            else if (openParam === 'picker') setTimeout(openRestaurantPicker, 100);
+            else if (openParam === 'shift') setTimeout(openShiftModal, 100);
+
             setInterval(loadBookingsFromServer, 6000);
         });
     </script>
