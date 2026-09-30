@@ -298,24 +298,34 @@
     .feature-card.success { border-color: rgba(52, 211, 153, 0.4); }
     .feature-card.success h3 { color: var(--emerald); }
 
-    /* Screenshot Frames */
+    /* Screenshot Frames & Mockups */
     .screenshot-frame {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 16px;
+      gap: 18px;
       height: 100%;
       width: 100%;
+    }
+
+    .mockup-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: 100%;
+      max-height: 520px;
     }
 
     .phone-mockup {
       position: relative;
       height: 100%;
-      max-height: 420px;
+      max-height: 460px;
       aspect-ratio: 412 / 892;
-      border-radius: 28px;
+      border-radius: 26px;
       overflow: hidden;
-      border: 3px solid #2B2F3A;
+      border: 2px solid #2B2F3A;
       box-shadow: 0 20px 45px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(197, 168, 128, 0.35);
       background: #000;
       cursor: zoom-in;
@@ -335,18 +345,45 @@
       display: block;
     }
 
+    .hero-dual-card {
+      position: relative;
+      height: 100%;
+      max-height: 480px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-in;
+      transition: transform 0.25s var(--transition);
+    }
+
+    .hero-dual-card:hover {
+      transform: translateY(-4px) scale(1.01);
+    }
+
+    .hero-dual-card img {
+      max-height: 470px;
+      width: auto;
+      object-fit: contain;
+      border-radius: 20px;
+      display: block;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(197, 168, 128, 0.25);
+    }
+
     .screenshot-caption {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.92), rgba(0,0,0,0.4), transparent);
-      padding: 10px 12px 8px;
+      background: rgba(14, 16, 21, 0.92);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(197, 168, 128, 0.45);
+      border-radius: 20px;
+      padding: 5px 14px;
       font-size: 11.5px;
       font-weight: 700;
       color: var(--gold-light);
       text-align: center;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+      flex-shrink: 0;
     }
 
     /* Tables */
@@ -658,14 +695,9 @@
               </div>
             </div>
           </div>
-          <div class="screenshot-frame">
-            <div class="phone-mockup" onclick="openLightbox(this)">
-              <img src="presentation_assets/admin_terminal_mobile.png" alt="Терминал хостес RestoKZ PRO">
-              <div class="screenshot-caption">Терминал хостес PRO</div>
-            </div>
-            <div class="phone-mockup" onclick="openLightbox(this)">
-              <img src="presentation_assets/guest_catalog_mobile.png" alt="Гостевая витрина Mini App">
-              <div class="screenshot-caption">Гостевой Mini App</div>
+          <div class="screenshot-frame hero-frame">
+            <div class="hero-dual-card" onclick="openLightbox(this)">
+              <img src="presentation_assets/hero_dual_mockup.png" alt="Терминал хостес RestoKZ PRO и Гостевой Mini App">
             </div>
           </div>
         </div>
@@ -817,12 +849,16 @@
             </ul>
           </div>
           <div class="screenshot-frame">
-            <div class="phone-mockup" onclick="openLightbox(this)">
-              <img src="presentation_assets/guest_catalog_mobile.png" alt="Каталог ресторанов">
+            <div class="mockup-item">
+              <div class="phone-mockup" onclick="openLightbox(this)">
+                <img src="presentation_assets/guest_catalog_mobile.png" alt="Каталог ресторанов">
+              </div>
               <div class="screenshot-caption">Каталог заведений</div>
             </div>
-            <div class="phone-mockup" onclick="openLightbox(this)">
-              <img src="presentation_assets/guest_restaurant_modal.png" alt="Карточка ресторана">
+            <div class="mockup-item">
+              <div class="phone-mockup" onclick="openLightbox(this)">
+                <img src="presentation_assets/guest_restaurant_modal.png" alt="Карточка ресторана">
+              </div>
               <div class="screenshot-caption">Карточка и бронь</div>
             </div>
           </div>
@@ -845,9 +881,11 @@
             </ul>
           </div>
           <div class="screenshot-frame" style="justify-content: center;">
-            <div class="phone-mockup" onclick="openLightbox(this)" style="max-height: 430px;">
-              <img src="presentation_assets/admin_terminal_mobile.png" alt="Мобильный терминал хостес RestoKZ PRO">
-              <div class="screenshot-caption">Мобильный терминал хостес PRO</div>
+            <div class="mockup-item">
+              <div class="phone-mockup" onclick="openLightbox(this)">
+                <img src="presentation_assets/admin_terminal_mobile.png" alt="Мобильный терминал хостес RestoKZ PRO">
+              </div>
+              <div class="screenshot-caption">Терминал хостес PRO</div>
             </div>
           </div>
         </div>
@@ -869,8 +907,10 @@
             </ul>
           </div>
           <div class="screenshot-frame" style="justify-content: center;">
-            <div class="phone-mockup" onclick="openLightbox(this)" style="max-height: 430px;">
-              <img src="presentation_assets/admin_floor_map.png" alt="Карта зала RestoKZ PRO">
+            <div class="mockup-item">
+              <div class="phone-mockup" onclick="openLightbox(this)">
+                <img src="presentation_assets/admin_floor_map.png" alt="Карта зала RestoKZ PRO">
+              </div>
               <div class="screenshot-caption">Интерактивная карта зала</div>
             </div>
           </div>
@@ -893,8 +933,10 @@
             </ul>
           </div>
           <div class="screenshot-frame" style="justify-content: center;">
-            <div class="phone-mockup" onclick="openLightbox(this)" style="max-height: 430px;">
-              <img src="presentation_assets/admin_shift_modal.png" alt="Модальное окно смены">
+            <div class="mockup-item">
+              <div class="phone-mockup" onclick="openLightbox(this)">
+                <img src="presentation_assets/admin_shift_modal.png" alt="Модальное окно смены">
+              </div>
               <div class="screenshot-caption">Управление сменой & Z-отчет</div>
             </div>
           </div>
@@ -917,12 +959,16 @@
             </ul>
           </div>
           <div class="screenshot-frame">
-            <div class="phone-mockup" onclick="openLightbox(this)">
-              <img src="presentation_assets/admin_rest_picker.png" alt="Шторка выбора заведения">
+            <div class="mockup-item">
+              <div class="phone-mockup" onclick="openLightbox(this)">
+                <img src="presentation_assets/admin_rest_picker.png" alt="Шторка выбора заведения">
+              </div>
               <div class="screenshot-caption">Шторка выбора точки сети</div>
             </div>
-            <div class="phone-mockup" onclick="openLightbox(this)">
-              <img src="presentation_assets/admin_drawer_menu.png" alt="Боковое меню">
+            <div class="mockup-item">
+              <div class="phone-mockup" onclick="openLightbox(this)">
+                <img src="presentation_assets/admin_drawer_menu.png" alt="Боковое меню">
+              </div>
               <div class="screenshot-caption">Боковое меню (Side Drawer)</div>
             </div>
           </div>

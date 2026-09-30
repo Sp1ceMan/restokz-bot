@@ -164,13 +164,16 @@ def create_deck():
         p_c2.font.color.rgb = COLOR_MUTED
         p_c2.space_before = Pt(3)
 
-    hero_img = get_asset('admin_terminal_mobile.png')
-    if hero_img:
-        add_picture_frame(slide, hero_img, Inches(9.2), Inches(1.2), Inches(2.45), Inches(5.3))
-
-    hero_guest = get_asset('guest_catalog_mobile.png')
-    if hero_guest:
-        add_picture_frame(slide, hero_guest, Inches(10.7), Inches(1.7), Inches(2.2), Inches(4.7))
+    hero_mockup = get_asset('hero_dual_mockup.png')
+    if hero_mockup:
+        slide.shapes.add_picture(hero_mockup, Inches(7.8), Inches(1.15), Inches(5.0), Inches(5.16))
+    else:
+        hero_img = get_asset('admin_terminal_mobile.png')
+        if hero_img:
+            add_picture_frame(slide, hero_img, Inches(8.0), Inches(1.4), Inches(2.4), Inches(5.2))
+        hero_guest = get_asset('guest_catalog_mobile.png')
+        if hero_guest:
+            add_picture_frame(slide, hero_guest, Inches(10.6), Inches(1.4), Inches(2.4), Inches(5.2))
 
     # =========================================================================
     # SLIDE 2: ПРОБЛЕМА РЫНКА (PAIN POINTS)
