@@ -3,8 +3,10 @@ REST API module for Kazakhstan Restaurant Booking System.
 Powered by aiohttp.web with License & Subscription Security.
 """
 
+from __future__ import annotations
 import json
 import os
+from typing import Optional, Tuple, Dict, Any, List
 from aiohttp import web
 import database
 

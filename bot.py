@@ -3,6 +3,7 @@ Main Telegram Bot & Server for Kazakhstan Restaurant Booking System.
 Runs Aiogram 3 bot and aiohttp REST API server concurrently.
 """
 
+from __future__ import annotations
 import asyncio
 import json
 import html
@@ -10,6 +11,7 @@ import os
 import re
 import sys
 import subprocess
+from typing import Optional, Dict, List, Any
 
 if sys.platform == "win32":
     try:
