@@ -17,22 +17,48 @@ DB_FILE = os.environ.get(
 )
 
 def get_db_connection() -> sqlite3.Connection:
-    conn = sqlite3.connect(DB_FILE, timeout=15.0)
-    conn.row_factory = sqlite3.Row
-    conn.execute("PRAGMA foreign_keys = ON")
-    return conn
+    global DB_FILE
+    try:
+        conn = sqlite3.connect(DB_FILE, timeout=15.0)
+        conn.row_factory = sqlite3.Row
+        conn.execute("PRAGMA foreign_keys = ON")
+        return conn
+    except Exception as e:
+        print(f"[DB ERROR] Failed connecting to {DB_FILE}: {e}")
+        local_db = os.path.join(os.path.dirname(os.path.abspath(__file__)), "booking.db")
+        if DB_FILE != local_db:
+            print(f"[DB FALLBACK] Switching to local DB: {local_db}")
+            DB_FILE = local_db
+            conn = sqlite3.connect(DB_FILE, timeout=15.0)
+            conn.row_factory = sqlite3.Row
+            conn.execute("PRAGMA foreign_keys = ON")
+            return conn
+        raise
 
 def init_db():
     """Initializes the database schema and seeds initial Kazakhstan restaurants if empty."""
+    global DB_FILE
     # Ensure the directory for the database file exists (important on Railway /data volume)
     db_dir = os.path.dirname(DB_FILE)
     if db_dir:
-        os.makedirs(db_dir, exist_ok=True)
+        try:
+            os.makedirs(db_dir, exist_ok=True)
+        except Exception as e:
+            print(f"[DB WARNING] Could not create directory {db_dir}: {e}")
 
-    conn = get_db_connection()
     try:
-        conn.execute("PRAGMA journal_mode = WAL")
-        conn.execute("PRAGMA synchronous = NORMAL")
+        conn = get_db_connection()
+    except Exception as e:
+        print(f"[DB CRITICAL] Database initialization failed: {e}")
+        return
+
+    try:
+        try:
+            conn.execute("PRAGMA journal_mode = WAL")
+            conn.execute("PRAGMA synchronous = NORMAL")
+        except Exception as e:
+            print(f"[DB NOTE] PRAGMA WAL mode skipped (using standard mode): {e}")
+
         cursor = conn.cursor()
 
         cursor.executescript("""

@@ -525,8 +525,11 @@ async def main():
     print("=" * 55)
     print(f"[DB]  Путь к базе данных: {database.DB_FILE}")
     print("Инициализация базы данных...")
-    database.init_db()
-    print("[OK] База данных готова.")
+    try:
+        database.init_db()
+        print("[OK] База данных готова.")
+    except Exception as e:
+        print(f"[ERROR] Ошибка инициализации базы данных: {e}")
 
     # Create aiohttp web app
     app = create_web_app(
