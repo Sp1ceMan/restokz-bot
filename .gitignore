@@ -3,9 +3,6 @@
 # База данных (не коммитим — будет создана автоматически на Railway)
 booking.db
 
-# Локальный туннель URL (меняется каждый запуск)
-tunnel_url.txt
-
 # Python кэш
 __pycache__/
 *.py[cod]
@@ -28,9 +25,6 @@ desktop.ini
 
 # macOS
 .DS_Store
-
-# Cloudflared бинарник (большой файл, не нужен в git)
-cloudflared.exe
 
 # IDE
 .vscode/

@@ -56,34 +56,22 @@ def get_api_url() -> str:
     """
     Returns the public HTTPS URL of this API server.
     Priority:
-      1. TUNNEL_URL env var (explicit override — also used for Railway static domain)
+      1. API_BASE_URL or TUNNEL_URL env var (explicit override)
       2. RAILWAY_PUBLIC_DOMAIN env var (set automatically by Railway)
-      3. tunnel_url.txt file (written by tunnel.py for local development)
-      4. Fallback to localtunnel default subdomain
+      3. Default production URL on Railway
     """
     # 1. Explicit override via env
-    env_url = os.getenv("TUNNEL_URL", "").strip()
+    env_url = (os.getenv("API_BASE_URL") or os.getenv("TUNNEL_URL", "")).strip()
     if env_url:
         return env_url
 
-    # 2. Railway auto-injects RAILWAY_PUBLIC_DOMAIN (e.g. "restokz.up.railway.app")
+    # 2. Railway auto-injects RAILWAY_PUBLIC_DOMAIN (e.g. "restokz-bot-production.up.railway.app")
     railway_domain = os.getenv("RAILWAY_PUBLIC_DOMAIN", "").strip()
     if railway_domain:
         return f"https://{railway_domain}"
 
-    # 3. Local development: tunnel.py writes the URL to tunnel_url.txt
-    try:
-        txt_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tunnel_url.txt")
-        if os.path.exists(txt_path):
-            with open(txt_path, "r", encoding="utf-8") as f:
-                saved = f.read().strip()
-                if saved.startswith("http"):
-                    return saved
-    except Exception:
-        pass
-
-    # 4. Fallback
-    return "https://restokz-app.loca.lt"
+    # 3. Default production Railway backend
+    return "https://restokz-bot-production.up.railway.app"
 
 def get_webapp_url(tab: str = None, user_id: int = None) -> str:
     """Builds the full WebApp URL with API backend and credentials injected."""

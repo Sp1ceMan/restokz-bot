@@ -37,19 +37,16 @@
 
 ---
 
-## Запуск системы
+## Архитектура и Развёртывание
 
-### Вариант 1 (В один клик через .bat файлы):
-1. Запустите файл **`start.bat`** (запускает сервер на порту 8080 и Telegram-бота).
-2. Запустите файл **`run_tunnel.bat`** (подключает постоянный публичный адрес `https://restokz-app.loca.lt` для синхронизации с телефоном).
+1. **Frontend (WebApp):** 
+   - Развернут на **GitHub Pages**: `https://sp1ceman.github.io/restokz-bot/`
+   - Автоматически обновляется при любом коммите в репозиторий.
+2. **Backend (API & Bot):**
+   - 24/7 Сервер в облаке **Railway**: `https://restokz-bot-production.up.railway.app`
+   - Telegram-бот: `@reservations_app_bot`
+3. **Локальный запуск (для разработки):**
+   - Запустите файл **`start.bat`** (или `python bot.py`).
+   - Сервер поднимется на `http://localhost:8080`.
 
-### Вариант 2 (Через командную строку):
-```powershell
-python bot.py
-```
-
-После запуска:
-- Бот активен в Telegram (`@reservations_app_bot`).
-- Панель администратора и веб-приложение доступны локально: `http://localhost:8080`.
-- Публичный туннель: `https://restokz-app.loca.lt`.
 
