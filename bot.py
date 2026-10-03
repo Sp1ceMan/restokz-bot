@@ -557,11 +557,37 @@ async def main():
     print("[OK] Запуск Telegram бота RestoKZ (polling)...")
 
     try:
-        await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
+        # Clear any lingering webhook and drop old updates
+        try:
+            await bot.delete_webhook(drop_pending_updates=True)
+            print("[OK] Telegram webhook очищен.")
+        except Exception as e:
+            print(f"[WARNING] Не удалось сбросить webhook: {e}")
+
+        # Polling retry loop — prevents container crash during deployment rolling restarts
+        while True:
+            try:
+                await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
+                break
+            except asyncio.CancelledError:
+                break
+            except Exception as e:
+                print(f"[WARNING] Ошибка Telegram polling: {e}. Повторная попытка через 5 сек...")
+                await asyncio.sleep(5)
+    except asyncio.CancelledError:
+        pass
+    except Exception as e:
+        print(f"[ERROR] Неперехваченная ошибка в bot.py: {e}")
     finally:
         print("[SHUTDOWN] Остановка сервера...")
-        await runner.cleanup()
-        await bot.session.close()
+        try:
+            await runner.cleanup()
+        except Exception:
+            pass
+        try:
+            await bot.session.close()
+        except Exception:
+            pass
         print("[SHUTDOWN] Сервер остановлен.")
 
 if __name__ == "__main__":

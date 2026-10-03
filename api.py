@@ -675,6 +675,13 @@ async def admin_page(request: web.Request) -> web.FileResponse:
     admin_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "admin.html")
     return web.FileResponse(admin_path)
 
+async def health_endpoint(request: web.Request) -> web.Response:
+    return web.json_response({
+        "status": "ok",
+        "service": "restokz-bot",
+        "railway": True
+    })
+
 def create_web_app(notify_booking_func=None, notify_status_func=None) -> web.Application:
     app = web.Application(middlewares=[cors_middleware])
 
@@ -682,6 +689,10 @@ def create_web_app(notify_booking_func=None, notify_status_func=None) -> web.App
         app["bot_notify_new_booking"] = notify_booking_func
     if notify_status_func:
         app["bot_notify_status_change"] = notify_status_func
+
+    # Health checks (Railway uptime monitoring)
+    app.router.add_get("/health", health_endpoint)
+    app.router.add_get("/api/health", health_endpoint)
 
     # Public API routes
     app.router.add_get("/api/restaurants", get_restaurants)
