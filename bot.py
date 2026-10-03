@@ -112,7 +112,7 @@ def get_main_keyboard(user_id: int) -> ReplyKeyboardMarkup:
     # If the user is an admin or restaurant manager, give direct access to the restaurant panel
     if user_id == ADMIN_CHAT_ID:
         buttons.append([
-            KeyboardButton(text="👑 Панель ресторана", web_app=WebAppInfo(url=get_webapp_url("admin", user_id))),
+            KeyboardButton(text="👑 Терминал RestoKZ PRO", web_app=WebAppInfo(url=get_webapp_url("admin", user_id))),
             KeyboardButton(text="🛡️ Управление подписками")
         ])
 
@@ -123,24 +123,32 @@ async def cmd_start(message: Message):
     user_name = html.escape(message.from_user.first_name)
     kb = get_main_keyboard(message.from_user.id)
 
-    inline_kb = InlineKeyboardMarkup(inline_keyboard=[
-        [
+    inline_rows = []
+    if message.from_user.id == ADMIN_CHAT_ID:
+        inline_rows.append([
             InlineKeyboardButton(
-                text="🚀 Открыть каталог ресторанов",
-                web_app=WebAppInfo(url=get_webapp_url())
+                text="👑 Терминал RestoKZ PRO (Хостес & Подписки)",
+                web_app=WebAppInfo(url=get_webapp_url("admin", ADMIN_CHAT_ID))
             )
-        ],
-        [
-            InlineKeyboardButton(
-                text="📋 Мои брони",
-                web_app=WebAppInfo(url=get_webapp_url("my_bookings"))
-            ),
-            InlineKeyboardButton(
-                text="ℹ️ О сервисе",
-                callback_data="about_service"
-            )
-        ]
+        ])
+    inline_rows.append([
+        InlineKeyboardButton(
+            text="🚀 Открыть каталог ресторанов",
+            web_app=WebAppInfo(url=get_webapp_url())
+        )
     ])
+    inline_rows.append([
+        InlineKeyboardButton(
+            text="📋 Мои брони",
+            web_app=WebAppInfo(url=get_webapp_url("my_bookings"))
+        ),
+        InlineKeyboardButton(
+            text="ℹ️ О сервисе",
+            callback_data="about_service"
+        )
+    ])
+
+    inline_kb = InlineKeyboardMarkup(inline_keyboard=inline_rows)
 
     text = (
         f"Саламатсыз ба, <b>{user_name}</b>! 👋\n\n"

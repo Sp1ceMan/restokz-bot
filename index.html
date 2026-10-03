@@ -85,8 +85,11 @@
                 </div>
             </div>
 
-            <!-- Language & City Selectors -->
+            <!-- Language & City Selectors & PRO Terminal Button -->
             <div class="flex items-center gap-1.5 flex-shrink-0">
+                <button type="button" onclick="openRestaurantTerminal()" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-gradient-to-r from-amber-500/20 to-amber-600/30 text-amber-300 border border-amber-500/40 text-[10px] font-bold shadow-sm hover:brightness-110 active:scale-95 transition whitespace-nowrap" title="Терминал хостес и управления заведением">
+                    <span>👑</span> <span>PRO</span>
+                </button>
                 <!-- Language Toggle (RU / KZ / EN) -->
                 <div class="flex items-center bg-[#15171d] border border-[#252933] rounded-lg p-0.5 shadow-sm">
                     <button type="button" onclick="setLanguage('ru')" id="langBtn-ru" class="px-1.5 py-0.5 text-[10px] font-bold rounded bg-[#c5a880] text-[#0e1013] transition">RU</button>
@@ -148,50 +151,19 @@
             </div>
         </section>
 
-        <!-- TAB 3: ADMIN PANEL (FOR RESTAURANT HOSTESS / MANAGER) -->
+        <!-- TAB 3: ADMIN PANEL (REDIRECT TO DEDICATED RESTOKZ PRO TERMINAL) -->
         <section id="tab-admin" class="hidden space-y-4">
-            <div class="bg-gradient-to-r from-[#171920] to-[#13141a] border border-[#262a36] rounded-2xl p-4 shadow-md">
-                <div class="flex items-center justify-between mb-2">
-                    <div class="flex items-center gap-2.5">
-                        <span class="text-lg">👑</span>
-                        <div>
-                            <h2 class="text-sm font-serif font-bold text-[#dfcbb5]">Панель управления заведения</h2>
-                            <p class="text-[10px] text-[#8c93a0]">Рабочее место хостес и администратора</p>
-                        </div>
-                    </div>
-                    <span class="bg-emerald-950/40 text-emerald-300 border border-emerald-700/50 text-[10px] font-medium px-2 py-0.5 rounded-full">В сети</span>
+            <div class="bg-gradient-to-br from-[#171920] to-[#12141a] border border-[#c5a880]/30 rounded-2xl p-6 text-center space-y-4 shadow-xl">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#c5a880] to-[#8f6f40] flex items-center justify-center text-2xl mx-auto shadow-md">
+                    👑
                 </div>
-
-                <!-- Select Restaurant for Admin -->
-                <div class="mt-3">
-                    <label class="text-[11px] text-[#8c93a0] font-medium block mb-1">Выбрать ресторан:</label>
-                    <select id="adminRestaurantSelect" onchange="loadAdminBookings()" class="w-full bg-[#181a20] text-xs text-[#f3efe9] rounded-xl p-2.5 border border-[#252933] outline-none focus:border-[#c5a880] cursor-pointer">
-                        <option value="all" selected>🏢 Все рестораны (общий список)</option>
-                        <option value="1">La Terrazza (Алматы)</option>
-                        <option value="2">Чайхана NAVAT (Алматы)</option>
-                        <option value="3">Sandyq (Астана)</option>
-                        <option value="4">Del Papa (Алматы)</option>
-                    </select>
+                <div class="space-y-1">
+                    <h2 class="text-base font-serif font-bold text-white">Терминал RestoKZ PRO</h2>
+                    <p class="text-xs text-zinc-400">Управление рестораном, сменой хостес, боковым меню, залом и подписками открывается в полнофункциональном PRO-терминале.</p>
                 </div>
-            </div>
-
-            <!-- Date Filter & Refresh for Admin -->
-            <div class="flex items-center justify-between gap-2 text-xs">
-                <div class="flex gap-2">
-                    <button onclick="filterAdminDate('all', this)" class="admin-date-btn px-3 py-1.5 rounded-lg bg-[#c5a880] text-[#0e1013] font-bold shadow-sm">Все даты</button>
-                    <button onclick="filterAdminDate('today', this)" class="admin-date-btn px-3 py-1.5 rounded-lg bg-[#15171d] text-[#8c93a0] border border-[#252933] hover:text-[#f3efe9]">Сегодня</button>
-                    <button onclick="filterAdminDate('tomorrow', this)" class="admin-date-btn px-3 py-1.5 rounded-lg bg-[#15171d] text-[#8c93a0] border border-[#252933] hover:text-[#f3efe9]">Завтра</button>
-                </div>
-                <button onclick="loadAdminBookings()" class="px-2.5 py-1.5 rounded-lg bg-[#15171d] hover:bg-[#1e212b] text-[#c5a880] font-medium flex items-center gap-1 border border-[#252933] text-xs transition-colors">
-                    🔄 Обновить
+                <button type="button" onclick="openRestaurantTerminal()" class="w-full py-3.5 rounded-xl font-bold text-xs luxury-gold-btn transition shadow-lg active:scale-95 flex items-center justify-center gap-2">
+                    <span>🚀</span> <span>Открыть Терминал RestoKZ PRO</span>
                 </button>
-            </div>
-
-            <div id="adminConnectionStatus" class="text-[10px] px-1 min-h-[16px]"></div>
-
-            <!-- Admin Bookings List -->
-            <div id="adminBookingsList" class="space-y-3">
-                <div class="text-center py-8 text-[#8c93a0] text-sm">Загрузка броней...</div>
             </div>
         </section>
 
@@ -474,19 +446,24 @@
         </div>
     </div>
 
-    <!-- Bottom Mobile Navigation Bar (Guest Only) -->
-    <nav class="fixed bottom-0 left-0 right-0 z-40 bg-[#0e1013]/95 backdrop-blur-md border-t border-[#20232c] pt-2 pb-[max(0.6rem,env(safe-area-inset-bottom))] px-6">
-        <div class="max-w-md mx-auto flex justify-around items-center">
+    <!-- Bottom Mobile Navigation Bar (Guest & PRO Terminal) -->
+    <nav class="fixed bottom-0 left-0 right-0 z-40 bg-[#0e1013]/95 backdrop-blur-md border-t border-[#20232c] pt-2 pb-[max(0.6rem,env(safe-area-inset-bottom))] px-4">
+        <div class="max-w-md mx-auto grid grid-cols-3 gap-1">
             
-            <button onclick="switchTab('restaurants')" id="navBtn-restaurants" class="nav-btn flex flex-col items-center gap-1 text-[#c5a880] font-bold text-[11px] transition-colors">
+            <button onclick="switchTab('restaurants')" id="navBtn-restaurants" class="nav-btn flex flex-col items-center gap-1 text-[#c5a880] font-bold text-[11px] transition-colors py-1">
                 <span class="text-xl">🏠</span>
-                <span>Рестораны</span>
+                <span id="lblNavRest">Рестораны</span>
             </button>
 
-            <button onclick="switchTab('my-bookings')" id="navBtn-my-bookings" class="nav-btn flex flex-col items-center gap-1 text-[#8c93a0] font-medium text-[11px] hover:text-[#f3efe9] transition-colors relative">
+            <button onclick="switchTab('my-bookings')" id="navBtn-my-bookings" class="nav-btn flex flex-col items-center gap-1 text-[#8c93a0] font-medium text-[11px] hover:text-[#f3efe9] transition-colors relative py-1">
                 <span class="text-xl">📋</span>
-                <span>Мои бронирования</span>
-                <span id="myBookingsBadge" class="hidden absolute top-0 right-2 w-2 h-2 rounded-full bg-[#c5a880]"></span>
+                <span id="lblNavBookings">Мои брони</span>
+                <span id="myBookingsBadge" class="hidden absolute top-0 right-4 w-2 h-2 rounded-full bg-[#c5a880]"></span>
+            </button>
+
+            <button onclick="openRestaurantTerminal()" id="navBtn-admin" class="nav-btn flex flex-col items-center gap-1 text-[#8c93a0] font-medium text-[11px] hover:text-[#f3efe9] transition-colors py-1">
+                <span class="text-xl">👑</span>
+                <span id="lblNavAdmin">Для ресторана</span>
             </button>
 
         </div>
@@ -1147,7 +1124,23 @@
         // --- Navigation Tabs ---
         let myBookingsPollInterval = null;
 
+        function openRestaurantTerminal() {
+            let target = 'admin.html';
+            const params = new URLSearchParams(window.location.search);
+            const tgUser = window.Telegram?.WebApp?.initDataUnsafe?.user;
+            if (tgUser && String(tgUser.id) === '348581961') {
+                params.set('super_key', 'restokz_super_2026');
+            }
+            const query = params.toString();
+            if (query) target += '?' + query;
+            window.location.href = target;
+        }
+
         function switchTab(tabId) {
+            if (tabId === 'admin') {
+                openRestaurantTerminal();
+                return;
+            }
             document.getElementById('tab-restaurants').classList.add('hidden');
             document.getElementById('tab-my-bookings').classList.add('hidden');
             document.getElementById('tab-admin').classList.add('hidden');
