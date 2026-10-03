@@ -134,6 +134,8 @@
                                 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" id="shiftStatusDot"></span>
                                 <span id="lblHeaderShiftText">Смена активна</span>
                             </button>
+                            <!-- Бейдж лицензии / Super Admin -->
+                            <button type="button" id="btnHeaderAuthBadge" onclick="handleHeaderBadgeClick()" class="hidden inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10.5px] font-bold transition flex-shrink-0 shadow-sm" title="Статус лицензии и профиля"></button>
                         </div>
                     </div>
                 </div>
@@ -273,6 +275,36 @@
                     <span class="text-[11px] font-semibold text-emerald-400">Онлайн</span>
                 </div>
             </div>
+
+            <!-- Блок Владельца платформы (Super Admin) в боковом меню -->
+            <div id="drawerSuperAdminSection" class="hidden space-y-2 pt-2 border-t border-amber-500/20">
+                <label class="text-xs font-bold text-amber-300 uppercase tracking-wider block">
+                    👑 Владелец платформы
+                </label>
+                <button type="button" onclick="closeSideDrawer(); switchTab('subscriptions');" class="w-full flex items-center justify-between p-3 rounded-2xl bg-gradient-to-r from-amber-500/20 to-amber-600/10 hover:from-amber-500/30 border border-amber-500/40 transition group shadow-md shadow-amber-950/20">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">🛡️</span>
+                        <div class="text-left">
+                            <div class="text-xs font-bold text-white group-hover:text-amber-300 transition">Лицензии & Подписки</div>
+                            <div class="text-[11px] text-zinc-400">Управление доступом ресторанов</div>
+                        </div>
+                    </div>
+                    <span class="text-amber-400 text-sm font-bold group-hover:translate-x-1 transition-transform">→</span>
+                </button>
+            </div>
+
+            <!-- Карточка текущей лицензии и сессии -->
+            <div id="drawerAccountSection" class="p-3.5 bg-[#181b22] border border-white/10 rounded-2xl space-y-2.5">
+                <div class="flex items-center justify-between">
+                    <span class="text-[11px] text-zinc-400 font-semibold">Лицензия & Сессия:</span>
+                    <span id="drawerAccountRoleBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/5 text-zinc-300 border border-white/5">Гость</span>
+                </div>
+                <div id="drawerAccountDetails" class="text-xs font-bold text-white truncate">-</div>
+                <div id="drawerAccountExpires" class="text-[11px] text-zinc-400">Срок: не активирован</div>
+                <button type="button" onclick="handleAuthLogout()" class="w-full py-2 rounded-xl text-xs font-bold bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 border border-rose-500/30 transition flex items-center justify-center gap-1.5 active:scale-95">
+                    <span>🚪</span> <span>Выйти / Сменить ключ</span>
+                </button>
+            </div>
         </div>
 
         <!-- Подвал меню -->
@@ -411,6 +443,263 @@
                     Да, завершить
                 </button>
             </div>
+        </div>
+    </div>
+
+
+    <!-- ================= 1. МОДАЛЬНОЕ ОКНО АВТОРИЗАЦИИ (LOGIN GATE) ================= -->
+    <div id="authModalBackdrop" class="fixed inset-0 bg-black/90 backdrop-blur-xl z-50 flex items-center justify-center p-4 transition-all duration-300 hidden">
+        <div class="bg-[#14171f] border border-[#c5a880]/30 rounded-3xl max-w-md w-full p-6 space-y-5 shadow-2xl relative text-left">
+            <!-- Декоративное свечение -->
+            <div class="absolute -top-10 -right-10 w-36 h-36 bg-[#c5a880]/15 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="text-center space-y-2">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#c5a880] to-[#8f6f40] text-2xl mx-auto flex items-center justify-center shadow-lg shadow-black/50 border border-amber-300/30">
+                    🛡️
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-white font-serif-luxury" id="lblAuthModalTitle">Вход в RestoKZ PRO</h3>
+                    <p class="text-xs text-zinc-400" id="lblAuthModalSub">Терминал защищён. Введите лицензионный ключ заведения или мастер-пароль платформы.</p>
+                </div>
+            </div>
+
+            <!-- Форма ввода ключа -->
+            <div class="space-y-3">
+                <div>
+                    <label class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block mb-1">
+                        Лицензионный ключ доступа
+                    </label>
+                    <div class="relative">
+                        <input
+                            type="text"
+                            id="authKeyInput"
+                            placeholder="RKZ-SANDYQ-A39B или мастер-ключ"
+                            class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-3.5 py-3 text-xs text-white placeholder-zinc-500 font-mono tracking-wider focus:outline-none focus:border-[#c5a880]"
+                            onkeydown="if(event.key==='Enter') handleAuthLogin()"
+                        >
+                        <button type="button" onclick="pasteAuthKeyFromClipboard()" class="absolute right-2.5 top-2.5 px-2 py-1 text-[10px] font-semibold bg-white/10 hover:bg-white/15 text-zinc-300 rounded-lg transition" title="Вставить из буфера">
+                            Вставить
+                        </button>
+                    </div>
+                </div>
+
+                <div id="authErrorMsg" class="hidden text-xs text-rose-400 bg-rose-500/10 border border-rose-500/25 rounded-xl p-2.5"></div>
+
+                <button type="button" onclick="handleAuthLogin()" id="btnAuthLogin" class="w-full py-3.5 rounded-xl font-bold text-xs luxury-gold-btn transition active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg">
+                    <span>🚀</span> <span id="lblBtnAuthLogin">Войти в терминал</span>
+                </button>
+            </div>
+
+            <!-- Помощь и подключение новых заведений -->
+            <div class="pt-3 border-t border-white/10 space-y-2 text-center">
+                <p class="text-[11.5px] text-zinc-400">
+                    У вас ещё нет лицензии? Получите бесплатный тест на 7 дней или оформите подписку:
+                </p>
+                <div class="grid grid-cols-2 gap-2">
+                    <a href="https://t.me/Sp1ceMan" target="_blank" class="py-2.5 px-3 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 text-sky-300 border border-sky-500/30 text-xs font-semibold flex items-center justify-center gap-1.5 transition">
+                        <span>✈️</span> <span>@Sp1ceMan</span>
+                    </a>
+                    <a href="https://t.me/restokz_bot" target="_blank" class="py-2.5 px-3 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 text-xs font-semibold flex items-center justify-center gap-1.5 transition">
+                        <span>🤖</span> <span>Telegram Бот</span>
+                    </a>
+                </div>
+                <div class="pt-1">
+                    <button type="button" onclick="useMasterKeyShortcut()" class="text-[11px] text-amber-300/80 hover:text-amber-300 underline transition">
+                        👑 Вход для владельца платформы (Super Admin)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= 2. ЭКРАН БЛОКИРОВКИ ПРИ ИСТЕЧЕНИИ ПОДПИСКИ ================= -->
+    <div id="subLockOverlay" class="fixed inset-0 bg-black/92 backdrop-blur-xl z-50 flex items-center justify-center p-4 transition-all duration-300 hidden">
+        <div class="bg-[#14171f] border border-rose-500/30 rounded-3xl max-w-md w-full p-6 space-y-5 shadow-2xl text-center">
+            <div class="w-16 h-16 rounded-2xl bg-rose-500/20 text-rose-400 text-3xl mx-auto flex items-center justify-center border border-rose-500/30">
+                ⏳
+            </div>
+
+            <div class="space-y-1.5">
+                <h3 class="text-lg font-bold text-white font-serif-luxury" id="lblSubLockTitle">Срок действия лицензии истёк</h3>
+                <p class="text-xs text-zinc-400" id="lblSubLockSub">
+                    Доступ к управлению посадкой, столами и меню заведения приостановлен.
+                </p>
+            </div>
+
+            <!-- Данные о заведении -->
+            <div class="bg-[#0e1013] border border-white/5 rounded-2xl p-4 text-left space-y-2 text-xs">
+                <div class="flex justify-between items-center">
+                    <span class="text-zinc-400">Ресторан:</span>
+                    <strong class="text-white" id="subLockRestName">-</strong>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-zinc-400">Статус:</span>
+                    <span class="px-2 py-0.5 rounded-full bg-rose-500/15 text-rose-400 font-bold" id="subLockStatusTag">Истекла</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-zinc-400">Дата окончания:</span>
+                    <strong class="text-rose-300" id="subLockExpiresAt">-</strong>
+                </div>
+            </div>
+
+            <!-- Активация нового ключа -->
+            <div class="space-y-2 text-left">
+                <label class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block">
+                    Активировать новый / продлённый ключ
+                </label>
+                <div class="flex gap-2">
+                    <input
+                        type="text"
+                        id="renewKeyInput"
+                        placeholder="RKZ-..."
+                        class="flex-1 bg-[#0e1013] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 font-mono focus:outline-none focus:border-[#c5a880]"
+                    >
+                    <button type="button" onclick="submitRenewKey()" class="px-4 py-2 rounded-xl text-xs font-bold luxury-gold-btn transition whitespace-nowrap">
+                        Активировать
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 pt-2 border-t border-white/10">
+                <a href="https://t.me/Sp1ceMan" target="_blank" class="py-2.5 rounded-xl text-xs font-bold bg-sky-600 hover:bg-sky-500 text-white transition flex items-center justify-center gap-1.5 shadow-lg shadow-sky-900/20">
+                    <span>✈️</span> <span>Продлить (@Sp1ceMan)</span>
+                </a>
+                <button type="button" onclick="handleAuthLogout()" class="py-2.5 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/15 text-zinc-300 transition">
+                    Сменить аккаунт
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= 3. МОДАЛЬНОЕ ОКНО СОЗДАНИЯ ЗАВЕДЕНИЯ И ВЫДАЧИ ЛИЦЕНЗИИ (SUPER ADMIN) ================= -->
+    <div id="newLicenseModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-[#14171f] border border-[#c5a880]/30 rounded-3xl max-w-lg w-full p-5 space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/30 text-amber-300 border border-amber-500/40 flex items-center justify-center text-lg">
+                        🛡️
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-white font-serif-luxury">Выдать лицензию заведению</h3>
+                        <p class="text-xs text-zinc-400">Создание ресторана и генерация персонального ключа</p>
+                    </div>
+                </div>
+                <button onclick="closeNewLicenseModal()" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white flex items-center justify-center text-sm transition">
+                    ✕
+                </button>
+            </div>
+
+            <!-- Поля заведения -->
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="text-[11px] text-zinc-400 block mb-1">Название заведения *</label>
+                    <input id="licRestName" type="text" placeholder="Например: Sandyq Almaty" class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-3 py-2 text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="text-[11px] text-zinc-400 block mb-1">Город *</label>
+                        <select id="licRestCity" class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-2.5 py-2 text-white focus:outline-none focus:border-[#c5a880]">
+                            <option value="Алматы">Алматы</option>
+                            <option value="Астана">Астана</option>
+                            <option value="Шымкент">Шымкент</option>
+                            <option value="Караганда">Караганда</option>
+                            <option value="Актобе">Актобе</option>
+                            <option value="Тараз">Тараз</option>
+                            <option value="Павлодар">Павлодар</option>
+                            <option value="Усть-Каменогорск">Усть-Каменогорск</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[11px] text-zinc-400 block mb-1">Кухня / Концепт *</label>
+                        <input id="licRestCuisine" type="text" placeholder="Казахская, Европейская" class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-3 py-2 text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="text-[11px] text-zinc-400 block mb-1">Имя владельца / управляющего</label>
+                        <input id="licOwnerName" type="text" placeholder="Азамат Касымов" class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-3 py-2 text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
+                    </div>
+                    <div>
+                        <label class="text-[11px] text-zinc-400 block mb-1">Телефон владельца *</label>
+                        <input id="licOwnerPhone" type="text" placeholder="+7 (701) 555-44-33" class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-3 py-2 text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-[11px] text-zinc-400 block mb-1">Точный адрес заведения</label>
+                    <input id="licRestAddress" type="text" placeholder="ул. Абая, 44" class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-3 py-2 text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
+                </div>
+
+                <!-- Выбор тарифа и срока лицензии -->
+                <div class="pt-2 border-t border-white/10 space-y-2">
+                    <label class="text-[11px] font-bold text-amber-300 uppercase tracking-wider block">
+                        Тарифный план & Срок лицензии
+                    </label>
+                    <select id="licPlanDuration" class="w-full bg-[#0e1013] border border-[#c5a880]/30 rounded-xl px-3 py-2.5 text-white font-medium focus:outline-none focus:border-[#c5a880]">
+                        <option value="trial_7">🟡 Бесплатный тест (7 дней) — Пробный период</option>
+                        <option value="trial_14">🟡 Расширенный тест (14 дней) — Демонстрация</option>
+                        <option value="pro_monthly" selected>🟢 PRO Базовый (30 дней / 1 месяц) — 20 000 – 25 000 ₸</option>
+                        <option value="pro_quarter">🟢 PRO Квартал (90 дней / 3 месяца) — 65 000 ₸</option>
+                        <option value="pro_annual">👑 PRO Годовой (365 дней / 1 год) — 240 000 ₸</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 pt-2 border-t border-white/10">
+                <button type="button" onclick="closeNewLicenseModal()" class="py-2.5 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/15 text-zinc-300 transition">
+                    Отмена
+                </button>
+                <button type="button" onclick="submitNewRestaurantWithLicense()" class="py-2.5 rounded-xl text-xs font-bold luxury-gold-btn transition shadow-lg">
+                    🚀 Выдать лицензию
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= 4. МОДАЛЬНОЕ ОКНО РЕЗУЛЬТАТА ВЫДАЧИ ЛИЦЕНЗИИ ================= -->
+    <div id="licenseSuccessModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-[#14171f] border border-emerald-500/40 rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl text-center">
+            <div class="w-14 h-14 rounded-2xl bg-emerald-500/20 text-emerald-400 text-3xl mx-auto flex items-center justify-center border border-emerald-500/30">
+                🎉
+            </div>
+
+            <div class="space-y-1">
+                <h3 class="text-base font-bold text-white font-serif-luxury">Лицензия успешно выдана!</h3>
+                <p class="text-xs text-zinc-400">Ресторан активирован в системе. Передайте ключ или ссылку заведению:</p>
+            </div>
+
+            <div class="bg-[#0e1013] border border-white/10 rounded-2xl p-4 text-left space-y-3 text-xs">
+                <div>
+                    <span class="text-zinc-400 block text-[10px] uppercase">Ресторан:</span>
+                    <strong class="text-white text-sm" id="successRestName">-</strong>
+                </div>
+
+                <div>
+                    <span class="text-zinc-400 block text-[10px] uppercase">Лицензионный ключ:</span>
+                    <div class="flex items-center justify-between gap-2 mt-1 bg-[#15171d] border border-amber-500/30 rounded-xl px-3 py-2">
+                        <code class="font-mono text-amber-300 font-bold text-xs truncate" id="successKeyText">RKZ-XXXX-XXXX</code>
+                        <button type="button" onclick="copySuccessKey()" class="px-2.5 py-1 text-[10px] font-bold bg-[#c5a880] text-[#0e1013] rounded-lg transition whitespace-nowrap">
+                            Копировать
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <span class="text-zinc-400 block text-[10px] uppercase">Прямая ссылка для входа ресторана:</span>
+                    <div class="flex items-center justify-between gap-2 mt-1 bg-[#15171d] border border-sky-500/30 rounded-xl px-3 py-2">
+                        <span class="text-[11px] text-sky-300 truncate" id="successLinkText">https://...</span>
+                        <button type="button" onclick="copySuccessLink()" class="px-2.5 py-1 text-[10px] font-bold bg-sky-500 text-white rounded-lg transition whitespace-nowrap">
+                            Копировать
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" onclick="closeLicenseSuccessModal()" class="w-full py-3 rounded-xl font-bold text-xs luxury-gold-btn transition shadow-lg">
+                Готово
+            </button>
         </div>
     </div>
 
@@ -852,11 +1141,83 @@
             </div>
         </section>
 
+        <!-- ================= ВКЛАДКА 5: ЛИЦЕНЗИИ & ПОДПИСКИ (SUPER ADMIN) ================= -->
+        <section id="tab-subscriptions" class="hidden space-y-3.5 fade-in">
+            <!-- Шапка раздела подписок -->
+            <div class="bg-[#15171d] border border-[#c5a880]/30 rounded-2xl p-4 space-y-3 shadow-lg">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-500/25 to-amber-700/30 text-amber-300 border border-amber-500/40 flex items-center justify-center text-xl shadow-md">
+                            🛡️
+                        </div>
+                        <div>
+                            <h2 class="text-sm sm:text-base font-bold text-white font-serif-luxury" id="lblSubTitle">Лицензии & Подписки RestoKZ</h2>
+                            <p class="text-[11px] text-zinc-400" id="lblSubDesc">Контроль доступа заведений, продление тарифов и выдача ключей</p>
+                        </div>
+                    </div>
+                    <span class="px-2.5 py-1 text-[10px] font-bold rounded-full bg-gradient-to-r from-amber-500/20 to-amber-600/30 text-amber-300 border border-amber-500/40 whitespace-nowrap shadow-sm">
+                        👑 Владелец
+                    </span>
+                </div>
+
+                <!-- Кнопка выдачи новой лицензии -->
+                <button type="button" onclick="openNewLicenseModal()" class="w-full py-3 rounded-xl font-bold text-xs luxury-gold-btn transition flex items-center justify-center gap-2 shadow-lg active:scale-[0.98]">
+                    <span>➕</span> <span id="lblBtnNewLicense">Выдать лицензию (Новый ресторан)</span>
+                </button>
+            </div>
+
+            <!-- KPI Сводка по подпискам платформы -->
+            <div class="grid grid-cols-4 gap-1.5 text-center">
+                <div onclick="filterSubscriptionsByStatus('all')" class="cursor-pointer bg-[#15171d] border border-white/10 hover:border-[#c5a880]/50 rounded-xl p-2 transition">
+                    <div class="text-[9px] uppercase tracking-wider text-zinc-400 font-semibold truncate">Всего</div>
+                    <div id="subKpiTotal" class="text-lg font-black text-white mt-0.5">0</div>
+                    <div class="text-[9px] text-zinc-500 truncate">точек</div>
+                </div>
+                <div onclick="filterSubscriptionsByStatus('active')" class="cursor-pointer bg-[#15171d] border border-emerald-500/30 hover:border-emerald-500/50 rounded-xl p-2 transition">
+                    <div class="text-[9px] uppercase tracking-wider text-emerald-400/90 font-semibold truncate">PRO</div>
+                    <div id="subKpiActive" class="text-lg font-black text-emerald-400 mt-0.5">0</div>
+                    <div class="text-[9px] text-emerald-500/80 truncate">активны</div>
+                </div>
+                <div onclick="filterSubscriptionsByStatus('trial')" class="cursor-pointer bg-[#15171d] border border-sky-500/30 hover:border-sky-500/50 rounded-xl p-2 transition">
+                    <div class="text-[9px] uppercase tracking-wider text-sky-400/90 font-semibold truncate">Тест</div>
+                    <div id="subKpiTrial" class="text-lg font-black text-sky-400 mt-0.5">0</div>
+                    <div class="text-[9px] text-sky-500/80 truncate">пробный</div>
+                </div>
+                <div onclick="filterSubscriptionsByStatus('expired')" class="cursor-pointer bg-[#15171d] border border-rose-500/30 hover:border-rose-500/50 rounded-xl p-2 transition">
+                    <div class="text-[9px] uppercase tracking-wider text-rose-400/90 font-semibold truncate">Истекли</div>
+                    <div id="subKpiExpired" class="text-lg font-black text-rose-400 mt-0.5">0</div>
+                    <div class="text-[9px] text-rose-500/80 truncate">заблокированы</div>
+                </div>
+            </div>
+
+            <!-- Поиск и фильтры по подпискам -->
+            <div class="space-y-2">
+                <div class="relative">
+                    <input type="text" id="subSearchInput" oninput="renderSubscriptionsList()" placeholder="Поиск по ресторану, владельцу, телефону или ключу..." class="w-full bg-[#15171d] border border-white/10 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
+                    <span class="absolute left-3 top-2.5 text-zinc-500 text-xs">🔍</span>
+                </div>
+                <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
+                    <button type="button" onclick="filterSubscriptionsByStatus('all')" id="subFilterBtn-all" class="px-3 py-1 rounded-lg font-bold bg-[#c5a880] text-[#0e1013] text-[11px] whitespace-nowrap transition">Все заведения</button>
+                    <button type="button" onclick="filterSubscriptionsByStatus('active')" id="subFilterBtn-active" class="px-3 py-1 rounded-lg font-medium bg-[#15171d] text-zinc-400 border border-white/5 text-[11px] whitespace-nowrap transition">🟢 Активные PRO</button>
+                    <button type="button" onclick="filterSubscriptionsByStatus('trial')" id="subFilterBtn-trial" class="px-3 py-1 rounded-lg font-medium bg-[#15171d] text-zinc-400 border border-white/5 text-[11px] whitespace-nowrap transition">🟡 Тестовые (Trial)</button>
+                    <button type="button" onclick="filterSubscriptionsByStatus('expired')" id="subFilterBtn-expired" class="px-3 py-1 rounded-lg font-medium bg-[#15171d] text-zinc-400 border border-white/5 text-[11px] whitespace-nowrap transition">🔴 Истекшие</button>
+                    <button type="button" onclick="filterSubscriptionsByStatus('blocked')" id="subFilterBtn-blocked" class="px-3 py-1 rounded-lg font-medium bg-[#15171d] text-zinc-400 border border-white/5 text-[11px] whitespace-nowrap transition">⛔ Заблокированные</button>
+                </div>
+            </div>
+
+            <!-- Список карточек лицензий ресторанов -->
+            <div id="adminSubscriptionsContainer" class="space-y-3 pb-8">
+                <!-- Карточки наполняются через renderSubscriptionsList() -->
+                <div class="text-xs text-zinc-400 text-center py-6 animate-pulse">Загрузка данных по лицензиям...</div>
+            </div>
+        </section>
+
+
     </main>
 
     <!-- НИЖНЯЯ НАВИГАЦИЯ ТЕРМИНАЛА РЕСТОРАНА -->
     <nav class="fixed bottom-0 left-0 right-0 z-40 glass-header border-t border-[#c5a880]/20 px-2 pt-1.5 pb-[max(0.6rem,env(safe-area-inset-bottom))]">
-        <div class="max-w-md mx-auto grid grid-cols-4 gap-1">
+        <div id="adminNavGrid" class="max-w-md mx-auto grid grid-cols-4 gap-1">
             <button onclick="switchTab('orders')" id="navBtn-orders" class="flex flex-col items-center justify-center py-1 rounded-xl bg-[#c5a880]/15 text-[#dfcaab] border border-[#c5a880]/30 transition">
                 <div class="relative">
                     <span class="text-base">📋</span>
@@ -875,6 +1236,10 @@
             <button onclick="switchTab('manage')" id="navBtn-manage" class="flex flex-col items-center justify-center py-1 rounded-xl text-zinc-400 hover:text-white transition">
                 <span class="text-base">🏛</span>
                 <span id="lblNavManage" class="text-[9.5px] font-medium mt-0.5">Ресторан</span>
+            </button>
+            <button onclick="switchTab('subscriptions')" id="navBtn-subscriptions" class="hidden flex flex-col items-center justify-center py-1 rounded-xl text-zinc-400 hover:text-white transition">
+                <span class="text-base">🛡️</span>
+                <span id="lblNavSubscriptions" class="text-[9.5px] font-medium mt-0.5">Лицензии</span>
             </button>
         </div>
     </nav>
@@ -1004,6 +1369,16 @@
         let currentDateFilter = 'all';
         let currentTab = 'orders';
 
+        // ================= SECURITY & SUBSCRIPTION MANAGEMENT STATE =================
+        const MASTER_ADMIN_KEY = 'restokz_super_2026';
+        let currentAuthKey = '';
+        let authRole = 'guest'; // 'superadmin' | 'restaurant' | 'guest'
+        let authVerified = false;
+        let currentSubscription = null;
+        let authorizedRestaurant = null;
+        let allSubscriptionsList = [];
+        let currentSubFilter = 'all';
+
         const ADMIN_I18N = {
             ru: {
                 app_title: "RestoKZ PRO",
@@ -1096,7 +1471,14 @@
                 dish_added_toast: "Блюдо добавлено в меню",
                 dish_deleted_toast: "Блюдо удалено из меню",
                 table_added_toast: "Столик добавлен в зал",
-                table_deleted_toast: "Столик удалён"
+                table_deleted_toast: "Столик удалён",
+                nav_subscriptions: "Лицензии",
+                sub_title: "Лицензии & Подписки RestoKZ",
+                sub_desc: "Контроль доступа заведений, продление тарифов и выдача ключей",
+                btn_new_license: "Выдать лицензию (Новый ресторан)",
+                auth_title: "Вход в RestoKZ PRO",
+                auth_sub: "Терминал защищён. Введите лицензионный ключ заведения или мастер-пароль платформы.",
+                btn_auth_login: "Войти в терминал"
             },
             kz: {
                 app_title: "RestoKZ PRO",
@@ -1189,7 +1571,14 @@
                 dish_added_toast: "Тағам мәзірге қосылды",
                 dish_deleted_toast: "Тағам мәзірден өшірілді",
                 table_added_toast: "Үстел залға қосылды",
-                table_deleted_toast: "Үстел өшірілді"
+                table_deleted_toast: "Үстел өшірілді",
+                nav_subscriptions: "Жазылымдар",
+                sub_title: "RestoKZ Лицензиялар & Жазылымдар",
+                sub_desc: "Мейрамханаларға рұқсатты басқару, ұзарту және кілттер беру",
+                btn_new_license: "Лицензия беру (Жаңа мейрамхана)",
+                auth_title: "RestoKZ PRO кіру",
+                auth_sub: "Терминал қорғалған. Мейрамхананың лицензия кілтін немесе бас құпия сөзді енгізіңіз.",
+                btn_auth_login: "Терминалға кіру"
             },
             en: {
                 app_title: "RestoKZ PRO",
@@ -1282,7 +1671,14 @@
                 dish_added_toast: "Dish added to menu",
                 dish_deleted_toast: "Dish deleted from menu",
                 table_added_toast: "Table added to floor",
-                table_deleted_toast: "Table deleted"
+                table_deleted_toast: "Table deleted",
+                nav_subscriptions: "Licenses",
+                sub_title: "RestoKZ Licenses & Subscriptions",
+                sub_desc: "Manage restaurant access, extend plans and issue keys",
+                btn_new_license: "Issue License (New Restaurant)",
+                auth_title: "Sign in to RestoKZ PRO",
+                auth_sub: "Terminal is protected. Enter venue license key or master password.",
+                btn_auth_login: "Sign In to Terminal"
             }
         };
 
@@ -1364,6 +1760,13 @@
             if (el('lblNavFloor')) el('lblNavFloor').innerText = t.nav_floor;
             if (el('lblNavWalkin')) el('lblNavWalkin').innerText = t.nav_walkin;
             if (el('lblNavManage')) el('lblNavManage').innerText = t.nav_manage;
+            if (el('lblNavSubscriptions')) el('lblNavSubscriptions').innerText = t.nav_subscriptions || 'Лицензии';
+            if (el('lblSubTitle')) el('lblSubTitle').innerText = t.sub_title || 'Лицензии & Подписки RestoKZ';
+            if (el('lblSubDesc')) el('lblSubDesc').innerText = t.sub_desc || 'Контроль доступа заведений, продление тарифов и выдача ключей';
+            if (el('lblBtnNewLicense')) el('lblBtnNewLicense').innerText = t.btn_new_license || 'Выдать лицензию (Новый ресторан)';
+            if (el('lblAuthModalTitle')) el('lblAuthModalTitle').innerText = t.auth_title || 'Вход в RestoKZ PRO';
+            if (el('lblAuthModalSub')) el('lblAuthModalSub').innerText = t.auth_sub || 'Терминал защищён. Введите лицензионный ключ заведения или мастер-пароль платформы.';
+            if (el('lblBtnAuthLogin')) el('lblBtnAuthLogin').innerText = t.btn_auth_login || 'Войти в терминал';
 
             // Manage Restaurant tab
             if (el('lblManageTitle')) el('lblManageTitle').innerText = t.manage_title;
@@ -1439,14 +1842,35 @@
 
         async function apiFetch(endpoint, options = {}) {
             const controller = new AbortController();
-            const tid = setTimeout(() => controller.abort(), 5000);
+            const tid = setTimeout(() => controller.abort(), 7000);
             try {
+                const headers = { ...(options.headers || {}) };
+                if (currentAuthKey) {
+                    headers['X-Admin-Key'] = currentAuthKey;
+                }
                 const res = await fetch(`${API_BASE}${endpoint}`, {
                     ...options,
+                    headers,
                     signal: controller.signal
                 });
                 clearTimeout(tid);
+                if (res.status === 403) {
+                    const errData = await res.json().catch(() => ({}));
+                    console.warn('403 Forbidden:', errData);
+                    const errMsg = errData.detail || errData.error || 'Доступ ограничен настройками безопасности';
+                    if (errMsg.includes('подписк') || errMsg.includes('Subscription') || errMsg.includes('expired')) {
+                        showToast('Срок действия подписки истёк', '⏳');
+                        showSubscriptionLockOverlay();
+                    } else if (errMsg.includes('Super admin') || errMsg.includes('безопасност')) {
+                        showToast('Действие доступно только владельцу платформы', '🔒');
+                    } else {
+                        showToast(errMsg, '🔒');
+                    }
+                    return null;
+                }
                 if (res.ok) return await res.json();
+                const errJson = await res.json().catch(() => null);
+                return errJson;
             } catch (e) {
                 clearTimeout(tid);
                 console.warn('API warning:', e);
@@ -1534,16 +1958,35 @@
             const walkinRestSelect = document.getElementById('walkinRestSelect');
             const manageRestSelect = document.getElementById('manageRestSelect');
 
-            restSelect.innerHTML = `<option value="all" class="bg-[#15171d] text-white">🌐 Все рестораны сети (${RESTAURANTS.length} точек)</option>` +
-                RESTAURANTS.map(r => `<option value="${r.id}" class="bg-[#15171d] text-white">🏛 ${r.name} (${r.city})</option>`).join('');
+            if (authRole === 'restaurant' && authorizedRestaurant) {
+                const myRest = RESTAURANTS.find(r => r.id === authorizedRestaurant.id) || authorizedRestaurant;
+                selectedRestId = myRest.id;
+                manageSelectedRestId = myRest.id;
 
-            walkinRestSelect.innerHTML = RESTAURANTS.map(r => `<option value="${r.id}" class="bg-[#15171d] text-white">${r.name} (${r.city})</option>`).join('');
-
-            if (manageRestSelect) {
-                manageRestSelect.innerHTML = RESTAURANTS.map(r => `<option value="${r.id}" class="bg-[#15171d] text-white">🏛 ${r.name} (${r.city})</option>`).join('');
-                if (manageSelectedRestId) {
-                    manageRestSelect.value = String(manageSelectedRestId);
+                restSelect.innerHTML = `<option value="${myRest.id}" class="bg-[#15171d] text-white">🏛 ${myRest.name} (${myRest.city || 'Алматы'})</option>`;
+                walkinRestSelect.innerHTML = `<option value="${myRest.id}" class="bg-[#15171d] text-white">${myRest.name} (${myRest.city || 'Алматы'})</option>`;
+                if (manageRestSelect) {
+                    manageRestSelect.innerHTML = `<option value="${myRest.id}" class="bg-[#15171d] text-white">🏛 ${myRest.name} (${myRest.city || 'Алматы'})</option>`;
+                    manageRestSelect.value = String(myRest.id);
+                    manageRestSelect.disabled = true;
                 }
+                const btnNewRest = document.getElementById('btnStartNewRest');
+                if (btnNewRest) btnNewRest.classList.add('hidden');
+            } else {
+                restSelect.innerHTML = `<option value="all" class="bg-[#15171d] text-white">🌐 Все рестораны сети (${RESTAURANTS.length} точек)</option>` +
+                    RESTAURANTS.map(r => `<option value="${r.id}" class="bg-[#15171d] text-white">🏛 ${r.name} (${r.city})</option>`).join('');
+
+                walkinRestSelect.innerHTML = RESTAURANTS.map(r => `<option value="${r.id}" class="bg-[#15171d] text-white">${r.name} (${r.city})</option>`).join('');
+
+                if (manageRestSelect) {
+                    manageRestSelect.innerHTML = RESTAURANTS.map(r => `<option value="${r.id}" class="bg-[#15171d] text-white">🏛 ${r.name} (${r.city})</option>`).join('');
+                    if (manageSelectedRestId) {
+                        manageRestSelect.value = String(manageSelectedRestId);
+                    }
+                    manageRestSelect.disabled = false;
+                }
+                const btnNewRest = document.getElementById('btnStartNewRest');
+                if (btnNewRest && authRole === 'superadmin') btnNewRest.classList.remove('hidden');
             }
 
             const d0 = getIsoDate(0);
@@ -1688,6 +2131,32 @@
             if (!container) return;
             const query = (filterText || '').toLowerCase().trim();
             const t = ADMIN_I18N[currentAdminLang] || ADMIN_I18N.ru;
+
+            if (authRole === 'restaurant' && authorizedRestaurant) {
+                const r = RESTAURANTS.find(x => x.id === authorizedRestaurant.id) || authorizedRestaurant;
+                const tableCount = (r.tables || []).length;
+                container.innerHTML = `
+                    <div class="p-3.5 rounded-2xl border border-[#c5a880] bg-[#c5a880]/15 shadow-md shadow-[#c5a880]/10 flex items-center justify-between">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#c5a880]/20 to-[#9c7e54]/30 text-[#dfcaab] border border-[#c5a880]/30 flex items-center justify-center text-lg flex-shrink-0 shadow-sm">
+                                🏛
+                            </div>
+                            <div class="min-w-0">
+                                <div class="flex items-center gap-2">
+                                    <h4 class="text-sm font-bold text-white truncate">${r.name}</h4>
+                                    <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-white/5 text-zinc-300 border border-white/5 flex-shrink-0">${r.city || 'Алматы'}</span>
+                                </div>
+                                <p class="text-xs text-[#c5a880] mt-0.5 truncate">${r.cuisine || 'Ресторан'} • ${tableCount} столов</p>
+                            </div>
+                        </div>
+                        <span class="text-xs font-bold text-[#c5a880] px-2.5 py-1 rounded-full bg-[#c5a880]/20 border border-[#c5a880]/40 flex-shrink-0 ml-2">✓ Активно</span>
+                    </div>
+                    <div class="p-3 bg-[#0e1013] border border-white/5 rounded-xl text-center text-xs text-zinc-400">
+                        🔒 Терминал привязан к вашей лицензии. Для переключения ресторанов требуются права Владельца.
+                    </div>
+                `;
+                return;
+            }
 
             let html = `
                 <div onclick="selectRestaurantFromPicker('all')" class="cursor-pointer p-3.5 rounded-2xl border ${selectedRestId === 'all' ? 'border-[#c5a880] bg-[#c5a880]/15 shadow-md shadow-[#c5a880]/10' : 'border-white/5 bg-[#0e1013] hover:border-white/20'} flex items-center justify-between transition active:scale-[0.98]">
@@ -2077,19 +2546,21 @@
 
         function switchTab(tab) {
             currentTab = tab;
-            ['orders', 'floor', 'walkin', 'manage'].forEach(t => {
+            ['orders', 'floor', 'walkin', 'manage', 'subscriptions'].forEach(t => {
                 const sec = document.getElementById(`tab-${t}`);
                 const btn = document.getElementById(`navBtn-${t}`);
+                if (!sec) return;
                 if (t === tab) {
                     sec.classList.remove('hidden');
-                    btn.className = "flex flex-col items-center justify-center py-1.5 rounded-xl bg-[#c5a880]/15 text-[#dfcaab] border border-[#c5a880]/30 transition";
+                    if (btn) btn.className = "flex flex-col items-center justify-center py-1.5 rounded-xl bg-[#c5a880]/15 text-[#dfcaab] border border-[#c5a880]/30 transition";
                 } else {
                     sec.classList.add('hidden');
-                    btn.className = "flex flex-col items-center justify-center py-1.5 rounded-xl text-zinc-400 hover:text-white transition";
+                    if (btn) btn.className = "flex flex-col items-center justify-center py-1.5 rounded-xl text-zinc-400 hover:text-white transition";
                 }
             });
             if (tab === 'floor') renderFloorMap();
             if (tab === 'manage') onManageRestSelectChange();
+            if (tab === 'subscriptions') loadSubscriptionsFromServer();
         }
 
         function getStatusBadge(status) {
@@ -2854,10 +3325,756 @@
             await loadAdminTables(manageSelectedRestId);
         }
 
+
+        // =========================================================================
+        // SECURITY, AUTHENTICATION & SUBSCRIPTION MANAGEMENT LOGIC
+        // =========================================================================
+
+        async function checkAuthStatus() {
+            // 1. Поиск ключа в URL параметрах
+            let keyCandidate = urlParams.get('super_key') || urlParams.get('key') || urlParams.get('token');
+
+            // 2. Telegram WebApp: автоматический вход владельца платформы (ID: 348581961)
+            const tgUser = window.Telegram?.WebApp?.initDataUnsafe?.user;
+            if (tgUser && String(tgUser.id) === '348581961' && !keyCandidate) {
+                keyCandidate = MASTER_ADMIN_KEY;
+            }
+
+            // 3. Локальное хранилище
+            if (!keyCandidate) {
+                keyCandidate = localStorage.getItem('restokz_auth_key') || '';
+            }
+
+            if (!keyCandidate) {
+                authRole = 'guest';
+                authVerified = false;
+                showAuthModal();
+                return;
+            }
+
+            currentAuthKey = keyCandidate.trim();
+
+            try {
+                const res = await apiFetch('/api/auth/verify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ key: currentAuthKey, tg_user_id: tgUser?.id })
+                });
+
+                if (res && res.valid) {
+                    authVerified = true;
+                    authRole = res.role;
+                    localStorage.setItem('restokz_auth_key', currentAuthKey);
+                    hideAuthModal();
+
+                    if (authRole === 'superadmin') {
+                        setupSuperAdminUI();
+                        await loadSubscriptionsFromServer();
+                    } else if (authRole === 'restaurant') {
+                        currentSubscription = res.subscription || {};
+                        authorizedRestaurant = res.restaurant || null;
+                        manageSelectedRestId = res.restaurant_id;
+                        selectedRestId = res.restaurant_id;
+                        setupRestaurantUI();
+
+                        if (!currentSubscription.is_active) {
+                            showSubscriptionLockOverlay();
+                        } else {
+                            hideSubscriptionLockOverlay();
+                        }
+                    }
+                    updateHeaderAuthBadge();
+                    updateDrawerAuthUI();
+                } else {
+                    authRole = 'guest';
+                    authVerified = false;
+                    showAuthModal(res?.error || 'Неверный лицензионный ключ доступа.');
+                }
+            } catch (e) {
+                console.warn('Auth verify exception:', e);
+                if (currentAuthKey === MASTER_ADMIN_KEY) {
+                    authVerified = true;
+                    authRole = 'superadmin';
+                    hideAuthModal();
+                    setupSuperAdminUI();
+                    updateHeaderAuthBadge();
+                    updateDrawerAuthUI();
+                } else {
+                    showAuthModal();
+                }
+            }
+        }
+
+        function showAuthModal(errorMsg = '') {
+            const modal = document.getElementById('authModalBackdrop');
+            const errEl = document.getElementById('authErrorMsg');
+            const input = document.getElementById('authKeyInput');
+            if (modal) modal.classList.remove('hidden');
+            if (errEl) {
+                if (errorMsg) {
+                    errEl.textContent = errorMsg;
+                    errEl.classList.remove('hidden');
+                } else {
+                    errEl.classList.add('hidden');
+                }
+            }
+            if (input && currentAuthKey) input.value = currentAuthKey;
+        }
+
+        function hideAuthModal() {
+            const modal = document.getElementById('authModalBackdrop');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        async function handleAuthLogin() {
+            const input = document.getElementById('authKeyInput');
+            const val = (input ? input.value : '').trim();
+            if (!val) {
+                showToast('Введите лицензионный ключ', '⚠️');
+                return;
+            }
+
+            const btn = document.getElementById('btnAuthLogin');
+            const prevText = btn ? btn.innerHTML : '';
+            if (btn) btn.innerHTML = '<span>⏳</span> <span>Проверка ключа...</span>';
+
+            currentAuthKey = val;
+            const tgUser = window.Telegram?.WebApp?.initDataUnsafe?.user;
+
+            try {
+                const res = await apiFetch('/api/auth/verify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ key: val, tg_user_id: tgUser?.id })
+                });
+
+                if (btn) btn.innerHTML = prevText;
+
+                if (res && res.valid) {
+                    authVerified = true;
+                    authRole = res.role;
+                    localStorage.setItem('restokz_auth_key', val);
+                    hideAuthModal();
+
+                    if (authRole === 'superadmin') {
+                        setupSuperAdminUI();
+                        await loadSubscriptionsFromServer();
+                        showToast('Вход выполнен: Владелец платформы', '👑');
+                    } else if (authRole === 'restaurant') {
+                        currentSubscription = res.subscription || {};
+                        authorizedRestaurant = res.restaurant || null;
+                        manageSelectedRestId = res.restaurant_id;
+                        selectedRestId = res.restaurant_id;
+                        setupRestaurantUI();
+
+                        if (!currentSubscription.is_active) {
+                            showSubscriptionLockOverlay();
+                        } else {
+                            hideSubscriptionLockOverlay();
+                            showToast(`Добро пожаловать, ${res.restaurant?.name || 'Ресторан'}!`, '✨');
+                        }
+                    }
+
+                    await initSelectors();
+                    await loadBookingsFromServer();
+                    updateHeaderAuthBadge();
+                    updateDrawerAuthUI();
+                } else {
+                    const errEl = document.getElementById('authErrorMsg');
+                    if (errEl) {
+                        errEl.textContent = res?.error || 'Неверный лицензионный ключ доступа. Обратитесь к администратору RestoKZ.';
+                        errEl.classList.remove('hidden');
+                    }
+                    showToast('Неверный ключ доступа', '❌');
+                }
+            } catch (e) {
+                if (btn) btn.innerHTML = prevText;
+                showToast('Ошибка проверки ключа', '⚠️');
+            }
+        }
+
+        function useMasterKeyShortcut() {
+            const input = document.getElementById('authKeyInput');
+            if (input) {
+                input.value = MASTER_ADMIN_KEY;
+                handleAuthLogin();
+            }
+        }
+
+        async function pasteAuthKeyFromClipboard() {
+            try {
+                if (navigator.clipboard && navigator.clipboard.readText) {
+                    const text = await navigator.clipboard.readText();
+                    const input = document.getElementById('authKeyInput');
+                    if (input && text) {
+                        input.value = text.trim();
+                        showToast('Ключ вставлен из буфера', '📋');
+                    }
+                } else {
+                    showToast('Буфер обмена недоступен', 'ℹ️');
+                }
+            } catch (e) {
+                showToast('Разрешите доступ к буферу', 'ℹ️');
+            }
+        }
+
+        function handleAuthLogout() {
+            if (!confirm('Вы действительно хотите выйти из терминала?')) return;
+            localStorage.removeItem('restokz_auth_key');
+            currentAuthKey = '';
+            authRole = 'guest';
+            authVerified = false;
+            currentSubscription = null;
+            authorizedRestaurant = null;
+            location.reload();
+        }
+
+        function showSubscriptionLockOverlay() {
+            const overlay = document.getElementById('subLockOverlay');
+            if (!overlay) return;
+            const restNameEl = document.getElementById('subLockRestName');
+            const statusTagEl = document.getElementById('subLockStatusTag');
+            const expEl = document.getElementById('subLockExpiresAt');
+
+            if (restNameEl) restNameEl.textContent = authorizedRestaurant?.name || 'Ваш ресторан';
+            if (statusTagEl) {
+                const isBlocked = currentSubscription?.status === 'blocked';
+                statusTagEl.textContent = isBlocked ? 'Заблокирована' : 'Истекла';
+                statusTagEl.className = isBlocked 
+                    ? 'px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-400 font-bold border border-rose-500/30'
+                    : 'px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30';
+            }
+            if (expEl) expEl.textContent = currentSubscription?.expires_at ? formatHumanDate(currentSubscription.expires_at) : 'Срок истёк';
+            overlay.classList.remove('hidden');
+        }
+
+        function hideSubscriptionLockOverlay() {
+            const overlay = document.getElementById('subLockOverlay');
+            if (overlay) overlay.classList.add('hidden');
+        }
+
+        async function submitRenewKey() {
+            const input = document.getElementById('renewKeyInput');
+            const val = (input ? input.value : '').trim();
+            if (!val) {
+                showToast('Введите новый ключ', '⚠️');
+                return;
+            }
+            currentAuthKey = val;
+            localStorage.setItem('restokz_auth_key', val);
+            await checkAuthStatus();
+        }
+
+        function setupSuperAdminUI() {
+            // Нижняя навигация: 5 кнопок для владельца
+            const navGrid = document.getElementById('adminNavGrid');
+            const subNavBtn = document.getElementById('navBtn-subscriptions');
+            if (navGrid) navGrid.className = "max-w-md mx-auto grid grid-cols-5 gap-1";
+            if (subNavBtn) subNavBtn.classList.remove('hidden');
+
+            // Боковое меню: блок Super Admin
+            const drawerAdminSec = document.getElementById('drawerSuperAdminSection');
+            if (drawerAdminSec) drawerAdminSec.classList.remove('hidden');
+
+            // Кнопка регистрации нового ресторана в табе Ресторан
+            const btnNewRest = document.getElementById('btnStartNewRest');
+            if (btnNewRest) btnNewRest.classList.remove('hidden');
+        }
+
+        function setupRestaurantUI() {
+            // Нижняя навигация: 4 кнопки
+            const navGrid = document.getElementById('adminNavGrid');
+            const subNavBtn = document.getElementById('navBtn-subscriptions');
+            if (navGrid) navGrid.className = "max-w-md mx-auto grid grid-cols-4 gap-1";
+            if (subNavBtn) subNavBtn.classList.add('hidden');
+
+            // Скрыть секцию управления подписками в drawer
+            const drawerAdminSec = document.getElementById('drawerSuperAdminSection');
+            if (drawerAdminSec) drawerAdminSec.classList.add('hidden');
+
+            // Скрыть кнопку создания заведения для обычного ресторана
+            const btnNewRest = document.getElementById('btnStartNewRest');
+            if (btnNewRest) btnNewRest.classList.add('hidden');
+        }
+
+        function updateHeaderAuthBadge() {
+            const badge = document.getElementById('btnHeaderAuthBadge');
+            if (!badge) return;
+
+            if (authRole === 'superadmin') {
+                badge.className = "inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10.5px] font-bold bg-gradient-to-r from-amber-500/25 to-amber-600/35 text-amber-300 border border-amber-500/40 hover:brightness-110 active:scale-95 transition flex-shrink-0 shadow-sm";
+                badge.innerHTML = '<span>👑</span> <span>Владелец</span>';
+                badge.classList.remove('hidden');
+            } else if (authRole === 'restaurant' && currentSubscription) {
+                const days = Number(currentSubscription.days_left || 0);
+                const isTrial = currentSubscription.status === 'trial' || currentSubscription.plan === 'trial';
+                if (!currentSubscription.is_active) {
+                    badge.className = "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30 flex-shrink-0";
+                    badge.innerHTML = '<span>⏳</span> <span>Истекла</span>';
+                } else if (isTrial) {
+                    badge.className = "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/20 text-sky-300 border border-sky-500/30 flex-shrink-0";
+                    badge.innerHTML = `<span>🟡</span> <span>Тест (${days} дн.)</span>`;
+                } else {
+                    badge.className = "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex-shrink-0";
+                    badge.innerHTML = `<span>🟢</span> <span>PRO (${days} дн.)</span>`;
+                }
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        function handleHeaderBadgeClick() {
+            if (authRole === 'superadmin') {
+                switchTab('subscriptions');
+            } else if (authRole === 'restaurant') {
+                openSideDrawer();
+            } else {
+                showAuthModal();
+            }
+        }
+
+        function updateDrawerAuthUI() {
+            const roleBadge = document.getElementById('drawerAccountRoleBadge');
+            const detailsEl = document.getElementById('drawerAccountDetails');
+            const expEl = document.getElementById('drawerAccountExpires');
+
+            if (authRole === 'superadmin') {
+                if (roleBadge) {
+                    roleBadge.textContent = 'Super Admin';
+                    roleBadge.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30';
+                }
+                if (detailsEl) detailsEl.textContent = '👑 Владелец платформы RestoKZ';
+                if (expEl) expEl.textContent = 'Срок: Безлимитный доступ';
+            } else if (authRole === 'restaurant' && authorizedRestaurant) {
+                if (roleBadge) {
+                    const isTrial = currentSubscription?.status === 'trial';
+                    roleBadge.textContent = isTrial ? 'Trial Лицензия' : 'PRO Лицензия';
+                    roleBadge.className = isTrial 
+                        ? 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/30'
+                        : 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+                }
+                if (detailsEl) detailsEl.textContent = `🏛 ${authorizedRestaurant.name} (${authorizedRestaurant.city || 'Алматы'})`;
+                if (expEl) {
+                    const exp = currentSubscription?.expires_at ? formatHumanDate(currentSubscription.expires_at) : '-';
+                    const days = currentSubscription?.days_left ?? 0;
+                    expEl.textContent = `До: ${exp} (${days} дн.)`;
+                }
+            } else {
+                if (roleBadge) {
+                    roleBadge.textContent = 'Гость';
+                    roleBadge.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/5 text-zinc-300';
+                }
+                if (detailsEl) detailsEl.textContent = 'Вход не выполнен';
+                if (expEl) expEl.textContent = 'Требуется лицензия';
+            }
+        }
+
+        // ================= УПРАВЛЕНИЕ ПОДПИСКАМИ И ЛИЦЕНЗИЯМИ (SUPER ADMIN) =================
+
+        async function loadSubscriptionsFromServer() {
+            if (authRole !== 'superadmin') return;
+            const res = await apiFetch('/api/admin/subscriptions');
+            if (res && Array.isArray(res.subscriptions)) {
+                allSubscriptionsList = res.subscriptions;
+                renderSubscriptionsList();
+                updateSubscriptionKpi();
+            }
+        }
+
+        function updateSubscriptionKpi() {
+            const totalEl = document.getElementById('subKpiTotal');
+            const activeEl = document.getElementById('subKpiActive');
+            const trialEl = document.getElementById('subKpiTrial');
+            const expEl = document.getElementById('subKpiExpired');
+
+            const total = allSubscriptionsList.length;
+            const active = allSubscriptionsList.filter(s => s.subscription_status === 'active' && s.is_active).length;
+            const trial = allSubscriptionsList.filter(s => s.subscription_status === 'trial' && s.is_active).length;
+            const expired = allSubscriptionsList.filter(s => !s.is_active || s.subscription_status === 'expired' || s.subscription_status === 'blocked').length;
+
+            if (totalEl) totalEl.textContent = String(total);
+            if (activeEl) activeEl.textContent = String(active);
+            if (trialEl) trialEl.textContent = String(trial);
+            if (expEl) expEl.textContent = String(expired);
+        }
+
+        function filterSubscriptionsByStatus(status) {
+            currentSubFilter = status;
+            ['all', 'active', 'trial', 'expired', 'blocked'].forEach(st => {
+                const btn = document.getElementById(`subFilterBtn-${st}`);
+                if (!btn) return;
+                if (st === status) {
+                    btn.className = "px-3 py-1 rounded-lg font-bold bg-[#c5a880] text-[#0e1013] text-[11px] whitespace-nowrap transition shadow-sm";
+                } else {
+                    btn.className = "px-3 py-1 rounded-lg font-medium bg-[#15171d] text-zinc-400 border border-white/5 text-[11px] whitespace-nowrap transition hover:text-white";
+                }
+            });
+            renderSubscriptionsList();
+        }
+
+        function renderSubscriptionsList() {
+            const container = document.getElementById('adminSubscriptionsContainer');
+            if (!container) return;
+
+            const searchInput = document.getElementById('subSearchInput');
+            const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
+
+            let filtered = allSubscriptionsList.filter(s => {
+                // Filter by status
+                if (currentSubFilter === 'active' && (!s.is_active || s.subscription_status !== 'active')) return false;
+                if (currentSubFilter === 'trial' && (!s.is_active || s.subscription_status !== 'trial')) return false;
+                if (currentSubFilter === 'expired' && (s.is_active || s.subscription_status === 'blocked')) return false;
+                if (currentSubFilter === 'blocked' && s.subscription_status !== 'blocked') return false;
+
+                // Search query
+                if (query) {
+                    const matchName = String(s.name || '').toLowerCase().includes(query);
+                    const matchCity = String(s.city || '').toLowerCase().includes(query);
+                    const matchOwner = String(s.owner_name || '').toLowerCase().includes(query);
+                    const matchPhone = String(s.owner_phone || s.phone || '').toLowerCase().includes(query);
+                    const matchKey = String(s.access_key || '').toLowerCase().includes(query);
+                    if (!matchName && !matchCity && !matchOwner && !matchPhone && !matchKey) return false;
+                }
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="p-8 text-center bg-[#15171d] border border-white/5 rounded-2xl space-y-2">
+                        <div class="text-3xl">🔍</div>
+                        <div class="text-sm font-bold text-white">Заведения не найдены</div>
+                        <p class="text-xs text-zinc-400">Попробуйте изменить поисковый запрос или фильтр</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filtered.map(sub => {
+                const days = Number(sub.days_left || 0);
+                const isBlocked = sub.subscription_status === 'blocked';
+                const isTrial = sub.subscription_status === 'trial' || sub.subscription_plan === 'trial';
+                const isActive = sub.is_active && !isBlocked;
+
+                let badgeHtml = '';
+                if (isBlocked) {
+                    badgeHtml = '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30">⛔ Заблокирована</span>';
+                } else if (!isActive) {
+                    badgeHtml = '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30">🔴 Истекла</span>';
+                } else if (isTrial) {
+                    badgeHtml = `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/20 text-sky-300 border border-sky-500/30">🟡 Тест (${days} дн.)</span>`;
+                } else {
+                    badgeHtml = `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">🟢 PRO (${days} дн.)</span>`;
+                }
+
+                const loginUrl = `${window.location.origin}${window.location.pathname}?key=${sub.access_key}`;
+
+                return `
+                    <div class="bg-[#15171d] border border-white/10 rounded-2xl p-4 space-y-3 shadow-md hover:border-[#c5a880]/30 transition">
+                        <!-- Верхняя строка карточки -->
+                        <div class="flex items-start justify-between gap-2">
+                            <div class="min-w-0">
+                                <div class="flex items-center gap-2">
+                                    <h3 class="text-sm font-bold text-white truncate">${sub.name}</h3>
+                                    <span class="text-[10px] font-semibold px-2 py-0.2 rounded-md bg-white/5 text-zinc-300 border border-white/5 flex-shrink-0">${sub.city || 'Алматы'}</span>
+                                </div>
+                                <div class="text-[11.5px] text-zinc-400 mt-0.5">
+                                    <span>👤 Владелец: ${sub.owner_name || 'Не указан'}</span>
+                                    ${sub.owner_phone ? ` • <a href="tel:${sub.owner_phone}" class="text-sky-300 hover:underline font-mono">${sub.owner_phone}</a>` : ''}
+                                </div>
+                            </div>
+                            <div class="flex-shrink-0">
+                                ${badgeHtml}
+                            </div>
+                        </div>
+
+                        <!-- Лицензионный ключ и ссылка для входа -->
+                        <div class="bg-[#0e1013] border border-white/5 rounded-xl p-2.5 space-y-2 text-xs">
+                            <div class="flex items-center justify-between gap-2">
+                                <div class="flex items-center gap-1.5 min-w-0">
+                                    <span class="text-amber-400 font-bold">🔑</span>
+                                    <code class="font-mono text-amber-300 text-xs font-bold tracking-wider truncate">${sub.access_key || 'RKZ-DEFAULT'}</code>
+                                </div>
+                                <div class="flex items-center gap-1 flex-shrink-0">
+                                    <button type="button" onclick="copyRestaurantKey('${sub.access_key}')" class="px-2 py-1 text-[10px] font-semibold bg-white/10 hover:bg-white/15 text-zinc-200 rounded-lg transition" title="Копировать ключ">
+                                        📋 Ключ
+                                    </button>
+                                    <button type="button" onclick="copyRestaurantLoginLink('${sub.access_key}')" class="px-2 py-1 text-[10px] font-bold bg-[#c5a880] text-[#0e1013] rounded-lg transition shadow-sm" title="Копировать персональную ссылку входа">
+                                        🔗 Ссылка входа
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="text-[11px] text-zinc-400 flex items-center justify-between border-t border-white/5 pt-1.5">
+                                <span>Действует до: <strong class="text-white">${sub.subscription_expires_at ? formatHumanDate(sub.subscription_expires_at) : 'Бессрочно'}</strong></span>
+                                <span class="text-[#dfcaab] font-bold">${days > 0 ? `Осталось ${days} дн.` : 'Истекла'}</span>
+                            </div>
+                        </div>
+
+                        <!-- Быстрое продление лицензии -->
+                        <div class="space-y-1.5">
+                            <div class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">
+                                ⏱️ Продлить лицензию:
+                            </div>
+                            <div class="grid grid-cols-5 gap-1 text-[10.5px]">
+                                <button type="button" onclick="extendSubscriptionApi(${sub.id}, 7, 'trial')" class="py-1.5 px-1 rounded-lg bg-sky-500/15 hover:bg-sky-500/25 text-sky-300 border border-sky-500/30 text-center font-bold transition active:scale-95" title="Выдать тестовый период">
+                                    +7 дн
+                                </button>
+                                <button type="button" onclick="extendSubscriptionApi(${sub.id}, 14, 'trial')" class="py-1.5 px-1 rounded-lg bg-sky-500/15 hover:bg-sky-500/25 text-sky-300 border border-sky-500/30 text-center font-bold transition active:scale-95">
+                                    +14 дн
+                                </button>
+                                <button type="button" onclick="extendSubscriptionApi(${sub.id}, 30, 'pro')" class="py-1.5 px-1 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 text-center font-bold transition active:scale-95" title="Месячная подписка PRO">
+                                    +30 дн
+                                </button>
+                                <button type="button" onclick="extendSubscriptionApi(${sub.id}, 90, 'pro')" class="py-1.5 px-1 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 text-center font-bold transition active:scale-95">
+                                    +90 дн
+                                </button>
+                                <button type="button" onclick="extendSubscriptionApi(${sub.id}, 365, 'pro')" class="py-1.5 px-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-center font-bold transition active:scale-95">
+                                    +1 год
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Дополнительные действия -->
+                        <div class="flex items-center justify-between gap-1 pt-1 border-t border-white/5 text-[11px]">
+                            <div class="flex items-center gap-1.5">
+                                ${isBlocked ? `
+                                    <button type="button" onclick="setSubscriptionStatusApi(${sub.id}, 'active')" class="px-2.5 py-1 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 font-medium transition">
+                                        ✅ Разблокировать
+                                    </button>
+                                ` : `
+                                    <button type="button" onclick="setSubscriptionStatusApi(${sub.id}, 'blocked')" class="px-2.5 py-1 rounded-lg bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 border border-rose-500/30 font-medium transition">
+                                        ⛔ Блокировать
+                                    </button>
+                                `}
+                                <button type="button" onclick="regenerateKeyApi(${sub.id})" class="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-300 border border-white/10 font-medium transition" title="Сгенерировать новый ключ">
+                                    🔄 Сбросить ключ
+                                </button>
+                            </div>
+                            <button type="button" onclick="deleteRestaurantApi(${sub.id}, '${sub.name.replace(/'/g, "\\'")}')" class="px-2.5 py-1 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 font-medium transition" title="Удалить заведение">
+                                🗑
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openNewLicenseModal() {
+            const modal = document.getElementById('newLicenseModal');
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function closeNewLicenseModal() {
+            const modal = document.getElementById('newLicenseModal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        async function submitNewRestaurantWithLicense() {
+            const name = (document.getElementById('licRestName')?.value || '').trim();
+            const city = (document.getElementById('licRestCity')?.value || 'Алматы').trim();
+            const cuisine = (document.getElementById('licRestCuisine')?.value || 'Европейская').trim();
+            const owner_name = (document.getElementById('licOwnerName')?.value || '').trim();
+            const owner_phone = (document.getElementById('licOwnerPhone')?.value || '').trim();
+            const address = (document.getElementById('licRestAddress')?.value || `г. ${city}`).trim();
+            const planDuration = document.getElementById('licPlanDuration')?.value || 'pro_monthly';
+
+            if (!name) {
+                showToast('Укажите название заведения', '⚠️');
+                document.getElementById('licRestName')?.focus();
+                return;
+            }
+
+            let days = 30;
+            let plan = 'pro';
+            let status = 'active';
+
+            if (planDuration === 'trial_7') {
+                days = 7;
+                plan = 'trial';
+                status = 'trial';
+            } else if (planDuration === 'trial_14') {
+                days = 14;
+                plan = 'trial';
+                status = 'trial';
+            } else if (planDuration === 'pro_monthly') {
+                days = 30;
+                plan = 'pro_monthly';
+                status = 'active';
+            } else if (planDuration === 'pro_quarter') {
+                days = 90;
+                plan = 'pro_quarter';
+                status = 'active';
+            } else if (planDuration === 'pro_annual') {
+                days = 365;
+                plan = 'pro_annual';
+                status = 'active';
+            }
+
+            const payload = {
+                name,
+                city,
+                cuisine,
+                owner_name,
+                owner_phone,
+                phone: owner_phone || '+7 (700) 000-00-00',
+                address,
+                subscription_status: status,
+                subscription_plan: plan,
+                subscription_days: days
+            };
+
+            const res = await apiFetch('/api/restaurants', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (res && res.restaurant) {
+                closeNewLicenseModal();
+                // Clear form
+                if (document.getElementById('licRestName')) document.getElementById('licRestName').value = '';
+                if (document.getElementById('licOwnerName')) document.getElementById('licOwnerName').value = '';
+                if (document.getElementById('licOwnerPhone')) document.getElementById('licOwnerPhone').value = '';
+                if (document.getElementById('licRestAddress')) document.getElementById('licRestAddress').value = '';
+
+                // Show success modal
+                const successModal = document.getElementById('licenseSuccessModal');
+                const succNameEl = document.getElementById('successRestName');
+                const succKeyEl = document.getElementById('successKeyText');
+                const succLinkEl = document.getElementById('successLinkText');
+
+                const newKey = res.restaurant.access_key;
+                const link = `${window.location.origin}${window.location.pathname}?key=${newKey}`;
+
+                if (succNameEl) succNameEl.textContent = `${name} (${city}) — ${days} дней`;
+                if (succKeyEl) succKeyEl.textContent = newKey;
+                if (succLinkEl) succLinkEl.textContent = link;
+
+                window._latestCreatedKey = newKey;
+                window._latestCreatedLink = link;
+
+                if (successModal) successModal.classList.remove('hidden');
+
+                // Refresh data
+                await initSelectors();
+                await loadSubscriptionsFromServer();
+                showToast('Заведение успешно создано и лицензировано!', '✨');
+            } else {
+                showToast(res?.error || 'Ошибка при создании заведения', '❌');
+            }
+        }
+
+        function closeLicenseSuccessModal() {
+            const modal = document.getElementById('licenseSuccessModal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function copySuccessKey() {
+            copyToClipboard(window._latestCreatedKey || '', 'Ключ скопирован в буфер');
+        }
+
+        function copySuccessLink() {
+            copyToClipboard(window._latestCreatedLink || '', 'Ссылка для заведения скопирована');
+        }
+
+        function copyRestaurantKey(key) {
+            copyToClipboard(key, `Ключ ${key} скопирован`);
+        }
+
+        function copyRestaurantLoginLink(key) {
+            const link = `${window.location.origin}${window.location.pathname}?key=${key}`;
+            copyToClipboard(link, 'Персональная ссылка для входа скопирована');
+        }
+
+        async function extendSubscriptionApi(restId, days, plan) {
+            const res = await apiFetch(`/api/admin/subscriptions/${restId}/extend`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ days, plan })
+            });
+
+            if (res && res.ok) {
+                showToast(`Лицензия продлена на +${days} дн.!`, '✅');
+                await loadSubscriptionsFromServer();
+            } else {
+                showToast(res?.error || 'Ошибка при продлении', '❌');
+            }
+        }
+
+        async function setSubscriptionStatusApi(restId, newStatus) {
+            const res = await apiFetch(`/api/admin/subscriptions/${restId}/status`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: newStatus })
+            });
+
+            if (res && res.ok) {
+                const label = newStatus === 'blocked' ? 'Заблокировано' : 'Активировано';
+                showToast(`Статус заведения: ${label}`, 'ℹ️');
+                await loadSubscriptionsFromServer();
+            } else {
+                showToast(res?.error || 'Ошибка изменения статуса', '❌');
+            }
+        }
+
+        async function regenerateKeyApi(restId) {
+            if (!confirm('Сгенерировать новый лицензионный ключ? Старый ключ перестанет действовать.')) return;
+            const res = await apiFetch(`/api/admin/subscriptions/${restId}/regenerate-key`, {
+                method: 'POST'
+            });
+
+            if (res && res.access_key) {
+                copyToClipboard(res.access_key, `Новый ключ ${res.access_key} скопирован в буфер`);
+                await loadSubscriptionsFromServer();
+            } else {
+                showToast('Ошибка при генерации ключа', '❌');
+            }
+        }
+
+        async function deleteRestaurantApi(restId, restName) {
+            if (!confirm(`Вы действительно хотите безвозвратно удалить "${restName}" из системы вместе со всеми столами и бронями?`)) return;
+            const res = await apiFetch(`/api/restaurants/${restId}`, {
+                method: 'DELETE'
+            });
+
+            if (res && res.ok) {
+                showToast(`Заведение "${restName}" удалено`, '🗑');
+                await initSelectors();
+                await loadSubscriptionsFromServer();
+            } else {
+                showToast(res?.error || 'Ошибка при удалении заведения', '❌');
+            }
+        }
+
+        function copyToClipboard(text, successMsg = 'Скопировано в буфер') {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast(successMsg, '📋');
+                }).catch(() => fallbackCopy(text, successMsg));
+            } else {
+                fallbackCopy(text, successMsg);
+            }
+        }
+
+        function fallbackCopy(text, successMsg) {
+            const input = document.createElement('input');
+            input.value = text;
+            document.body.appendChild(input);
+            input.select();
+            try {
+                document.execCommand('copy');
+                showToast(successMsg, '📋');
+            } catch (e) {
+                prompt('Скопируйте вручную:', text);
+            }
+            document.body.removeChild(input);
+        }
+
         document.addEventListener('DOMContentLoaded', async () => {
             initShiftState();
             updateSoundToggleUI();
             setAdminLanguage(currentAdminLang);
+            await checkAuthStatus();
             await initSelectors();
             await loadBookingsFromServer();
 

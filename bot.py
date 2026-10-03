@@ -32,7 +32,7 @@ from aiogram.types import (
 )
 
 import database
-from api import create_web_app
+from api import create_web_app, SUPER_ADMIN_KEY
 
 # --- Configuration ---
 _env_token = os.getenv("BOT_TOKEN", "")
@@ -85,12 +85,15 @@ def get_api_url() -> str:
     # 4. Fallback
     return "https://restokz-app.loca.lt"
 
-def get_webapp_url(tab: str = None) -> str:
-    """Builds the full WebApp URL with API backend injected as a query parameter."""
+def get_webapp_url(tab: str = None, user_id: int = None) -> str:
+    """Builds the full WebApp URL with API backend and credentials injected."""
     api_url = get_api_url()
     base = WEBAPP_BASE_URL.rstrip("/")
     if tab == "admin":
-        return f"{base}/admin.html?api={api_url}"
+        url = f"{base}/admin.html?api={api_url}"
+        if user_id == ADMIN_CHAT_ID:
+            url += f"&super_key={SUPER_ADMIN_KEY}"
+        return url
     url = f"{base}/?api={api_url}"
     if tab:
         url += f"&tab={tab}"
@@ -108,7 +111,10 @@ def get_main_keyboard(user_id: int) -> ReplyKeyboardMarkup:
 
     # If the user is an admin or restaurant manager, give direct access to the restaurant panel
     if user_id == ADMIN_CHAT_ID:
-        buttons.append([KeyboardButton(text="👑 Панель ресторана", web_app=WebAppInfo(url=get_webapp_url("admin")))])
+        buttons.append([
+            KeyboardButton(text="👑 Панель ресторана", web_app=WebAppInfo(url=get_webapp_url("admin", user_id))),
+            KeyboardButton(text="🛡️ Управление подписками")
+        ])
 
     return ReplyKeyboardMarkup(keyboard=buttons, resize_keyboard=True)
 
@@ -150,6 +156,86 @@ async def cmd_start(message: Message):
     await message.answer(text, reply_markup=kb, parse_mode="HTML")
     await message.answer("Или откройте сразу через меню:", reply_markup=inline_kb)
 
+def build_subscriptions_text_and_keyboard():
+    subs = database.get_all_subscriptions()
+    active_count = sum(1 for s in subs if s["subscription_info"]["is_active"] and not s["subscription_info"]["is_trial"])
+    trial_count = sum(1 for s in subs if s["subscription_info"]["is_trial"])
+    expired_count = sum(1 for s in subs if not s["subscription_info"]["is_active"])
+
+    text = (
+        "👑 <b>Управление лицензиями & Подписками RestoKZ PRO</b>\n\n"
+        f"📊 Всего подключено: <b>{len(subs)}</b> заведений\n"
+        f"🟢 Активных подписок: <b>{active_count}</b>\n"
+        f"🟡 На тестировании (Trial): <b>{trial_count}</b>\n"
+        f"🔴 Истекших / Блок: <b>{expired_count}</b>\n\n"
+        "<i>Нажмите на кнопки заведений ниже для быстрого продления или смены статуса:</i>\n"
+    )
+
+    inline_rows = []
+    for s in subs:
+        sub_info = s["subscription_info"]
+        status_icon = "🟢" if sub_info["is_active"] and not sub_info["is_trial"] else ("🟡" if sub_info["is_trial"] else "🔴")
+        r_name = s["name"]
+        days = sub_info["days_left"]
+        r_id = s["id"]
+        key = s.get("access_key") or "—"
+
+        text += (
+            f"\n{status_icon} <b>{r_name}</b> ({s['city']})\n"
+            f"├ Статус: <b>{sub_info['status'].upper()}</b> (осталось <b>{days} дн.</b>)\n"
+            f"├ До: <code>{sub_info['expires_at_human']}</code> | Тариф: <b>{sub_info['plan'].upper()}</b>\n"
+            f"└ 🔑 Ключ: <code>{key}</code>\n"
+        )
+
+        inline_rows.append([
+            InlineKeyboardButton(text=f"{r_name[:12]}: +30 дн", callback_data=f"sub_ext_{r_id}_30"),
+            InlineKeyboardButton(text=f"+7 дн тест", callback_data=f"sub_ext_{r_id}_7")
+        ])
+
+    inline_rows.append([
+        InlineKeyboardButton(
+            text="👑 Открыть панель лицензий в WebApp", 
+            web_app=WebAppInfo(url=get_webapp_url("admin", ADMIN_CHAT_ID))
+        )
+    ])
+    return text, InlineKeyboardMarkup(inline_keyboard=inline_rows)
+
+@dp.message(F.text == "🛡️ Управление подписками")
+@dp.message(Command("subscriptions"))
+@dp.message(Command("subs"))
+async def cmd_subscriptions(message: Message):
+    if message.from_user.id != ADMIN_CHAT_ID:
+        await message.answer("У вас нет прав супер-администратора.")
+        return
+    text, kb = build_subscriptions_text_and_keyboard()
+    await message.answer(text, reply_markup=kb, parse_mode="HTML")
+
+@dp.callback_query(F.data.startswith("sub_ext_"))
+async def cb_extend_subscription(callback: CallbackQuery):
+    if callback.from_user.id != ADMIN_CHAT_ID:
+        await callback.answer("Доступ запрещен", show_alert=True)
+        return
+
+    parts = callback.data.split("_")
+    rest_id = int(parts[2])
+    days = int(parts[3])
+
+    status = "trial" if days <= 14 else "active"
+    updated = database.extend_subscription(rest_id, days=days, status=status)
+    if not updated:
+        await callback.answer("Ресторан не найден", show_alert=True)
+        return
+
+    sub_info = updated["subscription_info"]
+    await callback.answer(f"✅ Подписка для {updated['name']} продлена на +{days} дней!\nДействует до {sub_info['expires_at_human']}", show_alert=True)
+
+    # Refresh message
+    text, kb = build_subscriptions_text_and_keyboard()
+    try:
+        await callback.message.edit_text(text, reply_markup=kb, parse_mode="HTML")
+    except Exception:
+        pass
+
 @dp.message(Command("admin"))
 async def cmd_admin(message: Message):
     if message.from_user.id != ADMIN_CHAT_ID:
@@ -160,16 +246,31 @@ async def cmd_admin(message: Message):
         [
             InlineKeyboardButton(
                 text="📊 Открыть панель ресторана (Хостес)",
-                web_app=WebAppInfo(url=get_webapp_url("admin"))
+                web_app=WebAppInfo(url=get_webapp_url("admin", ADMIN_CHAT_ID))
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text="🛡️ Управление подписками & Лицензиями",
+                callback_data="btn_show_subscriptions"
             )
         ]
     ])
     await message.answer(
-        "👋 <b>Панель администратора заведения</b>\n\n"
-        "Здесь вы можете в реальном времени видеть бронирования, контакты гостей, управлять статусами и занятостью столиков.",
+        "👋 <b>Панель Супер-Администратора RestoKZ PRO</b>\n\n"
+        "Здесь вы можете управлять всеми заведениями, просматривать бронирования, а также выдавать и продлевать подписки ресторанам.",
         reply_markup=admin_kb,
         parse_mode="HTML"
     )
+
+@dp.callback_query(F.data == "btn_show_subscriptions")
+async def cb_show_subscriptions(callback: CallbackQuery):
+    if callback.from_user.id != ADMIN_CHAT_ID:
+        await callback.answer("Доступ запрещен", show_alert=True)
+        return
+    await callback.answer()
+    text, kb = build_subscriptions_text_and_keyboard()
+    await callback.message.answer(text, reply_markup=kb, parse_mode="HTML")
 
 @dp.message(Command("my_bookings"))
 async def cmd_my_bookings(message: Message):

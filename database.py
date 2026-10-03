@@ -6,6 +6,8 @@ SQLite database handling restaurants, tables, menus, and bookings.
 import sqlite3
 import json
 import os
+import re
+import secrets
 from datetime import datetime, timedelta
 from typing import List, Dict, Any, Optional
 
@@ -51,7 +53,13 @@ def init_db():
             whatsapp_url TEXT,
             telegram_url TEXT,
             website_url TEXT,
-            admin_tg_id INTEGER
+            admin_tg_id INTEGER,
+            access_key TEXT UNIQUE,
+            subscription_status TEXT DEFAULT 'active',
+            subscription_plan TEXT DEFAULT 'pro',
+            subscription_expires_at TEXT,
+            owner_name TEXT,
+            owner_phone TEXT
         );
 
         CREATE TABLE IF NOT EXISTS menu_categories (
@@ -131,12 +139,51 @@ def init_db():
 
         conn.commit()
 
-        # Migrate existing DB: ensure social media & 2GIS columns exist
-        for col_name in ["instagram_url", "whatsapp_url", "telegram_url", "website_url"]:
+        # Migrate existing DB: ensure social media, 2GIS and subscription security columns exist
+        migration_cols = [
+            ("instagram_url", "TEXT"),
+            ("whatsapp_url", "TEXT"),
+            ("telegram_url", "TEXT"),
+            ("website_url", "TEXT"),
+            ("access_key", "TEXT"),
+            ("subscription_status", "TEXT DEFAULT 'active'"),
+            ("subscription_plan", "TEXT DEFAULT 'pro'"),
+            ("subscription_expires_at", "TEXT"),
+            ("owner_name", "TEXT"),
+            ("owner_phone", "TEXT")
+        ]
+        for col_name, col_type in migration_cols:
             try:
-                cursor.execute(f"ALTER TABLE restaurants ADD COLUMN {col_name} TEXT")
+                cursor.execute(f"ALTER TABLE restaurants ADD COLUMN {col_name} {col_type}")
             except sqlite3.OperationalError:
                 pass
+        conn.commit()
+
+        # Ensure all existing restaurants have unique access_key and subscription_expires_at
+        cursor.execute("SELECT id, name, access_key, subscription_expires_at FROM restaurants")
+        existing_rests = cursor.fetchall()
+        for r in existing_rests:
+            r_id = r["id"]
+            r_name = r["name"]
+            r_key = r["access_key"]
+            r_exp = r["subscription_expires_at"]
+            updates = []
+            params = []
+            if not r_key:
+                clean_name = re.sub(r'[^A-Za-z0-9]', '', r_name.upper())[:8] or "REST"
+                new_key = f"RKZ-{clean_name}-{secrets.token_hex(2).upper()}"
+                updates.append("access_key = ?")
+                params.append(new_key)
+            if not r_exp:
+                # 365 days active subscription for seeded restaurants
+                default_exp = (datetime.now() + timedelta(days=365)).strftime("%Y-%m-%d 23:59:59")
+                updates.append("subscription_expires_at = ?")
+                params.append(default_exp)
+                updates.append("subscription_status = 'active'")
+                updates.append("subscription_plan = 'pro'")
+            if updates:
+                params.append(r_id)
+                cursor.execute(f"UPDATE restaurants SET {', '.join(updates)} WHERE id = ?", params)
         conn.commit()
 
         # Check if restaurants already exist
@@ -642,11 +689,27 @@ def create_restaurant(
     telegram_url: str = "",
     website_url: str = "",
     admin_tg_id: Optional[int] = None,
+    access_key: Optional[str] = None,
+    subscription_status: str = "active",
+    subscription_plan: str = "pro",
+    subscription_expires_at: Optional[str] = None,
+    subscription_days: Optional[int] = None,
+    owner_name: str = "",
+    owner_phone: str = "",
     **kwargs
 ) -> int:
     """Registers a new restaurant in the system and provisions default starter tables and menu categories."""
     if not cover_image and "photo_url" in kwargs:
         cover_image = kwargs["photo_url"]
+
+    # Generate access key if not provided
+    if not access_key:
+        access_key = generate_unique_access_key(name)
+
+    # Calculate expiration date
+    if not subscription_expires_at:
+        days = subscription_days if subscription_days is not None else (7 if subscription_status == "trial" else 30)
+        subscription_expires_at = (datetime.now() + timedelta(days=days)).strftime("%Y-%m-%d 23:59:59")
 
     conn = get_db_connection()
     try:
@@ -654,11 +717,15 @@ def create_restaurant(
         cursor.execute("""
             INSERT INTO restaurants 
             (name, city, cuisine, address, phone, rating, avg_check, cover_image, description, 
-             working_hours, two_gis_url, instagram_url, whatsapp_url, telegram_url, website_url, admin_tg_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+             working_hours, two_gis_url, instagram_url, whatsapp_url, telegram_url, website_url, 
+             admin_tg_id, access_key, subscription_status, subscription_plan, subscription_expires_at,
+             owner_name, owner_phone)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (
             name, city, cuisine, address, phone, rating, avg_check, cover_image, description,
-            working_hours, two_gis_url, instagram_url, whatsapp_url, telegram_url, website_url, admin_tg_id
+            working_hours, two_gis_url, instagram_url, whatsapp_url, telegram_url, website_url, 
+            admin_tg_id, access_key, subscription_status, subscription_plan, subscription_expires_at,
+            owner_name, owner_phone
         ))
         rest_id = cursor.lastrowid
 
@@ -698,13 +765,15 @@ def create_restaurant(
         conn.close()
 
 def update_restaurant(restaurant_id: int, **fields) -> bool:
-    """Updates restaurant profile fields including social links, working hours, 2GIS, etc."""
+    """Updates restaurant profile fields including social links, working hours, 2GIS, subscription, etc."""
     if "photo_url" in fields and "cover_image" not in fields:
         fields["cover_image"] = fields.pop("photo_url")
     allowed = {
         "name", "city", "cuisine", "address", "phone", "rating", "avg_check",
         "cover_image", "description", "working_hours", "two_gis_url",
-        "instagram_url", "whatsapp_url", "telegram_url", "website_url"
+        "instagram_url", "whatsapp_url", "telegram_url", "website_url",
+        "access_key", "subscription_status", "subscription_plan", 
+        "subscription_expires_at", "owner_name", "owner_phone"
     }
     updates = {k: v for k, v in fields.items() if k in allowed}
     if not updates:
@@ -818,3 +887,226 @@ def delete_table(table_id: int) -> bool:
         return affected > 0
     finally:
         conn.close()
+
+# =========================================================================
+# SUBSCRIPTION & LICENSE ACCESS CONTROL HELPERS
+# =========================================================================
+
+def generate_unique_access_key(name: str = "") -> str:
+    """Generates a memorable unique license key in format RKZ-<SLUG>-<HEX>."""
+    clean = re.sub(r'[^A-Za-z0-9]', '', (name or "REST").upper())[:8] or "REST"
+    conn = get_db_connection()
+    try:
+        cursor = conn.cursor()
+        while True:
+            rnd = secrets.token_hex(2).upper()
+            key = f"RKZ-{clean}-{rnd}"
+            cursor.execute("SELECT id FROM restaurants WHERE access_key = ?", (key,))
+            if not cursor.fetchone():
+                return key
+    finally:
+        conn.close()
+
+def get_subscription_details(rest: Dict[str, Any]) -> Dict[str, Any]:
+    """Calculates active/trial/expired status and days remaining for a restaurant."""
+    status = rest.get("subscription_status") or "active"
+    plan = rest.get("subscription_plan") or "pro"
+    expires_str = rest.get("subscription_expires_at")
+    
+    if not expires_str:
+        expires_dt = datetime.now() + timedelta(days=30)
+    else:
+        try:
+            if "T" in expires_str:
+                expires_dt = datetime.fromisoformat(expires_str)
+            elif len(expires_str) == 10:
+                expires_dt = datetime.strptime(expires_str, "%Y-%m-%d").replace(hour=23, minute=59, second=59)
+            else:
+                expires_dt = datetime.strptime(expires_str, "%Y-%m-%d %H:%M:%S")
+        except Exception:
+            expires_dt = datetime.now() + timedelta(days=30)
+
+    now = datetime.now()
+    days_left = (expires_dt.date() - now.date()).days
+    is_expired = days_left < 0 or (expires_dt < now)
+    is_blocked = (status == "blocked")
+    
+    effective_status = "blocked" if is_blocked else ("expired" if is_expired else status)
+
+    return {
+        "status": effective_status,
+        "raw_status": status,
+        "plan": plan,
+        "expires_at": expires_dt.strftime("%Y-%m-%d %H:%M:%S"),
+        "expires_at_human": expires_dt.strftime("%d.%m.%Y"),
+        "days_left": max(0, days_left) if not is_expired else days_left,
+        "is_active": (not is_expired and not is_blocked),
+        "is_trial": (status == "trial" and not is_expired and not is_blocked),
+        "is_expired": is_expired,
+        "is_blocked": is_blocked
+    }
+
+def get_restaurant_by_access_key(access_key: str) -> Optional[Dict[str, Any]]:
+    """Retrieves restaurant by license access key with computed subscription details."""
+    if not access_key:
+        return None
+    conn = get_db_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM restaurants WHERE access_key = ?", (access_key.strip(),))
+        row = cursor.fetchone()
+        if not row:
+            return None
+        rest = dict(row)
+        rest["subscription_info"] = get_subscription_details(rest)
+        return rest
+    finally:
+        conn.close()
+
+def is_subscription_active(restaurant_id: int) -> Dict[str, Any]:
+    """Checks whether a restaurant has an active subscription or valid trial."""
+    conn = get_db_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM restaurants WHERE id = ?", (restaurant_id,))
+        row = cursor.fetchone()
+        if not row:
+            return {"is_active": False, "status": "not_found", "is_expired": True, "days_left": 0}
+        return get_subscription_details(dict(row))
+    finally:
+        conn.close()
+
+def extend_subscription(
+    restaurant_id: int, 
+    days: int = 0, 
+    new_expiry_date: Optional[str] = None, 
+    status: Optional[str] = None, 
+    plan: Optional[str] = None
+) -> Optional[Dict[str, Any]]:
+    """
+    Extends subscription by N days or sets a specific expiry date.
+    Resets status from expired/blocked to active/trial.
+    """
+    conn = get_db_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM restaurants WHERE id = ?", (restaurant_id,))
+        row = cursor.fetchone()
+        if not row:
+            return None
+        rest = dict(row)
+        
+        current_exp_str = rest.get("subscription_expires_at")
+        now = datetime.now()
+        current_dt = now
+        if current_exp_str:
+            try:
+                if len(current_exp_str) == 10:
+                    dt = datetime.strptime(current_exp_str, "%Y-%m-%d").replace(hour=23, minute=59, second=59)
+                else:
+                    dt = datetime.strptime(current_exp_str, "%Y-%m-%d %H:%M:%S")
+                if dt > now:
+                    current_dt = dt
+            except Exception:
+                pass
+        
+        if new_expiry_date:
+            try:
+                if len(new_expiry_date) == 10:
+                    final_dt = datetime.strptime(new_expiry_date, "%Y-%m-%d").replace(hour=23, minute=59, second=59)
+                else:
+                    final_dt = datetime.strptime(new_expiry_date, "%Y-%m-%d %H:%M:%S")
+            except Exception:
+                final_dt = current_dt + timedelta(days=days if days > 0 else 30)
+        elif days > 0:
+            final_dt = current_dt + timedelta(days=days)
+        else:
+            final_dt = current_dt
+
+        new_expires_str = final_dt.strftime("%Y-%m-%d %H:%M:%S")
+        
+        new_status = status or rest.get("subscription_status") or "active"
+        if new_status in ["expired", "blocked"] and (days > 0 or new_expiry_date):
+            new_status = "active"
+
+        new_plan = plan or rest.get("subscription_plan") or "pro"
+
+        cursor.execute("""
+            UPDATE restaurants 
+            SET subscription_expires_at = ?, subscription_status = ?, subscription_plan = ?
+            WHERE id = ?
+        """, (new_expires_str, new_status, new_plan, restaurant_id))
+        conn.commit()
+
+        cursor.execute("SELECT * FROM restaurants WHERE id = ?", (restaurant_id,))
+        updated_row = cursor.fetchone()
+        updated_rest = dict(updated_row)
+        updated_rest["subscription_info"] = get_subscription_details(updated_rest)
+        return updated_rest
+    finally:
+        conn.close()
+
+def set_subscription_status(restaurant_id: int, status: str) -> bool:
+    """Sets raw subscription status: 'active', 'trial', 'blocked', 'expired'."""
+    conn = get_db_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("UPDATE restaurants SET subscription_status = ? WHERE id = ?", (status, restaurant_id))
+        affected = cursor.rowcount
+        conn.commit()
+        return affected > 0
+    finally:
+        conn.close()
+
+def regenerate_access_key(restaurant_id: int) -> Optional[str]:
+    """Generates and sets a new unique license access key for the restaurant."""
+    conn = get_db_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SELECT name FROM restaurants WHERE id = ?", (restaurant_id,))
+        row = cursor.fetchone()
+        if not row:
+            return None
+        new_key = generate_unique_access_key(row["name"])
+        cursor.execute("UPDATE restaurants SET access_key = ? WHERE id = ?", (new_key, restaurant_id))
+        conn.commit()
+        return new_key
+    finally:
+        conn.close()
+
+def get_all_subscriptions() -> List[Dict[str, Any]]:
+    """Returns all restaurants with full subscription details, keys, and usage statistics."""
+    conn = get_db_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT id, name, city, phone, cuisine, address, 
+                   access_key, subscription_status, subscription_plan, 
+                   subscription_expires_at, owner_name, owner_phone,
+                   (SELECT COUNT(*) FROM bookings WHERE restaurant_id = restaurants.id) as total_bookings,
+                   (SELECT COUNT(*) FROM tables WHERE restaurant_id = restaurants.id) as total_tables
+            FROM restaurants
+            ORDER BY id ASC
+        """)
+        rows = cursor.fetchall()
+        result = []
+        for r in rows:
+            d = dict(r)
+            d["subscription_info"] = get_subscription_details(d)
+            result.append(d)
+        return result
+    finally:
+        conn.close()
+
+def delete_restaurant(restaurant_id: int) -> bool:
+    """Deletes a restaurant and cascades tables, menus, and bookings."""
+    conn = get_db_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM restaurants WHERE id = ?", (restaurant_id,))
+        affected = cursor.rowcount
+        conn.commit()
+        return affected > 0
+    finally:
+        conn.close()
+
