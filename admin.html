@@ -7,7 +7,26 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap');
+
+        html {
+            font-size: 15px;
+        }
+        @media (min-width: 1024px) {
+            html {
+                font-size: 16px;
+            }
+        }
+        @media (min-width: 1440px) {
+            html {
+                font-size: 17px;
+            }
+        }
+        @media (min-width: 1920px) {
+            html {
+                font-size: 18px;
+            }
+        }
 
         :root {
             --bg-main: #0e1013;
@@ -22,7 +41,7 @@
         }
 
         body {
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: var(--bg-main);
             background-image: radial-gradient(circle at 50% 0%, rgba(197, 168, 128, 0.08) 0%, transparent 55%);
             color: var(--text-main);
@@ -118,54 +137,54 @@
 <body class="min-h-screen pb-[max(7rem,calc(env(safe-area-inset-bottom)+5.5rem))]">
 
     <!-- ВЕРХНИЙ ХЕДЕР ТЕРМИНАЛА ХОСТЕС -->
-    <header class="sticky top-0 z-40 glass-header border-b border-[#c5a880]/20 px-3.5 py-2.5 sm:px-6 lg:px-8">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-2.5 md:gap-4">
+    <header class="sticky top-0 z-40 glass-header border-b border-[#c5a880]/20 px-3.5 py-3 sm:px-6 lg:px-8">
+        <div class="max-w-[1600px] 2xl:max-w-[1760px] mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-5">
             <!-- Строка 1: Бренд + Интерактивная смена + Обновление + Гамбургер меню -->
-            <div class="flex items-center justify-between gap-3">
-                <div class="flex items-center gap-2 min-w-0">
-                    <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-[#d1b791] to-[#8f6f40] flex items-center justify-center text-sm shadow-md shadow-black/50 flex-shrink-0">
+            <div class="flex items-center justify-between gap-3 sm:gap-4">
+                <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                    <div class="w-9 h-9 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-br from-[#d1b791] to-[#8f6f40] flex items-center justify-center text-sm sm:text-base lg:text-lg shadow-md shadow-black/50 flex-shrink-0">
                         👑
                     </div>
                     <div class="min-w-0">
-                        <div class="flex items-center gap-2">
-                            <h1 class="font-bold text-sm sm:text-base tracking-tight text-[#f3f1ed] font-serif-luxury truncate">RestoKZ <span class="text-[#c5a880]">PRO</span></h1>
+                        <div class="flex items-center gap-2 sm:gap-2.5">
+                            <h1 class="font-bold text-base sm:text-lg lg:text-xl tracking-tight text-[#f3f1ed] font-serif-luxury truncate">RestoKZ <span class="text-[#c5a880]">PRO</span></h1>
                             <!-- Интерактивная кнопка смены -->
-                            <button type="button" onclick="openShiftModal()" id="btnHeaderShift" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/25 active:scale-95 transition shadow-sm flex-shrink-0" title="Управление рабочей сменой">
+                            <button type="button" onclick="openShiftModal()" id="btnHeaderShift" class="inline-flex items-center gap-1.5 px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/25 active:scale-95 transition shadow-sm flex-shrink-0" title="Управление рабочей сменой">
                                 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" id="shiftStatusDot"></span>
                                 <span id="lblHeaderShiftText">Смена активна</span>
                             </button>
                             <!-- Бейдж лицензии / Super Admin -->
-                            <button type="button" id="btnHeaderAuthBadge" onclick="handleHeaderBadgeClick()" class="hidden inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10.5px] font-bold transition flex-shrink-0 shadow-sm" title="Статус лицензии и профиля"></button>
+                            <button type="button" id="btnHeaderAuthBadge" onclick="handleHeaderBadgeClick()" class="hidden inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition flex-shrink-0 shadow-sm" title="Статус лицензии и профиля"></button>
                         </div>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-1.5 flex-shrink-0">
+                <div class="flex items-center gap-2 sm:gap-2.5 flex-shrink-0">
                     <!-- Быстрое обновление данных -->
-                    <button onclick="manualRefresh()" class="w-8 h-8 rounded-xl bg-[#15171d] hover:bg-[#1c1f26] border border-white/10 flex items-center justify-center text-xs text-[#c5a880] active:scale-95 transition shadow-sm" title="Синхронизировать">
+                    <button onclick="manualRefresh()" class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-[#15171d] hover:bg-[#1c1f26] border border-white/10 flex items-center justify-center text-xs sm:text-sm text-[#c5a880] active:scale-95 transition shadow-sm" title="Синхронизировать">
                         <span id="refreshIcon">🔄</span>
                     </button>
                     <!-- Кнопка бокового меню (Гамбургер) -->
-                    <button onclick="openSideDrawer()" class="w-8 h-8 rounded-xl bg-[#15171d] hover:bg-[#1c1f26] border border-[#c5a880]/30 flex items-center justify-center text-base text-[#dfcaab] active:scale-95 transition shadow-sm" title="Меню терминала">
+                    <button onclick="openSideDrawer()" class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-[#15171d] hover:bg-[#1c1f26] border border-[#c5a880]/30 flex items-center justify-center text-base sm:text-lg text-[#dfcaab] active:scale-95 transition shadow-sm" title="Меню терминала">
                         ☰
                     </button>
                 </div>
             </div>
 
             <!-- Строка 2: КАСТОМНЫЙ СОВРЕМЕННЫЙ СЕЛЕКТОР ЗАВЕДЕНИЯ (ВМЕСТО УСТАРЕВШЕГО SELECT) -->
-            <button type="button" onclick="openRestaurantPicker()" id="customRestTriggerBtn" class="w-full md:w-auto md:min-w-[320px] flex items-center justify-between bg-gradient-to-r from-[#15171d] to-[#1a1d24] hover:to-[#222631] border border-[#c5a880]/25 hover:border-[#c5a880]/50 rounded-xl px-3 py-2 shadow-md active:scale-[0.99] transition group">
-                <div class="flex items-center gap-2.5 min-w-0">
-                    <span class="text-base text-[#c5a880]">🏛</span>
+            <button type="button" onclick="openRestaurantPicker()" id="customRestTriggerBtn" class="w-full md:w-auto md:min-w-[340px] lg:min-w-[420px] flex items-center justify-between bg-gradient-to-r from-[#15171d] to-[#1a1d24] hover:to-[#222631] border border-[#c5a880]/25 hover:border-[#c5a880]/50 rounded-2xl px-3.5 sm:px-4 py-2 sm:py-2.5 shadow-md active:scale-[0.99] transition group">
+                <div class="flex items-center gap-3 min-w-0">
+                    <span class="text-lg sm:text-xl text-[#c5a880]">🏛</span>
                     <div class="text-left min-w-0">
-                        <div class="text-[9.5px] uppercase tracking-wider text-zinc-400 font-semibold truncate" id="lblPickerSub">Филиал / Заведение</div>
-                        <div id="lblCurrentRestDisplay" class="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#dfcaab] transition">
+                        <div class="text-[10px] sm:text-xs uppercase tracking-wider text-zinc-400 font-semibold truncate" id="lblPickerSub">Филиал / Заведение</div>
+                        <div id="lblCurrentRestDisplay" class="text-xs sm:text-sm lg:text-base font-bold text-white truncate group-hover:text-[#dfcaab] transition">
                             🌐 Все рестораны сети
                         </div>
                     </div>
                 </div>
-                <div class="flex items-center gap-1.5 text-[#c5a880] flex-shrink-0 pl-2">
-                    <span class="text-[10.5px] font-semibold px-2 py-0.5 rounded-md bg-[#0e1013] border border-white/10" id="lblCurrentRestCityTag">Все города</span>
-                    <span class="text-xs transition-transform group-hover:translate-y-0.5">▾</span>
+                <div class="flex items-center gap-2 text-[#c5a880] flex-shrink-0 pl-2">
+                    <span class="text-xs sm:text-sm font-semibold px-2.5 py-0.5 rounded-lg bg-[#0e1013] border border-white/10" id="lblCurrentRestCityTag">Все города</span>
+                    <span class="text-xs sm:text-sm transition-transform group-hover:translate-y-0.5">▾</span>
                 </div>
             </button>
             <!-- Скрытый нативный select для совместимости с API -->
@@ -704,92 +723,92 @@
     </div>
 
     <!-- ОСНОВНОЙ КОНТЕЙНЕР -->
-    <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-3 space-y-4">
+    <main class="max-w-[1600px] 2xl:max-w-[1760px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 space-y-6 sm:space-y-8">
 
         <!-- KPI ДАШБОРД СМЕНЫ -->
-        <div class="grid grid-cols-3 gap-2.5 sm:gap-4">
-            <div onclick="setQuickFilter('pending')" class="cursor-pointer bg-[#15171d] hover:bg-[#1c1f26] border border-amber-500/30 hover:border-amber-500/50 rounded-2xl p-3 sm:p-4 text-center transition active:scale-[0.97] shadow-sm">
-                <div class="text-[10px] sm:text-xs uppercase tracking-wider text-zinc-400 font-semibold truncate" id="lblKpiPending">Ждут ответа</div>
-                <div id="kpiPending" class="text-2xl sm:text-3xl font-black text-[#dfcaab] mt-0.5">0</div>
-                <div class="text-[10px] sm:text-xs text-amber-300/90 font-medium mt-0.5 truncate" id="lblKpiPendingSub">Новые заявки</div>
+        <div class="grid grid-cols-3 gap-3 sm:gap-6">
+            <div onclick="setQuickFilter('pending')" class="cursor-pointer bg-[#15171d] hover:bg-[#1c1f26] border border-amber-500/30 hover:border-amber-500/50 rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-7 text-center transition active:scale-[0.97] shadow-sm">
+                <div class="text-xs sm:text-sm lg:text-base uppercase tracking-wider text-zinc-400 font-bold truncate" id="lblKpiPending">Ждут ответа</div>
+                <div id="kpiPending" class="text-3xl sm:text-4xl lg:text-5xl font-black text-[#dfcaab] mt-1 sm:mt-2">0</div>
+                <div class="text-xs sm:text-sm lg:text-base text-amber-300/90 font-medium mt-1 truncate" id="lblKpiPendingSub">Новые заявки</div>
             </div>
-            <div onclick="setQuickFilter('confirmed')" class="cursor-pointer bg-[#15171d] hover:bg-[#1c1f26] border border-emerald-500/30 hover:border-emerald-500/50 rounded-2xl p-3 sm:p-4 text-center transition active:scale-[0.97] shadow-sm">
-                <div class="text-[10px] sm:text-xs uppercase tracking-wider text-zinc-400 font-semibold truncate" id="lblKpiConfirmed">В брони</div>
-                <div id="kpiConfirmed" class="text-2xl sm:text-3xl font-black text-emerald-400 mt-0.5">0</div>
-                <div class="text-[10px] sm:text-xs text-emerald-400/90 font-medium mt-0.5 truncate" id="lblKpiConfirmedSub">Столов занято</div>
+            <div onclick="setQuickFilter('confirmed')" class="cursor-pointer bg-[#15171d] hover:bg-[#1c1f26] border border-emerald-500/30 hover:border-emerald-500/50 rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-7 text-center transition active:scale-[0.97] shadow-sm">
+                <div class="text-xs sm:text-sm lg:text-base uppercase tracking-wider text-zinc-400 font-bold truncate" id="lblKpiConfirmed">В брони</div>
+                <div id="kpiConfirmed" class="text-3xl sm:text-4xl lg:text-5xl font-black text-emerald-400 mt-1 sm:mt-2">0</div>
+                <div class="text-xs sm:text-sm lg:text-base text-emerald-400/90 font-medium mt-1 truncate" id="lblKpiConfirmedSub">Столов занято</div>
             </div>
-            <div onclick="switchTab('floor')" class="cursor-pointer bg-[#15171d] hover:bg-[#1c1f26] border border-sky-500/30 hover:border-sky-500/50 rounded-2xl p-3 sm:p-4 text-center transition active:scale-[0.97] shadow-sm">
-                <div class="text-[10px] sm:text-xs uppercase tracking-wider text-zinc-400 font-semibold truncate" id="lblKpiGuests">Гостей</div>
-                <div id="kpiGuests" class="text-2xl sm:text-3xl font-black text-sky-400 mt-0.5">0</div>
-                <div class="text-[10px] sm:text-xs text-sky-400/90 font-medium mt-0.5 truncate" id="lblKpiGuestsSub">В смене →</div>
+            <div onclick="switchTab('floor')" class="cursor-pointer bg-[#15171d] hover:bg-[#1c1f26] border border-sky-500/30 hover:border-sky-500/50 rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-7 text-center transition active:scale-[0.97] shadow-sm">
+                <div class="text-xs sm:text-sm lg:text-base uppercase tracking-wider text-zinc-400 font-bold truncate" id="lblKpiGuests">Гостей</div>
+                <div id="kpiGuests" class="text-3xl sm:text-4xl lg:text-5xl font-black text-sky-400 mt-1 sm:mt-2">0</div>
+                <div class="text-xs sm:text-sm lg:text-base text-sky-400/90 font-medium mt-1 truncate" id="lblKpiGuestsSub">В смене →</div>
             </div>
         </div>
 
         <!-- ================= ВКЛАДКА 1: ЖУРНАЛ ЗАЯВОК ================= -->
-        <section id="tab-orders" class="space-y-3 fade-in">
+        <section id="tab-orders" class="space-y-4 sm:space-y-6 fade-in">
             <!-- Поиск и фильтры -->
-            <div class="bg-[#15171d] border border-white/5 rounded-2xl p-3 sm:p-4 space-y-3">
+            <div class="bg-[#15171d] border border-white/5 rounded-2xl sm:rounded-3xl p-4 sm:p-6 space-y-4 shadow-md">
                 <!-- Строка 1: Поиск + Кнопка Тест -->
-                <div class="flex items-center gap-2.5">
+                <div class="flex items-center gap-3">
                     <div class="relative flex-1">
                         <input
                             id="searchOrdersInput"
                             type="text"
                             oninput="renderOrders()"
                             placeholder="Поиск по имени, телефону или #ID..."
-                            class="w-full bg-[#0e1013] border border-white/10 focus:border-[#c5a880] rounded-xl pl-9 pr-3 py-2 text-xs sm:text-sm text-white placeholder-zinc-500 focus:outline-none transition shadow-inner"
+                            class="w-full bg-[#0e1013] border border-white/10 focus:border-[#c5a880] rounded-2xl pl-11 sm:pl-12 pr-4 py-3 sm:py-3.5 lg:py-4 text-xs sm:text-sm lg:text-base text-white placeholder-zinc-500 focus:outline-none transition shadow-inner"
                         >
-                        <span class="absolute left-3 top-2.5 text-zinc-400 text-xs">🔍</span>
+                        <span class="absolute left-3.5 sm:left-4 top-3 sm:top-3.5 lg:top-4 text-zinc-400 text-sm sm:text-base lg:text-lg">🔍</span>
                     </div>
-                    <button onclick="createDemoBooking()" title="Создать тестовую бронь" class="h-9 px-3.5 rounded-xl text-xs font-bold bg-[#c5a880]/15 text-[#dfcaab] border border-[#c5a880]/30 hover:bg-[#c5a880]/25 transition whitespace-nowrap flex items-center gap-1.5 flex-shrink-0 active:scale-95">
+                    <button onclick="createDemoBooking()" title="Создать тестовую бронь" class="h-11 sm:h-12 lg:h-14 px-4 sm:px-6 rounded-2xl text-xs sm:text-sm lg:text-base font-bold bg-[#c5a880]/15 text-[#dfcaab] border border-[#c5a880]/30 hover:bg-[#c5a880]/25 transition whitespace-nowrap flex items-center gap-2 flex-shrink-0 active:scale-95 shadow-sm">
                         <span>+ Тест</span>
                     </button>
                 </div>
 
                 <!-- Строка 2: Фильтр по дате (полная ширина 3 колонки) -->
-                <div class="grid grid-cols-3 gap-1.5 bg-[#0e1013] p-1 rounded-xl border border-white/5 max-w-md">
-                    <button onclick="setDateFilter('all')" id="dateBtn-all" class="py-2 rounded-lg text-xs font-bold bg-[#c5a880] text-[#0e1013] transition text-center shadow-sm active:scale-95">Все дни</button>
-                    <button onclick="setDateFilter('today')" id="dateBtn-today" class="py-2 rounded-lg text-xs font-medium text-zinc-400 hover:text-white transition text-center active:scale-95">Сегодня</button>
-                    <button onclick="setDateFilter('tomorrow')" id="dateBtn-tomorrow" class="py-2 rounded-lg text-xs font-medium text-zinc-400 hover:text-white transition text-center active:scale-95">Завтра</button>
+                <div class="grid grid-cols-3 gap-2 bg-[#0e1013] p-1.5 rounded-2xl border border-white/5 max-w-lg">
+                    <button onclick="setDateFilter('all')" id="dateBtn-all" class="py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm lg:text-base font-bold bg-[#c5a880] text-[#0e1013] transition text-center shadow-sm active:scale-95">Все дни</button>
+                    <button onclick="setDateFilter('today')" id="dateBtn-today" class="py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm lg:text-base font-semibold text-zinc-400 hover:text-white transition text-center active:scale-95">Сегодня</button>
+                    <button onclick="setDateFilter('tomorrow')" id="dateBtn-tomorrow" class="py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm lg:text-base font-semibold text-zinc-400 hover:text-white transition text-center active:scale-95">Завтра</button>
                 </div>
 
                 <!-- Строка 3: Фильтр по статусу (плавный скролл) -->
-                <div class="flex gap-2 overflow-x-auto hide-scrollbar pb-0.5 -mx-0.5 px-0.5">
-                    <button onclick="setStatusFilter('all')" id="statusBtn-all" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white/15 text-white transition whitespace-nowrap flex-shrink-0 active:scale-95">Все</button>
-                    <button onclick="setStatusFilter('pending')" id="statusBtn-pending" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#0e1013] text-amber-300 border border-amber-500/25 transition whitespace-nowrap flex-shrink-0 active:scale-95">⏳ Новые</button>
-                    <button onclick="setStatusFilter('confirmed')" id="statusBtn-confirmed" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#0e1013] text-emerald-400 border border-emerald-500/25 transition whitespace-nowrap flex-shrink-0 active:scale-95">✅ В брони</button>
-                    <button onclick="setStatusFilter('arrived')" id="statusBtn-arrived" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#0e1013] text-sky-400 border border-sky-500/25 transition whitespace-nowrap flex-shrink-0 active:scale-95">🥂 За столом</button>
-                    <button onclick="setStatusFilter('rejected')" id="statusBtn-rejected" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#0e1013] text-rose-400 border border-rose-500/25 transition whitespace-nowrap flex-shrink-0 active:scale-95">❌ Отмена</button>
+                <div class="flex gap-2.5 overflow-x-auto hide-scrollbar pb-0.5 -mx-0.5 px-0.5">
+                    <button onclick="setStatusFilter('all')" id="statusBtn-all" class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-2xl text-xs sm:text-sm lg:text-base font-bold bg-white/15 text-white transition whitespace-nowrap flex-shrink-0 active:scale-95">Все</button>
+                    <button onclick="setStatusFilter('pending')" id="statusBtn-pending" class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-2xl text-xs sm:text-sm lg:text-base font-bold bg-[#0e1013] text-amber-300 border border-amber-500/25 transition whitespace-nowrap flex-shrink-0 active:scale-95">⏳ Новые</button>
+                    <button onclick="setStatusFilter('confirmed')" id="statusBtn-confirmed" class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-2xl text-xs sm:text-sm lg:text-base font-bold bg-[#0e1013] text-emerald-400 border border-emerald-500/25 transition whitespace-nowrap flex-shrink-0 active:scale-95">✅ В брони</button>
+                    <button onclick="setStatusFilter('arrived')" id="statusBtn-arrived" class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-2xl text-xs sm:text-sm lg:text-base font-bold bg-[#0e1013] text-sky-400 border border-sky-500/25 transition whitespace-nowrap flex-shrink-0 active:scale-95">🥂 За столом</button>
+                    <button onclick="setStatusFilter('rejected')" id="statusBtn-rejected" class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-2xl text-xs sm:text-sm lg:text-base font-bold bg-[#0e1013] text-rose-400 border border-rose-500/25 transition whitespace-nowrap flex-shrink-0 active:scale-95">❌ Отмена</button>
                 </div>
             </div>
 
             <!-- Список карточек бронирований (Multi-column на планшетах и десктопе) -->
-            <div id="ordersContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+            <div id="ordersContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"></div>
         </section>
 
         <!-- ================= ВКЛАДКА 2: ЗАЛ И ШАХМАТКА СТОЛОВ ================= -->
-        <section id="tab-floor" class="hidden space-y-3 fade-in">
-            <div class="bg-[#15171d] border border-[#c5a880]/20 rounded-2xl p-3.5 space-y-3">
+        <section id="tab-floor" class="hidden space-y-4 sm:space-y-6 fade-in">
+            <div class="bg-[#15171d] border border-[#c5a880]/20 rounded-3xl p-5 sm:p-6 lg:p-7 space-y-4 sm:space-y-5 shadow-lg">
                 <div class="flex items-center justify-between">
                     <div>
-                        <h2 class="text-sm font-bold text-[#f3f1ed] font-serif-luxury">🪑 Интерактивная карта зала</h2>
-                        <p id="floorSubtitle" class="text-[11px] text-[#98948c]">Нажмите на любой стол для посадки или просмотра брони</p>
+                        <h2 class="text-base sm:text-lg lg:text-xl font-bold text-[#f3f1ed] font-serif-luxury">🪑 Интерактивная карта зала</h2>
+                        <p id="floorSubtitle" class="text-xs sm:text-sm text-[#98948c] mt-0.5">Нажмите на любой стол для посадки или просмотра брони</p>
                     </div>
-                    <span id="floorOccupancyBadge" class="px-2.5 py-1 rounded-xl text-[11px] font-bold bg-[#0e1013] text-[#dfcaab] border border-[#c5a880]/30">
+                    <span id="floorOccupancyBadge" class="px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold bg-[#0e1013] text-[#dfcaab] border border-[#c5a880]/30 shadow-sm">
                         Занято: 0/8
                     </span>
                 </div>
 
                 <!-- Выбор даты и смены для карты зала -->
-                <div class="grid grid-cols-2 gap-2">
+                <div class="grid grid-cols-2 gap-3 sm:gap-4">
                     <div>
-                        <label class="text-[10px] text-zinc-400 block mb-1">📅 Дата смены</label>
-                        <select id="floorDateSelect" onchange="renderFloorMap()" class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-2.5 py-2 text-xs text-white focus:outline-none focus:border-[#c5a880]">
+                        <label class="text-xs sm:text-sm font-bold text-zinc-400 block mb-1.5">📅 Дата смены</label>
+                        <select id="floorDateSelect" onchange="renderFloorMap()" class="w-full bg-[#0e1013] border border-white/10 rounded-2xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm lg:text-base text-white focus:outline-none focus:border-[#c5a880]">
                         </select>
                     </div>
                     <div>
-                        <label class="text-[10px] text-zinc-400 block mb-1">🕒 Время / Период</label>
-                        <select id="floorTimeSelect" onchange="renderFloorMap()" class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-2.5 py-2 text-xs text-white focus:outline-none focus:border-[#c5a880]">
+                        <label class="text-xs sm:text-sm font-bold text-zinc-400 block mb-1.5">🕒 Время / Период</label>
+                        <select id="floorTimeSelect" onchange="renderFloorMap()" class="w-full bg-[#0e1013] border border-white/10 rounded-2xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm lg:text-base text-white focus:outline-none focus:border-[#c5a880]">
                             <option value="all">Весь день (Все брони)</option>
                             <option value="12:00">☀️ 12:00 — Обед</option>
                             <option value="13:00">☀️ 13:00 — Обед</option>
@@ -803,52 +822,52 @@
                 </div>
 
                 <!-- Легенда -->
-                <div class="flex items-center justify-between text-[10px] text-zinc-400 pt-1 border-t border-white/5">
-                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500/30 border border-emerald-400"></span> Свободен</span>
-                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500/30 border border-amber-400"></span> Ждёт ответа</span>
-                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-[#c5a880]/30 border border-[#c5a880]"></span> В брони</span>
-                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-sky-500/30 border border-sky-400"></span> Гости сидят</span>
+                <div class="flex items-center justify-between text-xs sm:text-sm text-zinc-400 pt-2 border-t border-white/5 flex-wrap gap-2">
+                    <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-emerald-500/30 border border-emerald-400"></span> Свободен</span>
+                    <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-amber-500/30 border border-amber-400"></span> Ждёт ответа</span>
+                    <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-[#c5a880]/30 border border-[#c5a880]"></span> В брони</span>
+                    <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-sky-500/30 border border-sky-400"></span> Гости сидят</span>
                 </div>
 
                 <!-- Сцена / Вход / Панорамные окна -->
-                <div class="w-full py-1.5 rounded-lg bg-[#0e1013] border border-white/5 text-center text-[10px] text-zinc-500 uppercase tracking-widest">
+                <div class="w-full py-2 sm:py-2.5 rounded-2xl bg-[#0e1013] border border-white/5 text-center text-xs sm:text-sm text-zinc-400 uppercase tracking-widest font-semibold">
                     ✨ Панорамные окна • Главный зал ✨
                 </div>
 
                 <!-- Сетка столов -->
-                <div id="floorTablesGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3"></div>
+                <div id="floorTablesGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 lg:gap-5"></div>
             </div>
         </section>
 
         <!-- ================= ВКЛАДКА 3: РУЧНАЯ БРОНЬ ПО ЗВОНКУ / WALK-IN ================= -->
-        <section id="tab-walkin" class="hidden space-y-3 fade-in">
-            <div class="max-w-3xl mx-auto bg-[#15171d] border border-[#c5a880]/25 rounded-2xl p-4 sm:p-6 space-y-4 shadow-xl">
+        <section id="tab-walkin" class="hidden space-y-4 sm:space-y-6 fade-in">
+            <div class="max-w-4xl lg:max-w-5xl mx-auto bg-[#15171d] border border-[#c5a880]/25 rounded-3xl p-5 sm:p-7 lg:p-8 space-y-5 shadow-xl">
                 <div>
-                    <h2 class="text-base sm:text-lg font-bold text-[#f3f1ed] font-serif-luxury">📞 Быстрая бронь от Хостес</h2>
-                    <p class="text-xs sm:text-sm text-[#98948c]">Для гостей, позвонивших по телефону или пришедших с улицы (Walk-in)</p>
+                    <h2 class="text-base sm:text-lg lg:text-xl font-bold text-[#f3f1ed] font-serif-luxury">📞 Быстрая бронь от Хостес</h2>
+                    <p class="text-xs sm:text-sm text-[#98948c] mt-0.5">Для гостей, позвонивших по телефону или пришедших с улицы (Walk-in)</p>
                 </div>
 
-                <div class="space-y-3.5">
+                <div class="space-y-4">
                     <div>
-                        <label class="text-xs text-zinc-400 block mb-1">🏛 Заведение</label>
-                        <select id="walkinRestSelect" onchange="populateWalkinTables()" class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-3 py-2.5 text-xs font-semibold text-white focus:outline-none focus:border-[#c5a880]"></select>
+                        <label class="text-xs sm:text-sm font-bold text-zinc-300 block mb-1.5">🏛 Заведение</label>
+                        <select id="walkinRestSelect" onchange="populateWalkinTables()" class="w-full bg-[#0e1013] border border-white/10 rounded-2xl px-4 py-3 sm:py-3.5 text-xs sm:text-sm lg:text-base font-semibold text-white focus:outline-none focus:border-[#c5a880]"></select>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                         <div>
-                            <label class="text-xs text-zinc-400 block mb-1">📅 Дата</label>
-                            <select id="walkinDateSelect" class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-[#c5a880]"></select>
+                            <label class="text-xs sm:text-sm font-bold text-zinc-300 block mb-1.5">📅 Дата</label>
+                            <select id="walkinDateSelect" class="w-full bg-[#0e1013] border border-white/10 rounded-2xl px-4 py-3 sm:py-3.5 text-xs sm:text-sm lg:text-base text-white focus:outline-none focus:border-[#c5a880]"></select>
                         </div>
                         <div>
-                            <label class="text-xs text-zinc-400 block mb-1">🕒 Время визита</label>
-                            <input id="walkinTimeInput" type="time" value="19:30" class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-3 py-2 text-xs font-bold text-[#dfcaab] focus:outline-none focus:border-[#c5a880]">
+                            <label class="text-xs sm:text-sm font-bold text-zinc-300 block mb-1.5">🕒 Время визита</label>
+                            <input id="walkinTimeInput" type="time" value="19:30" class="w-full bg-[#0e1013] border border-white/10 rounded-2xl px-4 py-3 sm:py-3.5 text-xs sm:text-sm lg:text-base font-bold text-[#dfcaab] focus:outline-none focus:border-[#c5a880]">
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                         <div>
-                            <label class="text-xs text-zinc-400 block mb-1">👥 Кол-во гостей</label>
-                            <select id="walkinGuestsSelect" onchange="populateWalkinTables()" class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-[#c5a880]">
+                            <label class="text-xs sm:text-sm font-bold text-zinc-300 block mb-1.5">👥 Кол-во гостей</label>
+                            <select id="walkinGuestsSelect" onchange="populateWalkinTables()" class="w-full bg-[#0e1013] border border-white/10 rounded-2xl px-4 py-3 sm:py-3.5 text-xs sm:text-sm lg:text-base text-white focus:outline-none focus:border-[#c5a880]">
                                 <option value="2">2 гостя</option>
                                 <option value="3">3 гостя</option>
                                 <option value="4" selected>4 гостя</option>
@@ -858,33 +877,33 @@
                             </select>
                         </div>
                         <div>
-                            <label class="text-xs text-zinc-400 block mb-1">🪑 Выберите стол</label>
-                            <select id="walkinTableSelect" class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-[#c5a880]"></select>
+                            <label class="text-xs sm:text-sm font-bold text-zinc-300 block mb-1.5">🪑 Выберите стол</label>
+                            <select id="walkinTableSelect" class="w-full bg-[#0e1013] border border-white/10 rounded-2xl px-4 py-3 sm:py-3.5 text-xs sm:text-sm lg:text-base text-white focus:outline-none focus:border-[#c5a880]"></select>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                         <div>
-                            <label class="text-xs text-zinc-400 block mb-1">👤 Имя гостя</label>
-                            <input id="walkinNameInput" type="text" placeholder="Например: Асхат (VIP / По звонку)" class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
+                            <label class="text-xs sm:text-sm font-bold text-zinc-300 block mb-1.5">👤 Имя гостя</label>
+                            <input id="walkinNameInput" type="text" placeholder="Например: Асхат (VIP / По звонку)" class="w-full bg-[#0e1013] border border-white/10 rounded-2xl px-4 py-3 sm:py-3.5 text-xs sm:text-sm lg:text-base text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
                         </div>
 
                         <div>
-                            <label class="text-xs text-zinc-400 block mb-1">📱 Телефон гостя</label>
-                            <input id="walkinPhoneInput" type="tel" placeholder="+7 (777) 000-00-00" class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
+                            <label class="text-xs sm:text-sm font-bold text-zinc-300 block mb-1.5">📱 Телефон гостя</label>
+                            <input id="walkinPhoneInput" type="tel" placeholder="+7 (777) 000-00-00" class="w-full bg-[#0e1013] border border-white/10 rounded-2xl px-4 py-3 sm:py-3.5 text-xs sm:text-sm lg:text-base text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
                         </div>
                     </div>
 
                     <div>
-                        <label class="text-xs text-zinc-400 block mb-1">💬 Комментарий для хостес / официанта</label>
-                        <input id="walkinCommentInput" type="text" placeholder="Например: День рождения, тихий столик, детское кресло" class="w-full bg-[#0e1013] border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
+                        <label class="text-xs sm:text-sm font-bold text-zinc-300 block mb-1.5">💬 Комментарий для хостес / официанта</label>
+                        <input id="walkinCommentInput" type="text" placeholder="Например: День рождения, тихий столик, детское кресло" class="w-full bg-[#0e1013] border border-white/10 rounded-2xl px-4 py-3 sm:py-3.5 text-xs sm:text-sm lg:text-base text-white placeholder-zinc-500 focus:outline-none focus:border-[#c5a880]">
                     </div>
 
-                    <div class="grid grid-cols-2 gap-2 pt-1">
-                        <button onclick="submitWalkinBooking('confirmed')" class="py-3 rounded-xl font-bold text-xs luxury-gold-btn transition">
+                    <div class="grid grid-cols-2 gap-3 pt-2">
+                        <button onclick="submitWalkinBooking('confirmed')" class="py-3.5 sm:py-4 rounded-2xl font-bold text-xs sm:text-sm lg:text-base luxury-gold-btn transition shadow-md">
                             ✅ Забронировать стол
                         </button>
-                        <button onclick="submitWalkinBooking('arrived')" class="py-3 rounded-xl font-bold text-xs bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/40 transition">
+                        <button onclick="submitWalkinBooking('arrived')" class="py-3.5 sm:py-4 rounded-2xl font-bold text-xs sm:text-sm lg:text-base bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/40 transition shadow-md">
                             🥂 Сразу посадить за стол
                         </button>
                     </div>
@@ -1218,30 +1237,30 @@
     </main>
 
     <!-- НИЖНЯЯ НАВИГАЦИЯ ТЕРМИНАЛА РЕСТОРАНА -->
-    <nav class="fixed bottom-0 md:bottom-5 left-0 right-0 md:left-1/2 md:-translate-x-1/2 z-40 glass-header border-t md:border border-[#c5a880]/20 md:border-[#c5a880]/35 md:rounded-2xl px-2 md:px-5 pt-1.5 md:py-2.5 pb-[max(0.6rem,env(safe-area-inset-bottom))] md:pb-2.5 md:shadow-2xl md:shadow-black/90 md:w-auto md:min-w-[500px]">
-        <div id="adminNavGrid" class="max-w-md md:max-w-none mx-auto grid grid-cols-4 gap-1 sm:gap-3">
-            <button onclick="switchTab('orders')" id="navBtn-orders" class="flex flex-col items-center justify-center py-1 rounded-xl bg-[#c5a880]/15 text-[#dfcaab] border border-[#c5a880]/30 transition">
+    <nav class="fixed bottom-0 md:bottom-7 left-0 right-0 md:left-1/2 md:-translate-x-1/2 z-40 glass-header border-t md:border border-[#c5a880]/20 md:border-[#c5a880]/40 md:rounded-3xl px-3 md:px-8 pt-2 md:py-3.5 pb-[max(0.7rem,env(safe-area-inset-bottom))] md:pb-3.5 md:shadow-2xl md:shadow-black/90 md:w-auto md:min-w-[620px] lg:min-w-[720px] xl:min-w-[800px]">
+        <div id="adminNavGrid" class="max-w-md md:max-w-none mx-auto grid grid-cols-4 gap-1.5 sm:gap-4 lg:gap-6">
+            <button onclick="switchTab('orders')" id="navBtn-orders" class="flex flex-col items-center justify-center py-2 sm:py-2.5 px-3 rounded-2xl bg-[#c5a880]/15 text-[#dfcaab] border border-[#c5a880]/30 transition shadow-sm">
                 <div class="relative">
-                    <span class="text-base">📋</span>
-                    <span id="navBadgePending" class="hidden absolute -top-1 -right-3 px-1.5 py-0.2 rounded-full text-[9px] font-bold bg-[#c5a880] text-[#0e1013]">0</span>
+                    <span class="text-lg sm:text-xl lg:text-2xl">📋</span>
+                    <span id="navBadgePending" class="hidden absolute -top-1.5 -right-3.5 px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-black bg-[#c5a880] text-[#0e1013] shadow-md">0</span>
                 </div>
-                <span id="lblNavOrders" class="text-[9.5px] font-semibold mt-0.5">Заявки</span>
+                <span id="lblNavOrders" class="text-[10px] sm:text-xs lg:text-sm font-bold mt-1">Заявки</span>
             </button>
-            <button onclick="switchTab('floor')" id="navBtn-floor" class="flex flex-col items-center justify-center py-1 rounded-xl text-zinc-400 hover:text-white transition">
-                <span class="text-base">🪑</span>
-                <span id="lblNavFloor" class="text-[9.5px] font-medium mt-0.5">Зал</span>
+            <button onclick="switchTab('floor')" id="navBtn-floor" class="flex flex-col items-center justify-center py-2 sm:py-2.5 px-3 rounded-2xl text-zinc-400 hover:text-white transition">
+                <span class="text-lg sm:text-xl lg:text-2xl">🪑</span>
+                <span id="lblNavFloor" class="text-[10px] sm:text-xs lg:text-sm font-semibold mt-1">Зал</span>
             </button>
-            <button onclick="switchTab('walkin')" id="navBtn-walkin" class="flex flex-col items-center justify-center py-1 rounded-xl text-zinc-400 hover:text-white transition">
-                <span class="text-base">📞</span>
-                <span id="lblNavWalkin" class="text-[9.5px] font-medium mt-0.5">По звонку</span>
+            <button onclick="switchTab('walkin')" id="navBtn-walkin" class="flex flex-col items-center justify-center py-2 sm:py-2.5 px-3 rounded-2xl text-zinc-400 hover:text-white transition">
+                <span class="text-lg sm:text-xl lg:text-2xl">📞</span>
+                <span id="lblNavWalkin" class="text-[10px] sm:text-xs lg:text-sm font-semibold mt-1">По звонку</span>
             </button>
-            <button onclick="switchTab('manage')" id="navBtn-manage" class="flex flex-col items-center justify-center py-1 rounded-xl text-zinc-400 hover:text-white transition">
-                <span class="text-base">🏛</span>
-                <span id="lblNavManage" class="text-[9.5px] font-medium mt-0.5">Ресторан</span>
+            <button onclick="switchTab('manage')" id="navBtn-manage" class="flex flex-col items-center justify-center py-2 sm:py-2.5 px-3 rounded-2xl text-zinc-400 hover:text-white transition">
+                <span class="text-lg sm:text-xl lg:text-2xl">🏛</span>
+                <span id="lblNavManage" class="text-[10px] sm:text-xs lg:text-sm font-semibold mt-1">Ресторан</span>
             </button>
-            <button onclick="switchTab('subscriptions')" id="navBtn-subscriptions" class="hidden flex flex-col items-center justify-center py-1 rounded-xl text-zinc-400 hover:text-white transition">
-                <span class="text-base">🛡️</span>
-                <span id="lblNavSubscriptions" class="text-[9.5px] font-medium mt-0.5">Лицензии</span>
+            <button onclick="switchTab('subscriptions')" id="navBtn-subscriptions" class="hidden flex flex-col items-center justify-center py-2 sm:py-2.5 px-3 rounded-2xl text-zinc-400 hover:text-white transition">
+                <span class="text-lg sm:text-xl lg:text-2xl">🛡️</span>
+                <span id="lblNavSubscriptions" class="text-[10px] sm:text-xs lg:text-sm font-semibold mt-1">Лицензии</span>
             </button>
         </div>
     </nav>
@@ -2576,13 +2595,13 @@
         function getStatusBadge(status) {
             switch (status) {
                 case 'confirmed':
-                    return `<span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">✅ В брони</span>`;
+                    return `<span class="px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 shadow-sm">✅ В брони</span>`;
                 case 'arrived':
-                    return `<span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-sky-500/15 text-sky-300 border border-sky-500/30">🥂 За столом</span>`;
+                    return `<span class="px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-sky-500/15 text-sky-300 border border-sky-500/30 shadow-sm">🥂 За столом</span>`;
                 case 'rejected':
-                    return `<span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-rose-500/15 text-rose-400 border border-rose-500/30">❌ Отклонена</span>`;
+                    return `<span class="px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-rose-500/15 text-rose-400 border border-rose-500/30 shadow-sm">❌ Отклонена</span>`;
                 default:
-                    return `<span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30 animate-pulse">⏳ Ждёт подтверждения</span>`;
+                    return `<span class="px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30 animate-pulse shadow-sm">⏳ Ждёт подтверждения</span>`;
             }
         }
 
@@ -2615,95 +2634,95 @@
 
             if (list.length === 0) {
                 container.innerHTML = `
-                    <div class="col-span-full bg-[#15171d] border border-white/5 rounded-2xl p-12 text-center space-y-2">
-                        <div class="text-3xl">🍽</div>
-                        <div class="text-sm font-bold text-[#f3f1ed]">Заявок по выбранному фильтру нет</div>
-                        <p class="text-xs text-[#98948c]">Вы можете создать бронь по звонку во вкладке «По звонку» или нажать «+ Тест»</p>
+                    <div class="col-span-full bg-[#15171d] border border-white/5 rounded-3xl p-12 text-center space-y-3">
+                        <div class="text-4xl">🍽</div>
+                        <div class="text-base sm:text-lg font-bold text-[#f3f1ed]">Заявок по выбранному фильтру нет</div>
+                        <p class="text-xs sm:text-sm text-[#98948c]">Вы можете создать бронь по звонку во вкладке «По звонку» или нажать «+ Тест»</p>
                     </div>
                 `;
                 return;
             }
 
             container.innerHTML = list.map(b => `
-                <div class="bg-[#15171d] border ${b.status === 'pending' ? 'border-amber-500/40 shadow-lg shadow-amber-500/10' : 'border-white/10'} rounded-2xl p-3.5 space-y-3 transition">
-                    <div class="flex items-start justify-between gap-2">
+                <div class="bg-[#15171d] border ${b.status === 'pending' ? 'border-amber-500/50 shadow-xl shadow-amber-500/10' : 'border-white/10'} rounded-3xl p-5 sm:p-6 lg:p-7 space-y-4 transition-all hover:border-[#c5a880]/40">
+                    <div class="flex items-start justify-between gap-3">
                         <div class="min-w-0">
-                            <div class="flex items-center gap-1.5">
-                                <span class="text-[11px] font-bold px-2 py-0.5 rounded-lg bg-[#0e1013] text-[#c5a880] border border-[#c5a880]/25 truncate max-w-[170px]">🏛 ${b.restName}</span>
-                                <span class="text-xs text-zinc-500 font-mono">#${b.id}</span>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs sm:text-sm font-bold px-2.5 sm:px-3 py-1 rounded-xl bg-[#0e1013] text-[#c5a880] border border-[#c5a880]/25 truncate max-w-[200px]">🏛 ${b.restName}</span>
+                                <span class="text-xs sm:text-sm text-zinc-500 font-mono">#${b.id}</span>
                             </div>
-                            <h3 class="text-sm sm:text-base font-bold text-white mt-1 flex items-center gap-1.5 truncate">
+                            <h3 class="text-base sm:text-lg lg:text-xl font-bold text-white mt-1.5 flex items-center gap-2 truncate">
                                 <span>👤</span> <span>${b.guestName}</span>
                             </h3>
-                            <a href="tel:${b.guestPhone}" class="text-xs sm:text-sm text-[#dfcaab] hover:underline font-semibold flex items-center gap-1 mt-0.5">
+                            <a href="tel:${b.guestPhone}" class="text-xs sm:text-sm lg:text-base text-[#dfcaab] hover:underline font-semibold flex items-center gap-1.5 mt-1">
                                 <span>📞</span> <span>${b.guestPhone}</span>
                             </a>
                         </div>
                         <div class="text-right flex-shrink-0">
                             ${getStatusBadge(b.status)}
-                            <div class="text-[11px] text-zinc-500 mt-1">${b.createdAt || 'Только что'}</div>
+                            <div class="text-xs text-zinc-500 mt-1.5 font-medium">${b.createdAt || 'Только что'}</div>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-3 gap-1.5 bg-[#0e1013] rounded-xl p-2.5 border border-white/5 text-center">
+                    <div class="grid grid-cols-3 gap-2 bg-[#0e1013] rounded-2xl p-3 sm:p-4 border border-white/5 text-center">
                         <div>
-                            <div class="text-[10px] text-zinc-400 font-semibold uppercase tracking-tight">Дата и Время</div>
-                            <div class="text-xs sm:text-sm font-bold text-[#dfcaab] mt-0.5 truncate">${b.date} • ${b.time}</div>
+                            <div class="text-[11px] sm:text-xs text-zinc-400 font-bold uppercase tracking-tight">Дата и Время</div>
+                            <div class="text-xs sm:text-sm lg:text-base font-bold text-[#dfcaab] mt-1 truncate">${b.date} • ${b.time}</div>
                         </div>
                         <div class="border-x border-white/5">
-                            <div class="text-[10px] text-zinc-400 font-semibold uppercase tracking-tight">Персон</div>
-                            <div class="text-xs sm:text-sm font-bold text-white mt-0.5">👥 ${b.guests} чел.</div>
+                            <div class="text-[11px] sm:text-xs text-zinc-400 font-bold uppercase tracking-tight">Персон</div>
+                            <div class="text-xs sm:text-sm lg:text-base font-bold text-white mt-1">👥 ${b.guests} чел.</div>
                         </div>
                         <div>
-                            <div class="text-[10px] text-zinc-400 font-semibold uppercase tracking-tight">Столик</div>
-                            <div class="text-xs sm:text-sm font-bold text-emerald-400 mt-0.5 truncate px-1">🪑 №${b.table_number}</div>
+                            <div class="text-[11px] sm:text-xs text-zinc-400 font-bold uppercase tracking-tight">Столик</div>
+                            <div class="text-xs sm:text-sm lg:text-base font-bold text-emerald-400 mt-1 truncate px-1">🪑 №${b.table_number}</div>
                         </div>
                     </div>
 
                     ${b.comment ? `
-                        <div class="bg-[#0e1013]/90 border border-[#c5a880]/20 rounded-xl px-3 py-2 text-xs sm:text-sm text-[#dfcaab] leading-relaxed">
+                        <div class="bg-[#0e1013]/90 border border-[#c5a880]/20 rounded-2xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm lg:text-base text-[#dfcaab] leading-relaxed">
                             💬 <span class="text-zinc-400 font-medium">Пожелание:</span> ${b.comment}
                         </div>
                     ` : ''}
 
                     <!-- Контекстные кнопки управления статусом -->
-                    <div class="pt-0.5">
+                    <div class="pt-1">
                         ${b.status === 'pending' ? `
-                            <div class="grid grid-cols-3 gap-2">
-                                <button onclick="changeStatus('${b.id}', 'confirmed')" class="col-span-2 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 transition active:scale-[0.98]">
+                            <div class="grid grid-cols-3 gap-2.5">
+                                <button onclick="changeStatus('${b.id}', 'confirmed')" class="col-span-2 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl text-xs sm:text-sm lg:text-base font-bold bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 transition active:scale-[0.98] shadow-sm">
                                     ✅ Подтвердить
                                 </button>
-                                <button onclick="changeStatus('${b.id}', 'rejected')" class="py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 border border-rose-500/30 transition active:scale-[0.98]">
+                                <button onclick="changeStatus('${b.id}', 'rejected')" class="py-3 sm:py-3.5 rounded-xl sm:rounded-2xl text-xs sm:text-sm lg:text-base font-semibold bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 border border-rose-500/30 transition active:scale-[0.98]">
                                     ❌ Отказ
                                 </button>
                             </div>
                         ` : b.status === 'confirmed' ? `
-                            <div class="grid grid-cols-3 gap-2">
-                                <button onclick="changeStatus('${b.id}', 'arrived')" class="col-span-2 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/40 transition active:scale-[0.98]">
+                            <div class="grid grid-cols-3 gap-2.5">
+                                <button onclick="changeStatus('${b.id}', 'arrived')" class="col-span-2 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl text-xs sm:text-sm lg:text-base font-bold bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/40 transition active:scale-[0.98] shadow-sm">
                                     🥂 Посадить за стол
                                 </button>
-                                <button onclick="changeStatus('${b.id}', 'rejected')" class="py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-white/5 hover:bg-rose-500/20 text-zinc-400 hover:text-rose-300 border border-white/10 transition active:scale-[0.98]">
+                                <button onclick="changeStatus('${b.id}', 'rejected')" class="py-3 sm:py-3.5 rounded-xl sm:rounded-2xl text-xs sm:text-sm lg:text-base font-semibold bg-white/5 hover:bg-rose-500/20 text-zinc-400 hover:text-rose-300 border border-white/10 transition active:scale-[0.98]">
                                     Отмена
                                 </button>
                             </div>
                         ` : b.status === 'arrived' ? `
-                            <div class="grid grid-cols-3 gap-2">
-                                <button onclick="changeStatus('${b.id}', 'rejected')" class="col-span-2 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 transition active:scale-[0.98]">
+                            <div class="grid grid-cols-3 gap-2.5">
+                                <button onclick="changeStatus('${b.id}', 'rejected')" class="col-span-2 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl text-xs sm:text-sm lg:text-base font-bold bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 transition active:scale-[0.98] shadow-sm">
                                     🔓 Стол освободился
                                 </button>
-                                <button onclick="changeStatus('${b.id}', 'confirmed')" class="py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-white/5 text-zinc-400 border border-white/10 transition active:scale-[0.98]">
+                                <button onclick="changeStatus('${b.id}', 'confirmed')" class="py-3 sm:py-3.5 rounded-xl sm:rounded-2xl text-xs sm:text-sm lg:text-base font-semibold bg-white/5 text-zinc-400 border border-white/10 transition active:scale-[0.98]">
                                     ↩ В бронь
                                 </button>
                             </div>
                         ` : `
                             <!-- Для отклонённых/завершённых заявок -->
-                            <div class="flex items-center justify-between gap-2 bg-[#0e1013] rounded-xl px-3 py-2 border border-white/5">
-                                <span class="text-xs text-zinc-400">Заявка отменена</span>
-                                <div class="flex gap-2">
-                                    <button onclick="changeStatus('${b.id}', 'confirmed')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/25 transition active:scale-95">
+                            <div class="flex items-center justify-between gap-3 bg-[#0e1013] rounded-2xl px-4 py-2.5 border border-white/5">
+                                <span class="text-xs sm:text-sm text-zinc-400 font-medium">Заявка отменена</span>
+                                <div class="flex gap-2.5">
+                                    <button onclick="changeStatus('${b.id}', 'confirmed')" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/25 transition active:scale-95">
                                         ↩ Восстановить
                                     </button>
-                                    <button onclick="deleteBookingLocal('${b.id}')" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-white/5 hover:bg-rose-500/20 text-zinc-400 hover:text-rose-300 transition active:scale-95" title="Удалить">
+                                    <button onclick="deleteBookingLocal('${b.id}')" class="px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white/5 hover:bg-rose-500/20 text-zinc-400 hover:text-rose-300 transition active:scale-95" title="Удалить">
                                         🗑
                                     </button>
                                 </div>

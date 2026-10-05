@@ -8,13 +8,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        sans: ['"Manrope"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
                         serif: ['"Playfair Display"', 'Georgia', 'serif'],
                     },
                     colors: {
@@ -35,9 +35,27 @@
         }
     </script>
     <style>
+        html {
+            font-size: 15px;
+        }
+        @media (min-width: 1024px) {
+            html {
+                font-size: 16px;
+            }
+        }
+        @media (min-width: 1440px) {
+            html {
+                font-size: 17px;
+            }
+        }
+        @media (min-width: 1920px) {
+            html {
+                font-size: 18px;
+            }
+        }
         body {
             -webkit-tap-highlight-color: transparent;
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: #0e1013;
             color: #f3efe9;
         }
@@ -74,43 +92,43 @@
 
     <!-- Top Navigation Bar -->
     <header class="sticky top-0 z-30 bg-[#0e1013]/95 backdrop-blur-md border-b border-[#20232c] px-4 py-3 sm:px-6 lg:px-8">
-        <div class="max-w-7xl mx-auto flex items-center justify-between gap-3 sm:gap-4">
+        <div class="max-w-[1600px] 2xl:max-w-[1760px] mx-auto flex items-center justify-between gap-3 sm:gap-5">
             <!-- Brand -->
-            <div class="flex items-center gap-2.5 min-w-0 cursor-pointer" onclick="switchTab('restaurants')">
-                <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#16181f] border border-[#c5a880]/30 flex items-center justify-center text-sm sm:text-base shadow-sm flex-shrink-0">
+            <div class="flex items-center gap-2.5 sm:gap-3.5 min-w-0 cursor-pointer" onclick="switchTab('restaurants')">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-xl sm:rounded-2xl bg-[#16181f] border border-[#c5a880]/30 flex items-center justify-center text-base sm:text-lg lg:text-xl shadow-sm flex-shrink-0">
                     🍽️
                 </div>
                 <div class="min-w-0">
-                    <h1 class="text-sm sm:text-base font-serif font-bold tracking-wide bg-gradient-to-r from-stone-100 via-[#dfcbb5] to-[#c5a880] bg-clip-text text-transparent leading-tight truncate">RestoKZ</h1>
-                    <p id="headerTagline" class="text-[9.5px] sm:text-[10.5px] text-[#8c93a0] font-medium tracking-tight truncate max-w-[150px] sm:max-w-none">Бронирование столов в Казахстане</p>
+                    <h1 class="text-base sm:text-lg lg:text-xl font-serif font-bold tracking-wide bg-gradient-to-r from-stone-100 via-[#dfcbb5] to-[#c5a880] bg-clip-text text-transparent leading-tight truncate">RestoKZ</h1>
+                    <p id="headerTagline" class="text-[10px] sm:text-xs lg:text-sm text-[#8c93a0] font-medium tracking-tight truncate max-w-[170px] sm:max-w-none">Бронирование столов в Казахстане</p>
                 </div>
             </div>
 
             <!-- Desktop Navigation Links (hidden on mobile, visible on md+) -->
-            <nav class="hidden md:flex items-center gap-1.5 bg-[#14171f] border border-[#252933] rounded-xl p-1">
-                <button type="button" onclick="switchTab('restaurants')" id="desktopNav-restaurants" class="px-4 py-1.5 rounded-lg text-xs font-bold text-[#0e1013] bg-[#c5a880] transition shadow-sm">
+            <nav class="hidden md:flex items-center gap-2 bg-[#14171f] border border-[#252933] rounded-2xl p-1.5">
+                <button type="button" onclick="switchTab('restaurants')" id="desktopNav-restaurants" class="px-5 lg:px-6 py-2 lg:py-2.5 rounded-xl text-xs sm:text-sm lg:text-base font-bold text-[#0e1013] bg-[#c5a880] transition shadow-sm">
                     🏠 Рестораны
                 </button>
-                <button type="button" onclick="switchTab('my-bookings')" id="desktopNav-my-bookings" class="px-4 py-1.5 rounded-lg text-xs font-semibold text-[#8c93a0] hover:text-[#f3efe9] transition">
+                <button type="button" onclick="switchTab('my-bookings')" id="desktopNav-my-bookings" class="px-5 lg:px-6 py-2 lg:py-2.5 rounded-xl text-xs sm:text-sm lg:text-base font-semibold text-[#8c93a0] hover:text-[#f3efe9] transition">
                     📋 Мои брони
                 </button>
             </nav>
 
             <!-- Language & City Selectors & PRO Terminal Button -->
-            <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
-                <button type="button" onclick="openRestaurantTerminal()" class="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-500/20 to-amber-600/30 text-amber-300 border border-amber-500/40 text-[10px] sm:text-xs font-bold shadow-sm hover:brightness-110 active:scale-95 transition whitespace-nowrap" title="Терминал хостес и управления заведением">
+            <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+                <button type="button" onclick="openRestaurantTerminal()" class="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 lg:px-5 py-2 lg:py-2.5 rounded-xl bg-gradient-to-r from-amber-500/20 to-amber-600/30 text-amber-300 border border-amber-500/40 text-xs sm:text-sm lg:text-base font-bold shadow-sm hover:brightness-110 active:scale-95 transition whitespace-nowrap" title="Терминал хостес и управления заведением">
                     <span>👑</span> <span class="hidden sm:inline">RestoKZ</span> <span>PRO</span>
                 </button>
                 <!-- Language Toggle (RU / KZ / EN) -->
-                <div class="flex items-center bg-[#15171d] border border-[#252933] rounded-lg p-0.5 shadow-sm">
-                    <button type="button" onclick="setLanguage('ru')" id="langBtn-ru" class="px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-[11px] font-bold rounded bg-[#c5a880] text-[#0e1013] transition">RU</button>
-                    <button type="button" onclick="setLanguage('kz')" id="langBtn-kz" class="px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-[11px] font-bold rounded text-[#8c93a0] hover:text-white transition">KZ</button>
-                    <button type="button" onclick="setLanguage('en')" id="langBtn-en" class="px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-[11px] font-bold rounded text-[#8c93a0] hover:text-white transition">EN</button>
+                <div class="flex items-center bg-[#15171d] border border-[#252933] rounded-xl p-1 shadow-sm">
+                    <button type="button" onclick="setLanguage('ru')" id="langBtn-ru" class="px-2 sm:px-2.5 lg:px-3 py-1 sm:py-1.5 text-xs sm:text-sm font-bold rounded-lg bg-[#c5a880] text-[#0e1013] transition">RU</button>
+                    <button type="button" onclick="setLanguage('kz')" id="langBtn-kz" class="px-2 sm:px-2.5 lg:px-3 py-1 sm:py-1.5 text-xs sm:text-sm font-bold rounded-lg text-[#8c93a0] hover:text-white transition">KZ</button>
+                    <button type="button" onclick="setLanguage('en')" id="langBtn-en" class="px-2 sm:px-2.5 lg:px-3 py-1 sm:py-1.5 text-xs sm:text-sm font-bold rounded-lg text-[#8c93a0] hover:text-white transition">EN</button>
                 </div>
 
                 <!-- City Selector -->
                 <div class="relative">
-                    <select id="citySelect" onchange="onCityChange(this.value)" class="bg-[#15171d] text-xs text-[#dfcbb5] font-medium py-1 sm:py-1.5 px-2 sm:px-2.5 rounded-lg border border-[#252933] outline-none focus:border-[#c5a880] transition-colors cursor-pointer">
+                    <select id="citySelect" onchange="onCityChange(this.value)" class="bg-[#15171d] text-xs sm:text-sm lg:text-base text-[#dfcbb5] font-semibold py-1.5 sm:py-2 lg:py-2.5 px-3 sm:px-3.5 rounded-xl border border-[#252933] outline-none focus:border-[#c5a880] transition-colors cursor-pointer">
                         <option value="Все" selected id="optCityAll">Все города</option>
                         <option value="Алматы">Алматы</option>
                         <option value="Астана">Астана</option>
@@ -122,44 +140,44 @@
     </header>
 
     <!-- Main Container (Responsive for Mobile, Tablet and Large Desktop) -->
-    <main class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 flex-1">
+    <main class="max-w-[1600px] 2xl:max-w-[1760px] mx-auto w-full px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 lg:pt-8 flex-1">
 
         <!-- TAB 1: RESTAURANTS CATALOG -->
-        <section id="tab-restaurants" class="space-y-4 sm:space-y-6">
+        <section id="tab-restaurants" class="space-y-5 sm:space-y-7">
             
             <!-- Desktop Hero Banner (hidden on mobile, visible on md+) -->
-            <div class="hidden md:block bg-gradient-to-r from-[#171a22] via-[#13161c] to-[#1c1813] border border-[#c5a880]/25 rounded-3xl p-6 lg:p-8 relative overflow-hidden shadow-2xl">
-                <div class="relative z-10 max-w-2xl space-y-2.5">
-                    <span class="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest font-bold px-3 py-1 bg-[#c5a880]/15 text-[#dfcbb5] border border-[#c5a880]/30 rounded-full">
+            <div class="hidden md:block bg-gradient-to-r from-[#171a22] via-[#13161c] to-[#1c1813] border border-[#c5a880]/25 rounded-3xl p-7 lg:p-10 relative overflow-hidden shadow-2xl">
+                <div class="relative z-10 max-w-3xl space-y-3">
+                    <span class="inline-flex items-center gap-2 text-xs sm:text-sm uppercase tracking-widest font-bold px-3.5 py-1.5 bg-[#c5a880]/15 text-[#dfcbb5] border border-[#c5a880]/30 rounded-full">
                         ✨ Гастрономический гид Казахстана
                     </span>
-                    <h2 class="text-2xl lg:text-4xl font-serif font-bold text-white tracking-wide leading-tight">
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-serif font-bold text-white tracking-wide leading-tight">
                         Бронируйте лучшие столики <br/><span class="bg-gradient-to-r from-[#f3efe9] via-[#dfcbb5] to-[#c5a880] bg-clip-text text-transparent">в ресторанах вашего города</span>
                     </h2>
-                    <p class="text-xs lg:text-sm text-[#8c93a0] max-w-xl leading-relaxed">
+                    <p class="text-xs sm:text-sm lg:text-base text-[#8c93a0] max-w-2xl leading-relaxed">
                         Интерактивная карта залов, актуальное меню с ценами в тенге, бронирование в 2 клика без звонков и ожидания.
                     </p>
                 </div>
-                <div class="absolute -right-6 -bottom-10 opacity-10 text-[160px] lg:text-[190px] select-none pointer-events-none">
+                <div class="absolute -right-6 -bottom-10 opacity-10 text-[160px] lg:text-[220px] select-none pointer-events-none">
                     🍽️
                 </div>
             </div>
 
             <!-- Search & Quick Filters -->
-            <div class="space-y-3">
-                <div class="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
-                    <div class="relative flex-1 max-w-full md:max-w-md">
+            <div class="space-y-4">
+                <div class="flex flex-col md:flex-row gap-3 sm:gap-4 items-stretch md:items-center justify-between">
+                    <div class="relative flex-1 max-w-full md:max-w-lg lg:max-w-xl">
                         <input type="text" id="searchInput" oninput="onSearchInput(this.value)" placeholder="Поиск ресторана, кухни, адреса..." 
-                               class="w-full bg-[#15171d] border border-[#252933] rounded-xl py-2.5 sm:py-3 pl-10 sm:pl-11 pr-4 text-xs placeholder-[#8c93a0] text-[#f3efe9] outline-none focus:border-[#c5a880] transition-all shadow-sm">
-                        <span class="absolute left-3.5 top-2.5 sm:top-3 text-[#8c93a0] text-sm">🔍</span>
+                               class="w-full bg-[#15171d] border border-[#252933] rounded-2xl py-3 sm:py-3.5 lg:py-4 pl-11 sm:pl-12 pr-4 text-xs sm:text-sm lg:text-base placeholder-[#8c93a0] text-[#f3efe9] outline-none focus:border-[#c5a880] transition-all shadow-sm">
+                        <span class="absolute left-3.5 sm:left-4 top-3 sm:top-3.5 lg:top-4 text-[#8c93a0] text-sm sm:text-base lg:text-lg">🔍</span>
                     </div>
 
                     <!-- Cuisine Chips -->
-                    <div class="flex gap-2 overflow-x-auto hide-scrollbar pb-1 text-xs">
-                        <button onclick="filterCuisine('Все')" class="cuisine-btn active px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-[#c5a880] text-[#0e1013] font-semibold whitespace-nowrap transition-all shadow-sm">Все</button>
-                        <button onclick="filterCuisine('Казахская')" class="cuisine-btn px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-[#15171d] text-[#8c93a0] border border-[#252933] hover:text-[#f3efe9] whitespace-nowrap transition-all">🥩 Казахская</button>
-                        <button onclick="filterCuisine('Итальянская')" class="cuisine-btn px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-[#15171d] text-[#8c93a0] border border-[#252933] hover:text-[#f3efe9] whitespace-nowrap transition-all">🍝 Итальянская</button>
-                        <button onclick="filterCuisine('Восточная')" class="cuisine-btn px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-[#15171d] text-[#8c93a0] border border-[#252933] hover:text-[#f3efe9] whitespace-nowrap transition-all">🫖 Восточная</button>
+                    <div class="flex gap-2.5 overflow-x-auto hide-scrollbar pb-1 text-xs sm:text-sm lg:text-base">
+                        <button onclick="filterCuisine('Все')" class="cuisine-btn active px-4 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 rounded-full bg-[#c5a880] text-[#0e1013] font-bold whitespace-nowrap transition-all shadow-sm">Все</button>
+                        <button onclick="filterCuisine('Казахская')" class="cuisine-btn px-4 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 rounded-full bg-[#15171d] text-[#8c93a0] border border-[#252933] hover:text-[#f3efe9] font-medium whitespace-nowrap transition-all">🥩 Казахская</button>
+                        <button onclick="filterCuisine('Итальянская')" class="cuisine-btn px-4 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 rounded-full bg-[#15171d] text-[#8c93a0] border border-[#252933] hover:text-[#f3efe9] font-medium whitespace-nowrap transition-all">🍝 Итальянская</button>
+                        <button onclick="filterCuisine('Восточная')" class="cuisine-btn px-4 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 rounded-full bg-[#15171d] text-[#8c93a0] border border-[#252933] hover:text-[#f3efe9] font-medium whitespace-nowrap transition-all">🫖 Восточная</button>
                     </div>
                 </div>
             </div>
@@ -1084,35 +1102,35 @@
             }
 
             listContainer.innerHTML = filtered.map(r => `
-                <div class="bg-[#15171d] border border-[#252933] rounded-2xl overflow-hidden shadow-sm hover:border-[#c5a880]/60 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 flex flex-col group">
-                    <div class="relative h-40 sm:h-44 bg-[#181a20] cursor-pointer overflow-hidden" onclick="openRestaurantModal(${r.id}, 'book')">
+                <div class="bg-[#15171d] border border-[#252933] rounded-3xl overflow-hidden shadow-md hover:border-[#c5a880]/60 hover:-translate-y-1.5 hover:shadow-2xl transition-all duration-300 flex flex-col group">
+                    <div class="relative h-48 sm:h-56 lg:h-64 xl:h-72 bg-[#181a20] cursor-pointer overflow-hidden" onclick="openRestaurantModal(${r.id}, 'book')">
                         <img src="${r.cover_image}" alt="${r.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         <div class="absolute inset-0 bg-gradient-to-t from-[#15171d] via-transparent to-black/30"></div>
                         
-                        <div class="absolute top-2.5 right-2.5 bg-[#0e1013]/80 backdrop-blur-md px-2 py-1 rounded-lg text-[#dfcbb5] text-xs font-semibold flex items-center gap-1 border border-[#252933]">
+                        <div class="absolute top-3 right-3 bg-[#0e1013]/85 backdrop-blur-md px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-[#dfcbb5] text-xs sm:text-sm font-bold flex items-center gap-1.5 border border-[#252933] shadow-md">
                             ⭐ ${r.rating}
                         </div>
 
-                        <div class="absolute bottom-2.5 left-3">
-                            <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 bg-[#c5a880] text-[#0e1013] rounded-md">
+                        <div class="absolute bottom-3 left-4 right-4">
+                            <span class="text-[11px] sm:text-xs uppercase font-extrabold tracking-wider px-2.5 py-1 bg-[#c5a880] text-[#0e1013] rounded-lg shadow-sm">
                                 ${r.city}
                             </span>
-                            <h3 class="text-base font-serif font-bold text-[#f3efe9] mt-1 leading-tight drop-shadow-sm">${r.name}</h3>
+                            <h3 class="text-lg sm:text-xl lg:text-2xl font-serif font-bold text-[#f3efe9] mt-1.5 leading-snug drop-shadow-md truncate">${r.name}</h3>
                         </div>
                     </div>
 
-                    <div class="p-3.5 sm:p-4 flex flex-col justify-between flex-1 space-y-3">
-                        <div class="space-y-1">
-                            <p class="text-xs text-[#c5a880] font-medium">${r.cuisine}</p>
-                            <p class="text-[11px] text-[#8c93a0] flex items-center gap-1 truncate" title="${r.address}">📍 ${r.address}</p>
-                            <p class="text-[11px] text-[#8c93a0]">${t.avg_check} <b class="text-[#dfcbb5] font-semibold">~${formatPrice(r.avg_check)}</b></p>
+                    <div class="p-4 sm:p-5 lg:p-6 flex flex-col justify-between flex-1 space-y-4">
+                        <div class="space-y-1.5">
+                            <p class="text-xs sm:text-sm lg:text-base text-[#c5a880] font-semibold">${r.cuisine}</p>
+                            <p class="text-xs sm:text-sm text-[#8c93a0] flex items-center gap-1.5 truncate" title="${r.address}">📍 ${r.address}</p>
+                            <p class="text-xs sm:text-sm lg:text-base text-[#8c93a0]">${t.avg_check} <b class="text-[#dfcbb5] font-bold">~${formatPrice(r.avg_check)}</b></p>
                         </div>
 
-                        <div class="flex gap-2 pt-1">
-                            <button onclick="openRestaurantModal(${r.id}, 'menu')" class="flex-1 py-2.5 rounded-xl bg-[#1c1f27] hover:bg-[#252933] text-[#dfcbb5] text-xs font-semibold border border-[#252933] transition-all">
+                        <div class="flex gap-2.5 pt-1">
+                            <button onclick="openRestaurantModal(${r.id}, 'menu')" class="flex-1 py-3 sm:py-3.5 rounded-xl bg-[#1c1f27] hover:bg-[#252933] text-[#dfcbb5] text-xs sm:text-sm lg:text-base font-semibold border border-[#252933] transition-all">
                                 ${t.menu_btn}
                             </button>
-                            <button onclick="openRestaurantModal(${r.id}, 'book')" class="flex-[1.5] py-2.5 rounded-xl bg-gradient-to-r from-[#c5a880] to-[#b3936a] text-[#0e1013] text-xs font-bold shadow-sm hover:brightness-105 active:scale-95 transition-all">
+                            <button onclick="openRestaurantModal(${r.id}, 'book')" class="flex-[1.5] py-3 sm:py-3.5 rounded-xl bg-gradient-to-r from-[#c5a880] to-[#b3936a] text-[#0e1013] text-xs sm:text-sm lg:text-base font-bold shadow-md hover:brightness-105 active:scale-95 transition-all">
                                 ${t.book_btn}
                             </button>
                         </div>
@@ -1840,37 +1858,37 @@
             list.innerHTML = bookings.map(b => {
                 let statusBadge = '';
                 if (b.status === 'confirmed') {
-                    statusBadge = '<span class="bg-emerald-950/40 text-emerald-300 border border-emerald-700/50 text-[10px] font-medium px-2.5 py-0.5 rounded-full">✅ Подтверждено</span>';
+                    statusBadge = '<span class="bg-emerald-950/40 text-emerald-300 border border-emerald-700/50 text-xs sm:text-sm font-semibold px-3 sm:px-3.5 py-1 rounded-full shadow-sm">✅ Подтверждено</span>';
                 } else if (b.status === 'pending') {
-                    statusBadge = '<span class="bg-[#c5a880]/15 text-[#dfcbb5] border border-[#c5a880]/40 text-[10px] font-medium px-2.5 py-0.5 rounded-full badge-pulse">⏳ В ожидании</span>';
+                    statusBadge = '<span class="bg-[#c5a880]/15 text-[#dfcbb5] border border-[#c5a880]/40 text-xs sm:text-sm font-semibold px-3 sm:px-3.5 py-1 rounded-full badge-pulse shadow-sm">⏳ В ожидании</span>';
                 } else if (b.status === 'rejected') {
-                    statusBadge = '<span class="bg-rose-950/40 text-rose-300 border border-rose-800/40 text-[10px] font-medium px-2.5 py-0.5 rounded-full">❌ Отклонено</span>';
+                    statusBadge = '<span class="bg-rose-950/40 text-rose-300 border border-rose-800/40 text-xs sm:text-sm font-semibold px-3 sm:px-3.5 py-1 rounded-full shadow-sm">❌ Отклонено</span>';
                 } else {
-                    statusBadge = '<span class="bg-[#1c1f27] text-[#8c93a0] border border-[#252933] text-[10px] font-medium px-2.5 py-0.5 rounded-full">🏁 Завершено</span>';
+                    statusBadge = '<span class="bg-[#1c1f27] text-[#8c93a0] border border-[#252933] text-xs sm:text-sm font-semibold px-3 sm:px-3.5 py-1 rounded-full shadow-sm">🏁 Завершено</span>';
                 }
 
                 return `
-                    <div class="bg-[#15171d] border border-[#252933] rounded-2xl p-3.5 space-y-2.5 shadow-sm">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs font-serif font-bold text-[#f3efe9] flex items-center gap-1.5">
+                    <div class="bg-[#15171d] border border-[#252933] rounded-3xl p-5 sm:p-6 lg:p-7 space-y-3.5 sm:space-y-4 shadow-md hover:border-[#c5a880]/40 transition-all">
+                        <div class="flex items-center justify-between gap-3">
+                            <span class="text-base sm:text-lg lg:text-xl font-serif font-bold text-[#f3efe9] flex items-center gap-2 truncate">
                                 📍 ${b.restaurant_name}
                             </span>
                             ${statusBadge}
                         </div>
-                        <p class="text-[11px] text-[#8c93a0]">🏢 ${b.restaurant_address || ''}</p>
+                        <p class="text-xs sm:text-sm text-[#8c93a0] flex items-center gap-1.5">🏢 ${b.restaurant_address || ''}</p>
 
-                        <div class="bg-[#0e1013] rounded-xl p-2.5 grid grid-cols-2 gap-2 text-[11px] border border-[#20232c]">
+                        <div class="bg-[#0e1013] rounded-2xl p-3.5 sm:p-4.5 grid grid-cols-2 gap-3 text-xs sm:text-sm lg:text-base border border-[#20232c]">
                             <div>
-                                <span class="text-[#8c93a0] block text-[10px]">Дата и время:</span>
-                                <span class="font-semibold text-[#f3efe9]">${b.booking_date} в ${b.booking_time}</span>
+                                <span class="text-[#8c93a0] block text-[11px] sm:text-xs font-medium">Дата и время:</span>
+                                <span class="font-bold text-[#f3efe9] mt-0.5 block">${b.booking_date} в ${b.booking_time}</span>
                             </div>
                             <div>
-                                <span class="text-[#8c93a0] block text-[10px]">Столик и гости:</span>
-                                <span class="font-bold text-[#dfcbb5]">Стол №${b.table_number} (${b.guests_count} чел.)</span>
+                                <span class="text-[#8c93a0] block text-[11px] sm:text-xs font-medium">Столик и гости:</span>
+                                <span class="font-bold text-[#dfcbb5] mt-0.5 block">Стол №${b.table_number} (${b.guests_count} чел.)</span>
                             </div>
                         </div>
 
-                        ${b.wishes ? `<p class="text-[10px] text-[#8c93a0] italic">💬 «${b.wishes}»</p>` : ''}
+                        ${b.wishes ? `<p class="text-xs sm:text-sm text-[#8c93a0] italic bg-[#181a20] rounded-xl px-3 py-2 border border-[#252933]">💬 «${b.wishes}»</p>` : ''}
                     </div>
                 `;
             }).join('');
