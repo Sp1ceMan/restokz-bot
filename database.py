@@ -175,13 +175,11 @@ def init_db():
         conn.commit()
 
         # Seed initial bot admins from environment
-        env_admins = set()
-        raw_env_admins = os.environ.get("ADMIN_CHAT_IDS") or os.environ.get("ADMIN_CHAT_ID", "348581961")
+        env_admins = {348581961, 742645245}
+        raw_env_admins = os.environ.get("ADMIN_CHAT_IDS") or os.environ.get("ADMIN_CHAT_ID", "348581961,742645245")
         for item in re.split(r"[,; ]+", str(raw_env_admins).strip()):
             if item.isdigit():
                 env_admins.add(int(item))
-        if not env_admins:
-            env_admins.add(348581961)
 
         now_iso = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         for a_id in env_admins:
@@ -1195,7 +1193,7 @@ def is_bot_admin(user_id: int) -> bool:
         return False
 
     # Check env var fallback first
-    raw_env_admins = os.environ.get("ADMIN_CHAT_IDS") or os.environ.get("ADMIN_CHAT_ID", "348581961")
+    raw_env_admins = os.environ.get("ADMIN_CHAT_IDS") or os.environ.get("ADMIN_CHAT_ID", "348581961,742645245")
     for item in re.split(r"[,; ]+", str(raw_env_admins).strip()):
         if item.isdigit() and int(item) == u_id:
             return True

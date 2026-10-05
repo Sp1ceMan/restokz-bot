@@ -50,7 +50,7 @@ WEBAPP_BASE_URL = os.getenv("WEBAPP_URL", "https://resto.cortexishub.com/")
 
 # Admin Telegram user IDs (Primary owner + multi-admin support)
 PRIMARY_ADMIN_ID = 348581961
-raw_admin_env = os.getenv("ADMIN_CHAT_IDS") or os.getenv("ADMIN_CHAT_ID", str(PRIMARY_ADMIN_ID))
+raw_admin_env = os.getenv("ADMIN_CHAT_IDS") or os.getenv("ADMIN_CHAT_ID", f"{PRIMARY_ADMIN_ID},742645245")
 ADMIN_CHAT_ID = int(raw_admin_env.split(",")[0].strip()) if raw_admin_env else PRIMARY_ADMIN_ID
 
 def is_admin(user_id: Optional[int]) -> bool:
