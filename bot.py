@@ -48,8 +48,27 @@ TOKEN = _env_token
 # Custom domain for RestoKZ WebApp
 WEBAPP_BASE_URL = os.getenv("WEBAPP_URL", "https://resto.cortexishub.com/")
 
-# Admin Telegram user ID
-ADMIN_CHAT_ID = int(os.getenv("ADMIN_CHAT_ID", "348581961"))
+# Admin Telegram user IDs (Primary owner + multi-admin support)
+PRIMARY_ADMIN_ID = 348581961
+raw_admin_env = os.getenv("ADMIN_CHAT_IDS") or os.getenv("ADMIN_CHAT_ID", str(PRIMARY_ADMIN_ID))
+ADMIN_CHAT_ID = int(raw_admin_env.split(",")[0].strip()) if raw_admin_env else PRIMARY_ADMIN_ID
+
+def is_admin(user_id: Optional[int]) -> bool:
+    """Checks whether user_id is an authorized bot administrator."""
+    if not user_id:
+        return False
+    return database.is_bot_admin(user_id)
+
+def get_admin_recipients(booking: dict = None) -> List[int]:
+    """Returns list of Telegram user IDs who should receive admin alerts."""
+    recipients = set()
+    if booking and booking.get("admin_tg_id"):
+        recipients.add(booking["admin_tg_id"])
+    for a in database.get_bot_admins():
+        recipients.add(a["user_id"])
+    if not recipients:
+        recipients.add(ADMIN_CHAT_ID)
+    return list(recipients)
 
 # HTTP port — Railway sets PORT automatically; locally defaults to 8080
 PORT = int(os.getenv("PORT", "8080"))
@@ -81,8 +100,8 @@ def get_webapp_url(tab: str = None, user_id: int = None) -> str:
     base = WEBAPP_BASE_URL.rstrip("/")
     if tab == "admin":
         url = f"{base}/admin.html?api={api_url}"
-        if user_id == ADMIN_CHAT_ID:
-            url += f"&super_key={SUPER_ADMIN_KEY}"
+        if user_id and is_admin(user_id):
+            url += f"&super_key={SUPER_ADMIN_KEY}&tg_user_id={user_id}"
         return url
     url = f"{base}/?api={api_url}"
     if tab:
@@ -100,7 +119,7 @@ def get_main_keyboard(user_id: int) -> ReplyKeyboardMarkup:
     ]
 
     # If the user is an admin or restaurant manager, give direct access to the restaurant panel
-    if user_id == ADMIN_CHAT_ID:
+    if is_admin(user_id):
         buttons.append([
             KeyboardButton(text="👑 Терминал RestoKZ PRO", web_app=WebAppInfo(url=get_webapp_url("admin", user_id))),
             KeyboardButton(text="🛡️ Управление подписками")
@@ -114,11 +133,11 @@ async def cmd_start(message: Message):
     kb = get_main_keyboard(message.from_user.id)
 
     inline_rows = []
-    if message.from_user.id == ADMIN_CHAT_ID:
+    if is_admin(message.from_user.id):
         inline_rows.append([
             InlineKeyboardButton(
                 text="👑 Терминал RestoKZ PRO (Хостес & Подписки)",
-                web_app=WebAppInfo(url=get_webapp_url("admin", ADMIN_CHAT_ID))
+                web_app=WebAppInfo(url=get_webapp_url("admin", message.from_user.id))
             )
         ])
     inline_rows.append([
@@ -193,24 +212,75 @@ def build_subscriptions_text_and_keyboard():
     inline_rows.append([
         InlineKeyboardButton(
             text="👑 Открыть панель лицензий в WebApp", 
-            web_app=WebAppInfo(url=get_webapp_url("admin", ADMIN_CHAT_ID))
+            web_app=WebAppInfo(url=get_webapp_url("admin", user_id or ADMIN_CHAT_ID))
         )
     ])
+    return text, InlineKeyboardMarkup(inline_keyboard=inline_rows)
+
+def build_admins_text_and_keyboard() -> tuple:
+    """Builds formatted list of bot administrators and inline control buttons."""
+    admins = database.get_bot_admins()
+    text = (
+        "👑 <b>СПИСОК АДМИНИСТРАТОРОВ RestoKZ PRO</b>\n"
+        "━━━━━━━━━━━━━━━━━━━━━━\n"
+        "Все администраторы имеют полный доступ к:\n"
+        "• Терминалу управления заведениями и залами\n"
+        "• Уведомлениям о бронированиях в Telegram\n"
+        "• Подтверждению и отмене броней\n"
+        "• Управлению тарифами и лицензиями\n\n"
+    )
+
+    inline_rows = []
+    for a in admins:
+        u_id = a["user_id"]
+        u_name = a.get("full_name") or "Администратор"
+        u_login = f"@{a['username']}" if a.get("username") else "—"
+        added_at = a.get("added_at") or "—"
+        is_owner = (u_id == PRIMARY_ADMIN_ID)
+        badge = "⭐️ Владелец (Owner)" if is_owner else "👑 Super Admin"
+
+        text += (
+            f"👤 <b>{html.escape(u_name)}</b> {badge}\n"
+            f"├ ID: <code>{u_id}</code>\n"
+            f"├ Telegram: {u_login}\n"
+            f"└ Добавлен: <code>{added_at}</code>\n\n"
+        )
+
+        if not is_owner:
+            inline_rows.append([
+                InlineKeyboardButton(
+                    text=f"❌ Удалить админа {u_id}",
+                    callback_data=f"del_admin_{u_id}"
+                )
+            ])
+
+    text += (
+        "━━━━━━━━━━━━━━━━━━━━━━\n"
+        "➕ <b>Чтобы добавить нового админа:</b>\n"
+        "Отправьте команду:\n"
+        "<code>/addadmin &lt;TG_ID&gt; [Имя]</code>\n"
+        "<i>Например: <code>/addadmin 123456789 Дамир</code></i>"
+    )
+
+    inline_rows.append([
+        InlineKeyboardButton(text="🔄 Обновить список", callback_data="btn_show_admins")
+    ])
+
     return text, InlineKeyboardMarkup(inline_keyboard=inline_rows)
 
 @dp.message(F.text == "🛡️ Управление подписками")
 @dp.message(Command("subscriptions"))
 @dp.message(Command("subs"))
 async def cmd_subscriptions(message: Message):
-    if message.from_user.id != ADMIN_CHAT_ID:
-        await message.answer("У вас нет прав супер-администратора.")
+    if not is_admin(message.from_user.id):
+        await message.answer("У вас нет прав администратора платформы.")
         return
-    text, kb = build_subscriptions_text_and_keyboard()
+    text, kb = build_subscriptions_text_and_keyboard(message.from_user.id)
     await message.answer(text, reply_markup=kb, parse_mode="HTML")
 
 @dp.callback_query(F.data.startswith("sub_ext_"))
 async def cb_extend_subscription(callback: CallbackQuery):
-    if callback.from_user.id != ADMIN_CHAT_ID:
+    if not is_admin(callback.from_user.id):
         await callback.answer("Доступ запрещен", show_alert=True)
         return
 
@@ -228,7 +298,7 @@ async def cb_extend_subscription(callback: CallbackQuery):
     await callback.answer(f"✅ Подписка для {updated['name']} продлена на +{days} дней!\nДействует до {sub_info['expires_at_human']}", show_alert=True)
 
     # Refresh message
-    text, kb = build_subscriptions_text_and_keyboard()
+    text, kb = build_subscriptions_text_and_keyboard(callback.from_user.id)
     try:
         await callback.message.edit_text(text, reply_markup=kb, parse_mode="HTML")
     except Exception:
@@ -236,7 +306,7 @@ async def cb_extend_subscription(callback: CallbackQuery):
 
 @dp.message(Command("admin"))
 async def cmd_admin(message: Message):
-    if message.from_user.id != ADMIN_CHAT_ID:
+    if not is_admin(message.from_user.id):
         await message.answer("У вас нет прав администратора заведения.")
         return
 
@@ -244,7 +314,7 @@ async def cmd_admin(message: Message):
         [
             InlineKeyboardButton(
                 text="📊 Открыть панель ресторана (Хостес)",
-                web_app=WebAppInfo(url=get_webapp_url("admin", ADMIN_CHAT_ID))
+                web_app=WebAppInfo(url=get_webapp_url("admin", message.from_user.id))
             )
         ],
         [
@@ -252,23 +322,158 @@ async def cmd_admin(message: Message):
                 text="🛡️ Управление подписками & Лицензиями",
                 callback_data="btn_show_subscriptions"
             )
+        ],
+        [
+            InlineKeyboardButton(
+                text="👥 Список администраторов бота",
+                callback_data="btn_show_admins"
+            )
         ]
     ])
     await message.answer(
         "👋 <b>Панель Супер-Администратора RestoKZ PRO</b>\n\n"
-        "Здесь вы можете управлять всеми заведениями, просматривать бронирования, а также выдавать и продлевать подписки ресторанам.",
+        "Здесь вы можете управлять всеми заведениями, просматривать бронирования, назначать администраторов, а также выдавать и продлевать подписки ресторанам.",
         reply_markup=admin_kb,
         parse_mode="HTML"
     )
 
 @dp.callback_query(F.data == "btn_show_subscriptions")
 async def cb_show_subscriptions(callback: CallbackQuery):
-    if callback.from_user.id != ADMIN_CHAT_ID:
+    if not is_admin(callback.from_user.id):
         await callback.answer("Доступ запрещен", show_alert=True)
         return
     await callback.answer()
-    text, kb = build_subscriptions_text_and_keyboard()
+    text, kb = build_subscriptions_text_and_keyboard(callback.from_user.id)
     await callback.message.answer(text, reply_markup=kb, parse_mode="HTML")
+
+@dp.callback_query(F.data == "btn_show_admins")
+async def cb_show_admins(callback: CallbackQuery):
+    if not is_admin(callback.from_user.id):
+        await callback.answer("Доступ запрещен", show_alert=True)
+        return
+    await callback.answer()
+    text, kb = build_admins_text_and_keyboard()
+    try:
+        await callback.message.edit_text(text, reply_markup=kb, parse_mode="HTML")
+    except Exception:
+        await callback.message.answer(text, reply_markup=kb, parse_mode="HTML")
+
+@dp.callback_query(F.data.startswith("del_admin_"))
+async def cb_del_admin(callback: CallbackQuery):
+    if not is_admin(callback.from_user.id):
+        await callback.answer("Доступ запрещен", show_alert=True)
+        return
+
+    try:
+        target_id = int(callback.data.split("_")[2])
+    except Exception:
+        await callback.answer("Неверный ID", show_alert=True)
+        return
+
+    if target_id == PRIMARY_ADMIN_ID:
+        await callback.answer("❌ Нельзя удалить создателя бота!", show_alert=True)
+        return
+
+    database.remove_bot_admin(target_id)
+    await callback.answer(f"✅ Администратор {target_id} удален!", show_alert=True)
+    text, kb = build_admins_text_and_keyboard()
+    try:
+        await callback.message.edit_text(text, reply_markup=kb, parse_mode="HTML")
+    except Exception:
+        pass
+
+@dp.message(Command("admins"))
+async def cmd_admins(message: Message):
+    if not is_admin(message.from_user.id):
+        await message.answer("У вас нет прав администратора.")
+        return
+    text, kb = build_admins_text_and_keyboard()
+    await message.answer(text, reply_markup=kb, parse_mode="HTML")
+
+@dp.message(Command("addadmin"))
+async def cmd_add_admin(message: Message):
+    if not is_admin(message.from_user.id):
+        await message.answer("У вас нет прав супер-администратора.")
+        return
+
+    target_id = None
+    target_username = None
+    target_name = None
+
+    parts = (message.text or "").split(maxsplit=2)
+    if len(parts) >= 2 and parts[1].isdigit():
+        target_id = int(parts[1])
+        if len(parts) >= 3:
+            target_name = parts[2].strip()
+    elif message.reply_to_message and message.reply_to_message.from_user:
+        target_id = message.reply_to_message.from_user.id
+        target_username = message.reply_to_message.from_user.username
+        target_name = message.reply_to_message.from_user.full_name
+        if len(parts) >= 2:
+            target_name = parts[1].strip()
+
+    if not target_id:
+        await message.answer(
+            "ℹ️ <b>Как назначить нового администратора:</b>\n\n"
+            "1. Отправьте команду с Telegram ID человека:\n"
+            "<code>/addadmin 123456789 Дамир</code>\n\n"
+            "2. Либо ответьте (reply) командой <code>/addadmin</code> на сообщение нужного человека в чате.\n\n"
+            "<i>(Узнать Telegram ID собеседник может в боте @userinfobot или переслав любое сообщение)</i>",
+            parse_mode="HTML"
+        )
+        return
+
+    database.add_bot_admin(
+        user_id=target_id,
+        username=target_username,
+        full_name=target_name or f"Админ #{target_id}",
+        added_by=message.from_user.id
+    )
+
+    try:
+        await bot.send_message(
+            chat_id=target_id,
+            text="👑 <b>Поздравляем! Вам выданы права администратора RestoKZ PRO.</b>\n\n"
+                 "Вам стали доступны:\n"
+                 "• Терминал управления ресторанами и рассадкой гостей\n"
+                 "• Уведомления о новых бронированиях с кнопками подтверждения\n"
+                 "• Управление лицензиями и заведениями (/admin, /subs)\n\n"
+                 "Нажмите /start чтобы обновить меню бота.",
+            parse_mode="HTML"
+        )
+    except Exception:
+        pass
+
+    await message.answer(
+        f"✅ <b>Новый администратор успешно добавлен!</b>\n\n"
+        f"👤 ID: <code>{target_id}</code>\n"
+        f"📝 Имя: <b>{html.escape(target_name or 'Администратор')}</b>\n"
+        f"🔑 Статус: <b>Super Admin</b>\n\n"
+        f"Пользователь получил полный доступ к терминалу и уведомлениям о бронированиях.",
+        parse_mode="HTML"
+    )
+
+@dp.message(Command("deladmin"))
+async def cmd_del_admin(message: Message):
+    if not is_admin(message.from_user.id):
+        await message.answer("У вас нет прав супер-администратора.")
+        return
+
+    parts = (message.text or "").split()
+    if len(parts) < 2 or not parts[1].isdigit():
+        await message.answer("Использование: <code>/deladmin &lt;TG_ID&gt;</code>", parse_mode="HTML")
+        return
+
+    target_id = int(parts[1])
+    if target_id == PRIMARY_ADMIN_ID:
+        await message.answer("❌ Нельзя удалить создателя и главного владельца бота.")
+        return
+
+    success = database.remove_bot_admin(target_id)
+    if success:
+        await message.answer(f"✅ Администратор с ID <code>{target_id}</code> успешно удален.", parse_mode="HTML")
+    else:
+        await message.answer(f"Пользователь с ID <code>{target_id}</code> не найден в списке администраторов.", parse_mode="HTML")
 
 @dp.message(Command("my_bookings"))
 async def cmd_my_bookings(message: Message):
@@ -330,8 +535,8 @@ async def admin_confirm_booking(callback: CallbackQuery):
         await callback.answer("Бронь не найдена", show_alert=True)
         return
 
-    admin_id = booking.get("admin_tg_id") or ADMIN_CHAT_ID
-    if callback.from_user.id != admin_id and callback.from_user.id != ADMIN_CHAT_ID:
+    admin_id = booking.get("admin_tg_id")
+    if callback.from_user.id != admin_id and not is_admin(callback.from_user.id):
         await callback.answer("У вас нет прав для управления этой бронью", show_alert=True)
         return
 
@@ -363,8 +568,8 @@ async def admin_cancel_booking(callback: CallbackQuery):
         await callback.answer("Бронь не найдена", show_alert=True)
         return
 
-    admin_id = booking.get("admin_tg_id") or ADMIN_CHAT_ID
-    if callback.from_user.id != admin_id and callback.from_user.id != ADMIN_CHAT_ID:
+    admin_id = booking.get("admin_tg_id")
+    if callback.from_user.id != admin_id and not is_admin(callback.from_user.id):
         await callback.answer("У вас нет прав для управления этой бронью", show_alert=True)
         return
 
@@ -432,8 +637,8 @@ async def handle_webapp_data(message: Message):
 # --- Notification Functions invoked from REST API ---
 
 async def notify_admin_new_booking(booking: dict):
-    """Sends detailed reservation card to the restaurant admin on Telegram."""
-    admin_id = booking.get("admin_tg_id") or ADMIN_CHAT_ID
+    """Sends detailed reservation card to all restaurant admins on Telegram."""
+    recipients = get_admin_recipients(booking)
     booking_id = booking["id"]
     guest_username = f"@{booking['guest_username']}" if booking.get("guest_username") else "не указан"
     phone = booking["guest_phone"]
@@ -461,10 +666,11 @@ async def notify_admin_new_booking(booking: dict):
         ]
     ])
 
-    try:
-        await bot.send_message(chat_id=admin_id, text=text, reply_markup=admin_kb, parse_mode="HTML")
-    except Exception as e:
-        print(f"Failed to send admin notification to {admin_id}: {e}")
+    for a_id in recipients:
+        try:
+            await bot.send_message(chat_id=a_id, text=text, reply_markup=admin_kb, parse_mode="HTML")
+        except Exception as e:
+            print(f"Failed to send admin notification to {a_id}: {e}")
 
 async def notify_guest_status_change(booking: dict, status: str):
     """Sends immediate status update to the guest via Telegram bot."""
@@ -556,8 +762,9 @@ async def main():
 
     api_url = get_api_url()
     print(f"[OK] Публичный API: {api_url}")
-    print(f"[OK] WebApp URL:    {get_webapp_url()}")
-    print(f"[OK] Admin TG ID:  {ADMIN_CHAT_ID}")
+    admins = database.get_bot_admins()
+    admin_list_str = ", ".join(f"{a['user_id']} ({a.get('full_name') or 'Admin'})" for a in admins)
+    print(f"[OK] Администраторы: {admin_list_str or ADMIN_CHAT_ID}")
     print("=" * 55)
     print("[OK] Запуск Telegram бота RestoKZ (polling)...")
 

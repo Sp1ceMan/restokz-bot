@@ -58,11 +58,11 @@ def get_auth_context(request: web.Request) -> dict:
     if not raw_key:
         raw_key = request.query.get("key") or request.query.get("super_key") or request.query.get("token")
 
-    # 4. Telegram user ID (auto-login for Admin bot owner)
+    # 4. Telegram user ID (auto-login for Admin bot owners)
     tg_user_str = request.headers.get("X-Telegram-User-Id") or request.query.get("tg_user_id")
     if tg_user_str:
         try:
-            if int(tg_user_str) == ADMIN_CHAT_ID:
+            if database.is_bot_admin(int(tg_user_str)):
                 return {
                     "role": "superadmin",
                     "restaurant_id": None,
@@ -294,11 +294,11 @@ async def verify_auth_endpoint(request: web.Request) -> web.Response:
     # 1. Telegram Super Admin check
     if tg_user_id:
         try:
-            if int(tg_user_id) == ADMIN_CHAT_ID:
+            if database.is_bot_admin(int(tg_user_id)):
                 return web.json_response({
                     "valid": True,
                     "role": "superadmin",
-                    "name": "Владелец платформы (Super Admin)",
+                    "name": "Администратор платформы (Super Admin)",
                     "is_superadmin": True
                 })
         except ValueError:

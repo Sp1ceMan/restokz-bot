@@ -161,8 +161,35 @@ def init_db():
 
         CREATE INDEX IF NOT EXISTS idx_tables_restaurant
             ON tables (restaurant_id);
+
+        CREATE TABLE IF NOT EXISTS bot_admins (
+            user_id INTEGER PRIMARY KEY,
+            username TEXT,
+            full_name TEXT,
+            role TEXT DEFAULT 'super_admin',
+            added_at TEXT NOT NULL,
+            added_by INTEGER DEFAULT 0
+        );
         """)
 
+        conn.commit()
+
+        # Seed initial bot admins from environment
+        env_admins = set()
+        raw_env_admins = os.environ.get("ADMIN_CHAT_IDS") or os.environ.get("ADMIN_CHAT_ID", "348581961")
+        for item in re.split(r"[,; ]+", str(raw_env_admins).strip()):
+            if item.isdigit():
+                env_admins.add(int(item))
+        if not env_admins:
+            env_admins.add(348581961)
+
+        now_iso = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        for a_id in env_admins:
+            cursor.execute("""
+                INSERT INTO bot_admins (user_id, role, added_at, added_by)
+                VALUES (?, 'super_admin', ?, 0)
+                ON CONFLICT(user_id) DO NOTHING
+            """, (a_id, now_iso))
         conn.commit()
 
         # Migrate existing DB: ensure social media, 2GIS and subscription security columns exist
@@ -1135,4 +1162,88 @@ def delete_restaurant(restaurant_id: int) -> bool:
         return affected > 0
     finally:
         conn.close()
+
+
+# =========================================================================
+# BOT ADMINISTRATORS MANAGEMENT
+# =========================================================================
+
+def get_bot_admins() -> List[Dict[str, Any]]:
+    """Returns list of all bot administrators."""
+    conn = get_db_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT user_id, username, full_name, role, added_at, added_by 
+            FROM bot_admins 
+            ORDER BY added_at ASC
+        """)
+        return [dict(row) for row in cursor.fetchall()]
+    except Exception as e:
+        print(f"[DB ERROR] get_bot_admins failed: {e}")
+        return []
+    finally:
+        conn.close()
+
+def is_bot_admin(user_id: int) -> bool:
+    """Checks whether user_id is an authorized bot administrator."""
+    if not user_id:
+        return False
+    try:
+        u_id = int(user_id)
+    except (ValueError, TypeError):
+        return False
+
+    # Check env var fallback first
+    raw_env_admins = os.environ.get("ADMIN_CHAT_IDS") or os.environ.get("ADMIN_CHAT_ID", "348581961")
+    for item in re.split(r"[,; ]+", str(raw_env_admins).strip()):
+        if item.isdigit() and int(item) == u_id:
+            return True
+
+    conn = get_db_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SELECT 1 FROM bot_admins WHERE user_id = ?", (u_id,))
+        return cursor.fetchone() is not None
+    except Exception:
+        return False
+    finally:
+        conn.close()
+
+def add_bot_admin(user_id: int, username: str = None, full_name: str = None, added_by: int = 0) -> bool:
+    """Adds or updates a bot administrator."""
+    conn = get_db_connection()
+    try:
+        cursor = conn.cursor()
+        now_iso = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        clean_user = username.lstrip("@") if username else None
+        cursor.execute("""
+            INSERT INTO bot_admins (user_id, username, full_name, role, added_at, added_by)
+            VALUES (?, ?, ?, 'super_admin', ?, ?)
+            ON CONFLICT(user_id) DO UPDATE SET
+                username = COALESCE(excluded.username, bot_admins.username),
+                full_name = COALESCE(excluded.full_name, bot_admins.full_name)
+        """, (int(user_id), clean_user, full_name, now_iso, added_by))
+        conn.commit()
+        return True
+    except Exception as e:
+        print(f"[DB ERROR] add_bot_admin failed: {e}")
+        return False
+    finally:
+        conn.close()
+
+def remove_bot_admin(user_id: int) -> bool:
+    """Removes a bot administrator."""
+    conn = get_db_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM bot_admins WHERE user_id = ?", (int(user_id),))
+        conn.commit()
+        return cursor.rowcount > 0
+    except Exception as e:
+        print(f"[DB ERROR] remove_bot_admin failed: {e}")
+        return False
+    finally:
+        conn.close()
+
 
