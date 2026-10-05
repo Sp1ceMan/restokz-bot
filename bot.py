@@ -45,8 +45,8 @@ if not _env_token:
     _env_token = "8992817194:AAH0Q0K35pCfS_ZHLBoTP334KsSfECUT5PY"
 TOKEN = _env_token
 
-# GitHub Pages URL where the SPA frontend is automatically deployed on every git push
-WEBAPP_BASE_URL = os.getenv("WEBAPP_URL", "https://sp1ceman.github.io/restokz-bot/")
+# Custom domain for RestoKZ WebApp
+WEBAPP_BASE_URL = os.getenv("WEBAPP_URL", "https://resto.cortexishub.com/")
 
 # Admin Telegram user ID
 ADMIN_CHAT_ID = int(os.getenv("ADMIN_CHAT_ID", "348581961"))

@@ -40,7 +40,7 @@
 ## Архитектура и Развёртывание
 
 1. **Frontend (WebApp):** 
-   - Развернут на **GitHub Pages**: `https://sp1ceman.github.io/restokz-bot/`
+   - Официальный домен: `https://resto.cortexishub.com/` (GitHub Pages / Vercel)
    - Автоматически обновляется при любом коммите в репозиторий.
 2. **Backend (API & Bot):**
    - 24/7 Сервер в облаке **Railway**: `https://restokz-bot-production.up.railway.app`
