@@ -237,6 +237,14 @@ async def test_api_endpoints():
             assert len(data["bookings"]) >= 1
             print(f"[OK] GET /api/bookings/my: {len(data['bookings'])} bookings for user")
 
+        # 20b. Test POST /api/bookings/{id}/cancel
+        async with session.post(f"http://127.0.0.1:{port}/api/bookings/{booking_id}/cancel") as resp:
+            assert resp.status == 200
+            cancel_data = await resp.json()
+            assert cancel_data["success"] is True
+            assert cancel_data["booking"]["status"] == "cancelled"
+            print(f"[OK] Booking #{booking_id} cancelled by guest API")
+
         # 21. Test GET /api/admin/bookings with Admin Key
         async with session.get(f"http://127.0.0.1:{port}/api/admin/bookings?restaurant_id=1", headers=admin_headers) as resp:
             assert resp.status == 200

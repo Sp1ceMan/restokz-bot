@@ -277,6 +277,33 @@ async def get_my_bookings(request: web.Request) -> web.Response:
     )
     return web.json_response({"bookings": bookings})
 
+async def cancel_my_booking_endpoint(request: web.Request) -> web.Response:
+    try:
+        booking_id = int(request.match_info["id"])
+    except (ValueError, KeyError):
+        return web.json_response({"error": "Invalid booking ID"}, status=400)
+
+    booking = database.get_booking_details(booking_id)
+    if not booking:
+        return web.json_response({"error": "Booking not found"}, status=404)
+
+    if booking["status"] in ["completed", "rejected", "cancelled"]:
+        return web.json_response({"error": f"Booking is already {booking['status']}"}, status=400)
+
+    ok = database.update_booking_status(booking_id, "cancelled")
+    if not ok:
+        return web.json_response({"error": "Failed to cancel booking"}, status=500)
+
+    updated_booking = database.get_booking_details(booking_id)
+    bot_notify_status = request.app.get("bot_notify_status_change")
+    if bot_notify_status and updated_booking:
+        try:
+            await bot_notify_status(updated_booking, "cancelled")
+        except Exception as e:
+            print(f"Error notifying cancellation: {e}")
+
+    return web.json_response({"success": True, "booking": updated_booking})
+
 # =========================================================================
 # AUTHENTICATION & VERIFICATION ENDPOINTS
 # =========================================================================
@@ -703,6 +730,7 @@ def create_web_app(notify_booking_func=None, notify_status_func=None) -> web.App
     app.router.add_get("/api/restaurants/{id}/tables", get_restaurant_tables)
     app.router.add_post("/api/bookings", create_booking_endpoint)
     app.router.add_get("/api/bookings/my", get_my_bookings)
+    app.router.add_post("/api/bookings/{id}/cancel", cancel_my_booking_endpoint)
 
     # Auth & Verification
     app.router.add_post("/api/auth/verify", verify_auth_endpoint)

@@ -653,6 +653,8 @@ def get_user_bookings(
         SELECT b.*, 
                r.name as restaurant_name, 
                r.address as restaurant_address,
+               r.phone as restaurant_phone,
+               r.two_gis_url as restaurant_two_gis,
                r.cover_image as restaurant_cover,
                t.table_number, 
                t.zone_type as table_zone
