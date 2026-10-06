@@ -313,14 +313,14 @@
                     🌐 Язык интерфейса
                 </label>
                 <div class="grid grid-cols-3 gap-2">
-                    <button type="button" onclick="setAdminLanguage('ru')" id="drawerLangBtn-ru" class="py-2.5 rounded-xl text-xs font-bold bg-[#c5a880] text-[#0e1013] transition text-center shadow-md">
-                        🇷🇺 RU
+                    <button type="button" onclick="setAdminLanguage('ru')" id="drawerLangBtn-ru" class="py-2.5 rounded-xl text-xs font-bold bg-[#c49c6d] text-[#110e0c] transition text-center shadow-md">
+                        RU
                     </button>
-                    <button type="button" onclick="setAdminLanguage('kz')" id="drawerLangBtn-kz" class="py-2.5 rounded-xl text-xs font-bold bg-[#181b22] text-zinc-400 hover:text-white border border-white/5 transition text-center">
-                        🇰🇿 KZ
+                    <button type="button" onclick="setAdminLanguage('kz')" id="drawerLangBtn-kz" class="py-2.5 rounded-xl text-xs font-bold bg-[#181411] text-[#a3988b] hover:text-[#f7f4ee] border border-[#332a22] transition text-center">
+                        KZ
                     </button>
-                    <button type="button" onclick="setAdminLanguage('en')" id="drawerLangBtn-en" class="py-2.5 rounded-xl text-xs font-bold bg-[#181b22] text-zinc-400 hover:text-white border border-white/5 transition text-center">
-                        🇬🇧 EN
+                    <button type="button" onclick="setAdminLanguage('en')" id="drawerLangBtn-en" class="py-2.5 rounded-xl text-xs font-bold bg-[#181411] text-[#a3988b] hover:text-[#f7f4ee] border border-[#332a22] transition text-center">
+                        EN
                     </button>
                 </div>
             </div>
@@ -1836,9 +1836,9 @@
                 const dBtn = document.getElementById(`drawerLangBtn-${l}`);
                 if (dBtn) {
                     if (l === lang) {
-                        dBtn.className = "py-2.5 rounded-xl text-xs font-bold bg-[#c5a880] text-[#0e1013] transition text-center shadow-md";
+                        dBtn.className = "py-2.5 rounded-xl text-xs font-bold bg-[#c49c6d] text-[#110e0c] transition text-center shadow-md";
                     } else {
-                        dBtn.className = "py-2.5 rounded-xl text-xs font-bold bg-[#181b22] text-zinc-400 hover:text-white border border-white/5 transition text-center";
+                        dBtn.className = "py-2.5 rounded-xl text-xs font-bold bg-[#181411] text-[#a3988b] hover:text-[#f7f4ee] border border-[#332a22] transition text-center";
                     }
                 }
             });
