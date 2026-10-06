@@ -164,9 +164,51 @@
                     <button type="button" onclick="setLanguage('en')" id="langBtn-en" class="px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm font-bold rounded-lg text-[#a3988b] hover:text-[#f7f4ee] transition">EN</button>
                 </div>
 
-                <!-- City Selector -->
-                <div class="relative">
-                    <select id="citySelect" onchange="onCityChange(this.value)" class="bg-[#181411] text-xs sm:text-sm lg:text-base text-[#dfc8a7] font-semibold py-1.5 sm:py-2 lg:py-2.5 px-3 sm:px-3.5 rounded-xl border border-[#332a22] outline-none focus:border-[#c49c6d] transition-colors cursor-pointer">
+                <!-- Custom Animated City Selector -->
+                <div class="relative" id="cityDropdownContainer">
+                    <button type="button" 
+                            id="customCityTriggerBtn" 
+                            onclick="toggleCityDropdown()" 
+                            aria-haspopup="listbox" 
+                            aria-expanded="false" 
+                            class="bg-[#181411] hover:bg-[#201b17] text-xs sm:text-sm lg:text-base text-[#dfc8a7] font-semibold py-1.5 sm:py-2 lg:py-2.5 px-3 sm:px-3.5 rounded-2xl border border-[#332a22] hover:border-[#c49c6d]/50 outline-none transition-all duration-200 cursor-pointer flex items-center gap-1.5 sm:gap-2 shadow-sm select-none tap-scale">
+                        <svg class="w-3.5 h-3.5 text-[#c49c6d] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        <span id="customCityBtnLabel" class="whitespace-nowrap">Все города</span>
+                        <svg id="cityChevronIcon" class="w-3.5 h-3.5 text-[#a3988b] transition-transform duration-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+
+                    <!-- Animated Luxury Dropdown Menu -->
+                    <div id="cityDropdownMenu" 
+                         role="listbox" 
+                         class="absolute right-0 top-full mt-2 w-48 sm:w-52 bg-[#181411]/95 backdrop-blur-xl border border-[#3d3024] rounded-2xl p-1.5 shadow-2xl z-50 transition-all duration-200 ease-out opacity-0 scale-95 -translate-y-2 pointer-events-none invisible origin-top-right space-y-1">
+                        
+                        <button type="button" onclick="selectCustomCity('Все')" data-city="Все" 
+                                class="city-option-btn w-full text-left px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-[#c49c6d] text-[#110e0c] flex items-center justify-between transition-all duration-150 cursor-pointer tap-scale shadow-sm">
+                            <span id="optCustomCityAll">Все города</span>
+                            <span class="city-check-icon text-xs">✓</span>
+                        </button>
+                        
+                        <button type="button" onclick="selectCustomCity('Алматы')" data-city="Алматы" 
+                                class="city-option-btn w-full text-left px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-[#dfc8a7] hover:text-[#f7f4ee] hover:bg-[#251e18] flex items-center justify-between transition-all duration-150 cursor-pointer tap-scale">
+                            <span>Алматы</span>
+                            <span class="city-check-icon text-xs hidden">✓</span>
+                        </button>
+                        
+                        <button type="button" onclick="selectCustomCity('Астана')" data-city="Астана" 
+                                class="city-option-btn w-full text-left px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-[#dfc8a7] hover:text-[#f7f4ee] hover:bg-[#251e18] flex items-center justify-between transition-all duration-150 cursor-pointer tap-scale">
+                            <span>Астана</span>
+                            <span class="city-check-icon text-xs hidden">✓</span>
+                        </button>
+                        
+                        <button type="button" onclick="selectCustomCity('Шымкент')" data-city="Шымкент" 
+                                class="city-option-btn w-full text-left px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-[#dfc8a7] hover:text-[#f7f4ee] hover:bg-[#251e18] flex items-center justify-between transition-all duration-150 cursor-pointer tap-scale">
+                            <span>Шымкент</span>
+                            <span class="city-check-icon text-xs hidden">✓</span>
+                        </button>
+                    </div>
+
+                    <!-- Hidden native select for 100% backward compatibility & tests -->
+                    <select id="citySelect" onchange="onCityChange(this.value)" class="hidden">
                         <option value="Все" selected id="optCityAll">Все города</option>
                         <option value="Алматы">Алматы</option>
                         <option value="Астана">Астана</option>
@@ -835,6 +877,8 @@
 
             if (el('headerTagline')) el('headerTagline').innerText = t.tagline;
             if (el('optCityAll')) el('optCityAll').innerText = t.all_cities;
+            if (el('optCustomCityAll')) el('optCustomCityAll').innerText = t.all_cities;
+            if (currentCity === 'Все' && el('customCityBtnLabel')) el('customCityBtnLabel').innerText = t.all_cities;
             if (el('searchInput')) el('searchInput').placeholder = t.search_ph;
 
             if (el('modalTabBtn-book')) el('modalTabBtn-book').innerText = t.modal_book;
@@ -1232,10 +1276,89 @@
             return `${n} мест`;
         }
 
-        function onCityChange(city) {
+        function toggleCityDropdown() {
+            const menu = document.getElementById('cityDropdownMenu');
+            if (!menu) return;
+            const isOpen = !menu.classList.contains('pointer-events-none');
+            if (isOpen) {
+                closeCityDropdown();
+            } else {
+                openCityDropdown();
+            }
+        }
+
+        function openCityDropdown() {
+            const menu = document.getElementById('cityDropdownMenu');
+            const chevron = document.getElementById('cityChevronIcon');
+            const btn = document.getElementById('customCityTriggerBtn');
+            if (!menu) return;
+
+            menu.classList.remove('opacity-0', 'scale-95', '-translate-y-2', 'pointer-events-none', 'invisible');
+            menu.classList.add('opacity-100', 'scale-100', 'translate-y-0', 'pointer-events-auto', 'visible');
+            if (chevron) chevron.classList.add('rotate-180');
+            if (btn) btn.setAttribute('aria-expanded', 'true');
+        }
+
+        function closeCityDropdown() {
+            const menu = document.getElementById('cityDropdownMenu');
+            const chevron = document.getElementById('cityChevronIcon');
+            const btn = document.getElementById('customCityTriggerBtn');
+            if (!menu) return;
+
+            menu.classList.add('opacity-0', 'scale-95', '-translate-y-2', 'pointer-events-none', 'invisible');
+            menu.classList.remove('opacity-100', 'scale-100', 'translate-y-0', 'pointer-events-auto', 'visible');
+            if (chevron) chevron.classList.remove('rotate-180');
+            if (btn) btn.setAttribute('aria-expanded', 'false');
+        }
+
+        function selectCustomCity(city) {
             currentCity = city;
+
+            // Sync hidden native select for full backward compatibility & tests
+            const nativeSelect = document.getElementById('citySelect');
+            if (nativeSelect) nativeSelect.value = city;
+
+            // Update button label
+            const t = I18N[currentLang] || I18N.ru;
+            const labelEl = document.getElementById('customCityBtnLabel');
+            if (labelEl) {
+                labelEl.innerText = (city === 'Все') ? t.all_cities : city;
+            }
+
+            // Update active states in dropdown menu
+            document.querySelectorAll('.city-option-btn').forEach(btn => {
+                const btnCity = btn.getAttribute('data-city');
+                const check = btn.querySelector('.city-check-icon');
+                if (btnCity === city) {
+                    btn.className = 'city-option-btn w-full text-left px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-[#c49c6d] text-[#110e0c] flex items-center justify-between transition-all duration-150 cursor-pointer tap-scale shadow-sm';
+                    if (check) check.classList.remove('hidden');
+                } else {
+                    btn.className = 'city-option-btn w-full text-left px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-[#dfc8a7] hover:text-[#f7f4ee] hover:bg-[#251e18] flex items-center justify-between transition-all duration-150 cursor-pointer tap-scale';
+                    if (check) check.classList.add('hidden');
+                }
+            });
+
+            closeCityDropdown();
             renderRestaurants();
         }
+
+        function onCityChange(city) {
+            selectCustomCity(city);
+        }
+
+        // Global dismiss for city dropdown (Click outside / Esc)
+        document.addEventListener('click', (e) => {
+            const container = document.getElementById('cityDropdownContainer');
+            if (container && !container.contains(e.target)) {
+                closeCityDropdown();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeCityDropdown();
+            }
+        });
 
         function onSearchInput(val) {
             currentSearchQuery = val;
