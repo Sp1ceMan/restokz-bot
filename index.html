@@ -108,27 +108,27 @@
     <header class="sticky top-0 z-30 bg-[#110e0c]/95 backdrop-blur-md border-b border-[#332a22] px-4 py-3 sm:px-6 lg:px-8">
         <div class="max-w-[1600px] 2xl:max-w-[1760px] mx-auto flex items-center justify-between gap-3 sm:gap-5">
             <!-- Brand -->
-            <div class="flex items-center gap-2.5 sm:gap-3.5 min-w-0 cursor-pointer" onclick="switchTab('restaurants')">
+            <div class="flex items-center gap-2.5 sm:gap-3.5 flex-shrink-0 min-w-max select-none cursor-pointer" onclick="switchTab('restaurants')">
                 <div class="w-9 h-9 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-xl sm:rounded-2xl bg-[#181411] border border-[#3d3024] flex items-center justify-center text-[#c49c6d] shadow-sm flex-shrink-0">
                     <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                 </div>
-                <div class="min-w-0">
-                    <h1 class="text-base sm:text-lg lg:text-xl font-serif font-bold tracking-wide bg-gradient-to-r from-[#f7f4ee] via-[#dfc8a7] to-[#c49c6d] bg-clip-text text-transparent leading-tight truncate">RestoKZ</h1>
+                <div class="flex-shrink-0 min-w-max">
+                    <h1 class="text-base sm:text-lg lg:text-xl font-serif font-bold tracking-wide bg-gradient-to-r from-[#f7f4ee] via-[#dfc8a7] to-[#c49c6d] bg-clip-text text-transparent leading-tight whitespace-nowrap flex-shrink-0">RestoKZ</h1>
                     <p id="headerTagline" class="text-[10px] sm:text-xs lg:text-sm text-[#a3988b] font-medium tracking-tight truncate max-w-[170px] sm:max-w-none">Бронирование столов в Казахстане</p>
                 </div>
             </div>
 
             <!-- Desktop Navigation Links (hidden on mobile, visible on md+) -->
-            <nav class="hidden md:flex items-center gap-2 bg-[#181411] border border-[#332a22] rounded-2xl p-1.5 shadow-sm">
-                <button type="button" onclick="switchTab('restaurants')" id="desktopNav-restaurants" class="px-5 lg:px-6 py-2 lg:py-2.5 rounded-xl text-xs sm:text-sm lg:text-base font-bold text-[#110e0c] bg-[#c49c6d] transition shadow-sm flex items-center gap-2">
-                    <svg class="w-4 h-4 text-[#110e0c]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-                    <span>Рестораны</span>
-                    <kbd class="hidden xl:inline text-[10px] font-mono px-1.5 py-0.5 rounded bg-black/15 text-[#110e0c]/80">1</kbd>
+            <nav class="hidden md:flex items-center gap-2 bg-[#181411] border border-[#332a22] rounded-2xl p-1.5 shadow-sm flex-shrink-0">
+                <button type="button" onclick="switchTab('restaurants')" id="desktopNav-restaurants" class="px-5 lg:px-6 py-2 lg:py-2.5 rounded-xl text-xs sm:text-sm lg:text-base font-bold text-[#110e0c] bg-[#c49c6d] transition shadow-sm flex items-center gap-2 whitespace-nowrap flex-shrink-0">
+                    <svg class="w-4 h-4 text-[#110e0c] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                    <span class="whitespace-nowrap">Рестораны</span>
+                    <kbd class="hidden xl:inline text-[10px] font-mono px-1.5 py-0.5 rounded bg-black/15 text-[#110e0c]/80 flex-shrink-0">1</kbd>
                 </button>
-                <button type="button" onclick="switchTab('my-bookings')" id="desktopNav-my-bookings" class="px-5 lg:px-6 py-2 lg:py-2.5 rounded-xl text-xs sm:text-sm lg:text-base font-semibold text-[#a3988b] hover:text-[#f7f4ee] hover:bg-[#211c17] transition flex items-center gap-2">
-                    <svg class="w-4 h-4 text-[#a3988b]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
-                    <span>Мои брони</span>
-                    <kbd class="hidden xl:inline text-[10px] font-mono px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-[#a3988b]">2</kbd>
+                <button type="button" onclick="switchTab('my-bookings')" id="desktopNav-my-bookings" class="px-5 lg:px-6 py-2 lg:py-2.5 rounded-xl text-xs sm:text-sm lg:text-base font-semibold text-[#a3988b] hover:text-[#f7f4ee] hover:bg-[#211c17] transition flex items-center gap-2 whitespace-nowrap flex-shrink-0">
+                    <svg class="w-4 h-4 text-[#a3988b] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                    <span class="whitespace-nowrap">Мои брони</span>
+                    <kbd class="hidden xl:inline text-[10px] font-mono px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-[#a3988b] flex-shrink-0">2</kbd>
                 </button>
             </nav>
 
