@@ -19,15 +19,15 @@
                     },
                     colors: {
                         resto: {
-                            bg: '#0e1013',
-                            surface: '#15171d',
-                            surfaceHover: '#1c1f27',
-                            border: '#252933',
-                            gold: '#c5a880',
-                            goldLight: '#dfcbb5',
-                            goldDark: '#9b7d59',
-                            text: '#f3efe9',
-                            muted: '#8c93a0'
+                            bg: '#110e0c',
+                            surface: '#181411',
+                            surfaceHover: '#211c17',
+                            border: '#332a22',
+                            gold: '#c49c6d',
+                            goldLight: '#dfc8a7',
+                            goldDark: '#926e43',
+                            text: '#f7f4ee',
+                            muted: '#a3988b'
                         }
                     }
                 }
@@ -56,8 +56,22 @@
         body {
             -webkit-tap-highlight-color: transparent;
             font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: #0e1013;
-            color: #f3efe9;
+            background-color: #110e0c;
+            color: #f7f4ee;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #110e0c;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #332a22;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4a3e33;
         }
         .hide-scrollbar::-webkit-scrollbar {
             display: none;
@@ -71,8 +85,8 @@
         }
         .table-node.selected {
             transform: scale(1.06);
-            box-shadow: 0 0 20px rgba(197, 168, 128, 0.35);
-            outline: 2px solid #c5a880;
+            box-shadow: 0 0 20px rgba(196, 156, 109, 0.35);
+            outline: 2px solid #c49c6d;
         }
         .table-node.busy {
             opacity: 0.35;
@@ -88,47 +102,52 @@
         }
     </style>
 </head>
-<body class="text-stone-200 min-h-screen flex flex-col justify-between pb-[max(5rem,calc(env(safe-area-inset-bottom)+4.2rem))] md:pb-8 select-none bg-[#0e1013]">
+<body class="text-[#f7f4ee] min-h-screen flex flex-col justify-between pb-[max(5rem,calc(env(safe-area-inset-bottom)+4.2rem))] md:pb-8 select-none bg-[#110e0c]">
 
     <!-- Top Navigation Bar -->
-    <header class="sticky top-0 z-30 bg-[#0e1013]/95 backdrop-blur-md border-b border-[#20232c] px-4 py-3 sm:px-6 lg:px-8">
+    <header class="sticky top-0 z-30 bg-[#110e0c]/95 backdrop-blur-md border-b border-[#332a22] px-4 py-3 sm:px-6 lg:px-8">
         <div class="max-w-[1600px] 2xl:max-w-[1760px] mx-auto flex items-center justify-between gap-3 sm:gap-5">
             <!-- Brand -->
             <div class="flex items-center gap-2.5 sm:gap-3.5 min-w-0 cursor-pointer" onclick="switchTab('restaurants')">
-                <div class="w-9 h-9 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-xl sm:rounded-2xl bg-[#16181f] border border-[#c5a880]/30 flex items-center justify-center text-base sm:text-lg lg:text-xl shadow-sm flex-shrink-0">
-                    🍽️
+                <div class="w-9 h-9 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-xl sm:rounded-2xl bg-[#181411] border border-[#3d3024] flex items-center justify-center text-[#c49c6d] shadow-sm flex-shrink-0">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                 </div>
                 <div class="min-w-0">
-                    <h1 class="text-base sm:text-lg lg:text-xl font-serif font-bold tracking-wide bg-gradient-to-r from-stone-100 via-[#dfcbb5] to-[#c5a880] bg-clip-text text-transparent leading-tight truncate">RestoKZ</h1>
-                    <p id="headerTagline" class="text-[10px] sm:text-xs lg:text-sm text-[#8c93a0] font-medium tracking-tight truncate max-w-[170px] sm:max-w-none">Бронирование столов в Казахстане</p>
+                    <h1 class="text-base sm:text-lg lg:text-xl font-serif font-bold tracking-wide bg-gradient-to-r from-[#f7f4ee] via-[#dfc8a7] to-[#c49c6d] bg-clip-text text-transparent leading-tight truncate">RestoKZ</h1>
+                    <p id="headerTagline" class="text-[10px] sm:text-xs lg:text-sm text-[#a3988b] font-medium tracking-tight truncate max-w-[170px] sm:max-w-none">Бронирование столов в Казахстане</p>
                 </div>
             </div>
 
             <!-- Desktop Navigation Links (hidden on mobile, visible on md+) -->
-            <nav class="hidden md:flex items-center gap-2 bg-[#14171f] border border-[#252933] rounded-2xl p-1.5">
-                <button type="button" onclick="switchTab('restaurants')" id="desktopNav-restaurants" class="px-5 lg:px-6 py-2 lg:py-2.5 rounded-xl text-xs sm:text-sm lg:text-base font-bold text-[#0e1013] bg-[#c5a880] transition shadow-sm">
-                    🏠 Рестораны
+            <nav class="hidden md:flex items-center gap-2 bg-[#181411] border border-[#332a22] rounded-2xl p-1.5 shadow-sm">
+                <button type="button" onclick="switchTab('restaurants')" id="desktopNav-restaurants" class="px-5 lg:px-6 py-2 lg:py-2.5 rounded-xl text-xs sm:text-sm lg:text-base font-bold text-[#110e0c] bg-[#c49c6d] transition shadow-sm flex items-center gap-2">
+                    <svg class="w-4 h-4 text-[#110e0c]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                    <span>Рестораны</span>
+                    <kbd class="hidden xl:inline text-[10px] font-mono px-1.5 py-0.5 rounded bg-black/15 text-[#110e0c]/80">1</kbd>
                 </button>
-                <button type="button" onclick="switchTab('my-bookings')" id="desktopNav-my-bookings" class="px-5 lg:px-6 py-2 lg:py-2.5 rounded-xl text-xs sm:text-sm lg:text-base font-semibold text-[#8c93a0] hover:text-[#f3efe9] transition">
-                    📋 Мои брони
+                <button type="button" onclick="switchTab('my-bookings')" id="desktopNav-my-bookings" class="px-5 lg:px-6 py-2 lg:py-2.5 rounded-xl text-xs sm:text-sm lg:text-base font-semibold text-[#a3988b] hover:text-[#f7f4ee] hover:bg-[#211c17] transition flex items-center gap-2">
+                    <svg class="w-4 h-4 text-[#a3988b]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                    <span>Мои брони</span>
+                    <kbd class="hidden xl:inline text-[10px] font-mono px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-[#a3988b]">2</kbd>
                 </button>
             </nav>
 
             <!-- Language & City Selectors & PRO Terminal Button -->
             <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-                <button type="button" onclick="openRestaurantTerminal()" class="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 lg:px-5 py-2 lg:py-2.5 rounded-xl bg-gradient-to-r from-amber-500/20 to-amber-600/30 text-amber-300 border border-amber-500/40 text-xs sm:text-sm lg:text-base font-bold shadow-sm hover:brightness-110 active:scale-95 transition whitespace-nowrap" title="Терминал хостес и управления заведением">
-                    <span>👑</span> <span class="hidden sm:inline">RestoKZ</span> <span>PRO</span>
+                <button type="button" onclick="openRestaurantTerminal()" class="inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-4 lg:px-5 py-2 lg:py-2.5 rounded-xl bg-gradient-to-r from-[#c49c6d]/20 to-[#a07849]/30 text-[#dfc8a7] border border-[#c49c6d]/40 text-xs sm:text-sm lg:text-base font-bold shadow-sm hover:brightness-110 active:scale-95 transition whitespace-nowrap" title="Терминал хостес и управления заведением">
+                    <svg class="w-4 h-4 text-[#c49c6d]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    <span class="hidden sm:inline">RestoKZ</span> <span>PRO</span>
                 </button>
                 <!-- Language Toggle (RU / KZ / EN) -->
-                <div class="flex items-center bg-[#15171d] border border-[#252933] rounded-xl p-1 shadow-sm">
-                    <button type="button" onclick="setLanguage('ru')" id="langBtn-ru" class="px-2 sm:px-2.5 lg:px-3 py-1 sm:py-1.5 text-xs sm:text-sm font-bold rounded-lg bg-[#c5a880] text-[#0e1013] transition">RU</button>
-                    <button type="button" onclick="setLanguage('kz')" id="langBtn-kz" class="px-2 sm:px-2.5 lg:px-3 py-1 sm:py-1.5 text-xs sm:text-sm font-bold rounded-lg text-[#8c93a0] hover:text-white transition">KZ</button>
-                    <button type="button" onclick="setLanguage('en')" id="langBtn-en" class="px-2 sm:px-2.5 lg:px-3 py-1 sm:py-1.5 text-xs sm:text-sm font-bold rounded-lg text-[#8c93a0] hover:text-white transition">EN</button>
+                <div class="flex items-center bg-[#181411] border border-[#332a22] rounded-xl p-1 shadow-sm">
+                    <button type="button" onclick="setLanguage('ru')" id="langBtn-ru" class="px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm font-bold rounded-lg bg-[#c49c6d] text-[#110e0c] transition">RU</button>
+                    <button type="button" onclick="setLanguage('kz')" id="langBtn-kz" class="px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm font-bold rounded-lg text-[#a3988b] hover:text-[#f7f4ee] transition">KZ</button>
+                    <button type="button" onclick="setLanguage('en')" id="langBtn-en" class="px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm font-bold rounded-lg text-[#a3988b] hover:text-[#f7f4ee] transition">EN</button>
                 </div>
 
                 <!-- City Selector -->
                 <div class="relative">
-                    <select id="citySelect" onchange="onCityChange(this.value)" class="bg-[#15171d] text-xs sm:text-sm lg:text-base text-[#dfcbb5] font-semibold py-1.5 sm:py-2 lg:py-2.5 px-3 sm:px-3.5 rounded-xl border border-[#252933] outline-none focus:border-[#c5a880] transition-colors cursor-pointer">
+                    <select id="citySelect" onchange="onCityChange(this.value)" class="bg-[#181411] text-xs sm:text-sm lg:text-base text-[#dfc8a7] font-semibold py-1.5 sm:py-2 lg:py-2.5 px-3 sm:px-3.5 rounded-xl border border-[#332a22] outline-none focus:border-[#c49c6d] transition-colors cursor-pointer">
                         <option value="Все" selected id="optCityAll">Все города</option>
                         <option value="Алматы">Алматы</option>
                         <option value="Астана">Астана</option>
@@ -146,20 +165,21 @@
         <section id="tab-restaurants" class="space-y-5 sm:space-y-7">
             
             <!-- Desktop Hero Banner (hidden on mobile, visible on md+) -->
-            <div class="hidden md:block bg-gradient-to-r from-[#171a22] via-[#13161c] to-[#1c1813] border border-[#c5a880]/25 rounded-3xl p-7 lg:p-10 relative overflow-hidden shadow-2xl">
-                <div class="relative z-10 max-w-3xl space-y-3">
-                    <span class="inline-flex items-center gap-2 text-xs sm:text-sm uppercase tracking-widest font-bold px-3.5 py-1.5 bg-[#c5a880]/15 text-[#dfcbb5] border border-[#c5a880]/30 rounded-full">
-                        ✨ Гастрономический гид Казахстана
+            <div class="hidden md:block bg-gradient-to-r from-[#181411] via-[#1f1914] to-[#241d17] border border-[#332a22] rounded-3xl p-8 lg:p-11 relative overflow-hidden shadow-2xl">
+                <div class="relative z-10 max-w-3xl space-y-3.5">
+                    <span class="inline-flex items-center gap-2 text-xs sm:text-sm uppercase tracking-widest font-bold px-3.5 py-1.5 bg-[#c49c6d]/15 text-[#dfc8a7] border border-[#c49c6d]/30 rounded-full">
+                        <svg class="w-4 h-4 text-[#c49c6d]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+                        Гастрономический гид Казахстана
                     </span>
-                    <h2 class="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-serif font-bold text-white tracking-wide leading-tight">
-                        Бронируйте лучшие столики <br/><span class="bg-gradient-to-r from-[#f3efe9] via-[#dfcbb5] to-[#c5a880] bg-clip-text text-transparent">в ресторанах вашего города</span>
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-serif font-bold text-[#f7f4ee] tracking-wide leading-tight">
+                        Бронируйте лучшие столики <br/><span class="bg-gradient-to-r from-[#f7f4ee] via-[#dfc8a7] to-[#c49c6d] bg-clip-text text-transparent">в ресторанах вашего города</span>
                     </h2>
-                    <p class="text-xs sm:text-sm lg:text-base text-[#8c93a0] max-w-2xl leading-relaxed">
-                        Интерактивная карта залов, актуальное меню с ценами в тенге, бронирование в 2 клика без звонков и ожидания.
+                    <p class="text-xs sm:text-sm lg:text-base text-[#a3988b] max-w-2xl leading-relaxed">
+                        Интерактивная карта залов, актуальное меню с ценами в тенге, быстрое бронирование за пару кликов без звонков и ожидания.
                     </p>
                 </div>
-                <div class="absolute -right-6 -bottom-10 opacity-10 text-[160px] lg:text-[220px] select-none pointer-events-none">
-                    🍽️
+                <div class="absolute -right-6 -bottom-10 opacity-10 text-[#c49c6d] pointer-events-none">
+                    <svg class="w-64 h-64 lg:w-80 lg:h-80" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C7.03 2 3 6.03 3 11h18c0-4.97-4.03-9-9-9zm-1-1.5h2v1h-2v-1zM2 13h20v2H2v-2zm3 4h14v1.5c0 .83-.67 1.5-1.5 1.5h-11C5.67 20 5 19.33 5 18.5V17z"/></svg>
                 </div>
             </div>
 
@@ -168,16 +188,20 @@
                 <div class="flex flex-col md:flex-row gap-3 sm:gap-4 items-stretch md:items-center justify-between">
                     <div class="relative flex-1 max-w-full md:max-w-lg lg:max-w-xl">
                         <input type="text" id="searchInput" oninput="onSearchInput(this.value)" placeholder="Поиск ресторана, кухни, адреса..." 
-                               class="w-full bg-[#15171d] border border-[#252933] rounded-2xl py-3 sm:py-3.5 lg:py-4 pl-11 sm:pl-12 pr-4 text-xs sm:text-sm lg:text-base placeholder-[#8c93a0] text-[#f3efe9] outline-none focus:border-[#c5a880] transition-all shadow-sm">
-                        <span class="absolute left-3.5 sm:left-4 top-3 sm:top-3.5 lg:top-4 text-[#8c93a0] text-sm sm:text-base lg:text-lg">🔍</span>
+                               class="w-full bg-[#181411] border border-[#332a22] rounded-2xl py-3 sm:py-3.5 lg:py-4 pl-11 sm:pl-12 pr-16 text-xs sm:text-sm lg:text-base placeholder-[#8c93a0] text-[#f7f4ee] outline-none focus:border-[#c49c6d] transition-all shadow-sm">
+                        <span class="absolute left-3.5 sm:left-4 top-3.5 sm:top-4 text-[#c49c6d]">
+                            <svg class="w-4 h-4 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        </span>
+                        <kbd class="hidden md:inline absolute right-3.5 top-1/2 -translate-y-1/2 text-[10px] font-mono px-2 py-0.5 rounded bg-white/5 border border-white/10 text-[#a3988b]">/ Поиск</kbd>
                     </div>
 
                     <!-- Cuisine Chips -->
                     <div class="flex gap-2.5 overflow-x-auto hide-scrollbar pb-1 text-xs sm:text-sm lg:text-base">
-                        <button onclick="filterCuisine('Все')" class="cuisine-btn active px-4 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 rounded-full bg-[#c5a880] text-[#0e1013] font-bold whitespace-nowrap transition-all shadow-sm">Все</button>
-                        <button onclick="filterCuisine('Казахская')" class="cuisine-btn px-4 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 rounded-full bg-[#15171d] text-[#8c93a0] border border-[#252933] hover:text-[#f3efe9] font-medium whitespace-nowrap transition-all">🥩 Казахская</button>
-                        <button onclick="filterCuisine('Итальянская')" class="cuisine-btn px-4 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 rounded-full bg-[#15171d] text-[#8c93a0] border border-[#252933] hover:text-[#f3efe9] font-medium whitespace-nowrap transition-all">🍝 Итальянская</button>
-                        <button onclick="filterCuisine('Восточная')" class="cuisine-btn px-4 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 rounded-full bg-[#15171d] text-[#8c93a0] border border-[#252933] hover:text-[#f3efe9] font-medium whitespace-nowrap transition-all">🫖 Восточная</button>
+                        <button onclick="filterCuisine('Все')" class="cuisine-btn active px-4 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 rounded-full bg-[#c49c6d] text-[#110e0c] font-bold whitespace-nowrap transition-all shadow-sm">Все</button>
+                        <button onclick="filterCuisine('Казахская')" class="cuisine-btn px-4 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 rounded-full bg-[#181411] text-[#a3988b] border border-[#332a22] hover:text-[#f7f4ee] hover:border-[#c49c6d]/40 font-medium whitespace-nowrap transition-all">Казахская</button>
+                        <button onclick="filterCuisine('Итальянская')" class="cuisine-btn px-4 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 rounded-full bg-[#181411] text-[#a3988b] border border-[#332a22] hover:text-[#f7f4ee] hover:border-[#c49c6d]/40 font-medium whitespace-nowrap transition-all">Итальянская</button>
+                        <button onclick="filterCuisine('Восточная')" class="cuisine-btn px-4 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 rounded-full bg-[#181411] text-[#a3988b] border border-[#332a22] hover:text-[#f7f4ee] hover:border-[#c49c6d]/40 font-medium whitespace-nowrap transition-all">Восточная</button>
+                        <button onclick="filterCuisine('Европейская')" class="cuisine-btn px-4 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 rounded-full bg-[#181411] text-[#a3988b] border border-[#332a22] hover:text-[#f7f4ee] hover:border-[#c49c6d]/40 font-medium whitespace-nowrap transition-all">Европейская</button>
                     </div>
                 </div>
             </div>
@@ -191,30 +215,37 @@
 
         <!-- TAB 2: MY BOOKINGS -->
         <section id="tab-my-bookings" class="hidden space-y-4 sm:space-y-6">
-            <div class="flex items-center justify-between border-b border-[#20232c] pb-3">
+            <div class="flex items-center justify-between border-b border-[#332a22] pb-3">
                 <div>
-                    <h2 class="text-base sm:text-xl font-serif font-bold text-[#f3efe9]">📋 Мои бронирования</h2>
-                    <p class="text-xs text-[#8c93a0] mt-0.5">Актуальные и завершенные заявки на бронирование</p>
+                    <h2 class="text-base sm:text-xl lg:text-2xl font-serif font-bold text-[#f7f4ee] flex items-center gap-2">
+                        <svg class="w-5 h-5 text-[#c49c6d]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                        Мои бронирования
+                    </h2>
+                    <p class="text-xs sm:text-sm text-[#a3988b] mt-0.5">Актуальные и завершенные заявки на бронирование</p>
                 </div>
-                <button onclick="loadMyBookings()" class="px-3 py-1.5 rounded-lg bg-[#15171d] border border-[#252933] text-xs text-[#c5a880] hover:border-[#c5a880] font-medium transition shadow-sm">🔄 Обновить</button>
+                <button onclick="loadMyBookings()" class="px-3.5 py-2 rounded-xl bg-[#181411] border border-[#332a22] text-xs sm:text-sm text-[#c49c6d] hover:border-[#c49c6d] hover:bg-[#211c17] font-semibold transition shadow-sm flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                    <span>Обновить</span>
+                </button>
             </div>
-            <div id="myBookingsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div id="myBookingsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
                 <!-- Injected via JavaScript -->
             </div>
         </section>
 
         <!-- TAB 3: ADMIN PANEL (REDIRECT TO DEDICATED RESTOKZ PRO TERMINAL) -->
         <section id="tab-admin" class="hidden space-y-4">
-            <div class="max-w-xl mx-auto bg-gradient-to-br from-[#171920] to-[#12141a] border border-[#c5a880]/30 rounded-3xl p-8 text-center space-y-5 shadow-2xl">
-                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#c5a880] to-[#8f6f40] flex items-center justify-center text-3xl mx-auto shadow-lg shadow-[#c5a880]/20">
-                    👑
+            <div class="max-w-xl mx-auto bg-gradient-to-br from-[#181411] to-[#211c17] border border-[#332a22] rounded-3xl p-8 sm:p-10 text-center space-y-5 shadow-2xl">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#c49c6d] to-[#a07849] flex items-center justify-center mx-auto shadow-lg shadow-[#c49c6d]/20 text-[#110e0c]">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                 </div>
                 <div class="space-y-2">
-                    <h2 class="text-lg sm:text-xl font-serif font-bold text-white">Терминал RestoKZ PRO</h2>
-                    <p class="text-xs sm:text-sm text-zinc-400 max-w-md mx-auto">Управление рестораном, сменой хостес, боковым меню, картой зала и подписками открывается в полнофункциональном PRO-терминале.</p>
+                    <h2 class="text-xl sm:text-2xl font-serif font-bold text-[#f7f4ee]">Терминал RestoKZ PRO</h2>
+                    <p class="text-xs sm:text-sm text-[#a3988b] max-w-md mx-auto">Управление рестораном, сменой хостес, боковым меню, картой зала и подписками открывается в полнофункциональном десктоп-терминале.</p>
                 </div>
-                <button type="button" onclick="openRestaurantTerminal()" class="w-full py-3.5 rounded-xl font-bold text-xs sm:text-sm luxury-gold-btn transition shadow-lg active:scale-95 flex items-center justify-center gap-2">
-                    <span>🚀</span> <span>Открыть Терминал RestoKZ PRO</span>
+                <button type="button" onclick="openRestaurantTerminal()" class="w-full py-4 rounded-xl font-bold text-sm bg-gradient-to-r from-[#c49c6d] to-[#a07849] text-[#110e0c] transition shadow-lg hover:brightness-110 active:scale-95 flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                    <span>Открыть Терминал RestoKZ PRO</span>
                 </button>
             </div>
         </section>
@@ -223,104 +254,113 @@
 
     <!-- RESTAURANT DETAILS MODAL -->
     <div id="restaurantModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex flex-col justify-end md:justify-center md:items-center md:p-6">
-        <div class="bg-[#121419] border-t md:border border-[#252933] md:border-[#c5a880]/30 rounded-t-3xl md:rounded-3xl max-h-[92vh] md:max-h-[88vh] flex flex-col overflow-hidden max-w-md md:max-w-3xl lg:max-w-4xl mx-auto w-full shadow-2xl">
+        <div class="bg-[#181411] border-t md:border border-[#332a22] md:border-[#c49c6d]/40 rounded-t-3xl md:rounded-3xl max-h-[92vh] md:max-h-[88vh] flex flex-col overflow-hidden max-w-md md:max-w-3xl lg:max-w-4xl mx-auto w-full shadow-2xl">
             
             <!-- Modal Header / Cover -->
-            <div class="relative h-44 sm:h-56 bg-[#181a20] flex-shrink-0">
+            <div class="relative h-48 sm:h-60 bg-[#211c17] flex-shrink-0">
                 <img id="modalCover" src="" class="w-full h-full object-cover" alt="Restaurant Cover">
-                <div class="absolute inset-0 bg-gradient-to-t from-[#121419] via-transparent to-black/50"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-[#181411] via-transparent to-black/60"></div>
                 
-                <button onclick="closeRestaurantModal()" class="absolute top-3 right-3 w-8 h-8 bg-black/60 hover:bg-black/80 rounded-full flex items-center justify-center text-stone-200 text-sm backdrop-blur-md transition-colors">✕</button>
+                <button onclick="closeRestaurantModal()" class="absolute top-3.5 right-3.5 px-3 py-1.5 bg-black/70 hover:bg-black/90 rounded-xl flex items-center gap-1.5 text-[#dfc8a7] text-xs font-semibold backdrop-blur-md border border-white/10 transition-colors shadow-lg" title="Закрыть (Esc)">
+                    <span>✕</span>
+                    <kbd class="hidden md:inline text-[10px] font-mono text-[#a3988b]">Esc</kbd>
+                </button>
 
-                <div class="absolute bottom-3 left-4 right-4">
-                    <span id="modalCuisineBadge" class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 bg-[#c5a880]/20 text-[#dfcbb5] border border-[#c5a880]/30 rounded-md">Итальянская</span>
-                    <h2 id="modalTitle" class="text-xl font-serif font-bold text-[#f3efe9] mt-1">La Terrazza</h2>
-                    <p id="modalAddress" class="text-xs text-[#8c93a0] flex items-center gap-1 mt-0.5">📍 ул. Сатпаева 29</p>
+                <div class="absolute bottom-3.5 left-5 right-5">
+                    <span id="modalCuisineBadge" class="text-[11px] uppercase font-bold tracking-wider px-2.5 py-0.5 bg-[#c49c6d]/20 text-[#dfc8a7] border border-[#c49c6d]/30 rounded-md">Итальянская</span>
+                    <h2 id="modalTitle" class="text-xl sm:text-2xl lg:text-3xl font-serif font-bold text-[#f7f4ee] mt-1.5">La Terrazza</h2>
+                    <p id="modalAddress" class="text-xs sm:text-sm text-[#a3988b] flex items-center gap-1.5 mt-0.5">
+                        <svg class="w-3.5 h-3.5 text-[#c49c6d]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        ул. Сатпаева 29
+                    </p>
                 </div>
             </div>
 
             <!-- Tabs Switcher inside Modal -->
-            <div class="grid grid-cols-3 border-b border-[#20232c] bg-[#121419] px-3 pt-1">
-                <button id="modalTabBtn-book" onclick="switchModalTab('book')" class="py-3 text-xs font-bold border-b-2 border-[#c5a880] text-[#c5a880] text-center whitespace-nowrap transition-all">
-                    🪑 Бронь стола
+            <div class="grid grid-cols-3 border-b border-[#332a22] bg-[#181411] px-4 pt-1">
+                <button id="modalTabBtn-book" onclick="switchModalTab('book')" class="py-3 text-xs sm:text-sm font-bold border-b-2 border-[#c49c6d] text-[#c49c6d] text-center whitespace-nowrap transition-all flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    <span>Бронь стола</span>
                 </button>
-                <button id="modalTabBtn-menu" onclick="switchModalTab('menu')" class="py-3 text-xs font-bold border-b-2 border-transparent text-[#8c93a0] text-center whitespace-nowrap hover:text-stone-200 transition-all">
-                    📖 Меню
+                <button id="modalTabBtn-menu" onclick="switchModalTab('menu')" class="py-3 text-xs sm:text-sm font-bold border-b-2 border-transparent text-[#a3988b] text-center whitespace-nowrap hover:text-[#f7f4ee] transition-all flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                    <span>Меню</span>
                 </button>
-                <button id="modalTabBtn-about" onclick="switchModalTab('about')" class="py-3 text-xs font-bold border-b-2 border-transparent text-[#8c93a0] text-center whitespace-nowrap hover:text-stone-200 transition-all">
-                    ℹ️ Инфо
+                <button id="modalTabBtn-about" onclick="switchModalTab('about')" class="py-3 text-xs sm:text-sm font-bold border-b-2 border-transparent text-[#a3988b] text-center whitespace-nowrap hover:text-[#f7f4ee] transition-all flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <span>О заведении</span>
                 </button>
             </div>
 
             <!-- Modal Body Scrollable -->
-            <div class="flex-1 overflow-y-auto p-4 space-y-5 hide-scrollbar">
+            <div class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 hide-scrollbar">
                 
                 <!-- 1. BOOKING SUB-VIEW -->
                 <div id="modalSubTab-book" class="space-y-5">
                     
                     <!-- Date Picker -->
                     <div>
-                        <label class="text-xs font-semibold text-stone-300 block mb-2">1. Выберите дату</label>
-                        <div class="grid grid-cols-3 gap-2">
-                            <button type="button" onclick="selectDateQuick('today')" id="dateBtn-today" class="date-quick-btn py-2.5 rounded-xl bg-[#c5a880] text-[#0e1013] text-xs font-bold transition-all shadow-sm">Сегодня</button>
-                            <button type="button" onclick="selectDateQuick('tomorrow')" id="dateBtn-tomorrow" class="date-quick-btn py-2.5 rounded-xl bg-[#181a20] text-[#8c93a0] border border-[#252933] text-xs font-medium transition-all hover:text-stone-200">Завтра</button>
-                            <input type="date" id="bookingDateInput" onchange="onCustomDateChange(this.value)" class="w-full bg-[#181a20] border border-[#252933] text-xs text-[#dfcbb5] rounded-xl px-2.5 py-2 outline-none focus:border-[#c5a880] cursor-pointer text-center">
+                        <label class="text-xs sm:text-sm font-semibold text-[#f7f4ee] block mb-2">1. Выберите дату</label>
+                        <div class="grid grid-cols-3 gap-2 sm:gap-3">
+                            <button type="button" onclick="selectDateQuick('today')" id="dateBtn-today" class="date-quick-btn py-2.5 sm:py-3 rounded-xl bg-[#c49c6d] text-[#110e0c] text-xs sm:text-sm font-bold transition-all shadow-sm">Сегодня</button>
+                            <button type="button" onclick="selectDateQuick('tomorrow')" id="dateBtn-tomorrow" class="date-quick-btn py-2.5 sm:py-3 rounded-xl bg-[#211c17] text-[#a3988b] border border-[#332a22] text-xs sm:text-sm font-semibold transition-all hover:text-[#f7f4ee]">Завтра</button>
+                            <input type="date" id="bookingDateInput" onchange="onCustomDateChange(this.value)" class="w-full bg-[#211c17] border border-[#332a22] text-xs sm:text-sm text-[#dfc8a7] font-semibold rounded-xl px-2.5 py-2 sm:py-2.5 outline-none focus:border-[#c49c6d] cursor-pointer text-center">
                         </div>
                     </div>
 
                     <!-- Time Selection (Full Day / Evening / Custom) -->
                     <div>
                         <div class="flex items-center justify-between mb-2">
-                            <label class="text-xs font-semibold text-stone-300">2. Время визита</label>
-                            <div class="flex items-center gap-1.5 bg-[#c5a880]/15 border border-[#c5a880]/30 px-2.5 py-0.5 rounded-lg">
-                                <span class="text-[10px] text-[#8c93a0]">Выбрано:</span>
-                                <span class="text-xs font-serif font-bold text-[#dfcbb5]" id="selectedTimeDisplay">19:00</span>
+                            <label class="text-xs sm:text-sm font-semibold text-[#f7f4ee]">2. Время визита</label>
+                            <div class="flex items-center gap-1.5 bg-[#c49c6d]/15 border border-[#c49c6d]/30 px-3 py-0.5 rounded-lg">
+                                <span class="text-[11px] text-[#a3988b]">Выбрано:</span>
+                                <span class="text-xs sm:text-sm font-serif font-bold text-[#dfc8a7]" id="selectedTimeDisplay">19:00</span>
                             </div>
                         </div>
 
-                        <div class="bg-[#16181f] border border-[#252933] rounded-2xl p-3.5 space-y-3.5">
+                        <div class="bg-[#211c17] border border-[#332a22] rounded-2xl p-4 space-y-4">
                             <!-- Period Toggle (Day vs Evening vs Custom) -->
-                            <div class="grid grid-cols-3 gap-2 p-1.5 bg-[#0e1013] rounded-2xl border border-[#222630]">
+                            <div class="grid grid-cols-3 gap-2 p-1.5 bg-[#181411] rounded-2xl border border-[#332a22]">
                                 <button type="button" onclick="setTimePeriod('day')" id="periodBtn-day" 
-                                        class="period-tab-btn min-h-[54px] py-2.5 px-2 rounded-xl flex flex-col items-center justify-center text-center transition-all text-[#8c93a0] hover:text-[#f3efe9]">
-                                    <span class="block text-xs font-bold leading-snug">☀️ Обед</span>
-                                    <span class="block text-[10px] opacity-80 leading-tight mt-0.5">11:00 – 16:30</span>
+                                        class="period-tab-btn min-h-[54px] py-2.5 px-2 rounded-xl flex flex-col items-center justify-center text-center transition-all text-[#a3988b] hover:text-[#f7f4ee]">
+                                    <span class="block text-xs sm:text-sm font-bold leading-snug">☀️ Обед</span>
+                                    <span class="block text-[10px] sm:text-[11px] opacity-80 leading-tight mt-0.5">11:00 – 16:30</span>
                                 </button>
                                 <button type="button" onclick="setTimePeriod('evening')" id="periodBtn-evening" 
-                                        class="period-tab-btn min-h-[54px] py-2.5 px-2 rounded-xl flex flex-col items-center justify-center text-center bg-[#c5a880] text-[#0e1013] transition-all shadow-sm">
-                                    <span class="block text-xs font-bold leading-snug">🌙 Ужин</span>
-                                    <span class="block text-[10px] opacity-85 leading-tight mt-0.5">17:00 – 23:00</span>
+                                        class="period-tab-btn min-h-[54px] py-2.5 px-2 rounded-xl flex flex-col items-center justify-center text-center bg-[#c49c6d] text-[#110e0c] transition-all shadow-sm">
+                                    <span class="block text-xs sm:text-sm font-bold leading-snug">🌙 Ужин</span>
+                                    <span class="block text-[10px] sm:text-[11px] opacity-85 leading-tight mt-0.5">17:00 – 23:00</span>
                                 </button>
                                 <button type="button" onclick="setTimePeriod('custom')" id="periodBtn-custom" 
-                                        class="period-tab-btn min-h-[54px] py-2.5 px-2 rounded-xl flex flex-col items-center justify-center text-center transition-all text-[#8c93a0] hover:text-[#f3efe9]">
-                                    <span class="block text-xs font-bold leading-snug">⏱️ Своё</span>
-                                    <span class="block text-[10px] opacity-80 leading-tight mt-0.5">Точное время</span>
+                                        class="period-tab-btn min-h-[54px] py-2.5 px-2 rounded-xl flex flex-col items-center justify-center text-center transition-all text-[#a3988b] hover:text-[#f7f4ee]">
+                                    <span class="block text-xs sm:text-sm font-bold leading-snug">⏱️ Своё</span>
+                                    <span class="block text-[10px] sm:text-[11px] opacity-80 leading-tight mt-0.5">Точное время</span>
                                 </button>
                             </div>
 
                             <!-- Slots Grid (12 items = 3 neat rows of 4) -->
-                            <div id="timeSlotsContainer" class="grid grid-cols-4 gap-2 text-xs">
+                            <div id="timeSlotsContainer" class="grid grid-cols-4 gap-2 sm:gap-2.5 text-xs sm:text-sm">
                                 <!-- Injected dynamically via renderTimeSlots() -->
                             </div>
 
                             <!-- Custom Exact Time Input (Shown when 'custom' is active) -->
                             <div id="customTimeWrapper" class="hidden space-y-2.5 pt-1">
-                                <div class="flex items-center justify-between bg-[#0e1013] border border-[#252933] rounded-xl px-3.5 py-2.5">
+                                <div class="flex items-center justify-between bg-[#181411] border border-[#332a22] rounded-xl px-4 py-3">
                                     <div>
-                                        <span class="text-xs font-medium text-[#f3efe9] block">Укажите точное время</span>
-                                        <span class="text-[10px] text-[#8c93a0]">Любой час и минуты визита</span>
+                                        <span class="text-xs sm:text-sm font-semibold text-[#f7f4ee] block">Укажите точное время</span>
+                                        <span class="text-[10px] sm:text-xs text-[#a3988b]">Любой час и минуты визита</span>
                                     </div>
                                     <input type="time" id="customTimeInput" onchange="onCustomTimeChange(this.value)" 
                                            min="09:00" max="23:59" step="300"
-                                           class="bg-[#181a20] border border-[#c5a880]/50 text-sm text-[#dfcbb5] font-bold rounded-xl px-3 py-1.5 outline-none focus:border-[#c5a880] cursor-pointer">
+                                           class="bg-[#211c17] border border-[#c49c6d]/50 text-sm text-[#dfc8a7] font-bold rounded-xl px-3 py-1.5 outline-none focus:border-[#c49c6d] cursor-pointer">
                                 </div>
                                 <div class="flex items-center gap-1.5 flex-wrap">
-                                    <span class="text-[10px] text-[#8c93a0] mr-1">Быстрый выбор:</span>
-                                    <button type="button" onclick="pickCustomQuick('10:00')" class="px-2.5 py-1 rounded-lg bg-[#0e1013] border border-[#252933] text-[11px] text-[#c9c5bd] hover:border-[#c5a880]">10:00</button>
-                                    <button type="button" onclick="pickCustomQuick('10:30')" class="px-2.5 py-1 rounded-lg bg-[#0e1013] border border-[#252933] text-[11px] text-[#c9c5bd] hover:border-[#c5a880]">10:30</button>
-                                    <button type="button" onclick="pickCustomQuick('17:15')" class="px-2.5 py-1 rounded-lg bg-[#0e1013] border border-[#252933] text-[11px] text-[#c9c5bd] hover:border-[#c5a880]">17:15</button>
-                                    <button type="button" onclick="pickCustomQuick('22:30')" class="px-2.5 py-1 rounded-lg bg-[#0e1013] border border-[#252933] text-[11px] text-[#c9c5bd] hover:border-[#c5a880]">22:30</button>
-                                    <button type="button" onclick="pickCustomQuick('23:30')" class="px-2.5 py-1 rounded-lg bg-[#0e1013] border border-[#252933] text-[11px] text-[#c9c5bd] hover:border-[#c5a880]">23:30</button>
+                                    <span class="text-[11px] text-[#a3988b] mr-1">Быстрый выбор:</span>
+                                    <button type="button" onclick="pickCustomQuick('10:00')" class="px-2.5 py-1 rounded-lg bg-[#181411] border border-[#332a22] text-xs text-[#dfc8a7] hover:border-[#c49c6d]">10:00</button>
+                                    <button type="button" onclick="pickCustomQuick('10:30')" class="px-2.5 py-1 rounded-lg bg-[#181411] border border-[#332a22] text-xs text-[#dfc8a7] hover:border-[#c49c6d]">10:30</button>
+                                    <button type="button" onclick="pickCustomQuick('17:15')" class="px-2.5 py-1 rounded-lg bg-[#181411] border border-[#332a22] text-xs text-[#dfc8a7] hover:border-[#c49c6d]">17:15</button>
+                                    <button type="button" onclick="pickCustomQuick('22:30')" class="px-2.5 py-1 rounded-lg bg-[#181411] border border-[#332a22] text-xs text-[#dfc8a7] hover:border-[#c49c6d]">22:30</button>
+                                    <button type="button" onclick="pickCustomQuick('23:30')" class="px-2.5 py-1 rounded-lg bg-[#181411] border border-[#332a22] text-xs text-[#dfc8a7] hover:border-[#c49c6d]">23:30</button>
                                 </div>
                             </div>
                         </div>
@@ -328,13 +368,13 @@
 
                     <!-- Guests Count -->
                     <div>
-                        <label class="text-xs font-semibold text-stone-300 block mb-1.5">3. Количество гостей</label>
-                        <div class="flex items-center justify-between bg-[#181a20] border border-[#252933] rounded-xl p-2">
-                            <span class="text-xs text-[#8c93a0] pl-2">Персон за столиком:</span>
+                        <label class="text-xs sm:text-sm font-semibold text-[#f7f4ee] block mb-1.5">3. Количество гостей</label>
+                        <div class="flex items-center justify-between bg-[#211c17] border border-[#332a22] rounded-xl p-2.5 sm:p-3">
+                            <span class="text-xs sm:text-sm text-[#a3988b] pl-2">Персон за столиком:</span>
                             <div class="flex items-center gap-3">
-                                <button type="button" onclick="changeGuestCount(-1)" class="w-8 h-8 rounded-lg bg-[#222631] hover:bg-[#2c3140] text-stone-200 font-bold flex items-center justify-center transition-colors">-</button>
-                                <span id="guestsCountValue" class="text-base font-serif font-bold text-[#dfcbb5] w-6 text-center">2</span>
-                                <button type="button" onclick="changeGuestCount(1)" class="w-8 h-8 rounded-lg bg-[#222631] hover:bg-[#2c3140] text-stone-200 font-bold flex items-center justify-center transition-colors">+</button>
+                                <button type="button" onclick="changeGuestCount(-1)" class="w-8 h-8 rounded-lg bg-[#181411] hover:bg-[#2c241e] text-[#f7f4ee] border border-[#332a22] font-bold flex items-center justify-center transition-colors">-</button>
+                                <span id="guestsCountValue" class="text-base sm:text-lg font-serif font-bold text-[#dfc8a7] w-6 text-center">2</span>
+                                <button type="button" onclick="changeGuestCount(1)" class="w-8 h-8 rounded-lg bg-[#181411] hover:bg-[#2c241e] text-[#f7f4ee] border border-[#332a22] font-bold flex items-center justify-center transition-colors">+</button>
                             </div>
                         </div>
                     </div>
@@ -342,81 +382,81 @@
                     <!-- Interactive Hall Scheme -->
                     <div>
                         <div class="flex items-center justify-between mb-1.5">
-                            <label class="text-xs font-semibold text-stone-300">4. Выберите столик на схеме зала</label>
-                            <span class="text-[10px] text-[#c5a880] font-medium">Нажмите на стол</span>
+                            <label class="text-xs sm:text-sm font-semibold text-[#f7f4ee]">4. Выберите столик на схеме зала</label>
+                            <span class="text-xs text-[#c49c6d] font-semibold">Нажмите на стол</span>
                         </div>
 
                         <!-- Legend -->
-                        <div class="flex items-center justify-center gap-4 text-[10px] text-[#8c93a0] mb-2">
+                        <div class="flex items-center justify-center gap-4 text-xs text-[#a3988b] mb-2.5">
                             <div class="flex items-center gap-1.5">
                                 <div class="w-2.5 h-2.5 rounded-full bg-emerald-500/70"></div>
                                 <span>Свободен</span>
                             </div>
                             <div class="flex items-center gap-1.5">
-                                <div class="w-2.5 h-2.5 rounded-full bg-stone-600"></div>
+                                <div class="w-2.5 h-2.5 rounded-full bg-[#332a22]"></div>
                                 <span>Занят</span>
                             </div>
                             <div class="flex items-center gap-1.5">
-                                <div class="w-2.5 h-2.5 rounded-full bg-[#c5a880]"></div>
+                                <div class="w-2.5 h-2.5 rounded-full bg-[#c49c6d]"></div>
                                 <span>Выбран</span>
                             </div>
                         </div>
 
                         <!-- Hall Grid Map Container -->
-                        <div class="bg-[#0b0d10] border border-[#20232c] rounded-2xl p-4 min-h-[240px] relative flex flex-col justify-between shadow-inner">
-                            <div class="text-[10px] text-[#8c93a0]/80 text-center uppercase tracking-wider font-semibold border-b border-[#1c1f27] pb-1.5 mb-3">
+                        <div class="bg-[#110e0c] border border-[#332a22] rounded-2xl p-4 sm:p-5 min-h-[240px] relative flex flex-col justify-between shadow-inner">
+                            <div class="text-[11px] text-[#a3988b] text-center uppercase tracking-wider font-semibold border-b border-[#211c17] pb-2 mb-3">
                                 🪟 Панорамные окна / Вид на город
                             </div>
 
                             <div id="hallTablesGrid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 justify-items-center items-center py-2">
                                 <!-- Tables injected dynamically -->
-                                <div class="col-span-full text-center text-xs text-[#8c93a0]">Загрузка столиков...</div>
+                                <div class="col-span-full text-center text-xs text-[#a3988b]">Загрузка столиков...</div>
                             </div>
 
-                            <div class="text-[10px] text-[#8c93a0]/80 text-center uppercase tracking-wider font-semibold border-t border-[#1c1f27] pt-1.5 mt-3">
+                            <div class="text-[11px] text-[#a3988b] text-center uppercase tracking-wider font-semibold border-t border-[#211c17] pt-2 mt-3">
                                 🚪 Вход в заведение • Барная стойка
                             </div>
                         </div>
 
                         <!-- Selected Table Info Banner -->
-                        <div id="selectedTableBanner" class="mt-2 p-3 bg-[#181a20] border border-[#252933] rounded-xl text-xs text-[#dfcbb5] flex items-center justify-between">
+                        <div id="selectedTableBanner" class="mt-2.5 p-3.5 bg-[#211c17] border border-[#332a22] rounded-xl text-xs sm:text-sm text-[#dfc8a7] flex items-center justify-between">
                             <div>
-                                <span class="font-bold text-[#f3efe9]" id="selectedTableTitle">Столик не выбран</span>
-                                <p class="text-[10px] text-[#8c93a0]" id="selectedTableDesc">Нажмите на свободный столик выше</p>
+                                <span class="font-bold text-[#f7f4ee]" id="selectedTableTitle">Столик не выбран</span>
+                                <p class="text-[11px] text-[#a3988b]" id="selectedTableDesc">Нажмите на свободный столик выше</p>
                             </div>
-                            <span class="text-lg">🪑</span>
+                            <span class="text-xl">🪑</span>
                         </div>
                     </div>
 
                     <!-- Contact Details Form -->
-                    <div class="space-y-2.5 pt-2 border-t border-[#20232c]">
-                        <label class="text-xs font-semibold text-stone-300 block">5. Контактные данные гостя</label>
+                    <div class="space-y-3 pt-3 border-t border-[#332a22]">
+                        <label class="text-xs sm:text-sm font-semibold text-[#f7f4ee] block">5. Контактные данные гостя</label>
                         
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div>
                                 <input type="text" id="guestNameInput" placeholder="Ваше имя" 
-                                       class="w-full bg-[#181a20] border border-[#252933] rounded-xl p-2.5 text-xs text-[#f3efe9] placeholder-[#8c93a0] outline-none focus:border-[#c5a880] transition-colors">
+                                       class="w-full bg-[#211c17] border border-[#332a22] rounded-xl p-3 text-xs sm:text-sm text-[#f7f4ee] placeholder-[#8c93a0] outline-none focus:border-[#c49c6d] transition-colors">
                             </div>
 
                             <div>
                                 <div class="relative">
-                                    <span class="absolute left-3 top-2.5 text-xs text-[#8c93a0]">🇰🇿</span>
+                                    <span class="absolute left-3.5 top-3 text-xs text-[#a3988b]">🇰🇿</span>
                                     <input type="tel" id="guestPhoneInput" oninput="formatKZPhone(this)" placeholder="+7 (701) 000-00-00" 
-                                           class="w-full bg-[#181a20] border border-[#252933] rounded-xl py-2.5 pl-9 pr-3 text-xs text-[#f3efe9] placeholder-[#8c93a0] outline-none focus:border-[#c5a880] font-mono transition-colors">
+                                           class="w-full bg-[#211c17] border border-[#332a22] rounded-xl py-3 pl-9 pr-3 text-xs sm:text-sm text-[#f7f4ee] placeholder-[#8c93a0] outline-none focus:border-[#c49c6d] font-mono transition-colors">
                                 </div>
-                                <span class="text-[10px] text-[#8c93a0] mt-0.5 block pl-1">Ресторан перезвонит для подтверждения</span>
+                                <span class="text-[11px] text-[#a3988b] mt-0.5 block pl-1">Ресторан перезвонит для подтверждения</span>
                             </div>
                         </div>
 
                         <div>
                             <input type="text" id="guestWishesInput" placeholder="Пожелания (день рождения, тихий угол, детский стульчик...)" 
-                                   class="w-full bg-[#181a20] border border-[#252933] rounded-xl p-2.5 text-xs text-[#f3efe9] placeholder-[#8c93a0] outline-none focus:border-[#c5a880] transition-colors">
+                                   class="w-full bg-[#211c17] border border-[#332a22] rounded-xl p-3 text-xs sm:text-sm text-[#f7f4ee] placeholder-[#8c93a0] outline-none focus:border-[#c49c6d] transition-colors">
                         </div>
                     </div>
 
                     <!-- Submit Button -->
                     <button type="button" id="submitBookingBtn" onclick="submitBooking()" disabled 
-                            class="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#c5a880] to-[#b3936a] disabled:from-[#1b1e26] disabled:to-[#1b1e26] disabled:text-[#8c93a0] text-[#0e1013] font-bold text-sm shadow-md transition-all opacity-50 cursor-not-allowed">
+                            class="w-full py-3.5 sm:py-4 rounded-xl bg-gradient-to-r from-[#c49c6d] to-[#a07849] disabled:from-[#211c17] disabled:to-[#211c17] disabled:text-[#8c93a0] disabled:border disabled:border-[#332a22] text-[#110e0c] font-bold text-sm sm:text-base shadow-md transition-all opacity-50 cursor-not-allowed">
                         Подтвердить бронирование
                     </button>
 
@@ -424,50 +464,50 @@
 
                 <!-- 2. MENU SUB-VIEW -->
                 <div id="modalSubTab-menu" class="hidden space-y-4">
-                    <div id="menuCategoriesBar" class="flex gap-2 overflow-x-auto hide-scrollbar pb-1 text-xs">
+                    <div id="menuCategoriesBar" class="flex gap-2 overflow-x-auto hide-scrollbar pb-1 text-xs sm:text-sm">
                         <!-- Category pills -->
                     </div>
-                    <div id="menuDishesList" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div id="menuDishesList" class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                         <!-- Menu Items -->
                     </div>
                 </div>
 
                 <!-- 3. ABOUT SUB-VIEW -->
-                <div id="modalSubTab-about" class="hidden space-y-4 text-xs">
-                    <div class="bg-[#181a20] rounded-2xl p-3.5 space-y-2 border border-[#252933]">
-                        <h4 id="labelAboutTitle" class="font-serif font-bold text-[#dfcbb5] text-sm">О заведении</h4>
-                        <p id="modalAboutDescription" class="text-[#c9c5bd] leading-relaxed text-xs"></p>
+                <div id="modalSubTab-about" class="hidden space-y-4 text-xs sm:text-sm">
+                    <div class="bg-[#211c17] rounded-2xl p-4 sm:p-5 space-y-2 border border-[#332a22]">
+                        <h4 id="labelAboutTitle" class="font-serif font-bold text-[#dfc8a7] text-sm sm:text-base">О заведении</h4>
+                        <p id="modalAboutDescription" class="text-[#f7f4ee] leading-relaxed text-xs sm:text-sm"></p>
                     </div>
 
-                    <div class="bg-[#181a20] rounded-2xl p-3.5 space-y-2.5 border border-[#252933]">
+                    <div class="bg-[#211c17] rounded-2xl p-4 sm:p-5 space-y-3 border border-[#332a22]">
                         <div class="flex items-center justify-between">
-                            <span class="text-[#8c93a0]" id="labelAboutHours">Режим работы:</span>
-                            <span id="modalAboutHours" class="font-semibold text-[#f3efe9]">11:00 - 00:00</span>
+                            <span class="text-[#a3988b]" id="labelAboutHours">Режим работы:</span>
+                            <span id="modalAboutHours" class="font-semibold text-[#f7f4ee]">11:00 - 00:00</span>
                         </div>
                         <div class="flex items-center justify-between">
-                            <span class="text-[#8c93a0]" id="labelAboutCheck">Средний чек:</span>
-                            <span id="modalAboutCheck" class="font-serif font-bold text-[#dfcbb5]">~8 000 ₸</span>
+                            <span class="text-[#a3988b]" id="labelAboutCheck">Средний чек:</span>
+                            <span id="modalAboutCheck" class="font-serif font-bold text-[#dfc8a7]">~8 000 ₸</span>
                         </div>
                         <div class="flex items-center justify-between">
-                            <span class="text-[#8c93a0]" id="labelAboutPhone">Телефон:</span>
-                            <a id="modalAboutPhone" href="" class="font-medium text-[#c5a880] hover:underline">+7 (727) ...</a>
+                            <span class="text-[#a3988b]" id="labelAboutPhone">Телефон:</span>
+                            <a id="modalAboutPhone" href="" class="font-semibold text-[#c49c6d] hover:underline">+7 (727) ...</a>
                         </div>
                     </div>
 
                     <!-- Social Media & 2GIS Interactive Grid -->
-                    <div class="space-y-2 pt-1">
-                        <h5 id="labelAboutSocials" class="text-[10px] font-bold text-[#8c93a0] uppercase tracking-wider">Контакты, Соцсети & 2GIS</h5>
-                        <div class="grid grid-cols-2 gap-2" id="modalSocialLinksContainer">
-                            <a id="modal2GisBtn" href="https://2gis.kz" target="_blank" class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-[#1c1f27] hover:bg-[#252933] border border-[#c5a880]/30 text-[#dfcbb5] font-semibold transition-all">
+                    <div class="space-y-2.5 pt-1">
+                        <h5 id="labelAboutSocials" class="text-[11px] font-bold text-[#a3988b] uppercase tracking-wider">Контакты, Соцсети & 2GIS</h5>
+                        <div class="grid grid-cols-2 gap-2.5" id="modalSocialLinksContainer">
+                            <a id="modal2GisBtn" href="https://2gis.kz" target="_blank" class="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-[#211c17] hover:bg-[#2c241e] border border-[#c49c6d]/30 text-[#dfc8a7] font-semibold transition-all">
                                 <span>🗺️</span> <span id="txtGisBtn">2GIS / Карты</span>
                             </a>
-                            <a id="modalInstagramBtn" href="#" target="_blank" class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-[#1c1f27] hover:bg-[#252933] border border-pink-500/30 text-pink-300 font-semibold transition-all">
+                            <a id="modalInstagramBtn" href="#" target="_blank" class="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-[#211c17] hover:bg-[#2c241e] border border-pink-500/30 text-pink-300 font-semibold transition-all">
                                 <span>📸</span> <span id="txtIgBtn">Instagram</span>
                             </a>
-                            <a id="modalWhatsAppBtn" href="#" target="_blank" class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-[#1c1f27] hover:bg-[#252933] border border-emerald-500/30 text-emerald-300 font-semibold transition-all">
+                            <a id="modalWhatsAppBtn" href="#" target="_blank" class="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-[#211c17] hover:bg-[#2c241e] border border-emerald-500/30 text-emerald-300 font-semibold transition-all">
                                 <span>💬</span> <span id="txtWaBtn">WhatsApp</span>
                             </a>
-                            <a id="modalCallBtn" href="#" class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-[#1c1f27] hover:bg-[#252933] border border-blue-500/30 text-blue-300 font-semibold transition-all">
+                            <a id="modalCallBtn" href="#" class="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-[#211c17] hover:bg-[#2c241e] border border-blue-500/30 text-blue-300 font-semibold transition-all">
                                 <span>📞</span> <span id="txtCallBtn">Позвонить</span>
                             </a>
                         </div>
@@ -480,21 +520,21 @@
 
     <!-- SUCCESS BOOKING MODAL -->
     <div id="successModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-        <div class="bg-[#15171d] border border-[#252933] rounded-3xl p-6 max-w-sm w-full text-center space-y-4 shadow-2xl">
-            <div class="w-16 h-16 bg-[#c5a880]/15 text-[#dfcbb5] border border-[#c5a880]/30 rounded-full flex items-center justify-center text-3xl mx-auto shadow-lg shadow-[#c5a880]/10">
+        <div class="bg-[#181411] border border-[#332a22] rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center space-y-5 shadow-2xl">
+            <div class="w-16 h-16 bg-[#c49c6d]/15 text-[#dfc8a7] border border-[#c49c6d]/30 rounded-full flex items-center justify-center text-3xl mx-auto shadow-lg shadow-[#c49c6d]/10">
                 ✓
             </div>
             
             <div>
-                <h3 class="text-lg font-serif font-bold text-[#f3efe9]">Заявка на бронь принята!</h3>
-                <p class="text-xs text-[#8c93a0] mt-1" id="successModalSubtext">Администратор заведения получил вашу заявку.</p>
+                <h3 class="text-xl font-serif font-bold text-[#f7f4ee]">Заявка на бронь принята!</h3>
+                <p class="text-xs sm:text-sm text-[#a3988b] mt-1" id="successModalSubtext">Администратор заведения получил вашу заявку.</p>
             </div>
 
-            <div class="bg-[#101217] rounded-2xl p-3.5 text-left text-xs space-y-2 border border-[#20232c]" id="successBookingDetails">
+            <div class="bg-[#211c17] rounded-2xl p-4 text-left text-xs sm:text-sm space-y-2 border border-[#332a22]" id="successBookingDetails">
                 <!-- Injected via JS -->
             </div>
 
-            <button onclick="closeSuccessModal()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#c5a880] to-[#b3936a] text-[#0e1013] font-bold text-xs shadow-md hover:brightness-105 transition-all">
+            <button onclick="closeSuccessModal()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#c49c6d] to-[#a07849] text-[#110e0c] font-bold text-sm shadow-md hover:brightness-105 transition-all">
                 Отлично, понятно
             </button>
         </div>
@@ -747,9 +787,9 @@
                 const btn = document.getElementById(`langBtn-${l}`);
                 if (!btn) return;
                 if (l === lang) {
-                    btn.className = "px-1.5 py-1 text-[10px] font-bold rounded-md bg-[#c5a880] text-[#0e1013] transition shadow-sm";
+                    btn.className = "px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm font-bold rounded-lg bg-[#c49c6d] text-[#110e0c] transition shadow-sm";
                 } else {
-                    btn.className = "px-1.5 py-1 text-[10px] font-bold rounded-md text-[#8c93a0] hover:text-white transition";
+                    btn.className = "px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm font-bold rounded-lg text-[#a3988b] hover:text-[#f7f4ee] transition";
                 }
             });
 
@@ -1102,35 +1142,39 @@
             }
 
             listContainer.innerHTML = filtered.map(r => `
-                <div class="bg-[#15171d] border border-[#252933] rounded-3xl overflow-hidden shadow-md hover:border-[#c5a880]/60 hover:-translate-y-1.5 hover:shadow-2xl transition-all duration-300 flex flex-col group">
-                    <div class="relative h-48 sm:h-56 lg:h-64 xl:h-72 bg-[#181a20] cursor-pointer overflow-hidden" onclick="openRestaurantModal(${r.id}, 'book')">
+                <div class="bg-[#181411] border border-[#332a22] rounded-3xl overflow-hidden shadow-md hover:border-[#c49c6d]/70 hover:-translate-y-1.5 hover:shadow-2xl transition-all duration-300 flex flex-col group">
+                    <div class="relative h-48 sm:h-56 lg:h-64 xl:h-72 bg-[#211c17] cursor-pointer overflow-hidden" onclick="openRestaurantModal(${r.id}, 'book')">
                         <img src="${r.cover_image}" alt="${r.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-[#15171d] via-transparent to-black/30"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#181411] via-transparent to-black/40"></div>
                         
-                        <div class="absolute top-3 right-3 bg-[#0e1013]/85 backdrop-blur-md px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-[#dfcbb5] text-xs sm:text-sm font-bold flex items-center gap-1.5 border border-[#252933] shadow-md">
-                            ⭐ ${r.rating}
+                        <div class="absolute top-3.5 right-3.5 bg-[#110e0c]/90 backdrop-blur-md px-3 py-1.5 rounded-xl text-[#dfc8a7] text-xs sm:text-sm font-bold flex items-center gap-1.5 border border-[#332a22] shadow-md">
+                            <svg class="w-3.5 h-3.5 text-[#c49c6d] fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <span>${r.rating}</span>
                         </div>
 
-                        <div class="absolute bottom-3 left-4 right-4">
-                            <span class="text-[11px] sm:text-xs uppercase font-extrabold tracking-wider px-2.5 py-1 bg-[#c5a880] text-[#0e1013] rounded-lg shadow-sm">
+                        <div class="absolute bottom-3.5 left-4 right-4">
+                            <span class="text-[11px] sm:text-xs uppercase font-extrabold tracking-wider px-2.5 py-1 bg-[#c49c6d] text-[#110e0c] rounded-lg shadow-sm">
                                 ${r.city}
                             </span>
-                            <h3 class="text-lg sm:text-xl lg:text-2xl font-serif font-bold text-[#f3efe9] mt-1.5 leading-snug drop-shadow-md truncate">${r.name}</h3>
+                            <h3 class="text-lg sm:text-xl lg:text-2xl font-serif font-bold text-[#f7f4ee] mt-1.5 leading-snug drop-shadow-md truncate">${r.name}</h3>
                         </div>
                     </div>
 
                     <div class="p-4 sm:p-5 lg:p-6 flex flex-col justify-between flex-1 space-y-4">
                         <div class="space-y-1.5">
-                            <p class="text-xs sm:text-sm lg:text-base text-[#c5a880] font-semibold">${r.cuisine}</p>
-                            <p class="text-xs sm:text-sm text-[#8c93a0] flex items-center gap-1.5 truncate" title="${r.address}">📍 ${r.address}</p>
-                            <p class="text-xs sm:text-sm lg:text-base text-[#8c93a0]">${t.avg_check} <b class="text-[#dfcbb5] font-bold">~${formatPrice(r.avg_check)}</b></p>
+                            <p class="text-xs sm:text-sm lg:text-base text-[#c49c6d] font-semibold">${r.cuisine}</p>
+                            <p class="text-xs sm:text-sm text-[#a3988b] flex items-center gap-1.5 truncate" title="${r.address}">
+                                <svg class="w-3.5 h-3.5 text-[#c49c6d] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                <span class="truncate">${r.address}</span>
+                            </p>
+                            <p class="text-xs sm:text-sm lg:text-base text-[#a3988b]">${t.avg_check} <b class="text-[#dfc8a7] font-bold">~${formatPrice(r.avg_check)}</b></p>
                         </div>
 
                         <div class="flex gap-2.5 pt-1">
-                            <button onclick="openRestaurantModal(${r.id}, 'menu')" class="flex-1 py-3 sm:py-3.5 rounded-xl bg-[#1c1f27] hover:bg-[#252933] text-[#dfcbb5] text-xs sm:text-sm lg:text-base font-semibold border border-[#252933] transition-all">
+                            <button onclick="openRestaurantModal(${r.id}, 'menu')" class="flex-1 py-3 sm:py-3.5 rounded-xl bg-[#211c17] hover:bg-[#2c241e] text-[#dfc8a7] text-xs sm:text-sm lg:text-base font-semibold border border-[#332a22] transition-all">
                                 ${t.menu_btn}
                             </button>
-                            <button onclick="openRestaurantModal(${r.id}, 'book')" class="flex-[1.5] py-3 sm:py-3.5 rounded-xl bg-gradient-to-r from-[#c5a880] to-[#b3936a] text-[#0e1013] text-xs sm:text-sm lg:text-base font-bold shadow-md hover:brightness-105 active:scale-95 transition-all">
+                            <button onclick="openRestaurantModal(${r.id}, 'book')" class="flex-[1.5] py-3 sm:py-3.5 rounded-xl bg-gradient-to-r from-[#c49c6d] to-[#a07849] text-[#110e0c] text-xs sm:text-sm lg:text-base font-bold shadow-md hover:brightness-110 active:scale-95 transition-all">
                                 ${t.book_btn}
                             </button>
                         </div>
@@ -1170,11 +1214,9 @@
             currentCuisine = cuisine;
             document.querySelectorAll('.cuisine-btn').forEach(btn => {
                 if (btn.innerText.includes(cuisine)) {
-                    btn.classList.add('active', 'bg-[#c5a880]', 'text-[#0e1013]', 'font-semibold');
-                    btn.classList.remove('bg-[#15171d]', 'text-[#8c93a0]');
+                    btn.className = 'cuisine-btn active px-4 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 rounded-full bg-[#c49c6d] text-[#110e0c] font-bold whitespace-nowrap transition-all shadow-sm';
                 } else {
-                    btn.classList.remove('active', 'bg-[#c5a880]', 'text-[#0e1013]', 'font-semibold');
-                    btn.classList.add('bg-[#15171d]', 'text-[#8c93a0]');
+                    btn.className = 'cuisine-btn px-4 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 rounded-full bg-[#181411] text-[#a3988b] border border-[#332a22] hover:text-[#f7f4ee] hover:border-[#c49c6d]/40 font-medium whitespace-nowrap transition-all';
                 }
             });
             renderRestaurants();
@@ -1205,14 +1247,14 @@
             document.getElementById('tab-admin').classList.add('hidden');
 
             document.querySelectorAll('.nav-btn').forEach(b => {
-                b.classList.remove('text-[#c5a880]', 'font-bold');
-                b.classList.add('text-[#8c93a0]', 'font-medium');
+                b.classList.remove('text-[#c49c6d]', 'font-bold');
+                b.classList.add('text-[#a3988b]', 'font-medium');
             });
 
             const activeBtn = document.getElementById(`navBtn-${tabId}`);
             if (activeBtn) {
-                activeBtn.classList.remove('text-[#8c93a0]', 'font-medium');
-                activeBtn.classList.add('text-[#c5a880]', 'font-bold');
+                activeBtn.classList.remove('text-[#a3988b]', 'font-medium');
+                activeBtn.classList.add('text-[#c49c6d]', 'font-bold');
             }
 
             // Sync Desktop Nav Buttons
@@ -1220,11 +1262,11 @@
             const dtBook = document.getElementById('desktopNav-my-bookings');
             if (dtRest && dtBook) {
                 if (tabId === 'restaurants') {
-                    dtRest.className = "px-4 py-1.5 rounded-lg text-xs font-bold text-[#0e1013] bg-[#c5a880] transition shadow-sm";
-                    dtBook.className = "px-4 py-1.5 rounded-lg text-xs font-semibold text-[#8c93a0] hover:text-[#f3efe9] transition";
+                    dtRest.className = "px-4 lg:px-5 py-2 lg:py-2.5 rounded-xl text-xs sm:text-sm lg:text-base font-bold bg-[#c49c6d] text-[#110e0c] shadow-md transition-all flex items-center gap-2";
+                    dtBook.className = "px-4 lg:px-5 py-2 lg:py-2.5 rounded-xl text-xs sm:text-sm lg:text-base font-semibold text-[#a3988b] hover:text-[#f7f4ee] hover:bg-[#211c17] transition-all flex items-center gap-2";
                 } else if (tabId === 'my-bookings') {
-                    dtBook.className = "px-4 py-1.5 rounded-lg text-xs font-bold text-[#0e1013] bg-[#c5a880] transition shadow-sm";
-                    dtRest.className = "px-4 py-1.5 rounded-lg text-xs font-semibold text-[#8c93a0] hover:text-[#f3efe9] transition";
+                    dtBook.className = "px-4 lg:px-5 py-2 lg:py-2.5 rounded-xl text-xs sm:text-sm lg:text-base font-bold bg-[#c49c6d] text-[#110e0c] shadow-md transition-all flex items-center gap-2";
+                    dtRest.className = "px-4 lg:px-5 py-2 lg:py-2.5 rounded-xl text-xs sm:text-sm lg:text-base font-semibold text-[#a3988b] hover:text-[#f7f4ee] hover:bg-[#211c17] transition-all flex items-center gap-2";
                 }
             }
 
@@ -1338,8 +1380,8 @@
                 const btnEl = document.getElementById(`modalTabBtn-${t}`);
                 if (subEl) subEl.classList.add('hidden');
                 if (btnEl) {
-                    btnEl.classList.remove('border-[#c5a880]', 'text-[#c5a880]');
-                    btnEl.classList.add('border-transparent', 'text-[#8c93a0]');
+                    btnEl.classList.remove('border-[#c49c6d]', 'text-[#c49c6d]');
+                    btnEl.classList.add('border-transparent', 'text-[#a3988b]');
                 }
             });
 
@@ -1347,31 +1389,28 @@
             const activeBtn = document.getElementById(`modalTabBtn-${subTab}`);
             if (activeSub) activeSub.classList.remove('hidden');
             if (activeBtn) {
-                activeBtn.classList.add('border-[#c5a880]', 'text-[#c5a880]');
-                activeBtn.classList.remove('border-transparent', 'text-[#8c93a0]');
+                activeBtn.classList.add('border-[#c49c6d]', 'text-[#c49c6d]');
+                activeBtn.classList.remove('border-transparent', 'text-[#a3988b]');
             }
         }
 
         // Quick date pickers
         function selectDateQuick(type) {
             document.querySelectorAll('.date-quick-btn').forEach(b => {
-                b.classList.remove('bg-[#c5a880]', 'text-[#0e1013]', 'font-bold');
-                b.classList.add('bg-[#181a20]', 'text-[#8c93a0]');
+                b.className = 'date-quick-btn py-2.5 sm:py-3 rounded-xl bg-[#211c17] text-[#a3988b] border border-[#332a22] text-xs sm:text-sm font-semibold transition-all hover:text-[#f7f4ee]';
             });
 
             if (type === 'today') {
                 selectedDate = getTodayDateString();
                 const btn = document.getElementById('dateBtn-today');
                 if (btn) {
-                    btn.classList.add('bg-[#c5a880]', 'text-[#0e1013]', 'font-bold');
-                    btn.classList.remove('bg-[#181a20]', 'text-[#8c93a0]');
+                    btn.className = 'date-quick-btn py-2.5 sm:py-3 rounded-xl bg-[#c49c6d] text-[#110e0c] text-xs sm:text-sm font-bold transition-all shadow-sm';
                 }
             } else if (type === 'tomorrow') {
                 selectedDate = getTomorrowDateString();
                 const btn = document.getElementById('dateBtn-tomorrow');
                 if (btn) {
-                    btn.classList.add('bg-[#c5a880]', 'text-[#0e1013]', 'font-bold');
-                    btn.classList.remove('bg-[#181a20]', 'text-[#8c93a0]');
+                    btn.className = 'date-quick-btn py-2.5 sm:py-3 rounded-xl bg-[#c49c6d] text-[#110e0c] text-xs sm:text-sm font-bold transition-all shadow-sm';
                 }
             }
             document.getElementById('bookingDateInput').value = selectedDate;
@@ -1382,8 +1421,7 @@
             if (!val) return;
             selectedDate = val;
             document.querySelectorAll('.date-quick-btn').forEach(b => {
-                b.classList.remove('bg-[#c5a880]', 'text-[#0e1013]', 'font-bold');
-                b.classList.add('bg-[#181a20]', 'text-[#8c93a0]');
+                b.className = 'date-quick-btn py-2.5 sm:py-3 rounded-xl bg-[#211c17] text-[#a3988b] border border-[#332a22] text-xs sm:text-sm font-semibold transition-all hover:text-[#f7f4ee]';
             });
             loadTablesForCurrentSlot();
         }
@@ -1402,9 +1440,9 @@
                 const btn = document.getElementById(t.id);
                 if (!btn) return;
                 if (t.key === period) {
-                    btn.className = "period-tab-btn min-h-[54px] py-2.5 px-2 rounded-xl flex flex-col items-center justify-center text-center bg-[#c5a880] text-[#0e1013] transition-all shadow-sm";
+                    btn.className = "period-tab-btn min-h-[54px] py-2.5 px-2 rounded-xl flex flex-col items-center justify-center text-center bg-[#c49c6d] text-[#110e0c] transition-all shadow-sm";
                 } else {
-                    btn.className = "period-tab-btn min-h-[54px] py-2.5 px-2 rounded-xl flex flex-col items-center justify-center text-center transition-all text-[#8c93a0] hover:text-[#f3efe9]";
+                    btn.className = "period-tab-btn min-h-[54px] py-2.5 px-2 rounded-xl flex flex-col items-center justify-center text-center transition-all text-[#a3988b] hover:text-[#f7f4ee]";
                 }
             });
 
@@ -1441,8 +1479,8 @@
             container.innerHTML = slots.map(timeStr => {
                 const isSelected = selectedTimeSlot === timeStr;
                 const activeClass = isSelected
-                    ? 'bg-[#c5a880] text-[#0e1013] font-bold shadow-sm'
-                    : 'bg-[#111319] text-[#c9c5bd] border border-[#232732] hover:border-[#c5a880]/60 hover:text-[#f3efe9]';
+                    ? 'bg-[#c49c6d] text-[#110e0c] font-bold shadow-sm'
+                    : 'bg-[#211c17] text-[#dfc8a7] border border-[#332a22] hover:border-[#c49c6d]/60 hover:text-[#f7f4ee]';
                 return `
                     <button type="button" onclick="selectTime('${timeStr}', this)" 
                             class="time-slot-btn py-2.5 px-1 rounded-xl text-center text-xs font-semibold transition-all ${activeClass}">
@@ -1537,9 +1575,9 @@
                 const card = document.createElement('div');
                 card.className = `table-node w-24 h-20 rounded-2xl flex flex-col items-center justify-center p-1.5 cursor-pointer relative border transition-all ${
                     isBusy 
-                        ? 'busy bg-[#181a20] border-[#252933] text-[#5e6677]' 
+                        ? 'busy bg-[#181411] border-[#332a22] text-[#6b6255]' 
                         : isSelected 
-                            ? 'selected bg-[#c5a880] text-[#0e1013] border-[#e0cbb2] shadow-lg shadow-[#c5a880]/20' 
+                            ? 'selected bg-[#c49c6d] text-[#110e0c] border-[#dfc8a7] shadow-lg shadow-[#c49c6d]/20' 
                             : 'bg-emerald-950/30 border-emerald-700/50 text-emerald-300 hover:bg-emerald-900/40'
                 }`;
 
@@ -1555,7 +1593,7 @@
                     </div>
                     <span class="text-[10px] font-medium opacity-80 mt-0.5">${pluralizeSeats(t.seats)}</span>
                     <span class="text-[9px] mt-0.5 px-1.5 py-0.2 rounded font-bold ${
-                        isBusy ? 'bg-stone-800 text-[#8c93a0]' : isSelected ? 'bg-[#0e1013]/25 text-[#0e1013]' : 'bg-emerald-900/60 text-emerald-200'
+                        isBusy ? 'bg-stone-800 text-[#a3988b]' : isSelected ? 'bg-[#110e0c]/25 text-[#110e0c]' : 'bg-emerald-900/60 text-emerald-200'
                     }">${isBusy ? 'Занят' : isSelected ? 'Выбран' : 'Свободен'}</span>
                 `;
 
@@ -1580,11 +1618,11 @@
             const desc = document.getElementById('selectedTableDesc');
 
             if (selectedTable) {
-                banner.className = "mt-2 p-3 bg-[#181a20] border border-[#c5a880]/50 rounded-xl text-xs text-[#dfcbb5] flex items-center justify-between";
+                banner.className = "mt-2 p-3.5 bg-[#211c17] border border-[#c49c6d]/50 rounded-xl text-xs sm:text-sm text-[#dfc8a7] flex items-center justify-between";
                 title.innerText = `Стол №${selectedTable.table_number} (${selectedTable.zone_type || 'Зал'})`;
                 desc.innerText = `Вместимость: до ${selectedTable.seats} человек • ${selectedTable.description || 'Отличный выбор'}`;
             } else {
-                banner.className = "mt-2 p-3 bg-[#181a20] border border-[#252933] rounded-xl text-xs text-[#8c93a0] flex items-center justify-between";
+                banner.className = "mt-2 p-3.5 bg-[#211c17] border border-[#332a22] rounded-xl text-xs sm:text-sm text-[#a3988b] flex items-center justify-between";
                 title.innerText = `Столик не выбран`;
                 desc.innerText = `Нажмите на свободный столик выше`;
             }
@@ -1635,12 +1673,12 @@
 
             if (isValid) {
                 btn.disabled = false;
-                btn.classList.remove('opacity-50', 'cursor-not-allowed', 'from-[#1b1e26]', 'to-[#1b1e26]', 'text-[#8c93a0]');
-                btn.classList.add('from-[#c5a880]', 'to-[#b3936a]', 'text-[#0e1013]');
+                btn.classList.remove('opacity-50', 'cursor-not-allowed', 'from-[#211c17]', 'to-[#211c17]', 'text-[#8c93a0]');
+                btn.classList.add('from-[#c49c6d]', 'to-[#a07849]', 'text-[#110e0c]');
             } else {
                 btn.disabled = true;
-                btn.classList.add('opacity-50', 'cursor-not-allowed', 'from-[#1b1e26]', 'to-[#1b1e26]', 'text-[#8c93a0]');
-                btn.classList.remove('from-[#c5a880]', 'to-[#b3936a]', 'text-[#0e1013]');
+                btn.classList.add('opacity-50', 'cursor-not-allowed', 'from-[#211c17]', 'to-[#211c17]', 'text-[#8c93a0]');
+                btn.classList.remove('from-[#c49c6d]', 'to-[#a07849]', 'text-[#110e0c]');
             }
         }
 
@@ -1764,8 +1802,8 @@
         function renderMenuCategories() {
             const catBar = document.getElementById('menuCategoriesBar');
             catBar.innerHTML = restaurantMenu.map((cat, idx) => `
-                <button onclick="renderMenuItems(${idx})" class="menu-cat-btn px-3 py-1.5 rounded-full ${idx === 0 ? 'bg-[#c5a880] text-[#0e1013] font-bold shadow-sm' : 'bg-[#181a20] text-[#8c93a0] border border-[#252933]'} whitespace-nowrap transition-all">
-                    ${cat.icon || '🍽️'} ${cat.name}
+                <button onclick="renderMenuItems(${idx})" class="menu-cat-btn px-3.5 py-1.5 sm:py-2 rounded-full ${idx === 0 ? 'bg-[#c49c6d] text-[#110e0c] font-bold shadow-sm' : 'bg-[#211c17] text-[#a3988b] border border-[#332a22]'} whitespace-nowrap transition-all text-xs sm:text-sm">
+                    ${cat.name}
                 </button>
             `).join('');
 
@@ -1775,31 +1813,29 @@
         function renderMenuItems(catIndex) {
             document.querySelectorAll('.menu-cat-btn').forEach((b, idx) => {
                 if (idx === catIndex) {
-                    b.classList.add('bg-[#c5a880]', 'text-[#0e1013]', 'font-bold', 'shadow-sm');
-                    b.classList.remove('bg-[#181a20]', 'text-[#8c93a0]', 'border', 'border-[#252933]');
+                    b.className = 'menu-cat-btn px-3.5 py-1.5 sm:py-2 rounded-full bg-[#c49c6d] text-[#110e0c] font-bold shadow-sm whitespace-nowrap transition-all text-xs sm:text-sm';
                 } else {
-                    b.classList.remove('bg-[#c5a880]', 'text-[#0e1013]', 'font-bold', 'shadow-sm');
-                    b.classList.add('bg-[#181a20]', 'text-[#8c93a0]', 'border', 'border-[#252933]');
+                    b.className = 'menu-cat-btn px-3.5 py-1.5 sm:py-2 rounded-full bg-[#211c17] text-[#a3988b] border border-[#332a22] hover:text-[#f7f4ee] whitespace-nowrap transition-all text-xs sm:text-sm';
                 }
             });
 
             const list = document.getElementById('menuDishesList');
             const category = restaurantMenu[catIndex];
             if (!category || !category.items || category.items.length === 0) {
-                list.innerHTML = '<div class="text-center py-6 text-[#8c93a0] text-xs">В данной категории нет блюд</div>';
+                list.innerHTML = '<div class="text-center py-6 text-[#a3988b] text-xs sm:text-sm">В данной категории нет блюд</div>';
                 return;
             }
 
             list.innerHTML = category.items.map(dish => `
-                <div class="bg-[#15171d] border border-[#252933] rounded-xl p-2.5 flex gap-3 items-center shadow-sm">
-                    <img src="${dish.image_url}" alt="${dish.title}" class="w-16 h-16 rounded-xl object-cover flex-shrink-0 bg-[#1e212b]">
+                <div class="bg-[#211c17] border border-[#332a22] rounded-2xl p-3 sm:p-3.5 flex gap-3.5 items-center shadow-sm">
+                    <img src="${dish.image_url}" alt="${dish.title}" class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl object-cover flex-shrink-0 bg-[#181411]">
                     <div class="flex-1 min-w-0">
                         <div class="flex justify-between items-start gap-1">
-                            <h4 class="text-xs font-serif font-bold text-[#f3efe9] truncate">${dish.title}</h4>
-                            <span class="text-xs font-serif font-bold text-[#dfcbb5] whitespace-nowrap">${formatPrice(dish.price)}</span>
+                            <h4 class="text-xs sm:text-sm font-serif font-bold text-[#f7f4ee] truncate">${dish.title}</h4>
+                            <span class="text-xs sm:text-sm font-serif font-bold text-[#dfc8a7] whitespace-nowrap">${formatPrice(dish.price)}</span>
                         </div>
-                        <p class="text-[10px] text-[#8c93a0] line-clamp-2 mt-0.5">${dish.description || ''}</p>
-                        <span class="text-[9px] text-[#8c93a0]/80 mt-1 inline-block">${dish.weight || ''}</span>
+                        <p class="text-[11px] sm:text-xs text-[#a3988b] line-clamp-2 mt-0.5">${dish.description || ''}</p>
+                        <span class="text-[10px] text-[#a3988b]/80 mt-1 inline-block">${dish.weight || ''}</span>
                     </div>
                 </div>
             `).join('');
@@ -1843,11 +1879,13 @@
 
             if (!bookings || bookings.length === 0) {
                 list.innerHTML = `
-                    <div class="col-span-full max-w-md mx-auto bg-[#15171d] border border-[#252933] rounded-2xl p-8 text-center space-y-3.5 my-4">
-                        <span class="text-4xl block">🍽️</span>
-                        <h3 class="text-sm font-serif font-bold text-[#f3efe9]">У вас пока нет активных броней</h3>
-                        <p class="text-xs text-[#8c93a0]">Выберите ресторан в каталоге и забронируйте любимый столик за пару секунд!</p>
-                        <button onclick="switchTab('restaurants')" class="px-5 py-2.5 bg-gradient-to-r from-[#c5a880] to-[#b3936a] text-[#0e1013] font-bold rounded-xl text-xs shadow-md hover:brightness-105 active:scale-95 transition-all">
+                    <div class="col-span-full max-w-md mx-auto bg-[#181411] border border-[#332a22] rounded-3xl p-8 text-center space-y-4 my-6 shadow-xl">
+                        <div class="w-14 h-14 rounded-2xl bg-[#c49c6d]/15 text-[#dfc8a7] border border-[#c49c6d]/30 flex items-center justify-center text-2xl mx-auto shadow-md">
+                            <svg class="w-7 h-7 text-[#c49c6d]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                        </div>
+                        <h3 class="text-base sm:text-lg font-serif font-bold text-[#f7f4ee]">У вас пока нет активных броней</h3>
+                        <p class="text-xs sm:text-sm text-[#a3988b]">Выберите ресторан в каталоге и забронируйте любимый столик за пару секунд!</p>
+                        <button onclick="switchTab('restaurants')" class="px-6 py-3 bg-gradient-to-r from-[#c49c6d] to-[#a07849] text-[#110e0c] font-bold rounded-xl text-xs sm:text-sm shadow-md hover:brightness-110 active:scale-95 transition-all">
                             Перейти в каталог
                         </button>
                     </div>
@@ -1858,37 +1896,41 @@
             list.innerHTML = bookings.map(b => {
                 let statusBadge = '';
                 if (b.status === 'confirmed') {
-                    statusBadge = '<span class="bg-emerald-950/40 text-emerald-300 border border-emerald-700/50 text-xs sm:text-sm font-semibold px-3 sm:px-3.5 py-1 rounded-full shadow-sm">✅ Подтверждено</span>';
+                    statusBadge = '<span class="inline-flex items-center gap-1.5 bg-emerald-950/40 text-emerald-300 border border-emerald-700/50 text-xs sm:text-sm font-semibold px-3 sm:px-3.5 py-1 rounded-full shadow-sm"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Подтверждено</span>';
                 } else if (b.status === 'pending') {
-                    statusBadge = '<span class="bg-[#c5a880]/15 text-[#dfcbb5] border border-[#c5a880]/40 text-xs sm:text-sm font-semibold px-3 sm:px-3.5 py-1 rounded-full badge-pulse shadow-sm">⏳ В ожидании</span>';
+                    statusBadge = '<span class="inline-flex items-center gap-1.5 bg-[#c49c6d]/15 text-[#dfc8a7] border border-[#c49c6d]/40 text-xs sm:text-sm font-semibold px-3 sm:px-3.5 py-1 rounded-full badge-pulse shadow-sm"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>В ожидании</span>';
                 } else if (b.status === 'rejected') {
-                    statusBadge = '<span class="bg-rose-950/40 text-rose-300 border border-rose-800/40 text-xs sm:text-sm font-semibold px-3 sm:px-3.5 py-1 rounded-full shadow-sm">❌ Отклонено</span>';
+                    statusBadge = '<span class="inline-flex items-center gap-1.5 bg-rose-950/40 text-rose-300 border border-rose-800/40 text-xs sm:text-sm font-semibold px-3 sm:px-3.5 py-1 rounded-full shadow-sm"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>Отклонено</span>';
                 } else {
-                    statusBadge = '<span class="bg-[#1c1f27] text-[#8c93a0] border border-[#252933] text-xs sm:text-sm font-semibold px-3 sm:px-3.5 py-1 rounded-full shadow-sm">🏁 Завершено</span>';
+                    statusBadge = '<span class="inline-flex items-center gap-1.5 bg-[#211c17] text-[#a3988b] border border-[#332a22] text-xs sm:text-sm font-semibold px-3 sm:px-3.5 py-1 rounded-full shadow-sm">Завершено</span>';
                 }
 
                 return `
-                    <div class="bg-[#15171d] border border-[#252933] rounded-3xl p-5 sm:p-6 lg:p-7 space-y-3.5 sm:space-y-4 shadow-md hover:border-[#c5a880]/40 transition-all">
+                    <div class="bg-[#181411] border border-[#332a22] rounded-3xl p-5 sm:p-6 lg:p-7 space-y-3.5 sm:space-y-4 shadow-md hover:border-[#c49c6d]/40 transition-all">
                         <div class="flex items-center justify-between gap-3">
-                            <span class="text-base sm:text-lg lg:text-xl font-serif font-bold text-[#f3efe9] flex items-center gap-2 truncate">
-                                📍 ${b.restaurant_name}
+                            <span class="text-base sm:text-lg lg:text-xl font-serif font-bold text-[#f7f4ee] flex items-center gap-2 truncate">
+                                <svg class="w-4 h-4 text-[#c49c6d] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                <span class="truncate">${b.restaurant_name}</span>
                             </span>
                             ${statusBadge}
                         </div>
-                        <p class="text-xs sm:text-sm text-[#8c93a0] flex items-center gap-1.5">🏢 ${b.restaurant_address || ''}</p>
+                        <p class="text-xs sm:text-sm text-[#a3988b] flex items-center gap-1.5 truncate">
+                            <svg class="w-3.5 h-3.5 text-[#a3988b] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                            <span class="truncate">${b.restaurant_address || ''}</span>
+                        </p>
 
-                        <div class="bg-[#0e1013] rounded-2xl p-3.5 sm:p-4.5 grid grid-cols-2 gap-3 text-xs sm:text-sm lg:text-base border border-[#20232c]">
+                        <div class="bg-[#110e0c] rounded-2xl p-3.5 sm:p-4.5 grid grid-cols-2 gap-3 text-xs sm:text-sm lg:text-base border border-[#332a22]">
                             <div>
-                                <span class="text-[#8c93a0] block text-[11px] sm:text-xs font-medium">Дата и время:</span>
-                                <span class="font-bold text-[#f3efe9] mt-0.5 block">${b.booking_date} в ${b.booking_time}</span>
+                                <span class="text-[#a3988b] block text-[11px] sm:text-xs font-medium">Дата и время:</span>
+                                <span class="font-bold text-[#f7f4ee] mt-0.5 block">${b.booking_date} в ${b.booking_time}</span>
                             </div>
                             <div>
-                                <span class="text-[#8c93a0] block text-[11px] sm:text-xs font-medium">Столик и гости:</span>
-                                <span class="font-bold text-[#dfcbb5] mt-0.5 block">Стол №${b.table_number} (${b.guests_count} чел.)</span>
+                                <span class="text-[#a3988b] block text-[11px] sm:text-xs font-medium">Столик и гости:</span>
+                                <span class="font-bold text-[#dfc8a7] mt-0.5 block">Стол №${b.table_number} (${b.guests_count} чел.)</span>
                             </div>
                         </div>
 
-                        ${b.wishes ? `<p class="text-xs sm:text-sm text-[#8c93a0] italic bg-[#181a20] rounded-xl px-3 py-2 border border-[#252933]">💬 «${b.wishes}»</p>` : ''}
+                        ${b.wishes ? `<p class="text-xs sm:text-sm text-[#dfc8a7] italic bg-[#211c17] rounded-xl px-3.5 py-2.5 border border-[#332a22]">«${b.wishes}»</p>` : ''}
                     </div>
                 `;
             }).join('');
@@ -1900,12 +1942,12 @@
         function filterAdminDate(type, btnEl) {
             adminFilterDate = type;
             document.querySelectorAll('.admin-date-btn').forEach(btn => {
-                btn.classList.remove('bg-[#c5a880]', 'text-[#0e1013]', 'font-bold', 'shadow-sm');
-                btn.classList.add('bg-[#15171d]', 'text-[#8c93a0]', 'border', 'border-[#252933]');
+                btn.classList.remove('bg-[#c49c6d]', 'text-[#110e0c]', 'font-bold', 'shadow-sm');
+                btn.classList.add('bg-[#181411]', 'text-[#a3988b]', 'border', 'border-[#332a22]');
             });
             if (btnEl) {
-                btnEl.classList.add('bg-[#c5a880]', 'text-[#0e1013]', 'font-bold', 'shadow-sm');
-                btnEl.classList.remove('bg-[#15171d]', 'text-[#8c93a0]', 'border', 'border-[#252933]');
+                btnEl.classList.add('bg-[#c49c6d]', 'text-[#110e0c]', 'font-bold', 'shadow-sm');
+                btnEl.classList.remove('bg-[#181411]', 'text-[#a3988b]', 'border', 'border-[#332a22]');
             }
             loadAdminBookings();
         }
@@ -1958,7 +2000,7 @@
                 }
             } else {
                 if (statusEl) {
-                    statusEl.innerHTML = `<span class="text-[#dfcbb5] font-medium">⚠️ Режим памяти устройства (${bookings.length} заявок)</span>`;
+                    statusEl.innerHTML = `<span class="text-[#dfc8a7] font-medium">⚠️ Режим памяти устройства (${bookings.length} заявок)</span>`;
                 }
             }
 
@@ -1966,7 +2008,7 @@
             bookings.sort((a, b) => b.id - a.id);
 
             if (!bookings || bookings.length === 0) {
-                list.innerHTML = '<div class="text-center py-8 text-[#8c93a0] text-xs">Заявок на бронирование пока нет</div>';
+                list.innerHTML = '<div class="text-center py-8 text-[#a3988b] text-xs">Заявок на бронирование пока нет</div>';
                 return;
             }
 
@@ -1976,46 +2018,46 @@
                 const isConfirmed = b.status === 'confirmed';
 
                 return `
-                    <div class="bg-[#15171d] border ${isPending ? 'border-[#c5a880]/50 shadow-sm shadow-[#c5a880]/10' : 'border-[#252933]'} rounded-2xl p-3.5 space-y-3">
+                    <div class="bg-[#181411] border ${isPending ? 'border-[#c49c6d]/50 shadow-sm shadow-[#c49c6d]/10' : 'border-[#332a22]'} rounded-2xl p-4 space-y-3">
                         
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-2">
-                                <span class="text-sm font-serif font-bold text-[#dfcbb5]">#${b.id}</span>
-                                <span class="text-xs font-bold text-[#f3efe9]">Стол №${b.table_number} (${b.table_zone || 'Зал'})</span>
+                                <span class="text-sm font-serif font-bold text-[#dfc8a7]">#${b.id}</span>
+                                <span class="text-xs font-bold text-[#f7f4ee]">Стол №${b.table_number} (${b.table_zone || 'Зал'})</span>
                             </div>
-                            <span class="text-[10px] font-medium px-2 py-0.5 rounded-full ${
+                            <span class="text-[10px] font-medium px-2.5 py-0.5 rounded-full ${
                                 b.status === 'confirmed' ? 'bg-emerald-950/40 text-emerald-300 border border-emerald-700/50' :
-                                b.status === 'pending' ? 'bg-[#c5a880]/15 text-[#dfcbb5] border border-[#c5a880]/40 badge-pulse' :
+                                b.status === 'pending' ? 'bg-[#c49c6d]/15 text-[#dfc8a7] border border-[#c49c6d]/40 badge-pulse' :
                                 b.status === 'rejected' ? 'bg-rose-950/40 text-rose-300 border border-rose-800/40' :
-                                'bg-[#1c1f27] text-[#8c93a0] border border-[#252933]'
+                                'bg-[#211c17] text-[#a3988b] border border-[#332a22]'
                             }">
                                 ${b.status === 'confirmed' ? '✅ Подтверждена' : b.status === 'pending' ? '⏳ Ожидает решения' : b.status === 'rejected' ? '❌ Отклонена' : '🏁 Завершена'}
                             </span>
                         </div>
 
                         <!-- Guest Info Block -->
-                        <div class="bg-[#0e1013] rounded-xl p-2.5 space-y-1.5 border border-[#20232c] text-xs">
+                        <div class="bg-[#110e0c] rounded-xl p-3 space-y-1.5 border border-[#332a22] text-xs">
                             <div class="flex justify-between items-center">
-                                <span class="text-[#8c93a0]">Гость:</span>
-                                <span class="font-semibold text-[#f3efe9]">${b.guest_name}</span>
+                                <span class="text-[#a3988b]">Гость:</span>
+                                <span class="font-semibold text-[#f7f4ee]">${b.guest_name}</span>
                             </div>
                             <div class="flex justify-between items-center">
-                                <span class="text-[#8c93a0]">Телефон:</span>
-                                <a href="tel:${phoneClean}" class="font-mono font-medium text-[#c5a880] hover:underline flex items-center gap-1">
+                                <span class="text-[#a3988b]">Телефон:</span>
+                                <a href="tel:${phoneClean}" class="font-mono font-medium text-[#c49c6d] hover:underline flex items-center gap-1">
                                     📞 ${b.guest_phone}
                                 </a>
                             </div>
                             <div class="flex justify-between items-center">
-                                <span class="text-[#8c93a0]">Время визита:</span>
-                                <span class="font-serif font-bold text-[#dfcbb5]">📅 ${b.booking_date} в ${b.booking_time}</span>
+                                <span class="text-[#a3988b]">Время визита:</span>
+                                <span class="font-serif font-bold text-[#dfc8a7]">📅 ${b.booking_date} в ${b.booking_time}</span>
                             </div>
                             <div class="flex justify-between items-center">
-                                <span class="text-[#8c93a0]">Гостей:</span>
-                                <span class="font-semibold text-[#f3efe9]">${b.guests_count} чел.</span>
+                                <span class="text-[#a3988b]">Гостей:</span>
+                                <span class="font-semibold text-[#f7f4ee]">${b.guests_count} чел.</span>
                             </div>
                             ${b.wishes ? `
-                                <div class="pt-1 border-t border-[#20232c] text-[11px] text-[#c9c5bd]">
-                                    <span class="text-[#8c93a0] block text-[10px]">Пожелания:</span>
+                                <div class="pt-1.5 border-t border-[#332a22] text-xs text-[#dfc8a7]">
+                                    <span class="text-[#a3988b] block text-[10px]">Пожелания:</span>
                                     «${b.wishes}»
                                 </div>
                             ` : ''}
@@ -2024,21 +2066,21 @@
                         <!-- Hostess Action Buttons -->
                         <div class="flex gap-2">
                             ${isPending ? `
-                                <button onclick="setBookingStatus(${b.id}, 'confirmed')" class="flex-1 py-2 rounded-xl bg-emerald-700/80 hover:bg-emerald-600 text-[#f3efe9] font-bold text-xs shadow-sm transition-all">
+                                <button onclick="setBookingStatus(${b.id}, 'confirmed')" class="flex-1 py-2.5 rounded-xl bg-emerald-700/80 hover:bg-emerald-600 text-[#f7f4ee] font-bold text-xs shadow-sm transition-all">
                                     ✅ Подтвердить
                                 </button>
-                                <button onclick="setBookingStatus(${b.id}, 'rejected')" class="flex-1 py-2 rounded-xl bg-rose-950/60 hover:bg-rose-900 text-rose-200 border border-rose-800/40 font-medium text-xs transition-all">
+                                <button onclick="setBookingStatus(${b.id}, 'rejected')" class="flex-1 py-2.5 rounded-xl bg-rose-950/60 hover:bg-rose-900 text-rose-200 border border-rose-800/40 font-medium text-xs transition-all">
                                     ❌ Отклонить
                                 </button>
                             ` : isConfirmed ? `
-                                <button onclick="setBookingStatus(${b.id}, 'completed')" class="flex-1 py-2 rounded-xl bg-[#1c1f27] hover:bg-[#252933] text-[#dfcbb5] border border-[#2c3140] font-medium text-xs transition-all">
+                                <button onclick="setBookingStatus(${b.id}, 'completed')" class="flex-1 py-2.5 rounded-xl bg-[#211c17] hover:bg-[#2c241e] text-[#dfc8a7] border border-[#332a22] font-semibold text-xs transition-all">
                                     🍽 Гости пришли
                                 </button>
-                                <a href="tel:${phoneClean}" class="px-3.5 py-2 rounded-xl bg-[#18202f] hover:bg-[#202b3f] text-blue-300 border border-blue-900/50 font-medium text-xs flex items-center justify-center">
+                                <a href="tel:${phoneClean}" class="px-4 py-2.5 rounded-xl bg-[#211c17] hover:bg-[#2c241e] text-[#c49c6d] border border-[#c49c6d]/30 font-medium text-xs flex items-center justify-center">
                                     📞 Позвонить
                                 </a>
                             ` : `
-                                <button onclick="setBookingStatus(${b.id}, 'confirmed')" class="flex-1 py-2 rounded-xl bg-[#1c1f27] text-[#8c93a0] border border-[#252933] text-xs hover:text-[#f3efe9]">
+                                <button onclick="setBookingStatus(${b.id}, 'confirmed')" class="flex-1 py-2 rounded-xl bg-[#211c17] text-[#a3988b] border border-[#332a22] text-xs hover:text-[#f7f4ee]">
                                     Вернуть в подтвержденные
                                 </button>
                             `}
@@ -2062,6 +2104,56 @@
 
             loadAdminBookings();
         }
+
+        // --- Global Desktop Keyboard Shortcuts Listener ---
+        window.addEventListener('keydown', (e) => {
+            const activeTag = (document.activeElement && document.activeElement.tagName) ? document.activeElement.tagName.toUpperCase() : '';
+            const isTyping = activeTag === 'INPUT' || activeTag === 'TEXTAREA' || activeTag === 'SELECT';
+
+            // [Escape] closes modals regardless or blurs input
+            if (e.key === 'Escape') {
+                if (isTyping) {
+                    document.activeElement.blur();
+                    return;
+                }
+                const restModal = document.getElementById('restaurantModal');
+                const succModal = document.getElementById('successModal');
+                if (restModal && !restModal.classList.contains('hidden')) {
+                    closeRestaurantModal();
+                    return;
+                }
+                if (succModal && !succModal.classList.contains('hidden')) {
+                    closeSuccessModal();
+                    return;
+                }
+            }
+
+            // If user is currently typing in an input field, do not trigger single-key navigation
+            if (isTyping) return;
+
+            // [1] Switch to Restaurants Catalog
+            if (e.key === '1') {
+                e.preventDefault();
+                switchTab('restaurants');
+            }
+
+            // [2] Switch to My Bookings
+            if (e.key === '2') {
+                e.preventDefault();
+                switchTab('my-bookings');
+            }
+
+            // [/] Quick Focus on Search Input
+            if (e.key === '/') {
+                e.preventDefault();
+                switchTab('restaurants');
+                const search = document.getElementById('searchInput');
+                if (search) {
+                    search.focus();
+                    search.select();
+                }
+            }
+        });
     </script>
 </body>
 </html>
