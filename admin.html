@@ -239,12 +239,12 @@
             </nav>
 
             <!-- БЛОК 3: ВЫБОР ЗАВЕДЕНИЯ (СДВИНУТ ВЛЕВО ОТ ИКОНОК, ЧТОБЫ БЫТЬ НА ОДНОЙ ЛИНИИ) -->
-            <button type="button" onclick="openRestaurantPicker()" id="customRestTriggerBtn" class="w-full md:w-auto md:max-w-[210px] lg:max-w-[250px] xl:max-w-[300px] flex items-center justify-between bg-[#171310] hover:bg-[#201b17] border border-[#332a22] hover:border-[#c49c6d]/50 rounded-2xl px-2.5 sm:px-3 py-1.5 sm:py-2 shadow-md active:scale-[0.99] transition group flex-shrink-0 order-3 md:order-3 md:ml-auto">
+            <button type="button" onclick="openRestaurantPicker()" id="customRestTriggerBtn" class="w-full md:w-auto md:min-w-[250px] lg:min-w-[280px] xl:min-w-[320px] md:max-w-[310px] lg:max-w-[350px] xl:max-w-[390px] 2xl:max-w-[420px] flex items-center justify-between bg-[#171310] hover:bg-[#201b17] border border-[#332a22] hover:border-[#c49c6d]/50 rounded-2xl px-2.5 sm:px-3 py-1.5 sm:py-2 shadow-md active:scale-[0.99] transition group flex-shrink-0 order-3 md:order-3 md:ml-auto">
                 <div class="flex items-center gap-2 min-w-0">
                     <svg class="w-4 h-4 text-[#c49c6d] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                     <div class="text-left min-w-0">
                         <div class="text-[9px] sm:text-[10px] uppercase tracking-wider text-[#a3988b] font-semibold truncate" id="lblPickerSub">Филиал / Заведение</div>
-                        <div id="lblCurrentRestDisplay" class="text-xs sm:text-sm font-bold text-[#f7f4ee] truncate group-hover:text-[#dfc8a7] transition">
+                        <div id="lblCurrentRestDisplay" class="text-xs sm:text-sm font-bold text-[#f7f4ee] truncate whitespace-nowrap group-hover:text-[#dfc8a7] transition">
                             🌐 Все рестораны сети
                         </div>
                     </div>
@@ -2257,7 +2257,7 @@
             if (!displayEl) return;
 
             if (selectedRestId === 'all') {
-                displayEl.textContent = `🌐 ${t.all_chain} (${RESTAURANTS.length} точек)`;
+                displayEl.textContent = `🌐 ${t.all_chain}`;
                 if (cityTagEl) cityTagEl.textContent = t.all_cities;
             } else {
                 const r = RESTAURANTS.find(x => String(x.id) === String(selectedRestId));
