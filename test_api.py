@@ -257,7 +257,31 @@ async def test_api_endpoints():
             assert resp.status == 200
             text = await resp.text()
             assert "RestoKZ" in text
-            print(f"[OK] GET / serves index.html with title RestoKZ")
+            assert "favicon-guest" in text
+            print(f"[OK] GET / serves index.html with title RestoKZ and guest favicon")
+
+        # 23. Test GET /admin (admin terminal page)
+        async with session.get(f"http://127.0.0.1:{port}/admin") as resp:
+            assert resp.status == 200
+            text = await resp.text()
+            assert "RestoKZ PRO" in text
+            assert "favicon-admin" in text
+            print(f"[OK] GET /admin serves admin.html with admin favicon")
+
+        # 24. Test GET /favicon.ico and SVG endpoints
+        async with session.get(f"http://127.0.0.1:{port}/favicon.ico") as resp:
+            assert resp.status == 200
+            print(f"[OK] GET /favicon.ico returns 200 OK")
+
+        async with session.get(f"http://127.0.0.1:{port}/favicon-guest.svg") as resp:
+            assert resp.status == 200
+            assert "image/svg+xml" in resp.headers.get("Content-Type", "")
+            print(f"[OK] GET /favicon-guest.svg returns 200 image/svg+xml")
+
+        async with session.get(f"http://127.0.0.1:{port}/favicon-admin.svg") as resp:
+            assert resp.status == 200
+            assert "image/svg+xml" in resp.headers.get("Content-Type", "")
+            print(f"[OK] GET /favicon-admin.svg returns 200 image/svg+xml")
 
     await runner.cleanup()
     print()

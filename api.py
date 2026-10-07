@@ -711,6 +711,36 @@ async def health_endpoint(request: web.Request) -> web.Response:
         "railway": True
     })
 
+async def favicon_guest_endpoint(request: web.Request) -> web.FileResponse:
+    p = os.path.join(os.path.dirname(os.path.abspath(__file__)), "favicon-guest.svg")
+    return web.FileResponse(p, headers={"Content-Type": "image/svg+xml", "Cache-Control": "public, max-age=86400"})
+
+async def favicon_admin_endpoint(request: web.Request) -> web.FileResponse:
+    p = os.path.join(os.path.dirname(os.path.abspath(__file__)), "favicon-admin.svg")
+    return web.FileResponse(p, headers={"Content-Type": "image/svg+xml", "Cache-Control": "public, max-age=86400"})
+
+async def favicon_ico_endpoint(request: web.Request) -> web.FileResponse:
+    p = os.path.join(os.path.dirname(os.path.abspath(__file__)), "favicon.ico")
+    return web.FileResponse(p, headers={"Content-Type": "image/x-icon", "Cache-Control": "public, max-age=86400"})
+
+async def static_asset_endpoint(request: web.Request) -> web.FileResponse:
+    fname = request.match_info.get("filename", "")
+    allowed = {
+        "favicon.ico", "favicon-admin.ico",
+        "favicon-guest.svg", "favicon-guest.png", "favicon-guest-32.png", "apple-touch-icon-guest.png", "icon-guest-512.png",
+        "favicon-admin.svg", "favicon-admin.png", "favicon-admin-32.png", "apple-touch-icon-admin.png", "icon-admin-512.png"
+    }
+    if fname in allowed:
+        p = os.path.join(os.path.dirname(os.path.abspath(__file__)), fname)
+        if os.path.exists(p):
+            ctype = "image/png"
+            if fname.endswith(".svg"):
+                ctype = "image/svg+xml"
+            elif fname.endswith(".ico"):
+                ctype = "image/x-icon"
+            return web.FileResponse(p, headers={"Content-Type": ctype, "Cache-Control": "public, max-age=86400"})
+    raise web.HTTPNotFound()
+
 def create_web_app(notify_booking_func=None, notify_status_func=None) -> web.Application:
     app = web.Application(middlewares=[cors_middleware])
 
@@ -752,10 +782,14 @@ def create_web_app(notify_booking_func=None, notify_status_func=None) -> web.App
     app.router.add_get("/api/admin/bookings", get_admin_bookings_endpoint)
     app.router.add_post("/api/admin/bookings/{id}/status", update_booking_status_endpoint)
 
-    # Static HTML
+    # Static HTML & Brand Favicons
     app.router.add_get("/", index_page)
     app.router.add_get("/index.html", index_page)
     app.router.add_get("/admin", admin_page)
     app.router.add_get("/admin.html", admin_page)
+    app.router.add_get("/favicon.ico", favicon_ico_endpoint)
+    app.router.add_get("/favicon-guest.svg", favicon_guest_endpoint)
+    app.router.add_get("/favicon-admin.svg", favicon_admin_endpoint)
+    app.router.add_get("/{filename:(?:favicon|apple-touch-icon|icon-).*}", static_asset_endpoint)
 
     return app
