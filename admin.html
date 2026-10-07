@@ -205,7 +205,7 @@
             <!-- БЛОК 2: ДЕСКТОП-МЕНЮ НАВИГАЦИИ (СТРОГО В ОДНУ ЛИНИЮ, БЕЗ ПЕРЕНОСОВ СЛОВ) -->
             <nav class="hidden md:flex items-center gap-1 bg-[#171310] border border-[#332a22] rounded-2xl p-1 shadow-inner flex-shrink-0 order-2" id="desktopHeaderNav">
                 <button type="button" onclick="switchTab('orders')" id="desktopNavBtn-orders" class="desktop-nav-tab active px-2.5 lg:px-3 xl:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 lg:gap-2 whitespace-nowrap flex-shrink-0 border border-[#c49c6d]/50" title="Горячая клавиша: 1">
-                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 17h18M5 17a7 7 0 0114 0M12 4v3m-2-3h4"/></svg>
                     <span id="lblDesktopNavOrders" class="whitespace-nowrap">Заявки</span>
                     <span id="desktopNavBadgePending" class="hidden px-1.5 py-0.5 rounded-full text-[10px] font-black bg-[#110e0c] text-[#c49c6d] flex-shrink-0">0</span>
                     <kbd class="hidden xl:inline text-[9px] font-mono px-1 py-0.5 rounded bg-black/25 border border-current opacity-70 flex-shrink-0">1</kbd>
@@ -1347,7 +1347,7 @@
         <div id="adminNavGrid" class="max-w-md mx-auto grid grid-cols-4 gap-1">
             <button onclick="switchTab('orders')" id="navBtn-orders" class="flex flex-col items-center justify-center py-1.5 rounded-xl bg-[#c49c6d]/20 text-[#dfc8a7] border border-[#c49c6d]/40 transition shadow-sm">
                 <div class="relative">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 17h18M5 17a7 7 0 0114 0M12 4v3m-2-3h4"/></svg>
                     <span id="navBadgePending" class="hidden absolute -top-1.5 -right-3.5 px-1.5 py-0.2 rounded-full text-[9px] font-black bg-[#c49c6d] text-[#110e0c] shadow-md">0</span>
                 </div>
                 <span id="lblNavOrders" class="text-[9.5px] font-bold mt-0.5">Заявки</span>
