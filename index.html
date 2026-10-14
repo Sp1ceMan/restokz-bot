@@ -11,7 +11,23 @@
     <link rel="icon" type="image/png" sizes="64x64" href="/favicon-guest.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-guest.png">
     <link rel="shortcut icon" href="/favicon.ico">
-        <script src="https://telegram.org/js/telegram-web-app.js"></script>
+            <script>
+        (function() {
+            try {
+                var urlTheme = (new URLSearchParams(window.location.search)).get('theme');
+                var saved = urlTheme || localStorage.getItem('restokz_theme');
+                var sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                var tgScheme = window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.colorScheme;
+                var isDark = saved === 'dark' || (!saved && (tgScheme === 'dark' || sysDark));
+                if (isDark) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            } catch(e){}
+        })();
+    </script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
@@ -21,6 +37,7 @@
 
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
@@ -177,6 +194,187 @@
             from { transform: translateY(100%); }
             to { transform: translateY(0); }
         }
+    
+        /* ================= QUIET LUXURY DARK MODE SYSTEM ================= */
+        /* Hero Banner in Dark Mode */
+        html.dark #heroBanner {
+            background: linear-gradient(135deg, #1A1C20 0%, #15161A 50%, #1A2218 100%) !important;
+            border-color: #2D3035 !important;
+            box-shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.5) !important;
+        }
+        html.dark #heroBanner h2 {
+            color: #F5F3EF !important;
+        }
+        html.dark #heroBanner h2 span {
+            color: #C5A880 !important;
+        }
+        html.dark #heroBanner p {
+            color: #9E9B93 !important;
+        }
+
+        /* Cuisine chips in dark mode */
+        html.dark .cuisine-btn.active {
+            background-color: #4A5543 !important;
+            color: #FFFFFF !important;
+            border-color: #5A6D51 !important;
+        }
+        html.dark .cuisine-btn:not(.active) {
+            background-color: #1A1B1E !important;
+            color: #9E9B93 !important;
+            border-color: #2D3035 !important;
+        }
+        html.dark .cuisine-btn:not(.active):hover {
+            color: #F5F3EF !important;
+            border-color: #4A5543 !important;
+            background-color: #24262A !important;
+        }
+
+        html.dark {
+            color-scheme: dark;
+        }
+        html.dark, html.dark body {
+            background-color: #121315 !important;
+            color: #F5F3EF !important;
+        }
+
+        /* Canvas & Surfaces */
+        html.dark .bg-\[\#FAF8F5\],
+        html.dark .bg-cream-base {
+            background-color: #121315 !important;
+        }
+        html.dark .bg-\[\#FFFFFF\],
+        html.dark .bg-white,
+        html.dark .bg-cream-card,
+        html.dark .bg-cream-elevated {
+            background-color: #1A1B1E !important;
+        }
+        html.dark .bg-white\/95 {
+            background-color: rgba(26, 27, 30, 0.96) !important;
+        }
+        html.dark .bg-white\/90 {
+            background-color: rgba(26, 27, 30, 0.92) !important;
+        }
+        html.dark .bg-\[\#F3EFE8\],
+        html.dark .bg-cream-subtle {
+            background-color: #24262A !important;
+        }
+        html.dark .bg-\[\#EFF3EC\],
+        html.dark .bg-olive-light {
+            background-color: #1E251E !important;
+        }
+        html.dark .bg-\[\#E3EBE0\] {
+            background-color: #263024 !important;
+        }
+        html.dark .bg-\[\#F5EFE6\] {
+            background-color: #27221D !important;
+        }
+
+        /* Borders */
+        html.dark .border-\[\#E8E2D5\],
+        html.dark .border-cream-border {
+            border-color: #2D3035 !important;
+        }
+        html.dark .border-\[\#B8C5B3\]\/60,
+        html.dark .border-\[\#B8C5B3\]\/40,
+        html.dark .border-\[\#B8C5B3\] {
+            border-color: #384236 !important;
+        }
+        html.dark .border-\[\#D9C5A7\] {
+            border-color: #42382C !important;
+        }
+
+        /* Typography */
+        html.dark .text-\[\#1E1F20\],
+        html.dark .text-graphite {
+            color: #F5F3EF !important;
+        }
+        html.dark .text-\[\#73706B\],
+        html.dark .text-graphite-muted {
+            color: #9E9B93 !important;
+        }
+        html.dark .text-\[\#353638\],
+        html.dark .text-graphite-light {
+            color: #D0CDC5 !important;
+        }
+        html.dark .text-\[\#A6A29C\],
+        html.dark .text-graphite-faint {
+            color: #6C6A64 !important;
+        }
+
+        /* Header & Glass components */
+        html.dark .glass-header {
+            background: rgba(18, 19, 21, 0.94) !important;
+            border-color: #2D3035 !important;
+        }
+
+        /* Form Inputs & Selects & Textareas */
+        html.dark input:not([type="checkbox"]):not([type="radio"]),
+        html.dark select,
+        html.dark textarea {
+            background-color: #1A1B1E !important;
+            color: #F5F3EF !important;
+            border-color: #2D3035 !important;
+        }
+        html.dark input::placeholder,
+        html.dark textarea::placeholder {
+            color: #6C6A64 !important;
+        }
+
+        /* Hover States */
+        html.dark .hover\:bg-\[\#F3EFE8\]:hover {
+            background-color: #24262A !important;
+        }
+        html.dark .hover\:bg-\[\#E3EBE0\]:hover {
+            background-color: #263024 !important;
+        }
+
+        /* Table Schema & Booking Nodes */
+        html.dark .table-node {
+            border-color: #2D3035 !important;
+        }
+        html.dark .table-node:not(.busy):not(.selected) {
+            background-color: #1A1B1E !important;
+            color: #F5F3EF !important;
+        }
+        html.dark .table-node.selected {
+            background-color: #202C1E !important;
+            outline: 2px solid #5A6D51 !important;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5) !important;
+        }
+        html.dark .table-node.busy {
+            background-color: #161719 !important;
+            opacity: 0.35 !important;
+        }
+
+        /* Ticket Notches & Perforations */
+        html.dark .ticket-cutout-left,
+        html.dark .ticket-cutout-right {
+            background-color: #121315 !important;
+            box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.6) !important;
+        }
+
+        /* Scrollbar */
+        html.dark ::-webkit-scrollbar-track {
+            background: #121315 !important;
+        }
+        html.dark ::-webkit-scrollbar-thumb {
+            background: #2D3035 !important;
+        }
+        html.dark ::-webkit-scrollbar-thumb:hover {
+            background: #42464D !important;
+        }
+
+        /* Dropdowns, Drawers, Modals */
+        html.dark #sideDrawerPanel,
+        html.dark #restPickerSheetPanel,
+        html.dark #shiftModalPanel,
+        html.dark #bookingDetailModal > div,
+        html.dark #cityDropdownMenu {
+            background-color: #1A1B1E !important;
+            border-color: #2D3035 !important;
+            color: #F5F3EF !important;
+        }
+
     </style>
 </head>
 <body class="text-[#1E1F20] min-h-screen flex flex-col justify-between pb-[max(5rem,calc(env(safe-area-inset-bottom)+4.2rem))] md:pb-8 select-none bg-[#FAF8F5]">
@@ -220,6 +418,14 @@
                 <button type="button" onclick="openRestaurantTerminal()" class="hidden sm:inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-4 lg:px-5 py-2 lg:py-2.5 rounded-xl bg-[#EFF3EC] hover:bg-[#E3EBE0] text-[#4A5543] border border-[#B8C5B3]/60 text-xs sm:text-sm lg:text-base font-bold shadow-sm hover:brightness-110 active:scale-95 transition whitespace-nowrap" title="Терминал хостес и управления заведением">
                     <svg class="w-4 h-4 text-[#4A5543]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                     <span class="hidden sm:inline">RestoKZ</span> <span>PRO</span>
+                </button>
+                                <!-- Theme Toggle Button (Light / Dark) -->
+                <button type="button" 
+                        onclick="toggleTheme()" 
+                        id="themeToggleBtn" 
+                        class="w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 rounded-xl sm:rounded-2xl bg-[#FFFFFF] hover:bg-[#F3EFE8] border border-[#E8E2D5] flex items-center justify-center text-[#4A5543] active:scale-95 transition shadow-sm tap-scale cursor-pointer flex-shrink-0" 
+                        title="Сменить тему (Светлая / Тёмная, Клавиша: T)">
+                    <span id="themeToggleIcon" class="text-sm sm:text-base">🌙</span>
                 </button>
                 <!-- Language Toggle (RU / KZ / EN) -->
                 <div class="flex items-center bg-[#FFFFFF] border border-[#E8E2D5] rounded-xl p-1 shadow-sm">
@@ -290,7 +496,7 @@
         <section id="tab-restaurants" class="space-y-5 sm:space-y-7">
             
             <!-- Desktop Hero Banner (hidden on mobile, visible on md+) -->
-            <div class="hidden md:block bg-gradient-to-br from-[#FFFFFF] via-[#FAF8F5] to-[#EFF3EC]/70 border border-[#E8E2D5] rounded-3xl p-8 lg:p-11 relative overflow-hidden shadow-2xl">
+            <div id="heroBanner" class="hidden md:block bg-gradient-to-br from-[#FFFFFF] via-[#FAF8F5] to-[#EFF3EC]/70 border border-[#E8E2D5] rounded-3xl p-8 lg:p-11 relative overflow-hidden shadow-2xl">
                 <div class="relative z-10 max-w-3xl space-y-3.5">
                     <span class="inline-flex items-center gap-2 text-xs sm:text-sm uppercase tracking-widest font-bold px-3.5 py-1.5 bg-[#EFF3EC] text-[#4A5543] border border-[#B8C5B3]/60 rounded-full">
                         <svg class="w-4 h-4 text-[#4A5543]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
@@ -751,6 +957,11 @@
 
         const I18N = {
             ru: {
+                theme_title: "Тема оформления",
+                theme_light: "Светлая",
+                theme_dark: "Тёмная",
+                theme_switched_dark: "🌙 Включена тёмная тема",
+                theme_switched_light: "☀️ Включена светлая тема",
                 tagline: "Гастрономический гид • Бронирование столов",
                 all_cities: "Все города",
                 search_ph: "Поиск ресторана, кухни, адреса...",
@@ -811,6 +1022,11 @@
                 no_restaurants: "Рестораны по вашему запросу не найдены"
             },
             kz: {
+                theme_title: "Безендіру тақырыбы",
+                theme_light: "Ашық",
+                theme_dark: "Күңгірт",
+                theme_switched_dark: "🌙 Күңгірт тақырып қосылды",
+                theme_switched_light: "☀️ Ашық тақырып қосылды",
                 tagline: "Гастрономиялық гид • Үстел брондау",
                 all_cities: "Барлық қалалар",
                 search_ph: "Мейрамхана, тағам, мекенжай іздеу...",
@@ -871,6 +1087,11 @@
                 no_restaurants: "Сұранысыңыз бойынша мейрамханалар табылмады"
             },
             en: {
+                theme_title: "Appearance Theme",
+                theme_light: "Light",
+                theme_dark: "Dark",
+                theme_switched_dark: "🌙 Dark theme enabled",
+                theme_switched_light: "☀️ Light theme enabled",
                 tagline: "Gastronomic Guide • Table Reservation",
                 all_cities: "All cities",
                 search_ph: "Search restaurant, cuisine, address...",
@@ -1032,6 +1253,79 @@
             return d.toISOString().split('T')[0];
         }
 
+        
+        // --- Theme System (Light / Dark Mode) ---
+        function initTheme() {
+            const urlTheme = (new URLSearchParams(window.location.search)).get('theme');
+            const saved = urlTheme || localStorage.getItem('restokz_theme');
+            const sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const tgScheme = window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.colorScheme;
+            const isDark = saved === 'dark' || (!saved && (tgScheme === 'dark' || sysDark));
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+            updateThemeUI();
+            syncTelegramTheme(isDark);
+        }
+
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            const theme = isDark ? 'dark' : 'light';
+            try {
+                localStorage.setItem('restokz_theme', theme);
+            } catch(e){}
+            updateThemeUI();
+            syncTelegramTheme(isDark);
+            const t = I18N[currentLang] || I18N.ru;
+            showToast(isDark ? (t.theme_switched_dark || '🌙 Тёмная тема') : (t.theme_switched_light || '☀️ Светлая тема'), isDark ? '🌙' : '☀️');
+        }
+
+        function setTheme(theme) {
+            const isDark = theme === 'dark';
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+            try {
+                localStorage.setItem('restokz_theme', theme);
+            } catch(e){}
+            updateThemeUI();
+            syncTelegramTheme(isDark);
+        }
+
+        function syncTelegramTheme(isDark) {
+            if (window.Telegram && window.Telegram.WebApp) {
+                try {
+                    window.Telegram.WebApp.setHeaderColor(isDark ? '#121315' : '#FAF8F5');
+                    window.Telegram.WebApp.setBackgroundColor(isDark ? '#121315' : '#FAF8F5');
+                } catch(e){}
+            }
+        }
+
+        function updateThemeUI() {
+            const isDark = document.documentElement.classList.contains('dark');
+            const icon = document.getElementById('themeToggleIcon');
+            const btn = document.getElementById('themeToggleBtn');
+            const t = I18N[currentLang] || I18N.ru;
+            if (icon) {
+                icon.innerText = isDark ? '☀️' : '🌙';
+            }
+            if (btn) {
+                btn.title = isDark ? (t.theme_light ? `Переключить: ${t.theme_light} (T)` : 'Светлая тема (T)') : (t.theme_dark ? `Переключить: ${t.theme_dark} (T)` : 'Тёмная тема (T)');
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if ((e.key === 't' || e.key === 'T' || e.key === 'е' || e.key === 'Е') && !e.ctrlKey && !e.altKey && !e.metaKey) {
+                const tag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+                if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+                toggleTheme();
+            }
+        });
+
         // --- Initial Load ---
         window.addEventListener('DOMContentLoaded', () => {
             // Check URL query parameters for default tab
@@ -1055,6 +1349,7 @@
 
             renderTimeSlots();
             updateTimeDisplay();
+            initTheme();
             setLanguage(currentLang);
             loadRestaurants();
 

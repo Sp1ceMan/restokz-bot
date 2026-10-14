@@ -12,6 +12,22 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-admin.png">
     <link rel="shortcut icon" href="/favicon-admin.ico">
         <!-- Telegram Mini App Script -->
+        <script>
+        (function() {
+            try {
+                var urlTheme = (new URLSearchParams(window.location.search)).get('theme');
+                var saved = urlTheme || localStorage.getItem('restokz_theme');
+                var sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                var tgScheme = window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.colorScheme;
+                var isDark = saved === 'dark' || (!saved && (tgScheme === 'dark' || sysDark));
+                if (isDark) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            } catch(e){}
+        })();
+    </script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
     <!-- Tailwind CSS -->
@@ -24,6 +40,7 @@
 
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
@@ -224,6 +241,177 @@
             from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
         }
+    
+        /* ================= QUIET LUXURY DARK MODE SYSTEM ================= */
+        /* Desktop nav tabs in dark mode */
+        html.dark .desktop-nav-tab.active {
+            background-color: #4A5543 !important;
+            color: #FFFFFF !important;
+            border-color: #5A6D51 !important;
+        }
+        html.dark .desktop-nav-tab:not(.active) {
+            color: #9E9B93 !important;
+        }
+        html.dark .desktop-nav-tab:not(.active):hover {
+            background-color: #24262A !important;
+            color: #F5F3EF !important;
+            border-color: #2D3035 !important;
+        }
+
+        /* KPI & Order badges in dark mode */
+        html.dark #lblCurrentRestDisplay {
+            color: #F5F3EF !important;
+        }
+        html.dark #customRestTriggerBtn:hover #lblCurrentRestDisplay {
+            color: #C5A880 !important;
+        }
+
+        html.dark {
+            color-scheme: dark;
+        }
+        html.dark, html.dark body {
+            background-color: #121315 !important;
+            color: #F5F3EF !important;
+        }
+
+        /* Canvas & Surfaces */
+        html.dark .bg-\[\#FAF8F5\],
+        html.dark .bg-cream-base {
+            background-color: #121315 !important;
+        }
+        html.dark .bg-\[\#FFFFFF\],
+        html.dark .bg-white,
+        html.dark .bg-cream-card,
+        html.dark .bg-cream-elevated {
+            background-color: #1A1B1E !important;
+        }
+        html.dark .bg-white\/95 {
+            background-color: rgba(26, 27, 30, 0.96) !important;
+        }
+        html.dark .bg-white\/90 {
+            background-color: rgba(26, 27, 30, 0.92) !important;
+        }
+        html.dark .bg-\[\#F3EFE8\],
+        html.dark .bg-cream-subtle {
+            background-color: #24262A !important;
+        }
+        html.dark .bg-\[\#EFF3EC\],
+        html.dark .bg-olive-light {
+            background-color: #1E251E !important;
+        }
+        html.dark .bg-\[\#E3EBE0\] {
+            background-color: #263024 !important;
+        }
+        html.dark .bg-\[\#F5EFE6\] {
+            background-color: #27221D !important;
+        }
+
+        /* Borders */
+        html.dark .border-\[\#E8E2D5\],
+        html.dark .border-cream-border {
+            border-color: #2D3035 !important;
+        }
+        html.dark .border-\[\#B8C5B3\]\/60,
+        html.dark .border-\[\#B8C5B3\]\/40,
+        html.dark .border-\[\#B8C5B3\] {
+            border-color: #384236 !important;
+        }
+        html.dark .border-\[\#D9C5A7\] {
+            border-color: #42382C !important;
+        }
+
+        /* Typography */
+        html.dark .text-\[\#1E1F20\],
+        html.dark .text-graphite {
+            color: #F5F3EF !important;
+        }
+        html.dark .text-\[\#73706B\],
+        html.dark .text-graphite-muted {
+            color: #9E9B93 !important;
+        }
+        html.dark .text-\[\#353638\],
+        html.dark .text-graphite-light {
+            color: #D0CDC5 !important;
+        }
+        html.dark .text-\[\#A6A29C\],
+        html.dark .text-graphite-faint {
+            color: #6C6A64 !important;
+        }
+
+        /* Header & Glass components */
+        html.dark .glass-header {
+            background: rgba(18, 19, 21, 0.94) !important;
+            border-color: #2D3035 !important;
+        }
+
+        /* Form Inputs & Selects & Textareas */
+        html.dark input:not([type="checkbox"]):not([type="radio"]),
+        html.dark select,
+        html.dark textarea {
+            background-color: #1A1B1E !important;
+            color: #F5F3EF !important;
+            border-color: #2D3035 !important;
+        }
+        html.dark input::placeholder,
+        html.dark textarea::placeholder {
+            color: #6C6A64 !important;
+        }
+
+        /* Hover States */
+        html.dark .hover\:bg-\[\#F3EFE8\]:hover {
+            background-color: #24262A !important;
+        }
+        html.dark .hover\:bg-\[\#E3EBE0\]:hover {
+            background-color: #263024 !important;
+        }
+
+        /* Table Schema & Booking Nodes */
+        html.dark .table-node {
+            border-color: #2D3035 !important;
+        }
+        html.dark .table-node:not(.busy):not(.selected) {
+            background-color: #1A1B1E !important;
+            color: #F5F3EF !important;
+        }
+        html.dark .table-node.selected {
+            background-color: #202C1E !important;
+            outline: 2px solid #5A6D51 !important;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5) !important;
+        }
+        html.dark .table-node.busy {
+            background-color: #161719 !important;
+            opacity: 0.35 !important;
+        }
+
+        /* Ticket Notches & Perforations */
+        html.dark .ticket-cutout-left,
+        html.dark .ticket-cutout-right {
+            background-color: #121315 !important;
+            box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.6) !important;
+        }
+
+        /* Scrollbar */
+        html.dark ::-webkit-scrollbar-track {
+            background: #121315 !important;
+        }
+        html.dark ::-webkit-scrollbar-thumb {
+            background: #2D3035 !important;
+        }
+        html.dark ::-webkit-scrollbar-thumb:hover {
+            background: #42464D !important;
+        }
+
+        /* Dropdowns, Drawers, Modals */
+        html.dark #sideDrawerPanel,
+        html.dark #restPickerSheetPanel,
+        html.dark #shiftModalPanel,
+        html.dark #bookingDetailModal > div,
+        html.dark #cityDropdownMenu {
+            background-color: #1A1B1E !important;
+            border-color: #2D3035 !important;
+            color: #F5F3EF !important;
+        }
+
     </style>
 </head>
 <body class="min-h-screen pb-[max(7rem,calc(env(safe-area-inset-bottom)+5.5rem))] md:pb-12 bg-[#FAF8F5] text-[#1E1F20]">
@@ -298,6 +486,10 @@
 
             <!-- БЛОК 4: ИКОНКИ ДЕЙСТВИЙ (В ПРАВУЮ СТОРОНУ ОТ ВЫБОРА ЗАВЕДЕНИЯ) -->
             <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0 order-2 md:order-4 ml-auto md:ml-0">
+                                <!-- Переключатель темы (Светлая / Тёмная) -->
+                <button type="button" onclick="toggleAdminTheme()" id="adminThemeToggleBtn" class="w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 rounded-xl sm:rounded-2xl bg-[#FFFFFF] hover:bg-[#F3EFE8] border border-[#E8E2D5] hover:border-[#c49c6d]/40 flex items-center justify-center text-[#4A5543] active:scale-95 transition shadow-sm flex-shrink-0 tap-scale cursor-pointer" title="Сменить тему (Клавиша: T)">
+                    <span id="adminThemeToggleIcon" class="text-sm sm:text-base">🌙</span>
+                </button>
                 <!-- Быстрое обновление данных (с SVG-иконкой и шорткатом R) -->
                 <button onclick="manualRefresh()" class="w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 rounded-xl sm:rounded-2xl bg-[#FFFFFF] hover:bg-[#F3EFE8] border border-[#E8E2D5] hover:border-[#c49c6d]/40 flex items-center justify-center text-[#c49c6d] active:scale-95 transition shadow-sm flex-shrink-0" title="Синхронизировать данные (Клавиша: R)">
                     <svg id="refreshIcon" class="w-4 h-4 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -369,6 +561,20 @@
                     </button>
                     <button type="button" onclick="setAdminLanguage('en')" id="drawerLangBtn-en" class="py-2.5 rounded-xl text-xs font-bold bg-[#FFFFFF] text-[#73706B] hover:text-[#1E1F20] border border-[#E8E2D5] transition text-center">
                         EN
+                    </button>
+                </div>
+            </div>
+            <!-- Выбор темы оформления (Светлая / Тёмная) -->
+            <div class="space-y-2">
+                <label class="text-xs font-bold text-[#73706B] uppercase tracking-wider block" id="lblDrawerThemeTitle">
+                    🎨 Тема оформления
+                </label>
+                <div class="grid grid-cols-2 gap-2">
+                    <button type="button" onclick="setAdminTheme('light')" id="drawerThemeBtn-light" class="py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm border border-[#E8E2D5]">
+                        <span>☀️</span> <span id="lblThemeLight">Светлая</span>
+                    </button>
+                    <button type="button" onclick="setAdminTheme('dark')" id="drawerThemeBtn-dark" class="py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm border border-[#E8E2D5]">
+                        <span>🌙</span> <span id="lblThemeDark">Тёмная</span>
                     </button>
                 </div>
             </div>
@@ -1564,6 +1770,11 @@
 
         const ADMIN_I18N = {
             ru: {
+                drawer_theme_title: "🎨 Тема оформления",
+                theme_light: "Светлая",
+                theme_dark: "Тёмная",
+                theme_switched_dark: "🌙 Включена тёмная тема",
+                theme_switched_light: "☀️ Включена светлая тема",
                 app_title: "RestoKZ PRO",
                 shift_active: "Смена",
                 shift_sub: "Терминал хостес и управления посадкой",
@@ -1664,6 +1875,11 @@
                 btn_auth_login: "Войти в терминал"
             },
             kz: {
+                drawer_theme_title: "🎨 Безендіру тақырыбы",
+                theme_light: "Ашық",
+                theme_dark: "Күңгірт",
+                theme_switched_dark: "🌙 Күңгірт тақырып қосылды",
+                theme_switched_light: "☀️ Ашық тақырып қосылды",
                 app_title: "RestoKZ PRO",
                 shift_active: "Ауысым",
                 shift_sub: "Хостес және мейрамхананы басқару терминалы",
@@ -1764,6 +1980,11 @@
                 btn_auth_login: "Терминалға кіру"
             },
             en: {
+                drawer_theme_title: "🎨 Appearance Theme",
+                theme_light: "Light",
+                theme_dark: "Dark",
+                theme_switched_dark: "🌙 Dark theme enabled",
+                theme_switched_light: "☀️ Light theme enabled",
                 app_title: "RestoKZ PRO",
                 shift_active: "Shift",
                 shift_sub: "Hostess & Restaurant Management Terminal",
@@ -4467,7 +4688,100 @@
             document.body.removeChild(input);
         }
 
+        
+        // --- Admin Theme System (Light / Dark Mode) ---
+        function initAdminTheme() {
+            const urlTheme = (new URLSearchParams(window.location.search)).get('theme');
+            const saved = urlTheme || localStorage.getItem('restokz_theme');
+            const sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const tgScheme = window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.colorScheme;
+            const isDark = saved === 'dark' || (!saved && (tgScheme === 'dark' || sysDark));
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+            updateAdminThemeUI();
+            syncAdminTelegramTheme(isDark);
+        }
+
+        function toggleAdminTheme() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            const theme = isDark ? 'dark' : 'light';
+            try {
+                localStorage.setItem('restokz_theme', theme);
+            } catch(e){}
+            updateAdminThemeUI();
+            syncAdminTelegramTheme(isDark);
+            const t = ADMIN_I18N[currentAdminLang] || ADMIN_I18N.ru;
+            showToast(isDark ? (t.theme_switched_dark || '🌙 Тёмная тема') : (t.theme_switched_light || '☀️ Светлая тема'), isDark ? '🌙' : '☀️');
+        }
+
+        function setAdminTheme(theme) {
+            const isDark = theme === 'dark';
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+            try {
+                localStorage.setItem('restokz_theme', theme);
+            } catch(e){}
+            updateAdminThemeUI();
+            syncAdminTelegramTheme(isDark);
+            const t = ADMIN_I18N[currentAdminLang] || ADMIN_I18N.ru;
+            showToast(isDark ? (t.theme_switched_dark || '🌙 Тёмная тема') : (t.theme_switched_light || '☀️ Светлая тема'), isDark ? '🌙' : '☀️');
+        }
+
+        function syncAdminTelegramTheme(isDark) {
+            if (window.Telegram && window.Telegram.WebApp) {
+                try {
+                    window.Telegram.WebApp.setHeaderColor(isDark ? '#121315' : '#FAF8F5');
+                    window.Telegram.WebApp.setBackgroundColor(isDark ? '#121315' : '#FAF8F5');
+                } catch(e){}
+            }
+        }
+
+        function updateAdminThemeUI() {
+            const isDark = document.documentElement.classList.contains('dark');
+            const icon = document.getElementById('adminThemeToggleIcon');
+            const btn = document.getElementById('adminThemeToggleBtn');
+            const t = ADMIN_I18N[currentAdminLang] || ADMIN_I18N.ru;
+            if (icon) {
+                icon.innerText = isDark ? '☀️' : '🌙';
+            }
+            if (btn) {
+                btn.title = isDark ? (t.theme_light ? `Переключить: ${t.theme_light} (T)` : 'Светлая тема (T)') : (t.theme_dark ? `Переключить: ${t.theme_dark} (T)` : 'Тёмная тема (T)');
+            }
+            const btnLight = document.getElementById('drawerThemeBtn-light');
+            const btnDark = document.getElementById('drawerThemeBtn-dark');
+            if (btnLight && btnDark) {
+                if (isDark) {
+                    btnDark.className = 'py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm bg-[#4A5543] text-white border border-[#4A5543]';
+                    btnLight.className = 'py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm bg-[#1A1B1E] text-[#9E9B93] hover:text-[#F5F3EF] border border-[#2D3035]';
+                } else {
+                    btnLight.className = 'py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm bg-[#4A5543] text-white border border-[#4A5543]';
+                    btnDark.className = 'py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm bg-[#FFFFFF] text-[#73706B] hover:text-[#1E1F20] border border-[#E8E2D5]';
+                }
+            }
+            const lblTitle = document.getElementById('lblDrawerThemeTitle');
+            if (lblTitle && t.drawer_theme_title) lblTitle.innerText = t.drawer_theme_title;
+            const lblL = document.getElementById('lblThemeLight');
+            if (lblL && t.theme_light) lblL.innerText = t.theme_light;
+            const lblD = document.getElementById('lblThemeDark');
+            if (lblD && t.theme_dark) lblD.innerText = t.theme_dark;
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if ((e.key === 't' || e.key === 'T' || e.key === 'е' || e.key === 'Е') && !e.ctrlKey && !e.altKey && !e.metaKey) {
+                const tag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+                if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+                toggleAdminTheme();
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', async () => {
+            initAdminTheme();
             initShiftState();
             updateSoundToggleUI();
             setAdminLanguage(currentAdminLang);
