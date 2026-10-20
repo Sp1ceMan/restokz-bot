@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ru"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_stack" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100%;margin:0;padding:0;background-color:#fff8f4;color:#1d1b19;}body{overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}*{-ms-overflow-style:none;scrollbar-width:none;}.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 300,'GRAD' 0,'opsz' 24;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-dim": "#dfd9d5", "on-primary-container": "#98a99c", "primary": "#1a281f", "surface-container-lowest": "#ffffff", "on-error-container": "#93000a", "surface-container": "#f3ede9", "secondary-fixed-dim": "#ecc15a", "on-error": "#ffffff", "surface-bright": "#fff8f4", "on-secondary-fixed": "#251a00", "secondary-fixed": "#ffdf99", "surface": "#fff8f4", "on-tertiary": "#ffffff", "on-tertiary-fixed": "#291718", "primary-container": "#2f3e34", "tertiary-fixed-dim": "#dfbfc0", "error-container": "#ffdad6", "inverse-on-surface": "#f6efec", "on-secondary-fixed-variant": "#5a4300", "tertiary": "#332021", "on-primary-fixed-variant": "#3b4a40", "inverse-primary": "#bacbbd", "on-secondary-container": "#765900", "surface-tint": "#526257", "secondary-container": "#fed269", "tertiary-container": "#4b3536", "on-secondary": "#ffffff", "secondary": "#775a00", "primary-fixed-dim": "#bacbbd", "outline-variant": "#c3c8c2", "surface-container-highest": "#e7e1de", "primary-fixed": "#d5e7d9", "tertiary-fixed": "#fddadb", "outline": "#737873", "on-primary-fixed": "#101f16", "on-primary": "#ffffff", "on-tertiary-container": "#bc9d9e", "background": "#fff8f4", "error": "#ba1a1a", "surface-container-high": "#ede7e3", "on-tertiary-fixed-variant": "#584142", "surface-container-low": "#f9f2ef", "inverse-surface": "#32302e", "on-background": "#1d1b19", "on-surface-variant": "#434844", "on-surface": "#1d1b19", "surface-variant": "#e7e1de" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-md": "0.75rem", "margin-lg": "1.5rem", "margin": "1rem", "space-sm": "0.5rem", "gutter-sm": "0.75rem", "space-xl": "1.75rem", "space-xs": "0.25rem", "space-lg": "1.25rem", "gutter": "1rem" }, "fontFamily": { "body-lg": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "label-sm": ["Plus Jakarta Sans"], "headline-xl-mobile": ["Playfair Display"], "headline-md": ["Playfair Display"], "label-md": ["Plus Jakarta Sans"], "headline-xl": ["Playfair Display"], "headline-sm": ["Playfair Display"], "label-lg": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "headline-lg": ["Playfair Display"] }, "fontSize": { "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "400" }], "body-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400" }], "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }], "headline-xl-mobile": ["28px", { "lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "headline-md": ["20px", { "lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "500" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "600" }], "headline-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "500" }], "label-lg": ["14px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "600" }], "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }], "headline-lg": ["26px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "500" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface font-body-md text-body-md antialiased min-h-screen flex flex-col selection:bg-primary-fixed selection:text-on-primary-fixed"><header class="fixed top-0 inset-x-0 z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.03)]"><div class="h-16 max-w-xl mx-auto px-margin flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-xs min-w-0"><button aria-label="Назад" class="w-11 h-11 -ml-space-xs flex items-center justify-center rounded-full text-on-surface hover:text-primary hover:bg-surface-container-low transition-colors active:scale-95" onclick="history.back()"><span class="material-symbols-outlined text-[20px]">arrow_back_ios_new</span></button><img alt="Atelier Reserve Emblem" class="h-7 w-auto object-contain shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBX4kg8Jpu6IceJBcQXE_bxxv48KBAKbcXAAHIagUl5wZSaFENfrwnwuqcA0fZbhlprGFbubpawMiuwhc0lVdnCojA15S4rQSzQ0Cm0VmJrHZYU5K1x0_ZQkchMy2gkYpGevJXKqXlPuaIJU4mExZ3mBYRCO-wevn2xqrXQQ5S8VVkygAZ22UglVEV5rlsIw4Twfj5Rs2kjU2xfhLsqKkWRmau9hTtLn3AGbWM8F0tB3vlq2HhBO3EVDQ"/><h1 class="font-headline-sm text-headline-sm text-primary tracking-tight truncate pl-1">Бронирование Стола</h1></div><div class="flex items-center gap-space-xs shrink-0"><button aria-label="Личный профиль" class="w-11 h-11 flex items-center justify-center rounded-full transition-transform active:scale-95"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvZjHoeLD74m8Oc6k-DPvbWahBOkyfozsIiOvvvBZ4vZrJRGFZGwpMygLBkYBAGVnzfYvl31UY4X_pNZj_o7JtgDDkSpiED-yb_q33Af3k707FM8zZqF1Y2JEQgPhikSiFOyZjNfBIJ4xlnEaNxYrZKWnwg3Uk2Drb8TwAQDGOJWOcfIyLbbp80ebzHJ9XDGqK-R_EKh55C4VEnrBW7GYclE9X6Vnj9_VKxxd0IlQv1jSceihqe8zv_A"/></button></div></div></header><main class="flex-1 flex flex-col relative w-full max-w-xl mx-auto pt-16 pb-safe bg-surface px-margin"><div class="flex flex-col w-full pb-36">
+<!-- Restaurant Venue Summary Card -->
+<div class="relative overflow-hidden rounded-xl bg-surface-container p-space-md mb-space-lg shadow-sm">
+<div class="flex items-center gap-space-md">
+<div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 shadow-sm relative">
+<img class="w-full h-full object-cover" data-alt="Intimate French haute cuisine dining room with soft linen draped tables, warm candlelight, tall panoramic arched windows, subtle floral composition in an aristocratic deep olive and warm cream ambiance" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpkKqpjuC46jI5Vl-HVXPWkUfCEbigom6mJdZv3bf-1jZos5CNF5yQwe9Po3ExxNDMnePnYrvClU87egV-75hhbdAJ14I98RlzDRBh8TjYVuYD8XXe0zMMzV3m7ILJCv8iRcdH8VRaV9wOPKmJ8mq4938NEOoe9YtRt04a1VHTk6OUML7-1S2xHO5G_zkV59tKQBn4hbUBW7KffwooHnV767dX1sQFrkPDtsLBzp0cccGOZVHnA5U-xQ"/>
+</div>
+<div class="min-w-0 flex-1">
+<div class="flex items-center gap-space-xs mb-0.5">
+<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-secondary-container/30 text-on-secondary-container font-label-sm text-label-sm uppercase tracking-wider">
+<span class="material-symbols-outlined text-[13px]" style="font-variation-settings: 'FILL' 1;">star</span>
+            3 Звезды Michelin
+          </span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-primary truncate">L’Ambroisie</h2>
+<div class="flex items-center gap-1.5 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[15px] text-surface-tint">table_restaurant</span>
+<span class="truncate">Главный зал у панорамных окон</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Step 1: Number of Guests -->
+<div class="mb-space-lg">
+<div class="flex items-baseline justify-between mb-space-sm">
+<span class="font-label-lg text-label-lg text-primary tracking-wide flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+        1. Количество персон
+      </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Зал до 8 гостей</span>
+</div>
+<!-- Stepper & Pills -->
+<div class="grid grid-cols-5 gap-space-xs">
+<button class="guest-pill py-2.5 rounded-xl font-label-md text-label-md flex flex-col items-center justify-center transition-all bg-surface-container-low text-on-surface hover:bg-surface-container active:scale-95" data-guests="1" type="button">
+<span>1</span>
+<span class="text-[10px] opacity-75 font-normal">гость</span>
+</button>
+<button class="guest-pill py-2.5 rounded-xl font-label-md text-label-md flex flex-col items-center justify-center transition-all bg-primary-container text-on-primary shadow-sm scale-[1.02] ring-0" data-guests="2" type="button">
+<span>2</span>
+<span class="text-[10px] opacity-90 font-medium">персоны</span>
+</button>
+<button class="guest-pill py-2.5 rounded-xl font-label-md text-label-md flex flex-col items-center justify-center transition-all bg-surface-container-low text-on-surface hover:bg-surface-container active:scale-95" data-guests="3" type="button">
+<span>3</span>
+<span class="text-[10px] opacity-75 font-normal">гостя</span>
+</button>
+<button class="guest-pill py-2.5 rounded-xl font-label-md text-label-md flex flex-col items-center justify-center transition-all bg-surface-container-low text-on-surface hover:bg-surface-container active:scale-95" data-guests="4" type="button">
+<span>4</span>
+<span class="text-[10px] opacity-75 font-normal">гостя</span>
+</button>
+<button class="guest-pill py-2.5 rounded-xl font-label-md text-label-md flex flex-col items-center justify-center transition-all bg-surface-container-low text-on-surface hover:bg-surface-container active:scale-95" data-guests="5+" type="button">
+<span>5+</span>
+<span class="text-[10px] opacity-75 font-normal">банкет</span>
+</button>
+</div>
+</div>
+<!-- Step 2: Date Selector -->
+<div class="mb-space-lg">
+<div class="flex items-baseline justify-between mb-space-sm">
+<span class="font-label-lg text-label-lg text-primary tracking-wide flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+        2. Дата визита
+      </span>
+<span class="font-body-sm text-body-sm text-secondary font-medium flex items-center gap-1 cursor-pointer">
+        Календарь
+        <span class="material-symbols-outlined text-[16px]">calendar_month</span>
+</span>
+</div>
+<!-- Date Strip Scrollable -->
+<div class="flex gap-space-xs overflow-x-auto pb-1 -mx-margin px-margin">
+<button class="date-chip shrink-0 px-3.5 py-2.5 rounded-xl text-left bg-primary-container text-on-primary shadow-sm flex flex-col gap-0.5 active:scale-95 transition-all" type="button">
+<span class="font-label-sm text-label-sm text-primary-fixed uppercase tracking-wider">Пятница</span>
+<span class="font-headline-sm text-headline-sm font-semibold leading-tight">24 мая</span>
+<span class="text-[10px] text-primary-fixed/80 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-fixed"></span> 8 слотов
+        </span>
+</button>
+<button class="date-chip shrink-0 px-3.5 py-2.5 rounded-xl text-left bg-surface-container-low text-on-surface hover:bg-surface-container flex flex-col gap-0.5 active:scale-95 transition-all" type="button">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Суббота</span>
+<span class="font-headline-sm text-headline-sm font-semibold leading-tight">25 мая</span>
+<span class="text-[10px] text-on-surface-variant flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-container"></span> 4 слота
+        </span>
+</button>
+<button class="date-chip shrink-0 px-3.5 py-2.5 rounded-xl text-left bg-surface-container-low text-on-surface hover:bg-surface-container flex flex-col gap-0.5 active:scale-95 transition-all" type="button">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Воскресенье</span>
+<span class="font-headline-sm text-headline-sm font-semibold leading-tight">26 мая</span>
+<span class="text-[10px] text-on-surface-variant flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-container"></span> 6 слотов
+        </span>
+</button>
+<button class="date-chip shrink-0 px-3.5 py-2.5 rounded-xl text-left bg-surface-container-low text-on-surface hover:bg-surface-container flex flex-col gap-0.5 active:scale-95 transition-all" type="button">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Понедельник</span>
+<span class="font-headline-sm text-headline-sm font-semibold leading-tight">27 мая</span>
+<span class="text-[10px] text-on-surface-variant flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-container"></span> 11 слотов
+        </span>
+</button>
+<button class="date-chip shrink-0 px-3.5 py-2.5 rounded-xl text-left bg-surface-container-low text-on-surface hover:bg-surface-container flex flex-col gap-0.5 active:scale-95 transition-all" type="button">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Вторник</span>
+<span class="font-headline-sm text-headline-sm font-semibold leading-tight">28 мая</span>
+<span class="text-[10px] text-on-surface-variant flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-container"></span> 9 слотов
+        </span>
+</button>
+</div>
+</div>
+<!-- Step 3: Time Slot Selector -->
+<div class="mb-space-lg">
+<div class="flex items-baseline justify-between mb-space-sm">
+<span class="font-label-lg text-label-lg text-primary tracking-wide flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+        3. Время визита
+      </span>
+<span class="font-label-sm text-label-sm text-surface-tint uppercase tracking-wider">Длительность 2.5 ч</span>
+</div>
+<!-- Category: Dinner -->
+<div class="mb-space-sm">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-[16px] text-secondary">dinner_dining</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">Ужин (Dinner)</span>
+</div>
+<div class="grid grid-cols-3 gap-space-xs">
+<button class="time-slot py-2.5 px-2 rounded-xl text-center font-label-md text-label-md bg-surface-container-low text-on-surface hover:bg-surface-container active:scale-95 transition-all" type="button">
+          18:30
+        </button>
+<button class="time-slot py-2.5 px-2 rounded-xl text-center font-label-md text-label-md bg-surface-container-low text-on-surface hover:bg-surface-container active:scale-95 transition-all" type="button">
+          19:00
+        </button>
+<!-- Selected Time Slot with Gold/Warm Olive Accent -->
+<button class="time-slot py-2.5 px-2 rounded-xl text-center font-label-md text-label-md bg-secondary-container text-on-secondary-fixed font-bold shadow-sm ring-2 ring-secondary/20 active:scale-95 transition-all flex items-center justify-center gap-1" type="button">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+          19:30
+        </button>
+<button class="time-slot py-2.5 px-2 rounded-xl text-center font-label-md text-label-md bg-surface-container-low text-on-surface hover:bg-surface-container active:scale-95 transition-all" type="button">
+          20:15
+        </button>
+<button class="time-slot py-2.5 px-2 rounded-xl text-center font-label-md text-label-md bg-surface-container-low text-on-surface hover:bg-surface-container active:scale-95 transition-all" type="button">
+          21:00
+        </button>
+<button class="time-slot py-2.5 px-2 rounded-xl text-center font-label-md text-label-md bg-surface-container-low text-on-surface hover:bg-surface-container active:scale-95 transition-all" type="button">
+          21:30
+        </button>
+</div>
+</div>
+<!-- Category: Late Dinner -->
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-[16px] text-surface-tint">nightlife</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">Поздний ужин</span>
+</div>
+<div class="grid grid-cols-3 gap-space-xs">
+<button class="time-slot py-2.5 px-2 rounded-xl text-center font-label-md text-label-md bg-surface-container-low text-on-surface hover:bg-surface-container active:scale-95 transition-all" type="button">
+          22:00
+        </button>
+<button class="time-slot py-2.5 px-2 rounded-xl text-center font-label-md text-label-md bg-surface-container-low text-on-surface hover:bg-surface-container active:scale-95 transition-all" type="button">
+          22:30
+        </button>
+<div class="py-2.5 px-2 rounded-xl text-center font-label-md text-label-md bg-surface-container-highest/40 text-outline cursor-not-allowed">
+          23:00 <span class="text-[10px] block opacity-60">Занято</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Step 4: Booking Details & Preferences -->
+<div class="mb-space-lg flex flex-col gap-space-md">
+<div class="flex items-baseline justify-between">
+<span class="font-label-lg text-label-lg text-primary tracking-wide flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+        4. Детали и предпочтения
+      </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Повод и сомелье</span>
+</div>
+<!-- Occasion Selector -->
+<div class="bg-surface-container-low rounded-xl p-space-md">
+<label class="block font-label-md text-label-md text-on-surface font-semibold mb-2">Повод визита</label>
+<div class="flex flex-wrap gap-1.5">
+<button class="occasion-pill px-3 py-1.5 rounded-full font-label-sm text-label-sm bg-primary-container text-on-primary shadow-xs transition-all" type="button">
+          Романтический ужин
+        </button>
+<button class="occasion-pill px-3 py-1.5 rounded-full font-label-sm text-label-sm bg-surface-container text-on-surface hover:bg-surface-container-high transition-all" type="button">
+          Деловая встреча
+        </button>
+<button class="occasion-pill px-3 py-1.5 rounded-full font-label-sm text-label-sm bg-surface-container text-on-surface hover:bg-surface-container-high transition-all" type="button">
+          День рождения
+        </button>
+<button class="occasion-pill px-3 py-1.5 rounded-full font-label-sm text-label-sm bg-surface-container text-on-surface hover:bg-surface-container-high transition-all" type="button">
+          Семейный вечер
+        </button>
+<button class="occasion-pill px-3 py-1.5 rounded-full font-label-sm text-label-sm bg-surface-container text-on-surface hover:bg-surface-container-high transition-all" type="button">
+          Спокойный ужин
+        </button>
+</div>
+</div>
+<!-- Sommelier Wine Curation Toggle -->
+<div class="bg-surface-container-low rounded-xl p-space-md flex items-center justify-between gap-space-sm">
+<div class="flex items-start gap-space-sm min-w-0">
+<div class="w-9 h-9 rounded-lg bg-secondary-container/40 flex items-center justify-center shrink-0 text-on-secondary-container mt-0.5">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">wine_bar</span>
+</div>
+<div class="min-w-0">
+<p class="font-label-md text-label-md text-primary font-semibold leading-snug">Уведомить шеф-сомелье</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">Индивидуальный винный пейринг к подачам</p>
+</div>
+</div>
+<!-- Toggle switch (switched on) -->
+<button aria-checked="true" class="w-12 h-7 bg-primary rounded-full relative p-0.5 transition-colors shrink-0 focus:outline-hidden" id="sommelier-toggle" role="switch" type="button">
+<span class="block w-6 h-6 rounded-full bg-surface-container-lowest shadow-sm transform translate-x-5 transition-transform" id="sommelier-knob"></span>
+</button>
+</div>
+<!-- Special Requests Textarea -->
+<div class="bg-surface-container-low rounded-xl p-space-md">
+<div class="flex items-center justify-between mb-1.5">
+<label class="font-label-md text-label-md text-on-surface font-semibold flex items-center gap-1.5" for="wishes">
+<span class="material-symbols-outlined text-[16px] text-surface-tint">edit_note</span>
+          Особые пожелания
+        </label>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Опционально</span>
+</div>
+<textarea class="w-full bg-surface-container rounded-lg p-2.5 font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-hidden focus:bg-surface-container-lowest transition-colors resize-none" id="wishes" placeholder="Аллергии, предпочтения по посадке или сюрприз..." rows="2"></textarea>
+</div>
+<!-- Telegram Guest Autofill Summary Card -->
+<div class="rounded-xl bg-surface-container-high/60 p-space-md flex items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-9 h-9 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-md text-label-md shrink-0 shadow-xs">
+          АВ
+        </div>
+<div class="min-w-0">
+<div class="flex items-center gap-1">
+<span class="font-label-md text-label-md text-primary truncate font-semibold">Александр В.</span>
+<span class="material-symbols-outlined text-[15px] text-secondary" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">+7 999 123-45-67 • Telegram ID</p>
+</div>
+</div>
+<button class="text-secondary font-label-sm text-label-sm font-semibold hover:underline shrink-0" type="button">
+        Изменить
+      </button>
+</div>
+</div>
+<!-- Quiet Luxury Assurance Note -->
+<div class="flex items-center justify-center gap-2 text-on-surface-variant font-body-sm text-body-sm text-center mb-space-md px-margin">
+<span class="material-symbols-outlined text-[16px] text-surface-tint">lock</span>
+<span>Мгновенное подтверждение • Депозит не требуется</span>
+</div>
+<!-- Persistent Floating Bottom Summary & CTA Dock -->
+<div class="fixed bottom-0 inset-x-0 z-40 bg-surface/90 backdrop-blur-md shadow-[0_-8px_30px_rgba(29,27,25,0.06)] pb-safe">
+<div class="max-w-xl mx-auto px-margin py-3 flex items-center gap-3">
+<!-- Live Summary Column -->
+<div class="min-w-0 flex-1">
+<p class="font-label-sm text-label-sm text-secondary uppercase tracking-wider font-semibold truncate">Параметры стола</p>
+<p class="font-label-lg text-label-lg text-primary font-bold truncate">
+<span id="summary-date">Пт, 24 мая</span> • <span id="summary-time">19:30</span> • <span id="summary-guests">2 персоны</span>
+</p>
+<p class="text-[11px] text-on-surface-variant truncate">Окно • L’Ambroisie</p>
+</div>
+<!-- Action Button -->
+<button class="shrink-0 h-13 px-6 rounded-full bg-primary text-on-primary font-label-lg text-label-lg font-semibold shadow-md active:scale-95 transition-all flex items-center gap-2" id="reserve-btn" type="button">
+<span>Забронировать стол</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<script>
+  (function() {
+    // Guest Pills Selection Logic
+    const guestPills = document.querySelectorAll('.guest-pill');
+    const summaryGuests = document.getElementById('summary-guests');
+
+    guestPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        guestPills.forEach(p => {
+          p.classList.remove('bg-primary-container', 'text-on-primary', 'shadow-sm', 'scale-[1.02]');
+          p.classList.add('bg-surface-container-low', 'text-on-surface');
+          const sub = p.querySelector('span:last-child');
+          if (sub) {
+            sub.classList.remove('opacity-90', 'font-medium');
+            sub.classList.add('opacity-75', 'font-normal');
+          }
+        });
+        pill.classList.remove('bg-surface-container-low', 'text-on-surface');
+        pill.classList.add('bg-primary-container', 'text-on-primary', 'shadow-sm', 'scale-[1.02]');
+        const activeSub = pill.querySelector('span:last-child');
+        if (activeSub) {
+          activeSub.classList.remove('opacity-75', 'font-normal');
+          activeSub.classList.add('opacity-90', 'font-medium');
+        }
+        const val = pill.getAttribute('data-guests');
+        if (summaryGuests) {
+          summaryGuests.textContent = val === '1' ? '1 гость' : (val === '5+' ? '5+ гостей' : val + ' персоны');
+        }
+      });
+    });
+
+    // Date Chips Selection
+    const dateChips = document.querySelectorAll('.date-chip');
+    const summaryDate = document.getElementById('summary-date');
+
+    dateChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        dateChips.forEach(c => {
+          c.classList.remove('bg-primary-container', 'text-on-primary', 'shadow-sm');
+          c.classList.add('bg-surface-container-low', 'text-on-surface');
+          const day = c.querySelector('span:first-child');
+          if (day) day.className = 'font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider';
+        });
+        chip.classList.remove('bg-surface-container-low', 'text-on-surface');
+        chip.classList.add('bg-primary-container', 'text-on-primary', 'shadow-sm');
+        const activeDay = chip.querySelector('span:first-child');
+        if (activeDay) activeDay.className = 'font-label-sm text-label-sm text-primary-fixed uppercase tracking-wider';
+
+        const mainDate = chip.querySelector('span:nth-child(2)');
+        if (mainDate && summaryDate) {
+          const dayName = activeDay ? activeDay.textContent.substring(0, 2) : '';
+          summaryDate.textContent = dayName + ', ' + mainDate.textContent;
+        }
+      });
+    });
+
+    // Time Slot Selection
+    const timeSlots = document.querySelectorAll('.time-slot');
+    const summaryTime = document.getElementById('summary-time');
+
+    timeSlots.forEach(slot => {
+      slot.addEventListener('click', () => {
+        timeSlots.forEach(s => {
+          s.classList.remove('bg-secondary-container', 'text-on-secondary-fixed', 'font-bold', 'ring-2', 'ring-secondary/20');
+          s.classList.add('bg-surface-container-low', 'text-on-surface');
+          const checkIcon = s.querySelector('.material-symbols-outlined');
+          if (checkIcon) checkIcon.remove();
+        });
+        slot.classList.remove('bg-surface-container-low', 'text-on-surface');
+        slot.classList.add('bg-secondary-container', 'text-on-secondary-fixed', 'font-bold', 'ring-2', 'ring-secondary/20');
+        
+        const timeText = slot.textContent.trim().replace('check_circle', '').trim();
+        if (summaryTime) {
+          summaryTime.textContent = timeText;
+        }
+
+        if (!slot.querySelector('.material-symbols-outlined')) {
+          const icon = document.createElement('span');
+          icon.className = 'material-symbols-outlined text-[14px] mr-1 inline-block align-middle';
+          icon.style.fontVariationSettings = "'FILL' 1";
+          icon.textContent = 'check_circle';
+          slot.prepend(icon);
+        }
+      });
+    });
+
+    // Occasion Pill Toggle
+    const occasions = document.querySelectorAll('.occasion-pill');
+    occasions.forEach(occ => {
+      occ.addEventListener('click', () => {
+        occasions.forEach(o => {
+          o.classList.remove('bg-primary-container', 'text-on-primary', 'shadow-xs');
+          o.classList.add('bg-surface-container', 'text-on-surface');
+        });
+        occ.classList.remove('bg-surface-container', 'text-on-surface');
+        occ.classList.add('bg-primary-container', 'text-on-primary', 'shadow-xs');
+      });
+    });
+
+    // Sommelier Toggle Switch
+    const toggleBtn = document.getElementById('sommelier-toggle');
+    const toggleKnob = document.getElementById('sommelier-knob');
+    let isChecked = true;
+
+    if (toggleBtn && toggleKnob) {
+      toggleBtn.addEventListener('click', () => {
+        isChecked = !isChecked;
+        toggleBtn.setAttribute('aria-checked', isChecked ? 'true' : 'false');
+        if (isChecked) {
+          toggleBtn.classList.remove('bg-outline-variant');
+          toggleBtn.classList.add('bg-primary');
+          toggleKnob.classList.remove('translate-x-0');
+          toggleKnob.classList.add('translate-x-5');
+        } else {
+          toggleBtn.classList.remove('bg-primary');
+          toggleBtn.classList.add('bg-outline-variant');
+          toggleKnob.classList.remove('translate-x-5');
+          toggleKnob.classList.add('translate-x-0');
+        }
+      });
+    }
+
+    // Reservation Button Feedback
+    const reserveBtn = document.getElementById('reserve-btn');
+    if (reserveBtn) {
+      reserveBtn.addEventListener('click', function() {
+        const originalContent = this.innerHTML;
+        this.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span><span>Подтверждение...</span>';
+        this.classList.add('opacity-90');
+        setTimeout(() => {
+          this.innerHTML = '<span class="material-symbols-outlined text-[18px]">done</span><span>Стол забронирован</span>';
+          this.classList.remove('bg-primary', 'opacity-90');
+          this.classList.add('bg-secondary-container', 'text-on-secondary-fixed');
+        }, 1200);
+      });
+    }
+  })();
+</script></main></body></html>

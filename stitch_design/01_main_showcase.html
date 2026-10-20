@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ru"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100%;margin:0;padding:0;background-color:#fff8f4;color:#1d1b19;}body{overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}*{-ms-overflow-style:none;scrollbar-width:none;}.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 300,'GRAD' 0,'opsz' 24;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-dim": "#dfd9d5", "on-primary-container": "#98a99c", "primary": "#1a281f", "surface-container-lowest": "#ffffff", "on-error-container": "#93000a", "surface-container": "#f3ede9", "secondary-fixed-dim": "#ecc15a", "on-error": "#ffffff", "surface-bright": "#fff8f4", "on-secondary-fixed": "#251a00", "secondary-fixed": "#ffdf99", "surface": "#fff8f4", "on-tertiary": "#ffffff", "on-tertiary-fixed": "#291718", "primary-container": "#2f3e34", "tertiary-fixed-dim": "#dfbfc0", "error-container": "#ffdad6", "inverse-on-surface": "#f6efec", "on-secondary-fixed-variant": "#5a4300", "tertiary": "#332021", "on-primary-fixed-variant": "#3b4a40", "inverse-primary": "#bacbbd", "on-secondary-container": "#765900", "surface-tint": "#526257", "secondary-container": "#fed269", "tertiary-container": "#4b3536", "on-secondary": "#ffffff", "secondary": "#775a00", "primary-fixed-dim": "#bacbbd", "outline-variant": "#c3c8c2", "surface-container-highest": "#e7e1de", "primary-fixed": "#d5e7d9", "tertiary-fixed": "#fddadb", "outline": "#737873", "on-primary-fixed": "#101f16", "on-primary": "#ffffff", "on-tertiary-container": "#bc9d9e", "background": "#fff8f4", "error": "#ba1a1a", "surface-container-high": "#ede7e3", "on-tertiary-fixed-variant": "#584142", "surface-container-low": "#f9f2ef", "inverse-surface": "#32302e", "on-background": "#1d1b19", "on-surface-variant": "#434844", "on-surface": "#1d1b19", "surface-variant": "#e7e1de" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-md": "0.75rem", "margin-lg": "1.5rem", "margin": "1rem", "space-sm": "0.5rem", "gutter-sm": "0.75rem", "space-xl": "1.75rem", "space-xs": "0.25rem", "space-lg": "1.25rem", "gutter": "1rem" }, "fontFamily": { "body-lg": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "label-sm": ["Plus Jakarta Sans"], "headline-xl-mobile": ["Playfair Display"], "headline-md": ["Playfair Display"], "label-md": ["Plus Jakarta Sans"], "headline-xl": ["Playfair Display"], "headline-sm": ["Playfair Display"], "label-lg": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "headline-lg": ["Playfair Display"] }, "fontSize": { "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "400" }], "body-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400" }], "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }], "headline-xl-mobile": ["28px", { "lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "headline-md": ["20px", { "lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "500" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "600" }], "headline-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "500" }], "label-lg": ["14px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "600" }], "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }], "headline-lg": ["26px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "500" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface font-body-md text-body-md antialiased min-h-screen flex flex-col selection:bg-primary-fixed selection:text-on-primary-fixed"><header class="fixed top-0 inset-x-0 z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.03)]"><div class="h-16 max-w-xl mx-auto px-margin flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0"><img alt="Atelier Reserve Emblem" class="h-8 w-auto object-contain shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnngvzslZuh7SnRXxqn4LwrU5J-fjI0q5bDg9-w_So--TN0a6Aa0-4MpWTMW0l-BtSd3SXfbvoRqLEc0qq7yKUhEHeNDtx6TKNlLn6-bifFAlW4bEx0il2xwlcgvCNcadK0n8kOKYyq-BWo-Hj6lwAEHpnLBaRPaqc-wD5EAbiViKj23RIHFYhZq50spZyGXvqpp-Z2ZhoD3V2IYkzsE5IdMLcliVq6DO84sjugCaxGfOVL2VxZhTU6Q"/><div class="flex flex-col min-w-0"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm tracking-tight text-primary truncate">Atelier Reserve</span></div><button aria-label="Выбор города" class="flex items-center gap-0.5 text-on-surface-variant hover:text-primary transition-colors text-left -mt-0.5 min-h-[22px]"><span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Москва</span><span class="material-symbols-outlined text-[14px] leading-none text-outline">expand_more</span></button></div></div><div class="flex items-center gap-space-xs shrink-0"><button aria-label="Поиск ресторанов" class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors"><span class="material-symbols-outlined text-[22px]">search</span></button><button aria-label="Личный профиль" class="w-11 h-11 flex items-center justify-center rounded-full transition-transform active:scale-95"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXdanYqZ0MvmvI1lrAITr9jQBClMyzyyGIhczbMN9O9Vt94zoDZPOBsXoxyz8XSJ0wodbx-i59tS-fEKzzNGt4_xAtbzrrx5_pAv9LdWq5iTsNPeePxJuj5BO-4IABy7KoXWdvUoftE05ZsGGn_jEdiDOVnhpYj1qrnB3Vcc2dU4LskwXbvHHLmrlzTQ9-ldDhgTSOXdRF_vV72FmbIekqWcCVrxDgqe0PfqrsjDdmNFwUaIr2jum93Q"/></button></div></div></header><main class="flex-1 flex flex-col relative w-full max-w-xl mx-auto pt-16 pb-24 bg-surface px-margin"><div class="flex flex-col w-full pb-10">
+<!-- Welcome Editorial Header -->
+<section class="flex flex-col gap-space-xs pt-space-sm mb-space-lg">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-semibold">Atelier Privé · Вечерняя сессия</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-700 animate-pulse"></span>
+        Столы открыты
+      </span>
+</div>
+<h1 class="font-headline-xl-mobile text-headline-xl-mobile text-primary tracking-tight">Добрый вечер, Александр</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Где вы желаете провести этот вечер?</p>
+</section>
+<!-- Search Input Bar -->
+<section class="mb-space-md">
+<div class="relative flex items-center bg-surface-container-lowest rounded-xl shadow-[0_4px_20px_-2px_rgba(28,26,24,0.04)] px-space-md py-3.5 group transition-all">
+<span class="material-symbols-outlined text-outline text-[22px] mr-2.5 shrink-0 group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full bg-transparent border-0 outline-none font-body-md text-body-md text-on-surface placeholder:text-outline text-ellipsis" placeholder="Ресторан, шеф-повар, район..." type="text"/>
+<button aria-label="Фильтры параметров" class="shrink-0 p-1 rounded-full text-on-surface-variant hover:text-primary transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[20px]">tune</span>
+</button>
+</div>
+</section>
+<!-- Curated Quick Filters Carousel -->
+<section class="mb-space-lg -mx-margin px-margin overflow-x-auto flex gap-space-xs scroll-smooth py-1">
+<button class="shrink-0 px-3.5 py-2 rounded-full bg-primary text-on-primary font-label-md text-label-md shadow-sm transition-transform active:scale-95 flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">favorite</span>
+      Сегодня на двоих
+    </button>
+<button class="shrink-0 px-3.5 py-2 rounded-full bg-surface-container-lowest text-on-surface font-label-md text-label-md shadow-[0_2px_8px_rgba(28,26,24,0.03)] hover:bg-surface-container-low transition-all active:scale-95">
+      Террасы
+    </button>
+<button class="shrink-0 px-3.5 py-2 rounded-full bg-surface-container-lowest text-on-surface font-label-md text-label-md shadow-[0_2px_8px_rgba(28,26,24,0.03)] hover:bg-surface-container-low transition-all active:scale-95">
+      Авторская кухня
+    </button>
+<button class="shrink-0 px-3.5 py-2 rounded-full bg-surface-container-lowest text-on-surface font-label-md text-label-md shadow-[0_2px_8px_rgba(28,26,24,0.03)] hover:bg-surface-container-low transition-all active:scale-95 flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px] text-secondary">wine_bar</span>
+      С сомелье
+    </button>
+<button class="shrink-0 px-3.5 py-2 rounded-full bg-surface-container-lowest text-on-surface font-label-md text-label-md shadow-[0_2px_8px_rgba(28,26,24,0.03)] hover:bg-surface-container-low transition-all active:scale-95 flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px] text-secondary">stars</span>
+      Michelin / Ultima
+    </button>
+</section>
+<!-- Hero Editorial: Choice of the Week -->
+<section class="mb-space-xl">
+<div class="flex items-center justify-between mb-space-sm">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-secondary text-[18px]">verified</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-primary font-bold">Выбор недели</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline">Эксклюзив Atelier</span>
+</div>
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_4px_24px_-2px_rgba(28,26,24,0.05)] transition-all">
+<!-- Media Header with Ambient Vignette -->
+<div class="relative h-60 w-full overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-700 hover:scale-105" data-alt="Intimate French haute cuisine dining room with dimmed golden candlelight, pristine white linen tablecloths, crystal wine glasses reflecting warm amber tones, and antique wood interior in Paris style, soft natural grain film photograph." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcrWzO4fFgRcD-8SBTaeKaMqqsO20_dKdT32PiuRtwJnZAUg_tf3y9q-KvJcacqI9OdeRfsRMSH_618i-tlp0kO057k_u-So5iIY4Z9T9uELXDkhUI6ui2V6Jnk6v4duyqLrnKZPEe9GEVCB176FsqiWQ_yCm315cYG2P8hAZN4Y5dPXnmU3Fy10xKxk3WTuiDF4lXA-oZBlJMCQGjOE6zTCDNxX7DkW6CZRQT81XI92WdylJYFo_JJg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent"></div>
+<!-- Badges over media -->
+<div class="absolute top-3 left-3 flex gap-1.5">
+<span class="px-2.5 py-1 rounded-full bg-primary/85 backdrop-blur-md text-secondary-fixed font-label-sm text-label-sm tracking-wide uppercase flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">award_star</span>
+            Grand Prix 2024
+          </span>
+<span class="px-2.5 py-1 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-primary font-label-sm text-label-sm">
+            Патриаршие
+          </span>
+</div>
+<div class="absolute bottom-3 left-3 right-3 flex items-end justify-between text-on-primary">
+<div>
+<div class="font-label-sm text-label-sm text-primary-fixed uppercase tracking-wider mb-0.5">Шеф Даниэль Легран</div>
+<h2 class="font-headline-lg text-headline-lg text-on-primary leading-tight">L’Ambroisie</h2>
+</div>
+<div class="flex items-center gap-1 bg-surface-container-lowest/90 backdrop-blur-md px-2 py-1 rounded-lg text-primary">
+<span class="material-symbols-outlined text-[15px] text-secondary">star</span>
+<span class="font-label-md text-label-md font-bold">4.95</span>
+</div>
+</div>
+</div>
+<!-- Description & Available Instant Slots -->
+<div class="p-space-md flex flex-col gap-space-md">
+<div class="flex items-center justify-between text-on-surface-variant font-body-sm text-body-sm">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-outline">restaurant</span>
+            Французская неоклассика
+          </span>
+<span class="font-label-md text-label-md text-primary">₽₽₽₽ · от 12 000 ₽</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">
+          Гастрономическая поэма о редких трюфелях, авторском пти-фуре и редчайших винтажах Бордо из частных погребов.
+        </p>
+<!-- Time Chips -->
+<div class="pt-space-xs">
+<div class="font-label-sm text-label-sm uppercase tracking-wider text-outline mb-2">Ближайшие столы сегодня:</div>
+<div class="grid grid-cols-3 gap-2">
+<button class="py-2.5 rounded-lg bg-surface-container hover:bg-primary hover:text-on-primary text-primary font-label-md text-label-md transition-all active:scale-95 flex flex-col items-center">
+<span>19:30</span>
+<span class="text-[9px] opacity-70">Зал · 2 чел</span>
+</button>
+<button class="py-2.5 rounded-lg bg-primary text-on-primary font-label-md text-label-md shadow-sm transition-all active:scale-95 flex flex-col items-center">
+<span>20:15</span>
+<span class="text-[9px] text-primary-fixed-dim">Шеф-тейбл</span>
+</button>
+<button class="py-2.5 rounded-lg bg-surface-container hover:bg-primary hover:text-on-primary text-primary font-label-md text-label-md transition-all active:scale-95 flex flex-col items-center">
+<span>21:00</span>
+<span class="text-[9px] opacity-70">Каминный зал</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Curated Section Heading -->
+<section class="flex items-center justify-between mb-space-md">
+<div>
+<h3 class="font-headline-md text-headline-md text-primary">Рекомендовано консьержем</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Проверенные столы со свободным слотом на вечер</p>
+</div>
+<a class="font-label-md text-label-md text-secondary font-semibold hover:underline shrink-0" href="#">Все (18)</a>
+</section>
+<!-- Restaurant List Cards -->
+<section class="flex flex-col gap-space-md mb-space-xl">
+<!-- Card 1: Sage & Oak -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden p-space-md shadow-[0_4px_20px_-2px_rgba(28,26,24,0.04)] flex flex-col gap-space-sm">
+<div class="relative h-44 rounded-lg overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Nordic minimalism restaurant with light oak tables, soft moss textures, handmade artisanal ceramic tableware, subtle designer warm pendant lights, sophisticated quiet atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoDiHgGA1K0s2Rb899dH7O8a3_-PKCartMQbyMqBdJhpUyHSa9gr75FDhAJ0oP3BzQziyr1xsqwDTMR_7Yabm4j9HwfjBjb1Z5wUS5GkVs6nJrIns3L_WTzOAFTXkt0ebyC9JElndXcvV8tcNb1Hx-Upa5zTKI21p2HZ0gYAQizx48eZYV29kOOwJ1fzpRe9zzQK2HdQl59XyShSC2cWwoZa2mjZzWlsIhV4Q-ItUQfEQVz8yGWnGEpA"/>
+<div class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-primary font-label-sm text-label-sm">
+          Патриаршие пруды · 0.4 км
+        </div>
+<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full bg-surface-container-lowest/95 text-primary font-label-md text-label-md flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[14px] text-secondary">star</span>
+          4.9
+        </div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex items-baseline justify-between">
+<h4 class="font-headline-sm text-headline-sm text-primary">Sage &amp; Oak</h4>
+<span class="font-label-md text-label-md text-on-surface-variant">₽₽₽₽</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Скандинавский минимализм, дикие травы и копченый угорь</p>
+</div>
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-1.5 text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px] text-outline">schedule</span>
+          Ближайший стол: <span class="font-semibold text-primary">20:00</span>
+</div>
+<button class="px-4 py-2 rounded-full bg-primary text-on-primary font-label-sm text-label-sm uppercase tracking-wider hover:bg-primary-container transition-all active:scale-95">
+          Забронировать
+        </button>
+</div>
+</div>
+<!-- Card 2: Osteria Vetro -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden p-space-md shadow-[0_4px_20px_-2px_rgba(28,26,24,0.04)] flex flex-col gap-space-sm">
+<div class="relative h-44 rounded-lg overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Refined Italian enoteca dining space with arched brick wine cellar walls, backlit vintage wine collection bottles, hand-blown amber glass decanters, low atmospheric lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeJtgTNHAuW2cab4349f3kW3CxLndQDvUJaZkYs8lalwG-6DI_aPR855zvOWZno4pggRC10jAQ9ewS623PSGtZmGm59CJ22AhHBKEMzxAZq60NlKw_cSbPkv8CBp_GfuziV_Hpek7_9smBGyO7pRvtytDFUR6y5Eq23g9vv1beuRt_ZDJTZ_Smmh_Gak8k8sfovc_A6K9fhdZCOaFe2X-lXvkPMm--YPNxpSWBbuo3P3R4NTquKNnlwg"/>
+<div class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-primary font-label-sm text-label-sm">
+          Большая Никитская · 1.2 км
+        </div>
+<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full bg-surface-container-lowest/95 text-primary font-label-md text-label-md flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[14px] text-secondary">star</span>
+          4.8
+        </div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex items-baseline justify-between">
+<h4 class="font-headline-sm text-headline-sm text-primary">Osteria Vetro</h4>
+<span class="font-label-md text-label-md text-on-surface-variant">₽₽₽</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Северная Италия, ручная паста из Пьемонта и 450 позиций вин</p>
+</div>
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-1.5 text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px] text-outline">schedule</span>
+          Ближайший стол: <span class="font-semibold text-primary">20:30, 21:15</span>
+</div>
+<button class="px-4 py-2 rounded-full bg-primary text-on-primary font-label-sm text-label-sm uppercase tracking-wider hover:bg-primary-container transition-all active:scale-95">
+          Забронировать
+        </button>
+</div>
+</div>
+<!-- Card 3: Ginkgo -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden p-space-md shadow-[0_4px_20px_-2px_rgba(28,26,24,0.04)] flex flex-col gap-space-sm">
+<div class="relative h-44 rounded-lg overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Luxury Japanese omakase sushi bar with dark charred yakisugi wood, polished dark granite counter, delicate ikebana floral branch, intimate focused spotlight on ceramic dishes." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1HSVU9HRdsUc4jTWmbiMmLWCiUVUrFUAGEQCA1Qc5MAk1-VMomGczvIwrkW7uOjD1IorjR7p2VeUe5HggkjHy4xG-oXaln64nOpHHMpE7ZtMUgNuy8Hylg9CR9GRc-eZNCdNTlvRbGprsfJ7PzfmOffpyb2k66Zki-sb0dpFqAKx5m4GCo67a7vB57WXhwwXOiuqGleLTYJ5u1u_kebc9UlnhJbGPyUW-mwZ_m3RIwPypEOehQ3qpyw"/>
+<div class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-primary font-label-sm text-label-sm">
+          Замоскворечье · 2.4 км
+        </div>
+<div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full bg-surface-container-lowest/95 text-primary font-label-md text-label-md flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[14px] text-secondary">star</span>
+          4.95
+        </div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex items-baseline justify-between">
+<h4 class="font-headline-sm text-headline-sm text-primary">Ginkgo</h4>
+<span class="font-label-md text-label-md text-on-surface-variant">₽₽₽₽</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Паназия &amp; Омакасе от мастера Такеши Номура. Доставка рыбы с Токио</p>
+</div>
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-1.5 text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px] text-outline">schedule</span>
+          Ближайший стол: <span class="font-semibold text-primary">21:45</span>
+</div>
+<button class="px-4 py-2 rounded-full bg-primary text-on-primary font-label-sm text-label-sm uppercase tracking-wider hover:bg-primary-container transition-all active:scale-95">
+          Забронировать
+        </button>
+</div>
+</div>
+</section>
+<!-- Private Concierge Callout Banner -->
+<section class="bg-primary text-on-primary rounded-xl p-space-lg shadow-md relative overflow-hidden">
+<!-- Subtle decorative ambient circle -->
+<div class="absolute -right-10 -bottom-10 w-44 h-44 rounded-full bg-secondary/15 blur-2xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col gap-space-sm">
+<div class="flex items-center gap-2">
+<span class="w-7 h-7 rounded-full bg-primary-container flex items-center justify-center text-secondary-fixed">
+<span class="material-symbols-outlined text-[16px]">key</span>
+</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-primary-fixed font-bold">Privilege Atelier</span>
+</div>
+<div class="flex flex-col gap-1">
+<h4 class="font-headline-sm text-headline-sm text-on-primary">Не нашли подходящее время?</h4>
+<p class="font-body-sm text-body-sm text-on-primary-container">
+          Персональный поиск стола в закрытых ресторанах и бронирование шеф-тейблов через Telegram-консьержа.
+        </p>
+</div>
+<div class="pt-2">
+<button class="w-full py-3 px-space-md rounded-full bg-surface-container-lowest text-primary font-label-md text-label-md flex items-center justify-center gap-2 shadow-sm hover:bg-surface-container transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined text-[18px] text-secondary">forum</span>
+          Связаться с консьержем
+        </button>
+</div>
+</div>
+</section>
+</div>
+<script>
+  // Simple interactive filter toggle for delight micro-interactions
+  document.querySelectorAll('section:nth-of-type(3) button').forEach(button => {
+    button.addEventListener('click', () => {
+      document.querySelectorAll('section:nth-of-type(3) button').forEach(b => {
+        b.classList.remove('bg-primary', 'text-on-primary');
+        b.classList.add('bg-surface-container-lowest', 'text-on-surface');
+      });
+      button.classList.remove('bg-surface-container-lowest', 'text-on-surface');
+      button.classList.add('bg-primary', 'text-on-primary');
+    });
+  });
+</script></main><nav class="fixed bottom-0 inset-x-0 z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-4px_20px_rgba(28,26,24,0.04)]" data-active-classes="text-primary font-bold"><div class="max-w-xl mx-auto h-16 px-space-sm flex items-stretch justify-around"><a class="flex-1 flex flex-col items-center justify-center gap-1 min-w-[44px] min-h-[44px] text-outline hover:text-primary transition-colors" data-path="podporka" href="#"><span class="material-symbols-outlined text-[22px]">hotel_class</span><span class="font-label-sm text-label-sm tracking-wider uppercase">Подборка</span></a><a class="flex-1 flex flex-col items-center justify-center gap-1 min-w-[44px] min-h-[44px] text-outline hover:text-primary transition-colors" data-path="restorany" href="#"><span class="material-symbols-outlined text-[22px]">restaurant</span><span class="font-label-sm text-label-sm tracking-wider uppercase">Рестораны</span></a><a class="flex-1 flex flex-col items-center justify-center gap-1 min-w-[44px] min-h-[44px] text-outline hover:text-primary transition-colors" data-path="broni" href="#"><span class="material-symbols-outlined text-[22px]">calendar_today</span><span class="font-label-sm text-label-sm tracking-wider uppercase">Брони</span></a><a class="flex-1 flex flex-col items-center justify-center gap-1 min-w-[44px] min-h-[44px] text-outline hover:text-primary transition-colors" data-path="profil" href="#"><span class="material-symbols-outlined text-[22px]">person</span><span class="font-label-sm text-label-sm tracking-wider uppercase">Профиль</span></a></div></nav></body></html>

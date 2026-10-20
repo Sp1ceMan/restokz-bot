@@ -33,6 +33,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <script>
@@ -46,6 +47,28 @@
                         sans: ['"Plus Jakarta Sans"', '"Manrope"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
                     },
                     colors: {
+                        surface: '#fff8f4',
+                        'surface-dim': '#dfd9d5',
+                        'surface-bright': '#fff8f4',
+                        'surface-container-lowest': '#ffffff',
+                        'surface-container-low': '#f9f2ef',
+                        'surface-container': '#f3ede9',
+                        'surface-container-high': '#ede7e3',
+                        'surface-container-highest': '#e7e1de',
+                        'on-surface': '#1d1b19',
+                        'on-surface-variant': '#434844',
+                        outline: '#737873',
+                        'outline-variant': '#c3c8c2',
+                        'surface-tint': '#526257',
+                        primary: '#1a281f',
+                        'primary-container': '#2f3e34',
+                        'on-primary': '#ffffff',
+                        'on-primary-container': '#98a99c',
+                        'primary-fixed': '#d5e7d9',
+                        'primary-fixed-dim': '#bacbbd',
+                        secondary: '#775a00',
+                        'secondary-container': '#fed269',
+                        gold: '#c29b38',
                         cream: {
                             base: '#FAF8F5',
                             card: '#FFFFFF',
@@ -94,6 +117,13 @@
             color: #1E1F20;
             font-family: 'Plus Jakarta Sans', 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
             -webkit-tap-highlight-color: transparent;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 1;
         }
 
         h1, h2, h3, .font-serif, .font-serif-luxury {
@@ -375,9 +405,150 @@
             color: #F5F3EF !important;
         }
 
+
+        /* ================= REALISTIC TELEGRAM MOBILE FRAME PREVIEW ================= */
+        body.preview-mobile-active {
+            background-color: #E2DDD5 !important;
+            padding: 24px 12px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            min-height: 100vh !important;
+        }
+        body.preview-mobile-active #appWrapper {
+            width: 100% !important;
+            max-width: 412px !important;
+            min-height: 844px !important;
+            background-color: #fff8f4 !important;
+            border-radius: 44px !important;
+            box-shadow: 0 25px 60px -12px rgba(28, 26, 24, 0.35), 0 0 0 10px #1a281f, 0 0 0 12px rgba(194, 155, 56, 0.4) !important;
+            overflow-x: hidden !important;
+            position: relative !important;
+            border: 3px solid rgba(255, 255, 255, 0.3) !important;
+        }
+        body.preview-mobile-active #appWrapper::before {
+            content: '';
+            display: block;
+            width: 110px;
+            height: 20px;
+            background-color: #1a281f;
+            border-radius: 16px;
+            margin: 8px auto 0 auto;
+            position: sticky;
+            top: 8px;
+            z-index: 60;
+        }
+        html.dark body.preview-mobile-active {
+            background-color: #0b0c0e !important;
+        }
+        html.dark body.preview-mobile-active #appWrapper {
+            background-color: #121315 !important;
+            box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.7), 0 0 0 10px #24262a, 0 0 0 12px rgba(194, 155, 56, 0.4) !important;
+        }
+
+        /* Occasion & Guest Pills Styling */
+        .guest-pill.active {
+            background-color: #1a281f !important;
+            color: #ffffff !important;
+            box-shadow: 0 2px 8px rgba(26, 40, 31, 0.25) !important;
+            transform: scale(1.02);
+        }
+        html.dark .guest-pill.active {
+            background-color: #2f3e34 !important;
+            color: #ffffff !important;
+        }
+        .occasion-pill.active {
+            background-color: #1a281f !important;
+            color: #ffffff !important;
+            box-shadow: 0 2px 6px rgba(26, 40, 31, 0.2) !important;
+        }
+        html.dark .occasion-pill.active {
+            background-color: #2f3e34 !important;
+            color: #ffffff !important;
+        }
+        .date-strip-chip.active {
+            background-color: #1a281f !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 14px rgba(26, 40, 31, 0.25) !important;
+            transform: scale(1.02);
+        }
+        html.dark .date-strip-chip.active {
+            background-color: #2f3e34 !important;
+            color: #ffffff !important;
+        }
+
+        /* Table Zone Filter Chips & Floor Plan SVG */
+        .table-zone-chip.active {
+            background-color: #1a281f !important;
+            color: #ffffff !important;
+            box-shadow: 0 2px 8px rgba(26, 40, 31, 0.25) !important;
+            transform: scale(1.02);
+        }
+        html.dark .table-zone-chip.active {
+            background-color: #2f3e34 !important;
+            color: #ffffff !important;
+        }
+
+        .svg-table-node {
+            transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease;
+            transform-box: fill-box;
+            transform-origin: center;
+        }
+        .svg-table-node:hover:not(.busy) {
+            transform: scale(1.06);
+            cursor: pointer;
+        }
+        .svg-table-node:active:not(.busy) {
+            transform: scale(0.96);
+        }
+
+
+        /* Quiet Luxury Dark Mode Atelier Tokens Fix */
+        html.dark .text-primary {
+            color: #F5F3EF !important;
+        }
+        html.dark h1.text-primary,
+        html.dark h2.text-primary,
+        html.dark h3.text-primary,
+        html.dark h4.text-primary {
+            color: #F5F3EF !important;
+        }
+        html.dark .text-on-surface {
+            color: #F5F3EF !important;
+        }
+        html.dark .text-on-surface-variant {
+            color: #A6A29C !important;
+        }
+        html.dark .bg-surface {
+            background-color: #121315 !important;
+        }
+        html.dark .bg-surface-container-lowest {
+            background-color: #1A1B1E !important;
+        }
+        html.dark .bg-surface-container-low,
+        html.dark .bg-surface-container {
+            background-color: #24262A !important;
+        }
+        html.dark .bg-surface-container-high {
+            background-color: #2D3035 !important;
+        }
+        html.dark .bg-primary {
+            background-color: #2F3E34 !important;
+            color: #FFFFFF !important;
+        }
+        html.dark .bg-primary-container {
+            background-color: #384A3E !important;
+            color: #FFFFFF !important;
+        }
+        html.dark .border-\[\#E8E2D5\] {
+            border-color: #2D3035 !important;
+        }
+
     </style>
 </head>
 <body class="text-[#1E1F20] min-h-screen flex flex-col justify-between pb-[max(5rem,calc(env(safe-area-inset-bottom)+4.2rem))] md:pb-8 select-none bg-[#FAF8F5]">
+    <div id="appWrapper" class="w-full flex-1 flex flex-col justify-between min-h-screen">
 
     <!-- Lightweight Toast Notification -->
     <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 hidden bg-[#1E1F20] border border-[#353638] text-white px-4 py-2.5 rounded-2xl shadow-2xl text-xs sm:text-sm font-semibold flex items-center gap-2 pointer-events-none transition-all duration-300">
@@ -388,14 +559,17 @@
     <!-- Top Navigation Bar -->
     <header class="sticky top-0 z-30 glass-header backdrop-blur-md border-b border-[#E8E2D5] px-4 py-3 sm:px-6 lg:px-8">
         <div class="max-w-[1600px] 2xl:max-w-[1760px] mx-auto flex items-center justify-between gap-3 sm:gap-5">
-            <!-- Brand -->
+            <!-- Brand (Atelier Reserve Style) -->
             <div class="flex items-center gap-2.5 sm:gap-3.5 flex-shrink-0 min-w-max select-none cursor-pointer" onclick="switchTab('restaurants')">
-                <div class="w-9 h-9 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-xl sm:rounded-2xl bg-[#FFFFFF] border border-[#E8E2D5] flex items-center justify-center text-[#4A5543] shadow-soft flex-shrink-0">
-                    <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                <div class="w-9 h-9 sm:w-10 sm:h-10 lg:w-11 lg:h-11 rounded-2xl bg-primary text-on-primary flex items-center justify-center shadow-sm font-serif font-bold text-base sm:text-lg flex-shrink-0">
+                    R
                 </div>
                 <div class="flex-shrink-0 min-w-max">
-                    <h1 class="text-base sm:text-lg lg:text-xl font-serif font-bold tracking-wide text-[#1E1F20] font-serif font-black tracking-tight leading-tight whitespace-nowrap flex-shrink-0">RestoKZ</h1>
-                    <p id="headerTagline" class="hidden sm:block text-[10px] sm:text-xs lg:text-sm text-[#73706B] font-medium tracking-tight truncate sm:max-w-none">Бронирование столов в Казахстане</p>
+                    <div class="flex items-center gap-1.5">
+                        <h1 class="text-base sm:text-lg lg:text-xl font-serif font-bold tracking-tight text-primary leading-tight whitespace-nowrap">RestoKZ</h1>
+                        <span class="text-[9px] uppercase tracking-wider font-extrabold px-1.5 py-0.5 rounded-full bg-[#fed269]/25 text-[#775a00] border border-[#fed269]/60">Atelier</span>
+                    </div>
+                    <p id="headerTagline" class="hidden sm:block text-[10px] sm:text-xs text-on-surface-variant font-medium tracking-tight">Гастрономический гид & бронирование</p>
                 </div>
             </div>
 
@@ -412,6 +586,20 @@
                     <kbd class="hidden xl:inline text-[10px] font-mono px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-[#73706B] flex-shrink-0">2</kbd>
                 </button>
             </nav>
+
+            <!-- Device Viewport Toggle (Desktop only helper) -->
+            <div class="hidden lg:flex items-center bg-[#FFFFFF] border border-[#E8E2D5] rounded-xl p-1 shadow-sm">
+                <button type="button" onclick="setDeviceView('desktop')" id="deviceBtn-desktop" 
+                        class="px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs font-bold rounded-lg bg-primary text-on-primary transition shadow-xs flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[15px]">desktop_windows</span>
+                    <span class="whitespace-nowrap">Десктоп</span>
+                </button>
+                <button type="button" onclick="setDeviceView('mobile')" id="deviceBtn-mobile" 
+                        class="px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs font-semibold rounded-lg text-on-surface-variant hover:text-primary transition flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[15px]">smartphone</span>
+                    <span class="whitespace-nowrap">Мобильный (TG)</span>
+                </button>
+            </div>
 
             <!-- Language & City Selectors & PRO Terminal Button -->
             <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
@@ -492,49 +680,78 @@
     <!-- Main Container (Responsive for Mobile, Tablet and Large Desktop) -->
     <main class="max-w-[1600px] 2xl:max-w-[1760px] mx-auto w-full px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 lg:pt-8 flex-1">
 
-        <!-- TAB 1: RESTAURANTS CATALOG -->
-        <section id="tab-restaurants" class="space-y-5 sm:space-y-7">
+        <!-- TAB 1: RESTAURANTS CATALOG (Atelier Reserve Experience) -->
+        <section id="tab-restaurants" class="space-y-4 sm:space-y-6">
             
-            <!-- Desktop Hero Banner (hidden on mobile, visible on md+) -->
-            <div id="heroBanner" class="hidden md:block bg-gradient-to-br from-[#FFFFFF] via-[#FAF8F5] to-[#EFF3EC]/70 border border-[#E8E2D5] rounded-3xl p-8 lg:p-11 relative overflow-hidden shadow-2xl">
-                <div class="relative z-10 max-w-3xl space-y-3.5">
-                    <span class="inline-flex items-center gap-2 text-xs sm:text-sm uppercase tracking-widest font-bold px-3.5 py-1.5 bg-[#EFF3EC] text-[#4A5543] border border-[#B8C5B3]/60 rounded-full">
-                        <svg class="w-4 h-4 text-[#4A5543]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
-                        Гастрономический гид Казахстана
+            <!-- Editorial Welcome Section (Stitch 01_main_showcase) -->
+            <div class="flex flex-col gap-1 pt-1 sm:pt-2">
+                <div class="flex items-center justify-between">
+                    <span class="text-[10.5px] sm:text-xs uppercase tracking-widest text-[#c29b38] font-bold flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[15px] text-[#c29b38]">hotel_class</span>
+                        Atelier Privé · Вечерняя сессия
                     </span>
-                    <h2 class="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-serif font-bold text-[#1E1F20] tracking-wide leading-tight">
-                        Бронируйте лучшие столики <br/><span class="text-[#4A5543] font-serif">в ресторанах вашего города</span>
-                    </h2>
-                    <p class="text-xs sm:text-sm lg:text-base text-[#73706B] max-w-2xl leading-relaxed">
-                        Интерактивная карта залов, актуальное меню с ценами в тенге, быстрое бронирование за пару кликов без звонков и ожидания.
-                    </p>
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant text-[11px] font-semibold border border-outline-variant/40">
+                        <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+                        Столы открыты
+                    </span>
                 </div>
-                <div class="absolute -right-6 -bottom-10 opacity-10 text-[#4A5543]/10 pointer-events-none">
-                    <svg class="w-64 h-64 lg:w-80 lg:h-80" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C7.03 2 3 6.03 3 11h18c0-4.97-4.03-9-9-9zm-1-1.5h2v1h-2v-1zM2 13h20v2H2v-2zm3 4h14v1.5c0 .83-.67 1.5-1.5 1.5h-11C5.67 20 5 19.33 5 18.5V17z"/></svg>
+                <h1 class="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-primary tracking-tight">
+                    Добрый вечер<span id="guestGreetingName"></span>
+                </h1>
+                <p class="text-xs sm:text-sm text-on-surface-variant">
+                    Где вы желаете провести этот вечер? Интерактивный выбор столов и меню
+                </p>
+            </div>
+
+            <!-- Search & Curated Quick Filters Bar (Stitch 01_main_showcase) -->
+            <div class="space-y-3">
+                <div class="relative flex items-center bg-surface-container-lowest border border-[#E8E2D5] rounded-2xl shadow-[0_4px_20px_-2px_rgba(28,26,24,0.04)] px-3.5 sm:px-4 py-3 sm:py-3.5 group transition-all focus-within:border-primary">
+                    <span class="material-symbols-outlined text-outline text-[22px] mr-2.5 shrink-0 group-focus-within:text-primary transition-colors">search</span>
+                    <input type="text" id="searchInput" oninput="onSearchInput(this.value)" placeholder="Поиск ресторана, кухни, шеф-повара или адреса..." 
+                           class="w-full bg-transparent border-0 outline-none text-xs sm:text-sm lg:text-base text-on-surface placeholder:text-outline text-ellipsis" />
+                    <button type="button" aria-label="Фильтры" class="shrink-0 p-1 rounded-full text-on-surface-variant hover:text-primary transition-colors active:scale-95">
+                        <span class="material-symbols-outlined text-[20px]">tune</span>
+                    </button>
+                </div>
+
+                <!-- Curated Quick Filters Carousel -->
+                <div class="flex gap-2 overflow-x-auto hide-scrollbar py-1">
+                    <button onclick="filterCuisine('Все')" class="cuisine-btn active shrink-0 px-4 py-2 rounded-full bg-primary text-on-primary font-bold text-xs sm:text-sm shadow-sm transition-all active:scale-95 flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[15px]">favorite</span>
+                        <span>Все кухни</span>
+                    </button>
+                    <button onclick="filterCuisine('Казахская')" class="cuisine-btn shrink-0 px-4 py-2 rounded-full bg-surface-container-lowest text-on-surface border border-[#E8E2D5] text-xs sm:text-sm font-semibold shadow-[0_2px_8px_rgba(28,26,24,0.03)] hover:bg-surface-container-low transition-all active:scale-95">
+                        Казахская
+                    </button>
+                    <button onclick="filterCuisine('Итальянская')" class="cuisine-btn shrink-0 px-4 py-2 rounded-full bg-surface-container-lowest text-on-surface border border-[#E8E2D5] text-xs sm:text-sm font-semibold shadow-[0_2px_8px_rgba(28,26,24,0.03)] hover:bg-surface-container-low transition-all active:scale-95">
+                        Итальянская
+                    </button>
+                    <button onclick="filterCuisine('Восточная')" class="cuisine-btn shrink-0 px-4 py-2 rounded-full bg-surface-container-lowest text-on-surface border border-[#E8E2D5] text-xs sm:text-sm font-semibold shadow-[0_2px_8px_rgba(28,26,24,0.03)] hover:bg-surface-container-low transition-all active:scale-95">
+                        Восточная
+                    </button>
+                    <button onclick="filterCuisine('Европейская')" class="cuisine-btn shrink-0 px-4 py-2 rounded-full bg-surface-container-lowest text-on-surface border border-[#E8E2D5] text-xs sm:text-sm font-semibold shadow-[0_2px_8px_rgba(28,26,24,0.03)] hover:bg-surface-container-low transition-all active:scale-95">
+                        Европейская
+                    </button>
+                    <button onclick="filterCuisine('С сомелье')" class="cuisine-btn shrink-0 px-4 py-2 rounded-full bg-surface-container-lowest text-on-surface border border-[#E8E2D5] text-xs sm:text-sm font-semibold shadow-[0_2px_8px_rgba(28,26,24,0.03)] hover:bg-surface-container-low transition-all active:scale-95 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[15px] text-[#c29b38]">wine_bar</span>
+                        С сомелье
+                    </button>
                 </div>
             </div>
 
-            <!-- Search & Quick Filters -->
-            <div class="space-y-4">
-                <div class="flex flex-col md:flex-row gap-3 sm:gap-4 items-stretch md:items-center justify-between">
-                    <div class="relative flex-1 max-w-full md:max-w-lg lg:max-w-xl">
-                        <input type="text" id="searchInput" oninput="onSearchInput(this.value)" placeholder="Поиск ресторана, кухни, адреса..." 
-                               class="w-full bg-[#FFFFFF] border border-[#E8E2D5] rounded-2xl py-3 sm:py-3.5 lg:py-4 pl-11 sm:pl-12 pr-16 text-xs sm:text-sm lg:text-base placeholder-[#A6A29C] text-[#1E1F20] outline-none focus:border-[#4A5543] transition-all shadow-sm">
-                        <span class="absolute left-3.5 sm:left-4 top-3.5 sm:top-4 text-[#4A5543]">
-                            <svg class="w-4 h-4 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                        </span>
-                        <kbd class="hidden md:inline absolute right-3.5 top-1/2 -translate-y-1/2 text-[10px] font-mono px-2 py-0.5 rounded bg-white/5 border border-white/10 text-[#73706B]">/ Поиск</kbd>
-                    </div>
+            <!-- Choice of the Week / Hero Editorial (Injected dynamically) -->
+            <div id="heroFeaturedSection" class="w-full"></div>
 
-                    <!-- Cuisine Chips -->
-                    <div class="flex gap-2.5 overflow-x-auto hide-scrollbar pb-1 text-xs sm:text-sm lg:text-base">
-                        <button onclick="filterCuisine('Все')" class="cuisine-btn active px-4 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 rounded-full bg-[#4A5543] text-white font-bold whitespace-nowrap transition-all shadow-sm">Все</button>
-                        <button onclick="filterCuisine('Казахская')" class="cuisine-btn px-4 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 rounded-full bg-[#FFFFFF] text-[#73706B] border border-[#E8E2D5] hover:text-[#4A5543] hover:border-[#4A5543]/40 font-medium whitespace-nowrap transition-all">Казахская</button>
-                        <button onclick="filterCuisine('Итальянская')" class="cuisine-btn px-4 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 rounded-full bg-[#FFFFFF] text-[#73706B] border border-[#E8E2D5] hover:text-[#4A5543] hover:border-[#4A5543]/40 font-medium whitespace-nowrap transition-all">Итальянская</button>
-                        <button onclick="filterCuisine('Восточная')" class="cuisine-btn px-4 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 rounded-full bg-[#FFFFFF] text-[#73706B] border border-[#E8E2D5] hover:text-[#4A5543] hover:border-[#4A5543]/40 font-medium whitespace-nowrap transition-all">Восточная</button>
-                        <button onclick="filterCuisine('Европейская')" class="cuisine-btn px-4 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 rounded-full bg-[#FFFFFF] text-[#73706B] border border-[#E8E2D5] hover:text-[#4A5543] hover:border-[#4A5543]/40 font-medium whitespace-nowrap transition-all">Европейская</button>
-                    </div>
+            <!-- Curated Section Heading -->
+            <div class="flex items-center justify-between pt-1">
+                <div>
+                    <h3 class="font-serif font-bold text-lg sm:text-xl lg:text-2xl text-primary flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[#c29b38] text-[20px]">verified</span>
+                        <span>Рекомендовано консьержем</span>
+                    </h3>
+                    <p class="text-xs sm:text-sm text-on-surface-variant">Проверенные заведения со свободными слотами на вечер</p>
                 </div>
+                <span id="restaurantsCountBadge" class="text-xs sm:text-sm font-bold text-[#c29b38] px-3 py-1 rounded-full bg-surface-container-low border border-[#E8E2D5]">Все (0)</span>
             </div>
 
             <!-- Restaurants Grid Feed: 1 col on mobile, 2 on tablet, 3 on desktop, 4 on wide desktop -->
@@ -542,6 +759,28 @@
                 <!-- Injected via JavaScript -->
                 <div class="col-span-full text-center py-12 text-[#A6A29C] text-sm animate-pulse">Загрузка ресторанов...</div>
             </div>
+
+            <!-- Private Concierge Callout Banner (Stitch 01_main_showcase) -->
+            <section class="bg-primary text-on-primary rounded-2xl p-5 sm:p-7 shadow-lg relative overflow-hidden my-4">
+                <div class="absolute -right-8 -bottom-8 w-48 h-48 rounded-full bg-[#c29b38]/15 blur-3xl pointer-events-none"></div>
+                <div class="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div class="space-y-1.5 max-w-xl">
+                        <div class="flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full bg-primary-container flex items-center justify-center text-[#fed269] text-xs">★</span>
+                            <span class="text-[11px] uppercase tracking-widest text-[#d5e7d9] font-bold">Privilege Atelier</span>
+                        </div>
+                        <h4 class="font-serif font-bold text-lg sm:text-xl text-white">Не нашли подходящее время?</h4>
+                        <p class="text-xs sm:text-sm text-white/80 leading-relaxed">
+                            Персональный поиск стола в закрытых ресторанах и бронирование шеф-тейблов через Telegram-консьержа RestoKZ.
+                        </p>
+                    </div>
+                    <a href="https://t.me/restokz_support" target="_blank" class="shrink-0 w-full sm:w-auto px-6 py-3 rounded-full bg-surface-container-lowest hover:bg-surface-container text-primary font-bold text-xs sm:text-sm shadow-md transition-all active:scale-95 flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-[18px] text-[#c29b38]">forum</span>
+                        <span>Связаться с консьержем</span>
+                    </a>
+                </div>
+            </section>
+
         </section>
 
         <!-- TAB 2: MY BOOKINGS -->
@@ -583,47 +822,85 @@
 
     </main>
 
-    <!-- RESTAURANT DETAILS MODAL -->
-    <div id="restaurantModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex flex-col justify-end md:justify-center md:items-center md:p-6">
-        <div class="bg-[#FFFFFF] border-t md:border border-[#E8E2D5] md:border-[#c49c6d]/40 rounded-t-3xl md:rounded-3xl max-h-[92vh] md:max-h-[88vh] flex flex-col overflow-hidden max-w-md md:max-w-3xl lg:max-w-4xl mx-auto w-full shadow-2xl relative">
+    <!-- RESTAURANT DETAILS MODAL (Atelier Reserve 02 & 03 Integration) -->
+    <div id="restaurantModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex flex-col justify-end md:justify-center md:items-center md:p-6 transition-all duration-300">
+        <div class="bg-surface-container-lowest border-t md:border border-[#E8E2D5] md:border-[#c29b38]/40 rounded-t-[32px] md:rounded-3xl max-h-[94vh] md:max-h-[90vh] flex flex-col overflow-hidden max-w-md md:max-w-3xl lg:max-w-4xl mx-auto w-full shadow-2xl relative">
             
             <!-- Mobile Swipe / Drag Handle -->
-            <div class="md:hidden flex justify-center pt-2.5 pb-1 bg-[#FFFFFF] cursor-pointer" onclick="closeRestaurantModal()">
-                <div class="w-12 h-1 bg-white/20 rounded-full"></div>
+            <div class="md:hidden flex justify-center pt-2.5 pb-1 bg-surface-container-lowest cursor-pointer" onclick="closeRestaurantModal()">
+                <div class="w-12 h-1 bg-outline/40 rounded-full"></div>
             </div>
 
-            <!-- Modal Header / Cover -->
-            <div class="relative h-40 sm:h-52 md:h-60 bg-[#F3EFE8] flex-shrink-0">
-                <img id="modalCover" src="" class="w-full h-full object-cover" alt="Restaurant Cover">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/60"></div>
+            <!-- Modal Header / Cover Photo with Atelier Styling -->
+            <div class="relative h-44 sm:h-56 md:h-64 bg-surface-container flex-shrink-0 overflow-hidden">
+                <img id="modalCover" src="" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105" alt="Restaurant Cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-primary/95 via-primary/40 to-black/30"></div>
                 
-                <button onclick="closeRestaurantModal()" class="absolute top-3.5 right-3.5 px-3 py-1.5 bg-black/50 hover:bg-black/70 text-white rounded-xl flex items-center gap-1.5 text-xs font-semibold backdrop-blur-md border border-white/20 transition-colors shadow-lg" title="Закрыть (Esc)">
-                    <span>✕</span>
-                    <kbd class="hidden md:inline text-[10px] font-mono text-[#73706B]">Esc</kbd>
-                </button>
+                <!-- Floating Controls -->
+                <div class="absolute top-3 inset-x-3 sm:top-4 sm:inset-x-4 flex items-center justify-between">
+                    <button onclick="closeRestaurantModal()" class="w-9 h-9 rounded-full bg-surface/90 backdrop-blur-md flex items-center justify-center text-primary shadow-sm active:scale-95 transition-transform" title="Назад / Закрыть (Esc)">
+                        <span class="material-symbols-outlined text-[19px]">arrow_back_ios_new</span>
+                    </button>
+                    
+                    <div class="flex items-center gap-2">
+                        <span id="modalAccoladeBadge" class="hidden sm:inline-flex items-center gap-1 px-3 py-1 rounded-full bg-secondary-container/90 backdrop-blur-md text-on-secondary-fixed text-xs font-bold shadow-sm">
+                            <span class="material-symbols-outlined text-[14px]">hotel_class</span>
+                            <span>Гид Ultima 2024</span>
+                        </span>
+                        <button onclick="toggleModalBookmark(this)" class="w-9 h-9 rounded-full bg-surface/90 backdrop-blur-md flex items-center justify-center text-primary shadow-sm active:scale-95 transition-transform" title="Сохранить">
+                            <span class="material-symbols-outlined text-[19px]">bookmark</span>
+                        </button>
+                    </div>
+                </div>
 
-                <div class="absolute bottom-3.5 left-5 right-5">
-                    <span id="modalCuisineBadge" class="text-[11px] uppercase font-bold tracking-wider px-2.5 py-0.5 bg-[#4A5543] text-white border border-[#B8C5B3]/40 rounded-md">Итальянская</span>
-                    <h2 id="modalTitle" class="text-xl sm:text-2xl lg:text-3xl font-serif font-bold text-white mt-1.5 drop-shadow-md">La Terrazza</h2>
+                <!-- Bottom Header Information -->
+                <div class="absolute bottom-3.5 left-4 right-4 sm:bottom-4 sm:left-6 sm:right-6 text-on-primary">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span id="modalCuisineBadge" class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 bg-primary/90 text-primary-fixed-dim border border-primary-fixed/20 rounded-md">Итальянская</span>
+                        <span class="text-[10px] uppercase tracking-wider text-[#ffdf99] font-bold">Residency</span>
+                    </div>
+                    <h2 id="modalTitle" class="text-xl sm:text-2xl lg:text-3xl font-serif font-bold text-white drop-shadow-md leading-tight">La Terrazza</h2>
                     <p id="modalAddress" class="text-xs sm:text-sm text-white/85 flex items-center gap-1.5 mt-0.5">
-                        <svg class="w-3.5 h-3.5 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                        ул. Сатпаева 29
+                        <span class="material-symbols-outlined text-[16px] text-[#fed269]">location_on</span>
+                        <span>ул. Сатпаева 29</span>
                     </p>
                 </div>
             </div>
 
+            <!-- Key Facts Chips Row (Stitch 02_restaurant_card) -->
+            <div class="grid grid-cols-3 gap-2 px-4 py-2.5 bg-surface-container-low border-b border-[#E8E2D5] text-center text-xs">
+                <div class="p-2 rounded-xl bg-surface-container-lowest flex flex-col items-center justify-center shadow-xs">
+                    <div class="flex items-center gap-1 text-secondary font-bold">
+                        <span class="material-symbols-outlined text-[15px]">hotel_class</span>
+                        <span id="modalRatingValue">4.9</span>
+                    </div>
+                    <span class="text-[10px] text-on-surface-variant mt-0.5">Рейтинг гостей</span>
+                </div>
+                <div class="p-2 rounded-xl bg-surface-container-lowest flex flex-col items-center justify-center shadow-xs">
+                    <span id="modalCheckValue" class="font-bold text-primary font-serif text-xs sm:text-sm">~12 000 ₸</span>
+                    <span class="text-[10px] text-on-surface-variant mt-0.5">Средний чек</span>
+                </div>
+                <div class="p-2 rounded-xl bg-surface-container-lowest flex flex-col items-center justify-center shadow-xs">
+                    <div class="flex items-center gap-1 text-primary font-bold">
+                        <span class="material-symbols-outlined text-[15px]">schedule</span>
+                        <span id="modalHoursShort" class="truncate">12:00-00:00</span>
+                    </div>
+                    <span class="text-[10px] text-on-surface-variant mt-0.5">Режим работы</span>
+                </div>
+            </div>
+
             <!-- Tabs Switcher inside Modal -->
-            <div class="grid grid-cols-3 border-b border-[#E8E2D5] bg-[#FFFFFF] px-4 pt-1">
-                <button id="modalTabBtn-book" onclick="switchModalTab('book')" class="py-3 text-xs sm:text-sm font-bold border-b-2 border-[#c49c6d] text-[#4A5543] text-center whitespace-nowrap transition-all flex items-center justify-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <div class="grid grid-cols-3 border-b border-[#E8E2D5] bg-surface-container-lowest px-4 pt-1">
+                <button id="modalTabBtn-book" onclick="switchModalTab('book')" class="py-3 text-xs sm:text-sm font-bold border-b-2 border-primary text-primary text-center whitespace-nowrap transition-all flex items-center justify-center gap-1.5">
+                    <span class="material-symbols-outlined text-[17px]">calendar_month</span>
                     <span>Бронь стола</span>
                 </button>
-                <button id="modalTabBtn-menu" onclick="switchModalTab('menu')" class="py-3 text-xs sm:text-sm font-bold border-b-2 border-transparent text-[#73706B] text-center whitespace-nowrap hover:text-[#4A5543] transition-all flex items-center justify-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                <button id="modalTabBtn-menu" onclick="switchModalTab('menu')" class="py-3 text-xs sm:text-sm font-bold border-b-2 border-transparent text-on-surface-variant text-center whitespace-nowrap hover:text-primary transition-all flex items-center justify-center gap-1.5">
+                    <span class="material-symbols-outlined text-[17px]">restaurant_menu</span>
                     <span>Меню</span>
                 </button>
-                <button id="modalTabBtn-about" onclick="switchModalTab('about')" class="py-3 text-xs sm:text-sm font-bold border-b-2 border-transparent text-[#73706B] text-center whitespace-nowrap hover:text-[#4A5543] transition-all flex items-center justify-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <button id="modalTabBtn-about" onclick="switchModalTab('about')" class="py-3 text-xs sm:text-sm font-bold border-b-2 border-transparent text-on-surface-variant text-center whitespace-nowrap hover:text-primary transition-all flex items-center justify-center gap-1.5">
+                    <span class="material-symbols-outlined text-[17px]">info</span>
                     <span>О заведении</span>
                 </button>
             </div>
@@ -631,170 +908,407 @@
             <!-- Modal Body Scrollable -->
             <div class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 hide-scrollbar">
                 
-                <!-- 1. BOOKING SUB-VIEW -->
+                <!-- 1. BOOKING SUB-VIEW (Stitch 03_booking_parameters) -->
                 <div id="modalSubTab-book" class="space-y-5">
                     
-                    <!-- Date Picker -->
-                    <div>
-                        <label class="text-xs sm:text-sm font-semibold text-[#1E1F20] block mb-2">1. Выберите дату</label>
-                        <div class="grid grid-cols-3 gap-2 sm:gap-3">
-                            <button type="button" onclick="selectDateQuick('today')" id="dateBtn-today" class="date-quick-btn py-2.5 sm:py-3 rounded-xl bg-[#4A5543] text-white text-xs sm:text-sm font-bold transition-all shadow-sm">Сегодня</button>
-                            <button type="button" onclick="selectDateQuick('tomorrow')" id="dateBtn-tomorrow" class="date-quick-btn py-2.5 sm:py-3 rounded-xl bg-[#F3EFE8] text-[#73706B] border border-[#E8E2D5] text-xs sm:text-sm font-semibold transition-all hover:text-[#4A5543]">Завтра</button>
-                            <input type="date" id="bookingDateInput" onchange="onCustomDateChange(this.value)" class="w-full bg-[#F3EFE8] border border-[#E8E2D5] text-xs sm:text-sm text-[#4A5543] font-semibold rounded-xl px-2.5 py-2 sm:py-2.5 outline-none focus:border-[#4A5543] cursor-pointer text-center">
+                    <!-- Step 1: Number of Guests (Pills & Stepper) -->
+                    <div class="space-y-2">
+                        <div class="flex items-baseline justify-between">
+                            <span class="text-xs sm:text-sm font-bold text-primary tracking-wide flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                                1. Количество персон
+                            </span>
+                            <span class="text-[11px] text-on-surface-variant uppercase tracking-wider">Зал до 12 гостей</span>
+                        </div>
+                        <div class="grid grid-cols-5 gap-1.5 sm:gap-2">
+                            <button type="button" onclick="selectGuestPill(1)" class="guest-pill py-2 sm:py-2.5 rounded-xl text-xs font-semibold flex flex-col items-center justify-center transition-all bg-surface-container-low text-on-surface hover:bg-surface-container active:scale-95" data-guests="1">
+                                <span class="font-bold text-sm">1</span>
+                                <span class="text-[9px] opacity-75">гость</span>
+                            </button>
+                            <button type="button" onclick="selectGuestPill(2)" class="guest-pill active py-2 sm:py-2.5 rounded-xl text-xs font-semibold flex flex-col items-center justify-center transition-all bg-primary text-on-primary shadow-sm active:scale-95" data-guests="2">
+                                <span class="font-bold text-sm">2</span>
+                                <span class="text-[9px] opacity-90">персоны</span>
+                            </button>
+                            <button type="button" onclick="selectGuestPill(3)" class="guest-pill py-2 sm:py-2.5 rounded-xl text-xs font-semibold flex flex-col items-center justify-center transition-all bg-surface-container-low text-on-surface hover:bg-surface-container active:scale-95" data-guests="3">
+                                <span class="font-bold text-sm">3</span>
+                                <span class="text-[9px] opacity-75">гостя</span>
+                            </button>
+                            <button type="button" onclick="selectGuestPill(4)" class="guest-pill py-2 sm:py-2.5 rounded-xl text-xs font-semibold flex flex-col items-center justify-center transition-all bg-surface-container-low text-on-surface hover:bg-surface-container active:scale-95" data-guests="4">
+                                <span class="font-bold text-sm">4</span>
+                                <span class="text-[9px] opacity-75">гостя</span>
+                            </button>
+                            <button type="button" onclick="selectGuestPill(6)" class="guest-pill py-2 sm:py-2.5 rounded-xl text-xs font-semibold flex flex-col items-center justify-center transition-all bg-surface-container-low text-on-surface hover:bg-surface-container active:scale-95" data-guests="6">
+                                <span class="font-bold text-sm">5+</span>
+                                <span class="text-[9px] opacity-75">банкет</span>
+                            </button>
+                        </div>
+                        
+                        <!-- Manual Stepper backup for precise party sizes -->
+                        <div class="flex items-center justify-between bg-surface-container-low rounded-xl px-3 py-2 text-xs">
+                            <span class="text-on-surface-variant">Точное число гостей:</span>
+                            <div class="flex items-center gap-3">
+                                <button type="button" onclick="changeGuestCount(-1)" class="w-7 h-7 rounded-lg bg-surface-container-lowest text-primary border border-[#E8E2D5] font-bold flex items-center justify-center transition-colors active:scale-95">-</button>
+                                <span id="guestsCountValue" class="text-sm font-bold text-primary w-6 text-center font-serif">2</span>
+                                <button type="button" onclick="changeGuestCount(1)" class="w-7 h-7 rounded-lg bg-surface-container-lowest text-primary border border-[#E8E2D5] font-bold flex items-center justify-center transition-colors active:scale-95">+</button>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Time Selection (Full Day / Evening / Custom) -->
-                    <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <label class="text-xs sm:text-sm font-semibold text-[#1E1F20]">2. Время визита</label>
-                            <div class="flex items-center gap-1.5 bg-[#c49c6d]/15 border border-[#c49c6d]/30 px-3 py-0.5 rounded-lg">
-                                <span class="text-[11px] text-[#73706B]">Выбрано:</span>
-                                <span class="text-xs sm:text-sm font-serif font-bold text-[#4A5543]" id="selectedTimeDisplay">19:00</span>
+                    <!-- Step 2: Date Selector (Date Strip Scrollable) -->
+                    <div class="space-y-2">
+                        <div class="flex items-baseline justify-between">
+                            <span class="text-xs sm:text-sm font-bold text-primary tracking-wide flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                                2. Дата визита
+                            </span>
+                            <label for="bookingDateInput" class="text-xs text-secondary font-bold flex items-center gap-1 cursor-pointer hover:underline">
+                                <span>Календарь</span>
+                                <span class="material-symbols-outlined text-[16px]">calendar_month</span>
+                            </label>
+                        </div>
+                        
+                        <!-- Horizontal Scrollable Date Strip -->
+                        <div id="dateStripContainer" class="flex gap-2 overflow-x-auto hide-scrollbar pb-1">
+                            <!-- Injected dynamically via renderDateStrip() -->
+                        </div>
+                        <input type="date" id="bookingDateInput" onchange="onCustomDateChange(this.value)" class="hidden">
+                    </div>
+
+                    <!-- Step 3: Time Selection (Stitch Time Slot Selector) -->
+                    <div class="space-y-2.5">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs sm:text-sm font-bold text-primary tracking-wide flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                                3. Время визита
+                            </span>
+                            <div class="flex items-center gap-1.5 bg-secondary-container/30 border border-secondary/30 px-3 py-0.5 rounded-full">
+                                <span class="text-[11px] text-on-surface-variant">Выбрано:</span>
+                                <span class="text-xs sm:text-sm font-bold text-primary font-serif" id="selectedTimeDisplay">19:00</span>
                             </div>
                         </div>
 
-                        <div class="bg-[#F3EFE8] border border-[#E8E2D5] rounded-2xl p-4 space-y-4">
+                        <div class="bg-surface-container-low border border-[#E8E2D5] rounded-2xl p-3.5 sm:p-4 space-y-3.5">
                             <!-- Period Toggle (Day vs Evening vs Custom) -->
-                            <div class="grid grid-cols-3 gap-2 p-1.5 bg-[#FFFFFF] rounded-2xl border border-[#E8E2D5]">
+                            <div class="grid grid-cols-3 gap-1.5 p-1 bg-surface-container-lowest rounded-xl border border-[#E8E2D5]">
                                 <button type="button" onclick="setTimePeriod('day')" id="periodBtn-day" 
-                                        class="period-tab-btn min-h-[54px] py-2.5 px-2 rounded-xl flex flex-col items-center justify-center text-center transition-all text-[#73706B] hover:text-[#4A5543]">
-                                    <span class="block text-xs sm:text-sm font-bold leading-snug">☀️ Обед</span>
-                                    <span class="block text-[10px] sm:text-[11px] opacity-80 leading-tight mt-0.5">11:00 – 16:30</span>
+                                        class="period-tab-btn min-h-[48px] py-1.5 px-2 rounded-lg flex flex-col items-center justify-center text-center transition-all text-on-surface-variant hover:text-primary">
+                                    <span class="block text-xs font-bold leading-snug">☀️ Обед</span>
+                                    <span class="block text-[10px] opacity-75 leading-tight">11:00 – 16:30</span>
                                 </button>
                                 <button type="button" onclick="setTimePeriod('evening')" id="periodBtn-evening" 
-                                        class="period-tab-btn min-h-[54px] py-2.5 px-2 rounded-xl flex flex-col items-center justify-center text-center bg-[#4A5543] text-white transition-all shadow-sm">
-                                    <span class="block text-xs sm:text-sm font-bold leading-snug">🌙 Ужин</span>
-                                    <span class="block text-[10px] sm:text-[11px] opacity-85 leading-tight mt-0.5">17:00 – 23:00</span>
+                                        class="period-tab-btn min-h-[48px] py-1.5 px-2 rounded-lg flex flex-col items-center justify-center text-center bg-primary text-on-primary transition-all shadow-sm">
+                                    <span class="block text-xs font-bold leading-snug">🌙 Ужин</span>
+                                    <span class="block text-[10px] opacity-85 leading-tight">17:00 – 23:00</span>
                                 </button>
                                 <button type="button" onclick="setTimePeriod('custom')" id="periodBtn-custom" 
-                                        class="period-tab-btn min-h-[54px] py-2.5 px-2 rounded-xl flex flex-col items-center justify-center text-center transition-all text-[#73706B] hover:text-[#4A5543]">
-                                    <span class="block text-xs sm:text-sm font-bold leading-snug">⏱️ Своё</span>
-                                    <span class="block text-[10px] sm:text-[11px] opacity-80 leading-tight mt-0.5">Точное время</span>
+                                        class="period-tab-btn min-h-[48px] py-1.5 px-2 rounded-lg flex flex-col items-center justify-center text-center transition-all text-on-surface-variant hover:text-primary">
+                                    <span class="block text-xs font-bold leading-snug">⏱️ Своё</span>
+                                    <span class="block text-[10px] opacity-75 leading-tight">Точное время</span>
                                 </button>
                             </div>
 
-                            <!-- Slots Grid (12 items = 3 neat rows of 4) -->
-                            <div id="timeSlotsContainer" class="grid grid-cols-4 gap-2 sm:gap-2.5 text-xs sm:text-sm">
+                            <!-- Slots Grid -->
+                            <div id="timeSlotsContainer" class="grid grid-cols-4 gap-2 text-xs">
                                 <!-- Injected dynamically via renderTimeSlots() -->
                             </div>
 
-                            <!-- Custom Exact Time Input (Shown when 'custom' is active) -->
-                            <div id="customTimeWrapper" class="hidden space-y-2.5 pt-1">
-                                <div class="flex items-center justify-between bg-[#FFFFFF] border border-[#E8E2D5] rounded-xl px-4 py-3">
+                            <!-- Custom Exact Time Input -->
+                            <div id="customTimeWrapper" class="hidden space-y-2 pt-1">
+                                <div class="flex items-center justify-between bg-surface-container-lowest border border-[#E8E2D5] rounded-xl px-3.5 py-2.5">
                                     <div>
-                                        <span class="text-xs sm:text-sm font-semibold text-[#1E1F20] block">Укажите точное время</span>
-                                        <span class="text-[10px] sm:text-xs text-[#73706B]">Любой час и минуты визита</span>
+                                        <span class="text-xs font-semibold text-primary block">Укажите точное время</span>
+                                        <span class="text-[10px] text-on-surface-variant">Любые часы и минуты визита</span>
                                     </div>
                                     <input type="time" id="customTimeInput" onchange="onCustomTimeChange(this.value)" 
                                            min="09:00" max="23:59" step="300"
-                                           class="bg-[#F3EFE8] border border-[#c49c6d]/50 text-sm text-[#4A5543] font-bold rounded-xl px-3 py-1.5 outline-none focus:border-[#4A5543] cursor-pointer">
-                                </div>
-                                <div class="flex items-center gap-1.5 flex-wrap">
-                                    <span class="text-[11px] text-[#73706B] mr-1">Быстрый выбор:</span>
-                                    <button type="button" onclick="pickCustomQuick('10:00')" class="px-2.5 py-1 rounded-lg bg-[#FFFFFF] border border-[#E8E2D5] text-xs text-[#4A5543] hover:border-[#c49c6d]">10:00</button>
-                                    <button type="button" onclick="pickCustomQuick('10:30')" class="px-2.5 py-1 rounded-lg bg-[#FFFFFF] border border-[#E8E2D5] text-xs text-[#4A5543] hover:border-[#c49c6d]">10:30</button>
-                                    <button type="button" onclick="pickCustomQuick('17:15')" class="px-2.5 py-1 rounded-lg bg-[#FFFFFF] border border-[#E8E2D5] text-xs text-[#4A5543] hover:border-[#c49c6d]">17:15</button>
-                                    <button type="button" onclick="pickCustomQuick('22:30')" class="px-2.5 py-1 rounded-lg bg-[#FFFFFF] border border-[#E8E2D5] text-xs text-[#4A5543] hover:border-[#c49c6d]">22:30</button>
-                                    <button type="button" onclick="pickCustomQuick('23:30')" class="px-2.5 py-1 rounded-lg bg-[#FFFFFF] border border-[#E8E2D5] text-xs text-[#4A5543] hover:border-[#c49c6d]">23:30</button>
+                                           class="bg-surface-container border border-[#c29b38]/50 text-xs text-primary font-bold rounded-lg px-2.5 py-1 outline-none focus:border-primary cursor-pointer">
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Guests Count -->
-                    <div>
-                        <label class="text-xs sm:text-sm font-semibold text-[#1E1F20] block mb-1.5">3. Количество гостей</label>
-                        <div class="flex items-center justify-between bg-[#F3EFE8] border border-[#E8E2D5] rounded-xl p-2.5 sm:p-3">
-                            <span class="text-xs sm:text-sm text-[#73706B] pl-2">Персон за столиком:</span>
-                            <div class="flex items-center gap-3">
-                                <button type="button" onclick="changeGuestCount(-1)" class="w-8 h-8 rounded-lg bg-[#FFFFFF] hover:bg-[#F3EFE8] text-[#1E1F20] border border-[#E8E2D5] font-bold flex items-center justify-center transition-colors">-</button>
-                                <span id="guestsCountValue" class="text-base sm:text-lg font-serif font-bold text-[#4A5543] w-6 text-center">2</span>
-                                <button type="button" onclick="changeGuestCount(1)" class="w-8 h-8 rounded-lg bg-[#FFFFFF] hover:bg-[#F3EFE8] text-[#1E1F20] border border-[#E8E2D5] font-bold flex items-center justify-center transition-colors">+</button>
-                            </div>
+                    <!-- Step 4: Occasion & Preferences (Stitch 03_booking_parameters) -->
+                    <div class="space-y-2">
+                        <div class="flex items-baseline justify-between">
+                            <span class="text-xs sm:text-sm font-bold text-primary tracking-wide flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                                4. Повод и предпочтения
+                            </span>
+                            <span class="text-[11px] text-on-surface-variant">Пожелания залу</span>
+                        </div>
+                        <div class="flex flex-wrap gap-1.5">
+                            <button type="button" onclick="selectOccasionPill(this, 'Романтический ужин')" class="occasion-pill px-3 py-1.5 rounded-full text-xs font-semibold bg-surface-container-low text-on-surface hover:bg-surface-container transition-all cursor-pointer">
+                                Романтический ужин
+                            </button>
+                            <button type="button" onclick="selectOccasionPill(this, 'Деловая встреча')" class="occasion-pill px-3 py-1.5 rounded-full text-xs font-semibold bg-surface-container-low text-on-surface hover:bg-surface-container transition-all cursor-pointer">
+                                Деловая встреча
+                            </button>
+                            <button type="button" onclick="selectOccasionPill(this, 'День рождения')" class="occasion-pill px-3 py-1.5 rounded-full text-xs font-semibold bg-surface-container-low text-on-surface hover:bg-surface-container transition-all cursor-pointer">
+                                День рождения
+                            </button>
+                            <button type="button" onclick="selectOccasionPill(this, 'Семейный вечер')" class="occasion-pill px-3 py-1.5 rounded-full text-xs font-semibold bg-surface-container-low text-on-surface hover:bg-surface-container transition-all cursor-pointer">
+                                Семейный вечер
+                            </button>
+                            <button type="button" onclick="selectOccasionPill(this, 'Тихий угол')" class="occasion-pill px-3 py-1.5 rounded-full text-xs font-semibold bg-surface-container-low text-on-surface hover:bg-surface-container transition-all cursor-pointer">
+                                Тихий угол
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Interactive Hall Scheme -->
-                    <div>
-                        <div class="flex items-center justify-between mb-1.5">
-                            <label class="text-xs sm:text-sm font-semibold text-[#1E1F20]">4. Выберите столик на схеме зала</label>
-                            <span class="text-xs text-[#4A5543] font-semibold">Нажмите на стол</span>
-                        </div>
-
-                        <!-- Legend -->
-                        <div class="flex items-center justify-center gap-4 text-xs text-[#73706B] mb-2.5">
-                            <div class="flex items-center gap-1.5">
-                                <div class="w-2.5 h-2.5 rounded-full bg-emerald-500/70"></div>
-                                <span>Свободен</span>
-                            </div>
-                            <div class="flex items-center gap-1.5">
-                                <div class="w-2.5 h-2.5 rounded-full bg-[#332a22]"></div>
-                                <span>Занят</span>
-                            </div>
-                            <div class="flex items-center gap-1.5">
-                                <div class="w-2.5 h-2.5 rounded-full bg-[#c49c6d]"></div>
-                                <span>Выбран</span>
-                            </div>
-                        </div>
-
-                        <!-- Hall Grid Map Container -->
-                        <div class="bg-[#F3EFE8] border border-[#E8E2D5] rounded-2xl p-4 sm:p-5 min-h-[240px] relative flex flex-col justify-between shadow-inner">
-                            <div class="text-[11px] text-[#73706B] text-center uppercase tracking-wider font-semibold border-b border-[#E8E2D5] pb-2 mb-3">
-                                🪟 Панорамные окна / Вид на город
-                            </div>
-
-                            <div id="hallTablesGrid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 justify-items-center items-center py-2">
-                                <!-- Tables injected dynamically -->
-                                <div class="col-span-full text-center text-xs text-[#73706B]">Загрузка столиков...</div>
-                            </div>
-
-                            <div class="text-[11px] text-[#73706B] text-center uppercase tracking-wider font-semibold border-t border-[#E8E2D5] pt-2 mt-3">
-                                🚪 Вход в заведение • Барная стойка
-                            </div>
-                        </div>
-
-                        <!-- Selected Table Info Banner -->
-                        <div id="selectedTableBanner" class="mt-2.5 p-3.5 bg-[#F3EFE8] border border-[#E8E2D5] rounded-xl text-xs sm:text-sm text-[#4A5543] flex items-center justify-between">
-                            <div>
-                                <span class="font-bold text-[#1E1F20]" id="selectedTableTitle">Столик не выбран</span>
-                                <p class="text-[11px] text-[#73706B]" id="selectedTableDesc">Нажмите на свободный столик выше</p>
-                            </div>
-                            <span class="text-xl">🪑</span>
-                        </div>
-                    </div>
-
-                    <!-- Contact Details Form -->
+                    <!-- Step 5: Table Selection on Interactive Floor Plan Map (Stitch 04) -->
                     <div class="space-y-3 pt-3 border-t border-[#E8E2D5]">
-                        <label class="text-xs sm:text-sm font-semibold text-[#1E1F20] block">5. Контактные данные гостя</label>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs sm:text-sm font-bold text-primary tracking-wide flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                                5. Интерактивная карта столов
+                            </span>
+                            <span id="tablesAvailableCountBadge" class="px-2.5 py-0.5 rounded-full bg-primary-fixed/60 text-on-primary-fixed font-label-sm text-[10px] font-bold">
+                                4 свободно
+                            </span>
+                        </div>
+
+                        <!-- Zone Selector Pills (Stitch 04) -->
+                        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar -mx-1 px-1 py-1">
+                            <button type="button" onclick="filterTableZone('all', this)" id="zoneFilter-all" class="table-zone-chip active shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold shadow-xs transition-all active:scale-95 flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-secondary-fixed"></span>
+                                <span>Все зоны</span>
+                            </button>
+                            <button type="button" onclick="filterTableZone('window', this)" id="zoneFilter-window" class="table-zone-chip shrink-0 px-3 py-1.5 rounded-full bg-surface-container text-on-surface text-xs font-semibold hover:bg-surface-container-high transition-all active:scale-95">
+                                🪟 У окна (Панорама)
+                            </button>
+                            <button type="button" onclick="filterTableZone('hall', this)" id="zoneFilter-hall" class="table-zone-chip shrink-0 px-3 py-1.5 rounded-full bg-surface-container text-on-surface text-xs font-semibold hover:bg-surface-container-high transition-all active:scale-95">
+                                🍽️ Главный зал
+                            </button>
+                            <button type="button" onclick="filterTableZone('vip', this)" id="zoneFilter-vip" class="table-zone-chip shrink-0 px-3 py-1.5 rounded-full bg-surface-container text-on-surface text-xs font-semibold hover:bg-surface-container-high transition-all active:scale-95">
+                                👑 VIP-лаунж
+                            </button>
+                            <button type="button" onclick="filterTableZone('terrace', this)" id="zoneFilter-terrace" class="table-zone-chip shrink-0 px-3 py-1.5 rounded-full bg-surface-container text-on-surface text-xs font-semibold hover:bg-surface-container-high transition-all active:scale-95">
+                                🌿 Терраса
+                            </button>
+                        </div>
+
+                        <!-- Legend (Stitch 04) -->
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 bg-surface-container-low p-2 rounded-xl text-[10.5px] border border-[#E8E2D5] shadow-xs">
+                            <div class="flex items-center gap-1.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-primary-container shrink-0"></span>
+                                <span class="text-on-surface-variant font-medium">Свободен</span>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-secondary-fixed-dim ring-2 ring-secondary/30 shrink-0"></span>
+                                <span class="text-on-surface font-bold">Выбран вами</span>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-outline-variant/60 shrink-0"></span>
+                                <span class="text-on-surface-variant/70">Занят</span>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-secondary shrink-0"></span>
+                                <span class="text-secondary font-semibold">VIP / Депозит</span>
+                            </div>
+                        </div>
+
+                        <!-- Plan View Header & Mode Toggle -->
+                        <div class="flex items-center justify-between text-xs text-on-surface-variant px-0.5">
+                            <span class="flex items-center gap-1 font-medium">
+                                <span class="material-symbols-outlined text-[15px] text-secondary">apartment</span>
+                                <span id="floorInfoText">2 этаж • Схема рассадки</span>
+                            </span>
+                            <div class="flex items-center bg-surface-container rounded-lg p-0.5 border border-[#E8E2D5]">
+                                <button type="button" onclick="setFloorPlanView('map')" id="viewBtn-map" class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-primary text-on-primary transition shadow-xs flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-[12px]">map</span> Схема
+                                </button>
+                                <button type="button" onclick="setFloorPlanView('grid')" id="viewBtn-grid" class="px-2 py-0.5 rounded-md text-[10px] font-semibold text-on-surface-variant hover:text-primary transition flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-[12px]">grid_view</span> Сетка
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Interactive Floor Plan Canvas Container (Stitch 04) -->
+                        <div class="relative w-full rounded-2xl bg-surface-container-lowest border border-[#E8E2D5] shadow-md overflow-hidden p-2.5 sm:p-3 flex flex-col justify-between select-none">
+                            <!-- Top Panorama Window Indicator -->
+                            <div class="w-full flex flex-col items-center gap-1 pb-1">
+                                <div class="w-11/12 h-1 bg-gradient-to-r from-transparent via-secondary-fixed-dim to-transparent rounded-full opacity-80"></div>
+                                <div class="flex items-center gap-1 text-on-surface-variant/80 font-label-sm text-[9px] uppercase tracking-widest font-semibold">
+                                    <span class="material-symbols-outlined text-[13px] text-secondary">deck</span>
+                                    <span>Панорамный вид на горы и город</span>
+                                </div>
+                            </div>
+
+                            <!-- Architectural SVG Plan (Interactive) -->
+                            <div id="hallSvgWrapper" class="w-full relative aspect-[4/3] sm:aspect-[4/2.9]">
+                                <svg id="hallSvgFloorPlan" class="w-full h-full drop-shadow-xs" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <!-- Gold Glow for Selected Table -->
+                                        <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+                                            <feDropShadow dx="0" dy="2" stdDeviation="5" flood-color="#ECC15A" flood-opacity="0.7"/>
+                                        </filter>
+                                        <!-- Soft Table Shadow -->
+                                        <filter id="soft-shadow" x="-20%" y="-20%" width="140%" height="140%">
+                                            <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="#1D1B19" flood-opacity="0.12"/>
+                                        </filter>
+                                    </defs>
+
+                                    <!-- Architectural Hall Boundary & Partitions -->
+                                    <path d="M 16 16 L 384 16 L 384 284 L 16 284 Z" fill="none" stroke="#E7E1DE" stroke-dasharray="4 3" stroke-width="1.8"/>
+
+                                    <!-- Columns -->
+                                    <rect x="110" y="105" width="10" height="10" rx="2" fill="#DFD9D5"/>
+                                    <rect x="280" y="105" width="10" height="10" rx="2" fill="#DFD9D5"/>
+                                    <rect x="110" y="195" width="10" height="10" rx="2" fill="#DFD9D5"/>
+                                    <rect x="280" y="195" width="10" height="10" rx="2" fill="#DFD9D5"/>
+
+                                    <!-- Wine Cellar & Hostess Area (Bottom Left) -->
+                                    <g opacity="0.9" class="select-none pointer-events-none">
+                                        <rect x="22" y="232" width="70" height="46" rx="6" fill="#F3EDE9" stroke="#E8E2D5" stroke-width="1"/>
+                                        <text x="57" y="252" font-family="Plus Jakarta Sans" font-size="8" font-weight="700" fill="#434844" text-anchor="middle">ХОСТЕС</text>
+                                        <text x="57" y="264" font-family="Plus Jakarta Sans" font-size="7" fill="#737873" text-anchor="middle">Вход • Лифт</text>
+                                    </g>
+
+                                    <!-- Wine Display & Bar Barriere (Bottom Right) -->
+                                    <g opacity="0.9" class="select-none pointer-events-none">
+                                        <rect x="290" y="235" width="88" height="42" rx="6" fill="#F3EDE9" stroke="#E8E2D5" stroke-width="1"/>
+                                        <text x="334" y="254" font-family="Plus Jakarta Sans" font-size="8" font-weight="700" fill="#434844" text-anchor="middle">ВИНОТЕКА</text>
+                                        <text x="334" y="265" font-family="Plus Jakarta Sans" font-size="7" fill="#737873" text-anchor="middle">Гран Крю бар</text>
+                                    </g>
+
+                                    <!-- Chef's Counter (Bottom Center) -->
+                                    <g opacity="0.9" class="select-none pointer-events-none">
+                                        <rect x="120" y="246" width="140" height="12" rx="3" fill="#EDE7E3"/>
+                                        <text x="190" y="255" font-family="Plus Jakarta Sans" font-size="6.5" font-weight="700" letter-spacing="1" fill="#737873" text-anchor="middle">CHEF'S OPEN COUNTER</text>
+                                    </g>
+
+                                    <!-- DYNAMIC TABLES LAYER INJECTED VIA JAVASCRIPT -->
+                                    <g id="svgTablesContainer">
+                                        <!-- Injected via renderTablesGrid() -->
+                                    </g>
+                                </svg>
+                            </div>
+
+                            <!-- Alternative Compact Grid (Toggleable) -->
+                            <div id="hallTablesGrid" class="hidden grid grid-cols-2 sm:grid-cols-4 gap-2.5 py-2">
+                                <!-- Tables injected dynamically -->
+                            </div>
+
+                            <!-- Bottom Scale Notice -->
+                            <div class="flex items-center justify-between pt-1 px-1 text-on-surface-variant font-label-sm text-[10px]">
+                                <span class="flex items-center gap-1 font-medium">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                                    <span>Нажмите на столик на схеме</span>
+                                </span>
+                                <span class="font-medium text-on-surface/60">Масштаб 1:50</span>
+                            </div>
+                        </div>
+
+                        <!-- Detailed Card of Selected Table (Stitch 04) -->
+                        <div id="selectedTableDetailedCard" class="hidden flex-col bg-surface-container-lowest border border-[#E8E2D5] rounded-2xl p-3 sm:p-4 shadow-sm animate-fadeIn">
+                            <!-- Card Header with Photo Preview -->
+                            <div class="flex gap-3 items-start">
+                                <div class="w-20 h-20 rounded-xl overflow-hidden shrink-0 relative bg-surface-container shadow-xs">
+                                    <img id="selectedTablePhoto" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA19mu1r71SIt8hM37bprPPkcyLv3gRkJvMYafpV6PydAF8dWpd8KOFp80HJ5aoLlWC4dqty3QIhZEo9Icslp75uWraxxslnCw9nBEt8gb1Q_1N7Y1IE-rRaM07vYr9bm9UgnVUn2GXzDzoEfU5PQIUDd4ok_8W1Se134Io2T2aPMv4fuUydurRQ7xcs_fj-C5VYADkVKLXHMHfMhtirev5XS0yp8bAVM_V75T-Ws98SH7iC1OUHyShxw" alt="Table Preview"/>
+                                    <span id="selectedTableBadgeZone" class="absolute top-1 left-1 bg-primary/85 backdrop-blur-md text-on-primary font-label-sm text-[8px] font-bold px-1.5 py-0.5 rounded">
+                                        Вид у окна
+                                    </span>
+                                </div>
+                                <div class="flex flex-col min-w-0 flex-1">
+                                    <div class="flex items-center justify-between gap-1">
+                                        <h3 id="selectedTableTitle" class="font-serif font-bold text-base sm:text-lg text-primary tracking-tight truncate">Стол №12</h3>
+                                        <span id="selectedTableHighlight" class="px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-[10px] font-bold shrink-0">
+                                            Рекомендуем
+                                        </span>
+                                    </div>
+                                    <span id="selectedTableSubzone" class="text-xs text-on-surface-variant truncate">Главный зал • Панорамное окно</span>
+                                    <!-- Feature Tags -->
+                                    <div id="selectedTableTags" class="flex flex-wrap gap-1 mt-1.5">
+                                        <span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface font-label-sm text-[10px] font-semibold">2 гостя</span>
+                                        <span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface font-label-sm text-[10px]">Вид на горы</span>
+                                        <span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface font-label-sm text-[10px]">Тихий сектор</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Description -->
+                            <p id="selectedTableDesc" class="text-xs text-on-surface-variant mt-2.5 leading-relaxed">
+                                Уединенный стол у высокого арочного окна с мягкими креслами из оливкового бархата. Идеально для романтических свиданий, ужина на двоих и дегустации вин из частного погреба.
+                            </p>
+
+                            <!-- Conditions Pill Box -->
+                            <div class="mt-2.5 pt-2 bg-surface-container-low rounded-xl p-2.5 flex flex-col gap-1.5 text-xs text-on-surface-variant border border-[#E8E2D5]">
+                                <div class="flex items-center justify-between">
+                                    <span class="flex items-center gap-1.5">
+                                        <span class="material-symbols-outlined text-[15px] text-secondary">payments</span>
+                                        Депозит:
+                                    </span>
+                                    <span id="selectedTableDeposit" class="text-on-surface font-bold">Не требуется</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="flex items-center gap-1.5">
+                                        <span class="material-symbols-outlined text-[15px] text-secondary">schedule</span>
+                                        Время бронирования:
+                                    </span>
+                                    <span class="text-on-surface font-bold">до 2.5 часов</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Simple Empty State Banner (when no table is selected yet) -->
+                        <div id="selectedTableEmptyBanner" class="p-3 bg-surface-container-low border border-[#E8E2D5] rounded-xl text-xs text-primary flex items-center justify-between">
+                            <div>
+                                <span class="font-bold text-primary block">Столик не выбран</span>
+                                <p class="text-[11px] text-on-surface-variant">Нажмите на любой свободный столик на схеме выше</p>
+                            </div>
+                            <span class="material-symbols-outlined text-secondary text-[22px]">chair</span>
+                        </div>
+
+                        <!-- Suggest Best Table Button (Stitch 04) -->
+                        <div class="flex items-center justify-center pt-0.5">
+                            <button type="button" onclick="selectBestAvailableTable()" class="inline-flex items-center gap-1.5 text-primary hover:text-on-surface text-xs font-semibold py-1 px-3 rounded-full hover:bg-surface-container transition-colors active:scale-95">
+                                <span class="material-symbols-outlined text-[16px] text-secondary">auto_awesome</span>
+                                <span>Выбрать случайный лучший стол</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 6: Guest Contacts Form -->
+                    <div class="space-y-3 pt-3 border-t border-[#E8E2D5]">
+                        <span class="text-xs sm:text-sm font-bold text-primary tracking-wide flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                            6. Контактные данные гостя
+                        </span>
                         
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                             <div>
                                 <input type="text" id="guestNameInput" placeholder="Ваше имя" 
-                                       class="w-full bg-[#F3EFE8] border border-[#E8E2D5] rounded-xl p-3 text-xs sm:text-sm text-[#1E1F20] placeholder-[#A6A29C] outline-none focus:border-[#4A5543] transition-colors">
+                                       class="w-full bg-surface-container-lowest border border-[#E8E2D5] rounded-xl p-3 text-xs sm:text-sm text-on-surface placeholder:text-outline outline-none focus:border-primary transition-colors">
                             </div>
 
                             <div>
                                 <div class="relative">
-                                    <span class="absolute left-3.5 top-3 text-xs text-[#73706B]">🇰🇿</span>
+                                    <span class="absolute left-3 top-3 text-xs">🇰🇿</span>
                                     <input type="tel" id="guestPhoneInput" oninput="formatKZPhone(this)" placeholder="+7 (701) 000-00-00" 
-                                           class="w-full bg-[#F3EFE8] border border-[#E8E2D5] rounded-xl py-3 pl-9 pr-3 text-xs sm:text-sm text-[#1E1F20] placeholder-[#A6A29C] outline-none focus:border-[#4A5543] font-mono transition-colors">
+                                           class="w-full bg-surface-container-lowest border border-[#E8E2D5] rounded-xl py-3 pl-9 pr-3 text-xs sm:text-sm text-on-surface placeholder:text-outline outline-none focus:border-primary font-mono transition-colors">
                                 </div>
-                                <span class="text-[11px] text-[#73706B] mt-0.5 block pl-1">Ресторан перезвонит для подтверждения</span>
                             </div>
                         </div>
 
                         <div>
-                            <input type="text" id="guestWishesInput" placeholder="Пожелания (день рождения, тихий угол, детский стульчик...)" 
-                                   class="w-full bg-[#F3EFE8] border border-[#E8E2D5] rounded-xl p-3 text-xs sm:text-sm text-[#1E1F20] placeholder-[#A6A29C] outline-none focus:border-[#4A5543] transition-colors">
+                            <input type="text" id="guestWishesInput" placeholder="Дополнительные пожелания к столу..." 
+                                   class="w-full bg-surface-container-lowest border border-[#E8E2D5] rounded-xl p-3 text-xs sm:text-sm text-on-surface placeholder:text-outline outline-none focus:border-primary transition-colors">
                         </div>
                     </div>
 
-                    <!-- Submit Button (Sticky on mobile for instant thumb access) -->
-                    <div class="sticky bottom-0 -mx-4 -mb-4 sm:-mx-6 sm:-mb-6 p-3 sm:p-4 bg-white/95 backdrop-blur-md border-t border-[#E8E2D5] z-20">
+                    <!-- Sticky Bottom Action Drawer (Stitch 03 Telegram Bottom Sticky Bar) -->
+                    <div class="sticky bottom-0 -mx-4 -mb-4 sm:-mx-6 sm:-mb-6 p-3 sm:p-4 bg-surface/90 backdrop-blur-xl border-t border-[#E8E2D5] z-30 flex items-center justify-between gap-3 shadow-lg">
+                        <div class="min-w-0 flex-1">
+                            <div class="text-[11px] text-on-surface-variant truncate">
+                                <span id="stickySummaryText">Выберите стол</span>
+                            </div>
+                            <div class="text-xs font-bold text-primary font-serif truncate" id="stickySummarySub">
+                                Бесплатная отмена
+                            </div>
+                        </div>
                         <button type="button" id="submitBookingBtn" onclick="submitBooking()" disabled 
-                                class="w-full min-h-[48px] py-3.5 sm:py-4 rounded-2xl bg-gradient-to-r from-[#c49c6d] via-[#d1a877] to-[#a07849] disabled:from-[#211c17] disabled:to-[#211c17] disabled:text-[#A6A29C] disabled:border disabled:border-[#E8E2D5] text-[#110e0c] font-extrabold text-sm sm:text-base shadow-lg tap-scale transition-all opacity-50 cursor-not-allowed">
-                            Подтвердить бронирование
+                                class="shrink-0 px-6 py-3.5 rounded-full bg-primary hover:bg-primary-container text-on-primary disabled:opacity-40 disabled:cursor-not-allowed font-bold text-xs sm:text-sm uppercase tracking-wider shadow-md active:scale-95 transition-all">
+                            Подтвердить бронь
                         </button>
                     </div>
 
@@ -812,40 +1326,40 @@
 
                 <!-- 3. ABOUT SUB-VIEW -->
                 <div id="modalSubTab-about" class="hidden space-y-4 text-xs sm:text-sm">
-                    <div class="bg-[#F3EFE8] rounded-2xl p-4 sm:p-5 space-y-2 border border-[#E8E2D5]">
-                        <h4 id="labelAboutTitle" class="font-serif font-bold text-[#4A5543] text-sm sm:text-base">О заведении</h4>
-                        <p id="modalAboutDescription" class="text-[#1E1F20] leading-relaxed text-xs sm:text-sm"></p>
+                    <div class="bg-surface-container-low rounded-2xl p-4 sm:p-5 space-y-2 border border-[#E8E2D5]">
+                        <h4 id="labelAboutTitle" class="font-serif font-bold text-primary text-sm sm:text-base">О заведении</h4>
+                        <p id="modalAboutDescription" class="text-on-surface leading-relaxed text-xs sm:text-sm"></p>
                     </div>
 
-                    <div class="bg-[#F3EFE8] rounded-2xl p-4 sm:p-5 space-y-3 border border-[#E8E2D5]">
+                    <div class="bg-surface-container-low rounded-2xl p-4 sm:p-5 space-y-3 border border-[#E8E2D5]">
                         <div class="flex items-center justify-between">
-                            <span class="text-[#73706B]" id="labelAboutHours">Режим работы:</span>
-                            <span id="modalAboutHours" class="font-semibold text-[#1E1F20]">11:00 - 00:00</span>
+                            <span class="text-on-surface-variant" id="labelAboutHours">Режим работы:</span>
+                            <span id="modalAboutHours" class="font-semibold text-primary">11:00 - 00:00</span>
                         </div>
                         <div class="flex items-center justify-between">
-                            <span class="text-[#73706B]" id="labelAboutCheck">Средний чек:</span>
-                            <span id="modalAboutCheck" class="font-serif font-bold text-[#4A5543]">~8 000 ₸</span>
+                            <span class="text-on-surface-variant" id="labelAboutCheck">Средний чек:</span>
+                            <span id="modalAboutCheck" class="font-serif font-bold text-secondary">~8 000 ₸</span>
                         </div>
                         <div class="flex items-center justify-between">
-                            <span class="text-[#73706B]" id="labelAboutPhone">Телефон:</span>
-                            <a id="modalAboutPhone" href="" class="font-semibold text-[#4A5543] hover:underline">+7 (727) ...</a>
+                            <span class="text-on-surface-variant" id="labelAboutPhone">Телефон:</span>
+                            <a id="modalAboutPhone" href="" class="font-semibold text-primary hover:underline">+7 (727) ...</a>
                         </div>
                     </div>
 
                     <!-- Social Media & 2GIS Interactive Grid -->
                     <div class="space-y-2.5 pt-1">
-                        <h5 id="labelAboutSocials" class="text-[11px] font-bold text-[#73706B] uppercase tracking-wider">Контакты, Соцсети & 2GIS</h5>
+                        <h5 id="labelAboutSocials" class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Контакты, Соцсети & 2GIS</h5>
                         <div class="grid grid-cols-2 gap-2.5" id="modalSocialLinksContainer">
-                            <a id="modal2GisBtn" href="https://2gis.kz" target="_blank" class="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-[#F3EFE8] hover:bg-[#F3EFE8] border border-[#c49c6d]/30 text-[#4A5543] font-semibold transition-all">
+                            <a id="modal2GisBtn" href="https://2gis.kz" target="_blank" class="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-surface-container-lowest hover:bg-surface-container border border-[#c29b38]/30 text-primary font-semibold transition-all shadow-xs">
                                 <span>🗺️</span> <span id="txtGisBtn">2GIS / Карты</span>
                             </a>
-                            <a id="modalInstagramBtn" href="#" target="_blank" class="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-[#F3EFE8] hover:bg-[#F3EFE8] border border-pink-500/30 text-pink-300 font-semibold transition-all">
+                            <a id="modalInstagramBtn" href="#" target="_blank" class="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-surface-container-lowest hover:bg-surface-container border border-pink-500/30 text-pink-500 font-semibold transition-all shadow-xs">
                                 <span>📸</span> <span id="txtIgBtn">Instagram</span>
                             </a>
-                            <a id="modalWhatsAppBtn" href="#" target="_blank" class="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-[#F3EFE8] hover:bg-[#F3EFE8] border border-emerald-500/30 text-emerald-300 font-semibold transition-all">
+                            <a id="modalWhatsAppBtn" href="#" target="_blank" class="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-surface-container-lowest hover:bg-surface-container border border-emerald-500/30 text-emerald-600 font-semibold transition-all shadow-xs">
                                 <span>💬</span> <span id="txtWaBtn">WhatsApp</span>
                             </a>
-                            <a id="modalCallBtn" href="#" class="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-[#F3EFE8] hover:bg-[#F3EFE8] border border-blue-500/30 text-blue-300 font-semibold transition-all">
+                            <a id="modalCallBtn" href="#" class="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-surface-container-lowest hover:bg-surface-container border border-blue-500/30 text-blue-600 font-semibold transition-all shadow-xs">
                                 <span>📞</span> <span id="txtCallBtn">Позвонить</span>
                             </a>
                         </div>
@@ -856,38 +1370,206 @@
         </div>
     </div>
 
-    <!-- SUCCESS BOOKING MODAL (PREMIUM DIGITAL BOARDING PASS) -->
-    <div id="successModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-md hidden flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-[#FFFFFF] border border-[#E8E2D5] rounded-3xl p-5 sm:p-7 max-w-md w-full text-center space-y-4 shadow-luxury relative my-auto">
-            <div class="ticket-cutout-left top-44"></div>
-            <div class="ticket-cutout-right top-44"></div>
-
-            <div class="w-12 h-12 bg-[#EFF3EC] text-[#4A5543] border border-[#B8C5B3]/60 rounded-2xl flex items-center justify-center text-2xl mx-auto shadow-sm">
-                ✓
-            </div>
+    <!-- SUCCESS BOOKING MODAL (PREMIUM DIGITAL BOARDING PASS - Stitch 05) -->
+    <div id="successModal" class="fixed inset-0 z-50 bg-black/65 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+        <div class="bg-surface border border-[#E8E2D5] rounded-3xl p-4 sm:p-6 max-w-md w-full text-center space-y-4 shadow-luxury relative my-auto animate-fadeIn">
             
-            <div>
-                <span class="text-[10px] uppercase tracking-widest font-bold text-[#4A5543] px-2.5 py-0.5 bg-[#EFF3EC] rounded-full border border-[#B8C5B3]/40">Подтверждено</span>
-                <h3 class="text-xl sm:text-2xl font-serif font-bold text-[#1E1F20] mt-1.5">Электронный пасс брони</h3>
-                <p class="text-xs text-[#73706B] mt-0.5" id="successModalSubtext">Предъявите этот билет хостес при входе в заведение</p>
+            <!-- Status Feedback Header (Stitch 05) -->
+            <div class="flex flex-col items-center text-center pt-1">
+                <div class="relative flex items-center justify-center w-14 h-14 rounded-full bg-primary-fixed/60 text-primary mb-2.5 shadow-sm">
+                    <div class="absolute inset-0 rounded-full bg-primary-fixed animate-ping opacity-25"></div>
+                    <span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                </div>
+                <span class="font-label-sm text-[10px] uppercase tracking-widest text-secondary font-bold mb-0.5">Резерв зафиксирован</span>
+                <h3 class="font-serif font-bold text-xl sm:text-2xl text-primary tracking-tight">Бронь подтверждена</h3>
+                <p class="text-xs text-on-surface-variant mt-1 max-w-xs leading-relaxed">
+                    Ресторан <span id="successRestName" class="font-semibold text-on-surface">L’Ambroisie</span> ожидает вас. Электронный пропуск активирован в консьерж-сервисе.
+                </p>
             </div>
 
-            <!-- Perforated Ticket Card -->
-            <div class="bg-[#FAF8F5] rounded-2xl p-4 text-left text-xs space-y-2.5 border border-[#E8E2D5]" id="successBookingDetails">
-                <!-- Injected via JS -->
+            <!-- Digital Boarding Pass Ticket Card (Stitch 05) -->
+            <div class="relative bg-surface-container-lowest rounded-2xl shadow-lg border border-[#E8E2D5] overflow-hidden text-left">
+                <!-- Top Luxury Accent Bar -->
+                <div class="h-1.5 w-full bg-gradient-to-r from-primary-container via-secondary to-primary-container"></div>
+                
+                <div class="p-4 sm:p-5 flex flex-col gap-3.5">
+                    <!-- Card Header: Venue & Booking ID -->
+                    <div class="flex items-start justify-between">
+                        <div class="flex items-center gap-2.5 min-w-0">
+                            <div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center shrink-0">
+                                <span class="material-symbols-outlined text-primary text-[20px]">restaurant</span>
+                            </div>
+                            <div class="min-w-0">
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <span id="ticketVenueName" class="font-serif font-bold text-base text-primary leading-tight truncate">L’Ambroisie</span>
+                                    <span class="inline-flex items-center px-1.5 py-0.2 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-[9px] font-bold">ТОП RestoKZ</span>
+                                </div>
+                                <p id="ticketCuisineName" class="text-[11px] text-on-surface-variant truncate">Высокая авторская кухня</p>
+                            </div>
+                        </div>
+                        <div class="text-right shrink-0">
+                            <span class="font-label-sm text-[9px] uppercase tracking-wider text-on-surface-variant block">Номер брони</span>
+                            <span id="ticketBookingPassCode" class="font-label-lg text-sm sm:text-base text-primary font-mono font-bold tracking-wide">#AR-88421</span>
+                        </div>
+                    </div>
+
+                    <!-- Guest & Party Pill Tag -->
+                    <div class="bg-surface-container-low rounded-xl p-2.5 flex items-center justify-between border border-[#E8E2D5]/70">
+                        <div class="flex items-center gap-2 min-w-0">
+                            <span class="material-symbols-outlined text-secondary text-[18px]">person</span>
+                            <div class="min-w-0">
+                                <p class="font-label-sm text-[9px] uppercase tracking-wider text-on-surface-variant leading-none">Гость</p>
+                                <p id="ticketGuestName" class="font-label-md text-xs font-bold text-on-surface mt-0.5 truncate">Александр В.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1 bg-surface-container-lowest px-2.5 py-1 rounded-full shadow-xs border border-[#E8E2D5]/60 shrink-0">
+                            <span class="material-symbols-outlined text-primary text-[15px]">group</span>
+                            <span id="ticketGuestsCount" class="font-label-sm text-[11px] text-primary font-bold">2 персоны</span>
+                        </div>
+                    </div>
+
+                    <!-- 2x2 Key Parameters Grid -->
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <div class="bg-surface-container-low/80 rounded-xl p-2.5 flex flex-col justify-between border border-[#E8E2D5]/60">
+                            <div class="flex items-center gap-1 text-on-surface-variant mb-0.5">
+                                <span class="material-symbols-outlined text-[14px] text-secondary">calendar_today</span>
+                                <span class="font-label-sm text-[9px] uppercase tracking-wider text-on-surface-variant">Дата</span>
+                            </div>
+                            <span id="ticketDateText" class="font-bold text-on-surface">24 мая 2026</span>
+                            <span id="ticketDayOfWeek" class="text-[10px] text-on-surface-variant">Пятница</span>
+                        </div>
+                        <div class="bg-surface-container-low/80 rounded-xl p-2.5 flex flex-col justify-between border border-[#E8E2D5]/60">
+                            <div class="flex items-center gap-1 text-on-surface-variant mb-0.5">
+                                <span class="material-symbols-outlined text-[14px] text-secondary">schedule</span>
+                                <span class="font-label-sm text-[9px] uppercase tracking-wider text-on-surface-variant">Время</span>
+                            </div>
+                            <span id="ticketTimeText" class="font-bold text-primary">19:30</span>
+                            <span class="text-[10px] text-on-surface-variant">Стол закреплен 2.5 ч</span>
+                        </div>
+                        <div class="bg-surface-container-low/80 rounded-xl p-2.5 flex flex-col justify-between border border-[#E8E2D5]/60">
+                            <div class="flex items-center gap-1 text-on-surface-variant mb-0.5">
+                                <span class="material-symbols-outlined text-[14px] text-secondary">deck</span>
+                                <span class="font-label-sm text-[9px] uppercase tracking-wider text-on-surface-variant">Расположение</span>
+                            </div>
+                            <span id="ticketLocationText" class="font-bold text-on-surface truncate">Стол №12</span>
+                            <span id="ticketZoneText" class="text-[10px] text-on-surface-variant truncate">Панорамное окно</span>
+                        </div>
+                        <div class="bg-surface-container-low/80 rounded-xl p-2.5 flex flex-col justify-between border border-[#E8E2D5]/60">
+                            <div class="flex items-center gap-1 text-on-surface-variant mb-0.5">
+                                <span class="material-symbols-outlined text-[14px] text-secondary">checkroom</span>
+                                <span class="font-label-sm text-[9px] uppercase tracking-wider text-on-surface-variant">Дресс-код</span>
+                            </div>
+                            <span class="font-bold text-on-surface">Smart Casual</span>
+                            <span class="text-[10px] text-on-surface-variant">Элегантный вечер</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Perforated Cutouts & Dashed Divider -->
+                <div class="relative py-1 flex items-center justify-between bg-surface-container-lowest">
+                    <div class="w-3.5 h-7 bg-surface rounded-r-full -ml-1 border-r border-[#E8E2D5] shadow-inner"></div>
+                    <div class="flex-1 border-t-2 border-dashed border-[#E8E2D5] mx-2"></div>
+                    <div class="w-3.5 h-7 bg-surface rounded-l-full -mr-1 border-l border-[#E8E2D5] shadow-inner"></div>
+                </div>
+
+                <!-- QR Validation Stub (Stitch 05) -->
+                <div class="p-4 sm:p-5 bg-surface-container-lowest flex flex-col items-center text-center">
+                    <div class="p-2.5 bg-surface-container-low rounded-xl shadow-inner mb-2.5 border border-[#E8E2D5]/60">
+                        <svg class="w-32 h-32 sm:w-36 sm:h-36 text-primary" fill="currentColor" viewBox="0 0 100 100">
+                            <!-- Top Left Finder Pattern -->
+                            <rect height="26" rx="3" width="26" x="5" y="5"></rect>
+                            <rect fill="#ffffff" height="18" rx="2" width="18" x="9" y="9"></rect>
+                            <rect height="10" rx="1.5" width="10" x="13" y="13"></rect>
+                            <!-- Top Right Finder Pattern -->
+                            <rect height="26" rx="3" width="26" x="69" y="5"></rect>
+                            <rect fill="#ffffff" height="18" rx="2" width="18" x="73" y="9"></rect>
+                            <rect height="10" rx="1.5" width="10" x="77" y="13"></rect>
+                            <!-- Bottom Left Finder Pattern -->
+                            <rect height="26" rx="3" width="26" x="5" y="69"></rect>
+                            <rect fill="#ffffff" height="18" rx="2" width="18" x="9" y="73"></rect>
+                            <rect height="10" rx="1.5" width="10" x="13" y="77"></rect>
+                            <!-- Matrix Pattern -->
+                            <rect height="5" width="5" x="36" y="8"></rect>
+                            <rect height="10" width="5" x="46" y="8"></rect>
+                            <rect height="5" width="8" x="56" y="8"></rect>
+                            <rect height="6" width="6" x="36" y="18"></rect>
+                            <rect height="6" width="6" x="48" y="22"></rect>
+                            <rect height="8" width="5" x="58" y="18"></rect>
+                            <!-- Center Crest -->
+                            <circle cx="50" cy="50" fill="#1a281f" r="9"></circle>
+                            <circle cx="50" cy="50" fill="#ffffff" r="5"></circle>
+                            <circle cx="50" cy="50" fill="#ecc15a" r="2.5"></circle>
+                            <!-- Additional Matrix Blocks -->
+                            <rect height="5" width="5" x="36" y="38"></rect>
+                            <rect height="5" width="10" x="45" y="36"></rect>
+                            <rect height="9" width="5" x="60" y="36"></rect>
+                            <rect height="5" width="8" x="72" y="38"></rect>
+                            <rect height="6" width="7" x="85" y="38"></rect>
+                            <rect height="5" width="7" x="36" y="60"></rect>
+                            <rect height="10" width="5" x="48" y="65"></rect>
+                            <rect height="6" width="6" x="58" y="58"></rect>
+                            <rect height="12" width="5" x="70" y="55"></rect>
+                            <rect height="5" width="12" x="80" y="60"></rect>
+                            <rect height="6" width="8" x="36" y="78"></rect>
+                            <rect height="6" width="14" x="48" y="82"></rect>
+                            <rect height="15" width="6" x="68" y="75"></rect>
+                            <rect height="12" rx="1" width="12" x="80" y="78"></rect>
+                        </svg>
+                    </div>
+                    <div class="flex items-center gap-1.5 text-primary mb-0.5">
+                        <span class="material-symbols-outlined text-[18px]">qr_code_scanner</span>
+                        <span class="font-label-md text-xs font-bold">Покажите хостес при входе</span>
+                    </div>
+                    <p class="text-[11px] text-on-surface-variant max-w-xs leading-normal">
+                        Сканирование занимает пару секунд. Ваш стол будет сервирован к указанному времени.
+                    </p>
+                </div>
             </div>
 
-            <!-- Quick Action Grid -->
-            <div class="grid grid-cols-2 gap-2 text-xs">
-                <button type="button" onclick="downloadBookingCalendar()" class="py-2.5 px-3 rounded-xl bg-[#F3EFE8] hover:bg-[#E8E2D5] text-[#1E1F20] font-semibold border border-[#E8E2D5] flex items-center justify-center gap-1.5 transition">
-                    <span>📅</span> <span>В календарь</span>
+            <!-- Primary Service Action Stack (Stitch 05) -->
+            <div class="flex flex-col gap-2 pt-1 text-left">
+                <!-- Wallet / Calendar Sync CTA -->
+                <button type="button" onclick="downloadBookingCalendar()" class="w-full py-2.5 px-3.5 rounded-full bg-surface-container-lowest text-on-surface font-label-md text-xs flex items-center justify-between shadow-xs border border-[#E8E2D5] active:scale-[0.98] transition-all hover:bg-surface-container-low">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-7 h-7 rounded-full bg-surface-container flex items-center justify-center text-primary">
+                            <span class="material-symbols-outlined text-[17px]">account_balance_wallet</span>
+                        </div>
+                        <span class="font-semibold">Добавить в Apple Wallet / Календарь</span>
+                    </div>
+                    <span class="material-symbols-outlined text-secondary text-[18px]">add</span>
                 </button>
-                <button type="button" onclick="openRouteToRestaurant()" class="py-2.5 px-3 rounded-xl bg-[#F3EFE8] hover:bg-[#E8E2D5] text-[#1E1F20] font-semibold border border-[#E8E2D5] flex items-center justify-center gap-1.5 transition">
-                    <span>🗺️</span> <span>Маршрут</span>
+
+                <!-- Navigation / Route button -->
+                <button type="button" onclick="openRouteToRestaurant()" class="w-full py-2.5 px-3.5 rounded-full bg-surface-container-lowest text-on-surface font-label-md text-xs flex items-center justify-between shadow-xs border border-[#E8E2D5] active:scale-[0.98] transition-all hover:bg-surface-container-low">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-7 h-7 rounded-full bg-surface-container flex items-center justify-center text-primary">
+                            <span class="material-symbols-outlined text-[17px]">near_me</span>
+                        </div>
+                        <div>
+                            <span class="font-semibold block leading-tight">Маршрут до ресторана</span>
+                            <span id="ticketMapSubtext" class="text-[10px] text-on-surface-variant">2GIS / Яндекс Карты</span>
+                        </div>
+                    </div>
+                    <span class="material-symbols-outlined text-on-surface-variant text-[18px]">chevron_right</span>
+                </button>
+
+                <!-- Hostess Concierge Telegram Chat -->
+                <button type="button" onclick="openHostessChat()" class="w-full py-2.5 px-3.5 rounded-full bg-primary-container text-on-primary font-label-md text-xs flex items-center justify-between shadow-md active:scale-[0.98] transition-all hover:bg-primary">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-7 h-7 rounded-full bg-surface-container-lowest/15 flex items-center justify-center text-secondary-fixed">
+                            <span class="material-symbols-outlined text-[17px]">chat</span>
+                        </div>
+                        <div>
+                            <span class="font-semibold block leading-tight">Чат с хостес & сомелье</span>
+                            <span class="text-[10px] text-on-primary-container">Уточнить пожелания, цветы к столу</span>
+                        </div>
+                    </div>
+                    <span class="material-symbols-outlined text-secondary-fixed text-[18px]">arrow_forward</span>
                 </button>
             </div>
 
-            <button onclick="closeSuccessModal()" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#4A5543] to-[#3A4335] text-white font-bold text-xs sm:text-sm shadow-soft hover:shadow-luxury active:scale-[0.98] transition-all">
+            <!-- Continue / Close CTA -->
+            <button onclick="closeSuccessModal()" class="w-full py-3.5 rounded-full bg-primary hover:bg-primary-container text-on-primary font-bold text-xs sm:text-sm uppercase tracking-wider shadow-md active:scale-[0.98] transition-all">
                 Отлично, перейти к моим броням →
             </button>
         </div>
@@ -934,6 +1616,10 @@
                 tg.expand();
                 if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
                     tgUser = tg.initDataUnsafe.user;
+                    if (tgUser.first_name) {
+                        const el = document.getElementById('guestGreetingName');
+                        if (el) el.innerText = ', ' + tgUser.first_name;
+                    }
                 }
             } catch (e) {
                 console.log("Telegram WebApp initialization error:", e);
@@ -1349,6 +2035,8 @@
 
             renderTimeSlots();
             updateTimeDisplay();
+            renderDateStrip();
+            updateStickySummary();
             initTheme();
             setLanguage(currentLang);
             loadRestaurants();
@@ -1560,6 +2248,7 @@
 
         function renderRestaurants() {
             const listContainer = document.getElementById('restaurantsList');
+            const heroContainer = document.getElementById('heroFeaturedSection');
             let filtered = allRestaurants;
 
             if (currentCity !== "Все") {
@@ -1567,7 +2256,11 @@
             }
 
             if (currentCuisine !== "Все") {
-                filtered = filtered.filter(r => r.cuisine.toLowerCase().includes(currentCuisine.toLowerCase()));
+                if (currentCuisine === "С сомелье") {
+                    filtered = filtered.filter(r => (r.avg_check && r.avg_check >= 10000) || (r.description && r.description.toLowerCase().includes('вин')));
+                } else {
+                    filtered = filtered.filter(r => r.cuisine.toLowerCase().includes(currentCuisine.toLowerCase()));
+                }
             }
 
             if (currentSearchQuery.trim()) {
@@ -1579,53 +2272,136 @@
                 );
             }
 
+            const countBadge = document.getElementById('restaurantsCountBadge');
+            if (countBadge) countBadge.innerText = `Все (${filtered.length})`;
+
             const t = I18N[currentLang] || I18N.ru;
 
             if (filtered.length === 0) {
+                if (heroContainer) heroContainer.innerHTML = '';
                 listContainer.innerHTML = `
-                    <div class="col-span-full text-center py-16 text-[#A6A29C] space-y-2">
-                        <span class="text-3xl">🔍</span>
-                        <p class="text-xs sm:text-sm">${t.no_restaurants}</p>
+                    <div class="col-span-full text-center py-16 text-outline space-y-3">
+                        <span class="material-symbols-outlined text-4xl text-outline">search_off</span>
+                        <p class="text-xs sm:text-sm font-medium">${t.no_restaurants}</p>
                     </div>
                 `;
                 return;
             }
 
-            listContainer.innerHTML = filtered.map(r => `
-                <div class="bg-[#FFFFFF] border border-[#E8E2D5] rounded-3xl overflow-hidden shadow-soft hover:shadow-luxury hover:-translate-y-1 transition-all duration-300 flex flex-col group">
-                    <div class="relative h-44 sm:h-56 lg:h-64 xl:h-72 bg-[#F3EFE8] cursor-pointer overflow-hidden" onclick="openRestaurantModal(${r.id}, 'book')">
-                        <img src="${r.cover_image}" alt="${r.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-[#181411] via-transparent to-black/40"></div>
+            // Hero Featured Card: show only when not searching and when on "Все" cuisine
+            if (!currentSearchQuery.trim() && currentCuisine === "Все" && filtered.length > 0) {
+                const featured = filtered[0];
+                const displayList = filtered.slice(1);
+                
+                if (heroContainer) {
+                    heroContainer.innerHTML = `
+                        <div class="bg-surface-container-lowest border border-[#E8E2D5] rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_4px_24px_-2px_rgba(28,26,24,0.06)] transition-all mb-4 sm:mb-6">
+                            <div class="relative h-64 sm:h-72 lg:h-80 w-full overflow-hidden cursor-pointer group" onclick="openRestaurantModal(${featured.id}, 'book')">
+                                <img src="${featured.cover_image}" alt="${featured.name}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                                <div class="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/30 to-black/30"></div>
+                                
+                                <div class="absolute top-3.5 left-3.5 flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 rounded-full bg-primary/90 backdrop-blur-md text-[#ffdf99] text-[11px] font-bold tracking-wide uppercase flex items-center gap-1 shadow-sm">
+                                        <span class="material-symbols-outlined text-[13px] text-[#fed269]">award_star</span>
+                                        Выбор недели
+                                    </span>
+                                    <span class="px-3 py-1 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-primary text-[11px] font-bold shadow-sm">
+                                        ${featured.city}
+                                    </span>
+                                </div>
+                                
+                                <div class="absolute bottom-3.5 left-4 right-4 flex items-end justify-between text-on-primary">
+                                    <div>
+                                        <div class="text-[11px] uppercase tracking-wider text-primary-fixed-dim font-bold mb-0.5">${featured.cuisine.split(',')[0]}</div>
+                                        <h2 class="font-serif font-bold text-2xl sm:text-3xl lg:text-4xl text-white leading-tight drop-shadow-md">${featured.name}</h2>
+                                    </div>
+                                    <div class="flex items-center gap-1 bg-surface-container-lowest/95 backdrop-blur-md px-3 py-1.5 rounded-xl text-primary shadow-sm">
+                                        <span class="material-symbols-outlined text-[16px] text-secondary">star</span>
+                                        <span class="font-bold text-xs sm:text-sm">${featured.rating}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 sm:p-6 flex flex-col gap-3.5">
+                                <div class="flex flex-wrap items-center justify-between text-xs sm:text-sm text-on-surface-variant gap-2">
+                                    <span class="flex items-center gap-1.5">
+                                        <span class="material-symbols-outlined text-[16px] text-outline">restaurant</span>
+                                        ${featured.cuisine}
+                                    </span>
+                                    <span class="font-bold text-primary font-serif">₸₸₸₸ · от ${formatPrice(featured.avg_check)}</span>
+                                </div>
+                                <p class="text-xs sm:text-sm text-on-surface-variant line-clamp-2 leading-relaxed">
+                                    ${featured.description || 'Изысканная гастрономия, авторское меню и безупречный сервис для особенного вечера.'}
+                                </p>
+                                
+                                <div class="pt-2 border-t border-[#E8E2D5]">
+                                    <div class="text-[11px] uppercase tracking-wider text-outline font-bold mb-2.5">Ближайшие столы сегодня:</div>
+                                    <div class="grid grid-cols-3 gap-2 sm:gap-3">
+                                        <button onclick="event.stopPropagation(); openRestaurantModal(${featured.id}, 'book', '19:30')" class="py-2.5 px-2 rounded-xl bg-surface-container hover:bg-primary hover:text-on-primary text-primary text-xs sm:text-sm font-semibold transition-all active:scale-95 flex flex-col items-center">
+                                            <span class="font-bold">19:30</span>
+                                            <span class="text-[10px] opacity-75">Основной зал</span>
+                                        </button>
+                                        <button onclick="event.stopPropagation(); openRestaurantModal(${featured.id}, 'book', '20:15')" class="py-2.5 px-2 rounded-xl bg-primary text-on-primary text-xs sm:text-sm font-bold shadow-sm transition-all active:scale-95 flex flex-col items-center">
+                                            <span class="font-bold">20:15</span>
+                                            <span class="text-[10px] text-primary-fixed-dim">Шеф-тейбл</span>
+                                        </button>
+                                        <button onclick="event.stopPropagation(); openRestaurantModal(${featured.id}, 'book', '21:00')" class="py-2.5 px-2 rounded-xl bg-surface-container hover:bg-primary hover:text-on-primary text-primary text-xs sm:text-sm font-semibold transition-all active:scale-95 flex flex-col items-center">
+                                            <span class="font-bold">21:00</span>
+                                            <span class="text-[10px] opacity-75">У окна</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                renderGridCards(displayList, listContainer, t);
+            } else {
+                if (heroContainer) heroContainer.innerHTML = '';
+                renderGridCards(filtered, listContainer, t);
+            }
+        }
+
+        function renderGridCards(restaurants, container, t) {
+            container.innerHTML = restaurants.map(r => `
+                <div class="bg-surface-container-lowest border border-[#E8E2D5] rounded-2xl overflow-hidden shadow-[0_4px_20px_-2px_rgba(28,26,24,0.04)] hover:shadow-[0_8px_30px_rgba(28,26,24,0.08)] hover:-translate-y-1 transition-all duration-300 flex flex-col group">
+                    <div class="relative h-48 sm:h-52 bg-surface-container cursor-pointer overflow-hidden" onclick="openRestaurantModal(${r.id}, 'book')">
+                        <img src="${r.cover_image}" alt="${r.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                         
-                        <div class="absolute top-3 right-3 bg-white/95 backdrop-blur-md px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl text-[#1E1F20] text-xs sm:text-sm font-bold flex items-center gap-1.5 border border-[#E8E2D5] shadow-soft">
-                            <svg class="w-3.5 h-3.5 text-[#4A5543] fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <div class="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-primary text-[11px] font-bold shadow-sm">
+                            ${r.city}
+                        </div>
+                        
+                        <div class="absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded-full bg-surface-container-lowest/95 text-primary text-xs font-bold flex items-center gap-1 shadow-sm">
+                            <span class="material-symbols-outlined text-[14px] text-secondary">star</span>
                             <span>${r.rating}</span>
                         </div>
-
-                        <div class="absolute bottom-3 left-3.5 right-3.5">
-                            <span class="text-[10.5px] sm:text-xs uppercase font-extrabold tracking-wider px-2 py-0.5 sm:px-2.5 sm:py-1 bg-[#4A5543] text-white rounded-lg shadow-sm">
-                                ${r.city}
-                            </span>
-                            <h3 class="text-lg sm:text-xl lg:text-2xl font-serif font-bold text-white mt-1.5 leading-snug drop-shadow-md truncate">${r.name}</h3>
+                        
+                        <div class="absolute bottom-2.5 left-3 right-3">
+                            <h4 class="font-serif font-bold text-lg sm:text-xl text-white drop-shadow-md truncate">${r.name}</h4>
                         </div>
                     </div>
 
-                    <div class="p-3.5 sm:p-5 lg:p-6 flex flex-col justify-between flex-1 space-y-3.5 sm:space-y-4">
-                        <div class="space-y-1.5">
-                            <p class="text-xs sm:text-sm lg:text-base text-[#4A5543] font-semibold">${r.cuisine}</p>
-                            <p class="text-xs sm:text-sm text-[#73706B] flex items-center gap-1.5 truncate" title="${r.address}">
-                                <svg class="w-3.5 h-3.5 text-[#4A5543] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    <div class="p-4 flex flex-col justify-between flex-1 gap-3">
+                        <div class="space-y-1">
+                            <div class="flex items-baseline justify-between text-xs sm:text-sm">
+                                <span class="text-primary font-semibold truncate">${r.cuisine}</span>
+                                <span class="font-serif font-bold text-on-surface text-xs shrink-0">~${formatPrice(r.avg_check)}</span>
+                            </div>
+                            <p class="text-xs text-on-surface-variant flex items-center gap-1 truncate" title="${r.address}">
+                                <span class="material-symbols-outlined text-[14px] text-outline shrink-0">location_on</span>
                                 <span class="truncate">${r.address}</span>
                             </p>
-                            <p class="text-xs sm:text-sm lg:text-base text-[#73706B]">${t.avg_check} <b class="text-[#1E1F20] font-bold">~${formatPrice(r.avg_check)}</b></p>
                         </div>
 
-                        <div class="flex gap-2 pt-0.5">
-                            <button onclick="openRestaurantModal(${r.id}, 'menu')" class="flex-1 min-h-[46px] sm:min-h-[48px] py-2.5 sm:py-3.5 rounded-2xl bg-[#F3EFE8] hover:bg-[#F3EFE8] text-[#4A5543] text-xs sm:text-sm lg:text-base font-semibold border border-[#E8E2D5] tap-scale flex items-center justify-center transition-all">
-                                ${t.menu_btn}
+                        <div class="pt-2 border-t border-[#E8E2D5] flex items-center justify-between gap-2">
+                            <button onclick="openRestaurantModal(${r.id}, 'menu')" class="px-3.5 py-2 rounded-full bg-surface-container hover:bg-surface-container-high text-primary text-xs font-semibold border border-outline-variant/40 transition-all active:scale-95">
+                                ${t.menu_btn || 'Меню'}
                             </button>
-                            <button onclick="openRestaurantModal(${r.id}, 'book')" class="flex-[1.5] min-h-[46px] sm:min-h-[48px] py-2.5 sm:py-3.5 rounded-2xl bg-gradient-to-r from-[#4A5543] to-[#3A4335] text-white text-xs sm:text-sm lg:text-base font-extrabold shadow-md hover:brightness-110 tap-scale flex items-center justify-center transition-all">
-                                ${t.book_btn}
+                            <button onclick="openRestaurantModal(${r.id}, 'book')" class="flex-1 px-4 py-2 rounded-full bg-primary text-on-primary hover:bg-primary-container text-xs font-bold uppercase tracking-wider shadow-sm transition-all active:scale-95 text-center">
+                                ${t.book_btn || 'Забронировать'}
                             </button>
                         </div>
                     </div>
@@ -1743,9 +2519,9 @@
             currentCuisine = cuisine;
             document.querySelectorAll('.cuisine-btn').forEach(btn => {
                 if (btn.innerText.includes(cuisine)) {
-                    btn.className = 'cuisine-btn active px-4 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 rounded-full bg-[#4A5543] text-white font-bold whitespace-nowrap transition-all shadow-sm';
+                    btn.className = 'cuisine-btn active shrink-0 px-4 py-2 rounded-full bg-primary text-on-primary font-bold text-xs sm:text-sm shadow-sm transition-all active:scale-95 flex items-center gap-1.5';
                 } else {
-                    btn.className = 'cuisine-btn px-4 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 rounded-full bg-[#FFFFFF] text-[#73706B] border border-[#E8E2D5] hover:text-[#4A5543] hover:border-[#4A5543]/40 font-medium whitespace-nowrap transition-all';
+                    btn.className = 'cuisine-btn shrink-0 px-4 py-2 rounded-full bg-surface-container-lowest text-on-surface border border-[#E8E2D5] text-xs sm:text-sm font-semibold shadow-[0_2px_8px_rgba(28,26,24,0.03)] hover:bg-surface-container-low transition-all active:scale-95 flex items-center gap-1.5';
                 }
             });
             renderRestaurants();
@@ -1824,7 +2600,12 @@
         }
 
         // --- Restaurant Modal & Booking Flow ---
-        async function openRestaurantModal(restaurantId, defaultSubTab = 'book') {
+        async function openRestaurantModal(restaurantId, defaultSubTab = 'book', preselectedTime = null) {
+            if (preselectedTime) {
+                selectedTime = preselectedTime;
+                const hour = parseInt(preselectedTime.split(':')[0], 10);
+                activePeriod = (hour >= 17) ? 'evening' : 'day';
+            }
             selectedRestaurant = allRestaurants.find(r => r.id === restaurantId);
             if (!selectedRestaurant) return;
 
@@ -2049,27 +2830,99 @@
             document.getElementById('guestsCountValue').innerText = currentGuestCount;
         }
 
-        // --- Interactive Tables Scheme ---
+        // --- Interactive Tables Scheme (Stitch 04) ---
+        let selectedZoneFilter = 'all';
+        let currentFloorPlanMode = 'map';
+
+        function setFloorPlanView(mode) {
+            currentFloorPlanMode = mode;
+            const svgWrap = document.getElementById('hallSvgWrapper');
+            const gridWrap = document.getElementById('hallTablesGrid');
+            const mapBtn = document.getElementById('viewBtn-map');
+            const gridBtn = document.getElementById('viewBtn-grid');
+
+            if (mode === 'map') {
+                if (svgWrap) svgWrap.classList.remove('hidden');
+                if (gridWrap) gridWrap.classList.add('hidden');
+                if (mapBtn) {
+                    mapBtn.className = "px-2 py-0.5 rounded-md text-[10px] font-bold bg-primary text-on-primary transition shadow-xs flex items-center gap-1";
+                }
+                if (gridBtn) {
+                    gridBtn.className = "px-2 py-0.5 rounded-md text-[10px] font-semibold text-on-surface-variant hover:text-primary transition flex items-center gap-1";
+                }
+            } else {
+                if (svgWrap) svgWrap.classList.add('hidden');
+                if (gridWrap) gridWrap.classList.remove('hidden');
+                if (mapBtn) {
+                    mapBtn.className = "px-2 py-0.5 rounded-md text-[10px] font-semibold text-on-surface-variant hover:text-primary transition flex items-center gap-1";
+                }
+                if (gridBtn) {
+                    gridBtn.className = "px-2 py-0.5 rounded-md text-[10px] font-bold bg-primary text-on-primary transition shadow-xs flex items-center gap-1";
+                }
+            }
+        }
+
+        function filterTableZone(zone, btnEl) {
+            selectedZoneFilter = zone;
+            document.querySelectorAll('.table-zone-chip').forEach(b => {
+                b.classList.remove('active', 'bg-primary', 'text-on-primary', 'shadow-xs');
+                b.classList.add('bg-surface-container', 'text-on-surface');
+            });
+            if (btnEl) {
+                btnEl.classList.add('active', 'bg-primary', 'text-on-primary', 'shadow-xs');
+                btnEl.classList.remove('bg-surface-container', 'text-on-surface');
+            }
+            renderTablesGrid();
+        }
+
+        function selectBestAvailableTable() {
+            if (!currentTables || currentTables.length === 0) return;
+            const available = currentTables.filter(t => t.is_available);
+            if (available.length === 0) {
+                showToast("На выбранное время все столики заняты", "⚠️");
+                return;
+            }
+
+            // Smart scoring: fits guest count, prefers Window or VIP if guests match
+            const sorted = [...available].sort((a, b) => {
+                const diffA = a.seats >= currentGuestCount ? (a.seats - currentGuestCount) : 100;
+                const diffB = b.seats >= currentGuestCount ? (b.seats - currentGuestCount) : 100;
+                if (diffA !== diffB) return diffA - diffB;
+                const isWinA = (a.zone_type || '').includes('окн') ? 1 : 0;
+                const isWinB = (b.zone_type || '').includes('окн') ? 1 : 0;
+                return isWinB - isWinA;
+            });
+
+            const best = sorted[0];
+            onSelectTable(best);
+            showToast(`Выбран лучший столик №${best.table_number}!`, "✨");
+
+            const card = document.getElementById('selectedTableDetailedCard');
+            if (card) {
+                card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
         async function loadTablesForCurrentSlot() {
             if (!selectedRestaurant) return;
-            const container = document.getElementById('hallTablesGrid');
-            container.innerHTML = '<div class="col-span-3 text-center text-xs text-[#A6A29C] py-4 animate-pulse">Обновление схемы зала...</div>';
+            const badge = document.getElementById('tablesAvailableCountBadge');
+            if (badge) badge.innerText = "Обновление...";
 
             const data = await apiFetch(`/api/restaurants/${selectedRestaurant.id}/tables?date=${selectedDate}&time=${selectedTimeSlot}`);
             
             if (data && data.tables) {
                 currentTables = data.tables;
             } else {
-                // Fallback demo tables layout
+                // Fallback demo tables layout matching Atelier Reserve
                 currentTables = [
-                    { id: 1, table_number: 1, seats: 2, zone_type: "У окна", description: "У окна, вид на горы", is_available: true },
-                    { id: 2, table_number: 2, seats: 4, zone_type: "Зал", description: "Уютный стол в центре", is_available: true },
-                    { id: 3, table_number: 3, seats: 2, zone_type: "VIP", description: "Приватный столик", is_available: false },
-                    { id: 4, table_number: 4, seats: 6, zone_type: "Зал", description: "Для компании", is_available: true },
-                    { id: 5, table_number: 5, seats: 4, zone_type: "У окна", description: "Светлый столик", is_available: true },
-                    { id: 6, table_number: 6, seats: 8, zone_type: "VIP", description: "Большой банкетный стол", is_available: true },
-                    { id: 7, table_number: 7, seats: 4, zone_type: "Терраса", description: "Свежий воздух", is_available: true },
-                    { id: 8, table_number: 8, seats: 2, zone_type: "Терраса", description: "Романтический на двоих", is_available: false },
+                    { id: 1, table_number: 10, seats: 2, zone_type: "У окна", description: "Уединенный стол у панорамного окна с видом на сквер", position_x: 12, position_y: 18, shape: "rect", is_available: false },
+                    { id: 2, table_number: 8, seats: 4, zone_type: "Главный зал", description: "Уютный стол в центре зала с комфортными креслами", position_x: 18, position_y: 52, shape: "rect", is_available: true },
+                    { id: 3, table_number: 12, seats: 2, zone_type: "У окна", description: "Стол у арочного панорамного окна. Идеально для романтических свиданий", position_x: 50, position_y: 18, shape: "rect", is_available: true },
+                    { id: 4, table_number: 15, seats: 6, zone_type: "Главный зал", description: "Круглый семейный стол в центре зала", position_x: 50, position_y: 52, shape: "round", is_available: true },
+                    { id: 5, table_number: 14, seats: 2, zone_type: "У окна", description: "Угловой столик у окна с мягким вечерним светом", position_x: 84, position_y: 18, shape: "rect", is_available: false },
+                    { id: 6, table_number: 1, seats: 4, zone_type: "VIP-лаунж", description: "Приватный лаунж с мягким полукруглым диваном", position_x: 84, position_y: 52, shape: "sofa", is_available: true },
+                    { id: 7, table_number: 7, seats: 4, zone_type: "Терраса", description: "Столик на остекленной террасе с живыми растениями", position_x: 35, position_y: 72, shape: "rect", is_available: true },
+                    { id: 8, table_number: 9, seats: 2, zone_type: "Терраса", description: "Уютный столик на двоих у зеленой изгороди", position_x: 65, position_y: 72, shape: "round", is_available: true }
                 ];
             }
 
@@ -2090,48 +2943,202 @@
                 console.error(e);
             }
 
+            // Update free count badge
+            const freeCount = currentTables.filter(t => t.is_available).length;
+            if (badge) {
+                badge.innerText = `${freeCount} свободно на ${selectedTimeSlot}`;
+            }
+
+            // If selected table is no longer available, reset
+            if (selectedTable && !currentTables.some(t => t.id === selectedTable.id && t.is_available)) {
+                selectedTable = null;
+            }
+
             renderTablesGrid();
+            updateSelectedTableBanner();
         }
 
         function renderTablesGrid() {
-            const container = document.getElementById('hallTablesGrid');
-            container.innerHTML = '';
+            // 1. Filter by zone if selected
+            let filteredTables = currentTables;
+            if (selectedZoneFilter === 'window') {
+                filteredTables = currentTables.filter(t => (t.zone_type || '').toLowerCase().includes('окн'));
+            } else if (selectedZoneFilter === 'hall') {
+                filteredTables = currentTables.filter(t => (t.zone_type || '').toLowerCase().includes('зал'));
+            } else if (selectedZoneFilter === 'vip') {
+                filteredTables = currentTables.filter(t => (t.zone_type || '').toLowerCase().includes('vip'));
+            } else if (selectedZoneFilter === 'terrace') {
+                filteredTables = currentTables.filter(t => (t.zone_type || '').toLowerCase().includes('террас'));
+            }
 
-            currentTables.forEach(t => {
-                const isSelected = selectedTable && selectedTable.id === t.id;
-                const isBusy = !t.is_available;
+            // Fallback if zone filter leaves 0 tables
+            if (filteredTables.length === 0) filteredTables = currentTables;
 
-                const card = document.createElement('div');
-                card.className = `table-node w-24 h-20 rounded-2xl flex flex-col items-center justify-center p-1.5 cursor-pointer relative border transition-all ${
-                    isBusy 
-                        ? 'busy bg-[#FFFFFF] border-[#E8E2D5] text-[#6b6255]' 
-                        : isSelected 
-                            ? 'selected bg-[#4A5543] text-white border-[#dfc8a7] shadow-lg shadow-[#c49c6d]/20' 
-                            : 'bg-emerald-950/30 border-emerald-700/50 text-emerald-300 hover:bg-emerald-900/40'
-                }`;
+            // 2. Render Architectural SVG Floor Plan
+            const svgContainer = document.getElementById('svgTablesContainer');
+            if (svgContainer) {
+                svgContainer.innerHTML = '';
 
-                let zoneIcon = "🍽️";
-                if (t.zone_type.includes("окн")) zoneIcon = "🪟";
-                if (t.zone_type.includes("VIP")) zoneIcon = "👑";
-                if (t.zone_type.includes("Террас")) zoneIcon = "🌿";
+                // Architectural preset coordinates map for up to 8 tables
+                const defaultPositions = [
+                    { x: 58, y: 44, shape: 'rect' },
+                    { x: 200, y: 44, shape: 'rect' },
+                    { x: 335, y: 44, shape: 'rect' },
+                    { x: 65, y: 148, shape: 'rect' },
+                    { x: 200, y: 152, shape: 'round' },
+                    { x: 335, y: 152, shape: 'sofa' },
+                    { x: 135, y: 215, shape: 'rect' },
+                    { x: 245, y: 215, shape: 'round' }
+                ];
 
-                card.innerHTML = `
-                    <div class="flex items-center gap-1">
-                        <span class="text-xs">${zoneIcon}</span>
-                        <span class="font-extrabold text-xs">Стол №${t.table_number}</span>
-                    </div>
-                    <span class="text-[10px] font-medium opacity-80 mt-0.5">${pluralizeSeats(t.seats)}</span>
-                    <span class="text-[9px] mt-0.5 px-1.5 py-0.2 rounded font-bold ${
-                        isBusy ? 'bg-stone-800 text-[#73706B]' : isSelected ? 'bg-[#F3EFE8]/25 text-[#110e0c]' : 'bg-emerald-900/60 text-emerald-200'
-                    }">${isBusy ? 'Занят' : isSelected ? 'Выбран' : 'Свободен'}</span>
-                `;
+                currentTables.forEach((t, idx) => {
+                    const isSelected = selectedTable && selectedTable.id === t.id;
+                    const isBusy = !t.is_available;
+                    const isVip = (t.zone_type || '').includes('VIP');
 
-                if (!isBusy) {
-                    card.onclick = () => onSelectTable(t);
-                }
+                    // Compute position
+                    let x = 50, y = 50;
+                    if (t.position_x && t.position_y) {
+                        x = 30 + (t.position_x / 100) * 320;
+                        y = 20 + (t.position_y / 100) * 200;
+                    } else if (defaultPositions[idx]) {
+                        x = defaultPositions[idx].x;
+                        y = defaultPositions[idx].y;
+                    }
 
-                container.appendChild(card);
-            });
+                    const shape = t.shape || (defaultPositions[idx]?.shape) || (isVip ? 'sofa' : (t.seats >= 6 ? 'round' : 'rect'));
+
+                    // SVG Group for Table
+                    const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                    g.setAttribute('id', `svg-table-${t.id}`);
+                    g.setAttribute('class', `svg-table-node ${isBusy ? 'busy opacity-60 cursor-not-allowed' : 'cursor-pointer'}`);
+
+                    if (isSelected) {
+                        g.setAttribute('filter', 'url(#glow)');
+                    } else if (!isBusy) {
+                        g.setAttribute('filter', 'url(#soft-shadow)');
+                    }
+
+                    let svgInner = '';
+
+                    // Selected Table Glowing Aura Halo
+                    if (isSelected) {
+                        svgInner += `<circle cx="${x}" cy="${y}" r="32" fill="#FED269" fill-opacity="0.28"/>`;
+                    }
+
+                    // Colors based on state
+                    const chairColor = isBusy ? '#C3C8C2' : (isSelected ? '#ECC15A' : (isVip ? '#FED269' : '#BACBBD'));
+                    const tableColor = isBusy ? '#DFD9D5' : (isSelected ? '#1A281F' : (isVip ? '#775A00' : '#2F3E34'));
+                    const textColor = isBusy ? '#737873' : (isSelected ? '#FFFFFF' : (isVip ? '#FFDF99' : '#FFFFFF'));
+
+                    if (shape === 'sofa') {
+                        // VIP Sofa Lounge (Curved arc sofa + table)
+                        svgInner += `
+                            <path d="M ${x-24} ${y-16} C ${x+24} ${y-16} ${x+30} ${y+20} ${x+30} ${y+26}" fill="none" stroke="${chairColor}" stroke-linecap="round" stroke-width="7"/>
+                            <rect x="${x-18}" y="${y-12}" width="36" height="26" rx="6" fill="${tableColor}"/>
+                            <text x="${x}" y="${y}" font-family="Playfair Display" font-size="8" font-weight="700" fill="${textColor}" text-anchor="middle">№${t.table_number}</text>
+                            <text x="${x}" y="${y+8}" font-family="Plus Jakarta Sans" font-size="6" font-weight="600" fill="${textColor}" text-anchor="middle">${t.seats} чел</text>
+                        `;
+                    } else if (shape === 'round') {
+                        // Round table with orbiting chairs
+                        const r = t.seats >= 6 ? 22 : 18;
+                        const chairR = 4;
+                        const chairDist = r + 8;
+                        const chairCount = t.seats || 4;
+                        for (let c = 0; c < chairCount; c++) {
+                            const angle = (c * (360 / chairCount)) * (Math.PI / 180);
+                            const cx = x + Math.cos(angle) * chairDist;
+                            const cy = y + Math.sin(angle) * chairDist;
+                            svgInner += `<circle cx="${cx}" cy="${cy}" r="${chairR}" fill="${chairColor}"/>`;
+                        }
+                        svgInner += `
+                            <circle cx="${x}" cy="${y}" r="${r}" fill="${tableColor}"/>
+                            <text x="${x}" y="${y+3}" font-family="Plus Jakarta Sans" font-size="8.5" font-weight="600" fill="${textColor}" text-anchor="middle">№${t.table_number}</text>
+                        `;
+                    } else {
+                        // Rectangular table with top/bottom/side chairs
+                        const w = t.seats >= 6 ? 56 : 46;
+                        const h = 22;
+                        // Chairs top & bottom
+                        svgInner += `
+                            <rect x="${x - w/2 + 6}" y="${y - h/2 - 7}" width="16" height="5" rx="2" fill="${chairColor}"/>
+                            <rect x="${x + w/2 - 22}" y="${y - h/2 - 7}" width="16" height="5" rx="2" fill="${chairColor}"/>
+                            <rect x="${x - w/2 + 6}" y="${y + h/2 + 2}" width="16" height="5" rx="2" fill="${chairColor}"/>
+                            <rect x="${x + w/2 - 22}" y="${y + h/2 + 2}" width="16" height="5" rx="2" fill="${chairColor}"/>
+                            <rect x="${x - w/2}" y="${y - h/2}" width="${w}" height="${h}" rx="5" fill="${tableColor}"/>
+                            <text x="${x}" y="${y+3}" font-family="${isVip ? 'Playfair Display' : 'Plus Jakarta Sans'}" font-size="8.5" font-weight="700" fill="${textColor}" text-anchor="middle">№${t.table_number}</text>
+                        `;
+                    }
+
+                    // Checkmark Badge for Selected Table
+                    if (isSelected) {
+                        svgInner += `
+                            <circle cx="${x + 20}" cy="${y - 12}" r="7" fill="#ECC15A"/>
+                            <text x="${x + 20}" y="${y - 9.5}" font-family="Plus Jakarta Sans" font-size="8" font-weight="900" fill="#251A00" text-anchor="middle">✓</text>
+                        `;
+                    }
+
+                    g.innerHTML = svgInner;
+
+                    if (!isBusy) {
+                        g.onclick = () => onSelectTable(t);
+                    }
+
+                    svgContainer.appendChild(g);
+                });
+            }
+
+            // 3. Render Grid Mode (#hallTablesGrid)
+            const gridContainer = document.getElementById('hallTablesGrid');
+            if (gridContainer) {
+                gridContainer.innerHTML = '';
+                filteredTables.forEach(t => {
+                    const isSelected = selectedTable && selectedTable.id === t.id;
+                    const isBusy = !t.is_available;
+                    const isVip = (t.zone_type || '').includes('VIP');
+
+                    const card = document.createElement('div');
+                    card.className = `p-3 rounded-2xl flex flex-col justify-between cursor-pointer border transition-all ${
+                        isBusy 
+                            ? 'bg-surface-container-low border-[#E8E2D5] opacity-50 cursor-not-allowed text-on-surface-variant' 
+                            : isSelected 
+                                ? 'bg-primary text-on-primary border-secondary-fixed shadow-md ring-2 ring-secondary/40' 
+                                : 'bg-surface-container-lowest border-[#E8E2D5] text-on-surface hover:border-primary/40 shadow-xs'
+                    }`;
+
+                    let zoneIcon = "🍽️";
+                    if ((t.zone_type || '').includes("окн")) zoneIcon = "🪟";
+                    if (isVip) zoneIcon = "👑";
+                    if ((t.zone_type || '').includes("Террас")) zoneIcon = "🌿";
+
+                    card.innerHTML = `
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold flex items-center gap-1">
+                                <span>${zoneIcon}</span>
+                                <span>Стол №${t.table_number}</span>
+                            </span>
+                            <span class="text-[9px] font-bold px-1.5 py-0.5 rounded-full ${
+                                isBusy 
+                                    ? 'bg-surface-container text-on-surface-variant' 
+                                    : isSelected 
+                                        ? 'bg-secondary-fixed text-on-secondary-fixed' 
+                                        : (isVip ? 'bg-secondary text-on-secondary' : 'bg-primary-fixed text-on-primary-fixed')
+                            }">
+                                ${isBusy ? 'Занят' : isSelected ? 'Выбран' : (isVip ? 'VIP' : 'Свободен')}
+                            </span>
+                        </div>
+                        <div class="mt-2 text-[11px] opacity-80">
+                            ${pluralizeSeats(t.seats)} • ${t.zone_type || 'Зал'}
+                        </div>
+                    `;
+
+                    if (!isBusy) {
+                        card.onclick = () => onSelectTable(t);
+                    }
+
+                    gridContainer.appendChild(card);
+                });
+            }
         }
 
         function onSelectTable(table) {
@@ -2142,18 +3149,76 @@
         }
 
         function updateSelectedTableBanner() {
-            const banner = document.getElementById('selectedTableBanner');
+            const card = document.getElementById('selectedTableDetailedCard');
+            const emptyBanner = document.getElementById('selectedTableEmptyBanner');
             const title = document.getElementById('selectedTableTitle');
+            const subzone = document.getElementById('selectedTableSubzone');
+            const tags = document.getElementById('selectedTableTags');
             const desc = document.getElementById('selectedTableDesc');
+            const deposit = document.getElementById('selectedTableDeposit');
+            const highlight = document.getElementById('selectedTableHighlight');
+            const badgeZone = document.getElementById('selectedTableBadgeZone');
+            const photo = document.getElementById('selectedTablePhoto');
+            const summaryText = document.getElementById('stickySummaryText');
+            const summarySub = document.getElementById('stickySummarySub');
 
             if (selectedTable) {
-                banner.className = "mt-2 p-3.5 bg-[#F3EFE8] border border-[#c49c6d]/50 rounded-xl text-xs sm:text-sm text-[#4A5543] flex items-center justify-between";
-                title.innerText = `Стол №${selectedTable.table_number} (${selectedTable.zone_type || 'Зал'})`;
-                desc.innerText = `Вместимость: до ${selectedTable.seats} человек • ${selectedTable.description || 'Отличный выбор'}`;
+                if (card) card.classList.remove('hidden');
+                if (emptyBanner) emptyBanner.classList.add('hidden');
+
+                const isVip = (selectedTable.zone_type || '').includes('VIP');
+                const isWindow = (selectedTable.zone_type || '').includes('окн');
+
+                if (title) title.innerText = `Стол №${selectedTable.table_number}`;
+                if (highlight) {
+                    highlight.innerText = isVip ? 'VIP / Лаунж' : (isWindow ? 'Панорамный вид' : 'Рекомендуем');
+                    highlight.className = isVip 
+                        ? 'px-2 py-0.5 rounded-full bg-secondary text-on-secondary font-label-sm text-[10px] font-bold shrink-0' 
+                        : 'px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-[10px] font-bold shrink-0';
+                }
+                if (badgeZone) {
+                    badgeZone.innerText = selectedTable.zone_type || 'Главный зал';
+                }
+                if (subzone) {
+                    subzone.innerText = `${selectedRestaurant?.name || 'Ресторан'} • ${selectedTable.zone_type || 'Главный зал'}`;
+                }
+                if (tags) {
+                    tags.innerHTML = `
+                        <span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface font-label-sm text-[10px] font-semibold">${pluralizeSeats(selectedTable.seats)}</span>
+                        <span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface font-label-sm text-[10px]">${isWindow ? 'Вид на горы' : (isVip ? 'Приватная зона' : 'Уютный сектор')}</span>
+                        <span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface font-label-sm text-[10px]">Тихий вечер</span>
+                    `;
+                }
+                if (desc) {
+                    desc.innerText = selectedTable.description || 'Уединенный стол с мягкими креслами из оливкового бархата. Идеально для романтических свиданий, ужина на двоих и дегустации вин из частного погреба.';
+                }
+                if (deposit) {
+                    deposit.innerText = isVip ? 'Депозит 25 000 ₸' : 'Не требуется';
+                }
+                if (photo) {
+                    if (isWindow) {
+                        photo.src = "https://lh3.googleusercontent.com/aida-public/AB6AXuA19mu1r71SIt8hM37bprPPkcyLv3gRkJvMYafpV6PydAF8dWpd8KOFp80HJ5aoLlWC4dqty3QIhZEo9Icslp75uWraxxslnCw9nBEt8gb1Q_1N7Y1IE-rRaM07vYr9bm9UgnVUn2GXzDzoEfU5PQIUDd4ok_8W1Se134Io2T2aPMv4fuUydurRQ7xcs_fj-C5VYADkVKLXHMHfMhtirev5XS0yp8bAVM_V75T-Ws98SH7iC1OUHyShxw";
+                    } else if (isVip) {
+                        photo.src = "https://lh3.googleusercontent.com/aida-public/AB6AXuABR5MXyV9uZZ5clcO6-jxONZfh0vPeZCVqecna_3DCwbmmkLuSI_dDXoo02VAwZnJu5hSRyKBZp4sIB0REqL3pTGLi6LgUhlBfB6VUuLuc4p9kuOv7OScXhZGVxOXLxYLIFIwasvqplnh8koqnDZdjIALxhVcUp-q4f2Gq2fRauyMHUOLl0bHtYa3JQN27P9VwfSAOh2hHhT4M76PT_jGnJdf0YeRNCaXVLchBYZirTxC3bc_CXL18QQ";
+                    } else {
+                        photo.src = "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80";
+                    }
+                }
+                if (summaryText) {
+                    summaryText.innerText = `${selectedTimeSlot} • ${currentGuestCount} ${pluralizeSeats(currentGuestCount)} • Стол №${selectedTable.table_number}`;
+                }
+                if (summarySub) {
+                    summarySub.innerText = isVip ? 'Депозит от 25 000 ₸ • Бесплатная отмена' : 'Без депозита • Бесплатная отмена';
+                }
             } else {
-                banner.className = "mt-2 p-3.5 bg-[#F3EFE8] border border-[#E8E2D5] rounded-xl text-xs sm:text-sm text-[#73706B] flex items-center justify-between";
-                title.innerText = `Столик не выбран`;
-                desc.innerText = `Нажмите на свободный столик выше`;
+                if (card) card.classList.add('hidden');
+                if (emptyBanner) emptyBanner.classList.remove('hidden');
+                if (summaryText) {
+                    summaryText.innerText = `Выберите стол на ${selectedTimeSlot}`;
+                }
+                if (summarySub) {
+                    summarySub.innerText = 'Бесплатная отмена';
+                }
             }
         }
 
@@ -2274,52 +3339,99 @@
 
         let lastConfirmedBooking = null;
 
+        function formatReadableDate(dateStr) {
+            if (!dateStr) return '';
+            try {
+                const parts = dateStr.split('-');
+                if (parts.length === 3) {
+                    const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+                    const day = parseInt(parts[2], 10);
+                    const month = months[parseInt(parts[1], 10) - 1];
+                    const year = parts[0];
+                    return `${day} ${month} ${year}`;
+                }
+            } catch (e) {}
+            return dateStr;
+        }
+
+        function getDayOfWeekName(dateStr) {
+            if (!dateStr) return '';
+            try {
+                const parts = dateStr.split('-');
+                if (parts.length === 3) {
+                    const d = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+                    const days = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+                    return days[d.getDay()];
+                }
+            } catch (e) {}
+            return '';
+        }
+
         function showSuccessModal(payload, bookingId) {
-            lastConfirmedBooking = { ...payload, id: bookingId, restName: selectedRestaurant.name };
-            const details = document.getElementById('successBookingDetails');
+            lastConfirmedBooking = { ...payload, id: bookingId, restName: payload.restaurant_name || selectedRestaurant?.name };
             const passCode = `AR-${String(bookingId).padStart(5, '0')}`;
             
-            details.innerHTML = `
-                <div class="flex items-center justify-between border-b border-[#E8E2D5] pb-2">
-                    <div>
-                        <span class="text-[10px] uppercase font-bold text-[#73706B]">Код резерва</span>
-                        <div class="font-mono font-black text-sm text-[#4A5543]">#${passCode}</div>
-                    </div>
-                    <div class="text-right">
-                        <span class="text-[10px] uppercase font-bold text-[#73706B]">Заведение</span>
-                        <div class="font-bold text-[#1E1F20] truncate max-w-[170px]">${selectedRestaurant.name}</div>
-                    </div>
-                </div>
+            const rest = selectedRestaurant || {
+                name: payload.restaurant_name || 'L’Ambroisie',
+                cuisine: 'Высокая авторская кухня',
+                city: 'Алматы',
+                address: payload.restaurant_address || 'ул. Достык, 50'
+            };
 
-                <div class="grid grid-cols-2 gap-2 py-1 border-b border-[#E8E2D5]">
-                    <div>
-                        <span class="text-[10px] text-[#73706B] block">Дата & Время</span>
-                        <strong class="text-[#1E1F20] font-bold">${payload.booking_date} • ${payload.booking_time}</strong>
-                    </div>
-                    <div>
-                        <span class="text-[10px] text-[#73706B] block">Столик & Зал</span>
-                        <strong class="text-[#4A5543] font-bold">№${payload.table_number || '1'} (${selectedTable ? (selectedTable.zone_type || 'Основной зал') : 'Зал'})</strong>
-                    </div>
-                </div>
+            const successRestName = document.getElementById('successRestName');
+            if (successRestName) successRestName.innerText = rest.name;
 
-                <div class="flex items-center justify-between pt-1">
-                    <div>
-                        <span class="text-[10px] text-[#73706B] block">Гость & Персоны</span>
-                        <strong class="text-[#1E1F20]">${payload.guest_name} (${payload.guests_count} чел.)</strong>
-                    </div>
-                    <div class="w-12 h-12 bg-white rounded-lg p-1 border border-[#E8E2D5] flex items-center justify-center flex-shrink-0 shadow-sm" title="QR-код для хостес">
-                        <svg class="w-10 h-10 text-[#1E1F20]" fill="currentColor" viewBox="0 0 24 24"><path d="M2 2h8v8H2V2zm2 2v4h4V4H4zm10-2h8v8h-8V2zm2 2v4h4V4h-4zM2 14h8v8H2v-8zm2 2v4h4v-4H4zm14 0h4v2h-4v-2zm-4 0h2v4h-2v-4zm2 4h4v2h-4v-2zm-6-2h2v4h-2v-4zm4-6h2v2h-2v-2zm2 2h2v2h-2v-2zm-4 2h2v2h-2v-2z"/></svg>
-                    </div>
-                </div>
-            `;
+            const venueName = document.getElementById('ticketVenueName');
+            if (venueName) venueName.innerText = rest.name;
+
+            const cuisine = document.getElementById('ticketCuisineName');
+            if (cuisine) cuisine.innerText = (rest.cuisine || 'Высокая авторская кухня').split(',')[0];
+
+            const passCodeEl = document.getElementById('ticketBookingPassCode');
+            if (passCodeEl) passCodeEl.innerText = `#${passCode}`;
+
+            const guestName = document.getElementById('ticketGuestName');
+            if (guestName) guestName.innerText = payload.guest_name || 'Гость';
+
+            const guestsCount = document.getElementById('ticketGuestsCount');
+            if (guestsCount) guestsCount.innerText = `${payload.guests_count} ${pluralizeSeats(payload.guests_count)}`;
+
+            const dateText = document.getElementById('ticketDateText');
+            if (dateText) dateText.innerText = formatReadableDate(payload.booking_date);
+
+            const dayOfWeek = document.getElementById('ticketDayOfWeek');
+            if (dayOfWeek) dayOfWeek.innerText = getDayOfWeekName(payload.booking_date);
+
+            const timeText = document.getElementById('ticketTimeText');
+            if (timeText) timeText.innerText = payload.booking_time;
+
+            const locationText = document.getElementById('ticketLocationText');
+            if (locationText) locationText.innerText = `Стол №${payload.table_number || '1'}`;
+
+            const zoneText = document.getElementById('ticketZoneText');
+            if (zoneText) zoneText.innerText = payload.table_zone || 'Главный зал';
+
+            const mapSubtext = document.getElementById('ticketMapSubtext');
+            if (mapSubtext) mapSubtext.innerText = `${rest.city || 'Алматы'} • ${rest.address || ''}`;
+
             document.getElementById('successModal').classList.remove('hidden');
+        }
+
+        function openHostessChat() {
+            if (!lastConfirmedBooking) return;
+            const b = lastConfirmedBooking;
+            if (b.restaurant_phone) {
+                window.location.href = `tel:${b.restaurant_phone}`;
+            } else {
+                showToast("Чат с консьержем и сомелье заведения открыт", "✨");
+            }
         }
 
         function downloadBookingCalendar() {
             if (!lastConfirmedBooking) return;
             const b = lastConfirmedBooking;
             const title = `Бронь: ${b.restName}`;
-            const desc = `Столик №${b.table_number}, ${b.guests_count} гостей. Код брони: #${b.id}`;
+            const desc = `Столик №${b.table_number}, ${b.guests_count} гостей. Код брони: #AR-${b.id}`;
             const dt = (b.booking_date || '').replace(/-/g, '');
             const tm = (b.booking_time || '19:00').replace(':', '') + '00';
             const ics = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:${title}\nDESCRIPTION:${desc}\nDTSTART:${dt}T${tm}\nDTEND:${dt}T${tm}\nEND:VEVENT\nEND:VCALENDAR`;
@@ -2330,12 +3442,14 @@
             a.download = `restokz_booking_${b.id}.ics`;
             a.click();
             URL.revokeObjectURL(url);
-            showToast('Календарь (.ics) сохранён', '📅');
+            showToast('Билет добавлен в Календарь', '📅');
         }
 
         function openRouteToRestaurant() {
-            if (!selectedRestaurant) return;
-            const q = encodeURIComponent(`${selectedRestaurant.name} ${selectedRestaurant.city} ${selectedRestaurant.address}`);
+            if (!lastConfirmedBooking) return;
+            const b = lastConfirmedBooking;
+            const rest = selectedRestaurant || b;
+            const q = encodeURIComponent(`${b.restName || rest.name} ${rest.city || 'Алматы'} ${rest.address || ''}`);
             window.open(`https://2gis.kz/search/${q}`, '_blank');
         }
 
@@ -2459,17 +3573,18 @@
             }
 
             list.innerHTML = bookings.map(b => {
+                const passCode = `AR-${String(b.id).padStart(5, '0')}`;
                 let statusBadge = '';
                 if (b.status === 'confirmed') {
-                    statusBadge = '<span class="inline-flex items-center gap-1.5 bg-emerald-950/40 text-emerald-300 border border-emerald-700/50 text-xs sm:text-sm font-semibold px-3 sm:px-3.5 py-1 rounded-full shadow-sm"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Подтверждено</span>';
+                    statusBadge = '<span class="inline-flex items-center gap-1 bg-emerald-950/40 text-emerald-300 border border-emerald-700/50 text-[10px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-full shadow-xs"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>Подтверждено</span>';
                 } else if (b.status === 'pending') {
-                    statusBadge = '<span class="inline-flex items-center gap-1.5 bg-[#c49c6d]/15 text-[#4A5543] border border-[#c49c6d]/40 text-xs sm:text-sm font-semibold px-3 sm:px-3.5 py-1 rounded-full badge-pulse shadow-sm"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>В ожидании</span>';
+                    statusBadge = '<span class="inline-flex items-center gap-1 bg-secondary-fixed text-on-secondary-fixed text-[10px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-full shadow-xs"><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>В ожидании</span>';
                 } else if (b.status === 'rejected') {
-                    statusBadge = '<span class="inline-flex items-center gap-1.5 bg-rose-950/40 text-rose-300 border border-rose-800/40 text-xs sm:text-sm font-semibold px-3 sm:px-3.5 py-1 rounded-full shadow-sm"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>Отклонено</span>';
+                    statusBadge = '<span class="inline-flex items-center gap-1 bg-rose-950/40 text-rose-300 border border-rose-800/40 text-[10px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-full shadow-xs"><span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span>Отклонено</span>';
                 } else if (b.status === 'cancelled') {
-                    statusBadge = '<span class="inline-flex items-center gap-1.5 bg-zinc-900/60 text-zinc-400 border border-zinc-700/40 text-xs sm:text-sm font-semibold px-3 sm:px-3.5 py-1 rounded-full shadow-sm"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>Отменено</span>';
+                    statusBadge = '<span class="inline-flex items-center gap-1 bg-zinc-800/60 text-zinc-400 border border-zinc-700/40 text-[10px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-full shadow-xs">Отменено</span>';
                 } else {
-                    statusBadge = '<span class="inline-flex items-center gap-1.5 bg-[#F3EFE8] text-[#73706B] border border-[#E8E2D5] text-xs sm:text-sm font-semibold px-3 sm:px-3.5 py-1 rounded-full shadow-sm">Завершено</span>';
+                    statusBadge = '<span class="inline-flex items-center gap-1 bg-surface-container text-on-surface-variant border border-[#E8E2D5] text-[10px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-full shadow-xs">Завершено</span>';
                 }
 
                 const canCancel = (b.status === 'pending' || b.status === 'confirmed');
@@ -2477,50 +3592,75 @@
                 const mapHref = b.restaurant_two_gis || ('https://2gis.kz/search/' + encodeURIComponent((b.restaurant_name || '') + ' ' + (b.restaurant_address || '')));
 
                 return `
-                    <div class="bg-[#FFFFFF] border border-[#E8E2D5] rounded-3xl p-4 sm:p-6 lg:p-7 space-y-3 sm:space-y-4 shadow-md hover:border-[#4A5543]/40 transition-all flex flex-col justify-between">
-                        <div class="space-y-3">
-                            <div class="flex items-center justify-between gap-3">
-                                <span class="text-base sm:text-lg lg:text-xl font-serif font-bold text-[#1E1F20] flex items-center gap-2 truncate">
-                                    <svg class="w-4 h-4 text-[#4A5543] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                                    <span class="truncate">${b.restaurant_name}</span>
-                                </span>
-                                ${statusBadge}
-                            </div>
-                            <p class="text-xs sm:text-sm text-[#73706B] flex items-center gap-1.5 truncate">
-                                <svg class="w-3.5 h-3.5 text-[#73706B] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-                                <span class="truncate">${b.restaurant_address || ''}</span>
-                            </p>
-
-                            <div class="bg-[#F3EFE8] rounded-2xl p-3 sm:p-4 grid grid-cols-2 gap-2.5 text-xs sm:text-sm lg:text-base border border-[#E8E2D5]">
-                                <div>
-                                    <span class="text-[#73706B] block text-[10.5px] sm:text-xs font-medium">Дата и время:</span>
-                                    <span class="font-bold text-[#1E1F20] mt-0.5 block">${b.booking_date} в ${b.booking_time}</span>
+                    <div class="bg-surface-container-lowest border border-[#E8E2D5] rounded-2xl shadow-md overflow-hidden hover:border-primary/40 transition-all flex flex-col justify-between">
+                        <!-- Top Luxury Accent Bar -->
+                        <div class="h-1.5 w-full bg-gradient-to-r from-primary-container via-secondary to-primary-container"></div>
+                        
+                        <div class="p-4 sm:p-5 flex flex-col gap-3">
+                            <!-- Card Header: Venue & Pass ID -->
+                            <div class="flex items-start justify-between gap-2">
+                                <div class="min-w-0">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="material-symbols-outlined text-primary text-[18px]">restaurant</span>
+                                        <h3 class="font-serif font-bold text-base sm:text-lg text-primary truncate leading-tight">${b.restaurant_name}</h3>
+                                    </div>
+                                    <p class="text-[11px] text-on-surface-variant truncate mt-0.5">${b.restaurant_address || ''}</p>
                                 </div>
-                                <div>
-                                    <span class="text-[#73706B] block text-[10.5px] sm:text-xs font-medium">Столик и гости:</span>
-                                    <span class="font-bold text-[#4A5543] mt-0.5 block">Стол №${b.table_number} (${b.guests_count} чел.)</span>
+                                <div class="text-right shrink-0 flex flex-col items-end gap-1">
+                                    ${statusBadge}
+                                    <span class="font-mono font-bold text-xs text-primary tracking-wide">#${passCode}</span>
                                 </div>
                             </div>
 
-                            ${b.wishes ? `<p class="text-xs sm:text-sm text-[#4A5543] italic bg-[#F3EFE8] rounded-xl px-3 py-2 border border-[#E8E2D5]">«${b.wishes}»</p>` : ''}
+                            <!-- 2x2 Parameters Grid -->
+                            <div class="grid grid-cols-2 gap-2 text-xs">
+                                <div class="bg-surface-container-low rounded-xl p-2.5 flex flex-col justify-between border border-[#E8E2D5]/70">
+                                    <span class="text-[9px] uppercase tracking-wider text-on-surface-variant flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-[13px] text-secondary">calendar_today</span>
+                                        Дата & Время
+                                    </span>
+                                    <span class="font-bold text-on-surface mt-0.5 truncate">${b.booking_date}</span>
+                                    <span class="text-[10px] text-primary font-semibold">${b.booking_time}</span>
+                                </div>
+                                <div class="bg-surface-container-low rounded-xl p-2.5 flex flex-col justify-between border border-[#E8E2D5]/70">
+                                    <span class="text-[9px] uppercase tracking-wider text-on-surface-variant flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-[13px] text-secondary">deck</span>
+                                        Столик & Гости
+                                    </span>
+                                    <span class="font-bold text-primary mt-0.5 truncate">Стол №${b.table_number || '1'}</span>
+                                    <span class="text-[10px] text-on-surface-variant">${b.guests_count} ${pluralizeSeats(b.guests_count)}</span>
+                                </div>
+                            </div>
+
+                            ${b.wishes ? `<p class="text-xs text-on-surface-variant italic bg-surface-container-low rounded-xl px-2.5 py-1.5 border border-[#E8E2D5]/70">«${b.wishes}»</p>` : ''}
                         </div>
 
-                        <!-- 1-Tap Mobile Actions -->
-                        <div class="flex items-center gap-2 pt-2 border-t border-[#E8E2D5]/80 mt-2">
+                        <!-- Perforated Cutouts & Dashed Divider -->
+                        <div class="relative py-0.5 flex items-center justify-between bg-surface-container-lowest">
+                            <div class="w-3 h-5 bg-surface rounded-r-full -ml-0.5 border-r border-[#E8E2D5]"></div>
+                            <div class="flex-1 border-t border-dashed border-[#E8E2D5] mx-2"></div>
+                            <div class="w-3 h-5 bg-surface rounded-l-full -mr-0.5 border-l border-[#E8E2D5]"></div>
+                        </div>
+
+                        <!-- 1-Tap Actions Toolbar -->
+                        <div class="p-3 bg-surface-container-lowest flex items-center gap-2 pt-1 border-t border-[#E8E2D5]/40">
+                            <button type="button" onclick='showSuccessModal(${JSON.stringify(b)}, ${b.id})' class="flex-1 min-h-[38px] py-1.5 px-2.5 rounded-full bg-primary text-on-primary text-[11px] font-bold flex items-center justify-center gap-1.5 shadow-xs active:scale-95 transition-all">
+                                <span class="material-symbols-outlined text-[15px] text-secondary-fixed">qr_code_scanner</span>
+                                <span>Билет (QR)</span>
+                            </button>
+                            <a href="${mapHref}" target="_blank" rel="noopener noreferrer" class="min-h-[38px] py-1.5 px-3 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface text-[11px] font-semibold flex items-center justify-center gap-1 border border-[#E8E2D5] active:scale-95 transition-all" title="Маршрут в 2GIS">
+                                <span class="material-symbols-outlined text-[15px] text-secondary">near_me</span>
+                                <span class="hidden sm:inline">2GIS</span>
+                            </a>
                             ${callHref ? `
-                                <a href="${callHref}" class="flex-1 min-h-[42px] py-2 px-2.5 rounded-xl bg-[#F3EFE8] hover:bg-[#F3EFE8] text-[#4A5543] border border-[#E8E2D5] text-xs font-bold flex items-center justify-center gap-1.5 tap-scale transition-all">
-                                    <svg class="w-3.5 h-3.5 text-[#4A5543]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                                    <span>Позвонить</span>
+                                <a href="${callHref}" class="min-h-[38px] w-9 h-9 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface flex items-center justify-center border border-[#E8E2D5] active:scale-95 transition-all" title="Позвонить в ресторан">
+                                    <span class="material-symbols-outlined text-[16px] text-primary">call</span>
                                 </a>
                             ` : ''}
-                            <a href="${mapHref}" target="_blank" rel="noopener noreferrer" class="flex-1 min-h-[42px] py-2 px-2.5 rounded-xl bg-[#F3EFE8] hover:bg-[#F3EFE8] text-[#4A5543] border border-[#E8E2D5] text-xs font-bold flex items-center justify-center gap-1.5 tap-scale transition-all">
-                                <svg class="w-3.5 h-3.5 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                                <span>2GIS</span>
-                            </a>
                             ${canCancel ? `
-                                <button type="button" onclick="cancelMyBooking(${b.id})" class="flex-1 min-h-[42px] py-2 px-2.5 rounded-xl bg-rose-950/25 hover:bg-rose-950/40 text-rose-300 border border-rose-800/40 text-xs font-bold flex items-center justify-center gap-1.5 tap-scale transition-all">
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                                    <span>Отменить</span>
+                                <button type="button" onclick="cancelMyBooking(${b.id})" class="min-h-[38px] py-1.5 px-3 rounded-full bg-rose-950/20 hover:bg-rose-950/30 text-rose-400 border border-rose-800/40 text-[11px] font-semibold flex items-center justify-center gap-1 active:scale-95 transition-all" title="Отменить бронь">
+                                    <span class="material-symbols-outlined text-[14px]">close</span>
+                                    <span class="hidden sm:inline">Отмена</span>
                                 </button>
                             ` : ''}
                         </div>
@@ -2779,6 +3919,204 @@
                 }
             }
         });
-    </script>
+    
+        // ================= MOBILE SIMULATOR & STEP 3 HELPERS =================
+        function openMobileSimulator() {
+            const modal = document.getElementById('mobileSimulatorModal');
+            const iframe = document.getElementById('mobileSimulatorIframe');
+            if (modal && iframe) {
+                if (!iframe.src || iframe.src === 'about:blank' || !iframe.src.includes('simulator=true')) {
+                    iframe.src = '/?simulator=true';
+                }
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeMobileSimulator() {
+            const modal = document.getElementById('mobileSimulatorModal');
+            if (modal) {
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+        }
+
+        function setDeviceView(mode) {
+            if (mode === 'mobile') {
+                openMobileSimulator();
+            } else {
+                closeMobileSimulator();
+            }
+        }
+
+        // --- Guest Count Pill Selector ---
+        function selectGuestPill(count) {
+            currentGuestCount = count;
+            const valEl = document.getElementById('guestsCountValue');
+            if (valEl) valEl.innerText = count;
+
+            document.querySelectorAll('.guest-pill').forEach(btn => {
+                const btnCount = parseInt(btn.getAttribute('data-guests'), 10);
+                if (btnCount === count) {
+                    btn.className = "guest-pill active py-2 sm:py-2.5 rounded-xl text-xs font-semibold flex flex-col items-center justify-center transition-all bg-primary text-on-primary shadow-sm active:scale-95";
+                } else {
+                    btn.className = "guest-pill py-2 sm:py-2.5 rounded-xl text-xs font-semibold flex flex-col items-center justify-center transition-all bg-surface-container-low text-on-surface hover:bg-surface-container active:scale-95";
+                }
+            });
+            updateStickySummary();
+            loadTablesForCurrentSlot();
+        }
+
+        // --- Occasion Pill Selector ---
+        function selectOccasionPill(btn, occasionText) {
+            document.querySelectorAll('.occasion-pill').forEach(b => {
+                b.className = "occasion-pill px-3 py-1.5 rounded-full text-xs font-semibold bg-surface-container-low text-on-surface hover:bg-surface-container transition-all cursor-pointer";
+            });
+            btn.className = "occasion-pill active px-3 py-1.5 rounded-full text-xs font-bold bg-primary text-on-primary shadow-xs transition-all cursor-pointer";
+            
+            const wishesInput = document.getElementById('guestWishesInput');
+            if (wishesInput) {
+                if (!wishesInput.value) {
+                    wishesInput.value = occasionText;
+                } else if (!wishesInput.value.includes(occasionText)) {
+                    wishesInput.value = `${occasionText}, ${wishesInput.value}`;
+                }
+            }
+        }
+
+        // --- Date Strip Renderer (Today + Next 4 Days) ---
+        function renderDateStrip() {
+            const container = document.getElementById('dateStripContainer');
+            if (!container) return;
+
+            const days = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+            const months = ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+            
+            let html = '';
+            for (let i = 0; i < 5; i++) {
+                const d = new Date();
+                d.setDate(d.getDate() + i);
+                
+                const isoStr = d.toISOString().split('T')[0];
+                const dayName = i === 0 ? 'Сегодня' : (i === 1 ? 'Завтра' : days[d.getDay()]);
+                const dateNum = `${d.getDate()} ${months[d.getMonth()]}`;
+                const isActive = isoStr === selectedDate;
+                
+                const activeClass = isActive 
+                    ? 'date-strip-chip active shrink-0 px-3.5 py-2.5 rounded-xl text-left bg-primary text-on-primary shadow-sm flex flex-col gap-0.5 active:scale-95 transition-all cursor-pointer'
+                    : 'date-strip-chip shrink-0 px-3.5 py-2.5 rounded-xl text-left bg-surface-container-low text-on-surface hover:bg-surface-container flex flex-col gap-0.5 active:scale-95 transition-all cursor-pointer';
+                
+                const subTextColor = isActive ? 'text-primary-fixed-dim' : 'text-on-surface-variant';
+
+                html += `
+                    <button type="button" onclick="selectDateStrip('${isoStr}', this)" class="${activeClass}">
+                        <span class="text-[10px] uppercase font-bold tracking-wider opacity-85">${dayName}</span>
+                        <span class="font-serif font-bold text-xs sm:text-sm leading-tight">${dateNum}</span>
+                        <span class="text-[9px] ${subTextColor} flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> 8 слотов
+                        </span>
+                    </button>
+                `;
+            }
+            container.innerHTML = html;
+        }
+
+        function selectDateStrip(dateStr, btn) {
+            selectedDate = dateStr;
+            renderDateStrip();
+            const dateInput = document.getElementById('bookingDateInput');
+            if (dateInput) dateInput.value = dateStr;
+            updateStickySummary();
+            loadTablesForCurrentSlot();
+        }
+
+        function toggleModalBookmark(btn) {
+            btn.classList.toggle('text-secondary');
+            showToast('Добавлено в сохраненные рестораны');
+        }
+
+        function updateStickySummary() {
+            const summaryText = document.getElementById('stickySummaryText');
+            const summarySub = document.getElementById('stickySummarySub');
+            if (summaryText) {
+                if (selectedTable) {
+                    summaryText.innerText = `${selectedTimeSlot} · ${currentGuestCount} ${pluralizeSeats(currentGuestCount)} · Стол #${selectedTable.table_number}`;
+                } else {
+                    summaryText.innerText = `${selectedTimeSlot} · ${currentGuestCount} ${pluralizeSeats(currentGuestCount)} (стол не выбран)`;
+                }
+            }
+        }
+
+        // --- Simulator Mode Detection ---
+        (function detectSimulatorMode() {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                if (params.get('simulator') === 'true') {
+                    // Inside the simulator iframe, hide floating button and simulator launcher
+                    window.addEventListener('DOMContentLoaded', () => {
+                        const floatBtn = document.getElementById('floatingSimulatorBtn');
+                        if (floatBtn) floatBtn.style.display = 'none';
+                        const devToggle = document.getElementById('deviceBtn-desktop');
+                        if (devToggle && devToggle.parentElement) devToggle.parentElement.style.display = 'none';
+                    });
+                }
+            } catch(e) {}
+        })();
+
+</script>
+    </div>
+
+    <!-- REALISTIC TELEGRAM MINI APP SIMULATOR MODAL (iPhone 15 Frame) -->
+    <div id="mobileSimulatorModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex flex-col items-center justify-center p-3 sm:p-6 transition-all duration-300">
+        <div class="relative flex flex-col items-center max-w-full">
+            
+            <!-- Top Bar with Close and Viewport info -->
+            <div class="w-full flex items-center justify-between pb-3 text-white max-w-[360px] sm:max-w-[390px]">
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="text-xs font-bold font-serif text-[#fed269] flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[15px]">smartphone</span>
+                        Telegram Mini App
+                    </span>
+                </div>
+                <button type="button" onclick="closeMobileSimulator()" class="px-3 py-1 bg-white/10 hover:bg-white/20 rounded-full text-xs font-bold text-white transition flex items-center gap-1 cursor-pointer">
+                    <span>✕ Закрыть</span>
+                </button>
+            </div>
+
+            <!-- iPhone Physical Frame -->
+            <div class="relative w-[360px] sm:w-[390px] h-[720px] sm:h-[780px] bg-[#fff8f4] dark:bg-[#121315] rounded-[44px] shadow-[0_25px_70px_rgba(0,0,0,0.8)] border-[8px] sm:border-[10px] border-[#1a281f] overflow-hidden flex flex-col ring-1 ring-white/20">
+                <!-- Dynamic Island -->
+                <div class="h-6 sm:h-7 bg-[#1a281f] flex items-center justify-center z-20 shrink-0">
+                    <div class="w-20 sm:w-24 h-3.5 sm:h-4 bg-black rounded-full flex items-center justify-end pr-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500/80"></span>
+                    </div>
+                </div>
+                
+                <!-- Telegram Mini App Native Bar -->
+                <div class="h-10 bg-[#FAF8F5] dark:bg-[#1A1B1E] border-b border-[#E8E2D5] dark:border-[#2D3035] px-4 flex items-center justify-between z-20 text-xs font-semibold text-[#1E1F20] dark:text-[#F5F3EF] shrink-0">
+                    <button type="button" onclick="closeMobileSimulator()" class="text-secondary hover:underline cursor-pointer">Закрыть</button>
+                    <span class="font-bold text-xs truncate max-w-[150px]">RestoKZ Bot</span>
+                    <span class="text-on-surface-variant font-bold text-sm">•••</span>
+                </div>
+                
+                <!-- True 390px Mobile Viewport Iframe -->
+                <iframe id="mobileSimulatorIframe" src="" class="w-full flex-1 border-0 bg-[#FAF8F5] dark:bg-[#121315]"></iframe>
+            </div>
+            
+            <p class="text-[11px] text-white/70 pt-2.5 text-center">
+                Интерактивный симулятор: можно кликать, выбирать столики и проверять бронирование
+            </p>
+        </div>
+    </div>
+
+    <!-- Floating Quick Simulator Button (Desktop Only) -->
+    <div id="floatingSimulatorBtn" class="hidden md:flex fixed bottom-6 right-6 z-40 items-center">
+        <button type="button" onclick="openMobileSimulator()" class="px-4 py-2.5 rounded-full bg-primary hover:bg-primary-container text-on-primary font-bold text-xs shadow-2xl border border-secondary/40 flex items-center gap-2 active:scale-95 transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-[18px] text-[#fed269]">smartphone</span>
+            <span>📱 Мобильный вид (Telegram)</span>
+        </button>
+    </div>
+
 </body>
 </html>

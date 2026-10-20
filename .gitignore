@@ -2,6 +2,7 @@
 
 # База данных (не коммитим — будет создана автоматически на Railway)
 booking.db
+*_backup*.html
 
 # Python кэш
 __pycache__/

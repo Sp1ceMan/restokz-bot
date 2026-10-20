@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+
+<html lang="ru"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"tertiary-fixed":"#fddadb","on-tertiary-fixed":"#291718","on-tertiary-container":"#bc9d9e","on-error-container":"#93000a","surface-container-highest":"#e7e1de","tertiary-fixed-dim":"#dfbfc0","inverse-surface":"#32302e","on-primary-container":"#98a99c","tertiary":"#332021","primary":"#1a281f","on-secondary-fixed":"#251a00","on-secondary":"#ffffff","surface-container-lowest":"#ffffff","primary-fixed":"#d5e7d9","outline-variant":"#c3c8c2","background":"#fff8f4","on-primary-fixed-variant":"#3b4a40","surface-variant":"#e7e1de","inverse-primary":"#bacbbd","secondary":"#775a00","secondary-container":"#fed269","primary-container":"#2f3e34","on-primary":"#ffffff","outline":"#737873","error":"#ba1a1a","on-surface-variant":"#434844","on-secondary-fixed-variant":"#5a4300","on-surface":"#1d1b19","surface-dim":"#dfd9d5","tertiary-container":"#4b3536","on-primary-fixed":"#101f16","inverse-on-surface":"#f6efec","error-container":"#ffdad6","on-background":"#1d1b19","surface-tint":"#526257","secondary-fixed-dim":"#ecc15a","on-tertiary-fixed-variant":"#584142","surface-container-high":"#ede7e3","primary-fixed-dim":"#bacbbd","surface-container-low":"#f9f2ef","surface-container":"#f3ede9","on-error":"#ffffff","surface":"#fff8f4","on-secondary-container":"#765900","surface-bright":"#fff8f4","secondary-fixed":"#ffdf99","on-tertiary":"#ffffff"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"space-xl":"1.75rem","space-xs":"0.25rem","space-sm":"0.5rem","gutter":"1rem","space-md":"0.75rem","margin":"1rem","space-lg":"1.25rem","gutter-sm":"0.75rem","margin-lg":"1.5rem"},fontFamily:{"label-sm":["Plus Jakarta Sans"],"body-lg":["Plus Jakarta Sans"],"body-md":["Plus Jakarta Sans"],"headline-sm":["Playfair Display"],"headline-lg":["Playfair Display"],"headline-md":["Playfair Display"],"headline-xl-mobile":["Playfair Display"],"headline-xl":["Playfair Display"],"body-sm":["Plus Jakarta Sans"],"label-md":["Plus Jakarta Sans"],"label-lg":["Plus Jakarta Sans"]},fontSize:{"label-sm":["10px",{lineHeight:"14px",letterSpacing:"0.06em",fontWeight:"700"}],"body-lg":["16px",{lineHeight:"24px",letterSpacing:"-0.01em",fontWeight:"400"}],"body-md":["14px",{lineHeight:"20px",letterSpacing:"0em",fontWeight:"400"}],"headline-sm":["18px",{lineHeight:"24px",letterSpacing:"0em",fontWeight:"500"}],"headline-lg":["26px",{lineHeight:"32px",letterSpacing:"-0.01em",fontWeight:"500"}],"headline-md":["20px",{lineHeight:"26px",letterSpacing:"0em",fontWeight:"500"}],"headline-xl-mobile":["28px",{lineHeight:"34px",letterSpacing:"-0.01em",fontWeight:"600"}],"headline-xl":["36px",{lineHeight:"44px",letterSpacing:"-0.02em",fontWeight:"600"}],"body-sm":["12px",{lineHeight:"16px",letterSpacing:"0.01em",fontWeight:"400"}],"label-md":["12px",{lineHeight:"16px",letterSpacing:"0.03em",fontWeight:"600"}],"label-lg":["14px",{lineHeight:"18px",letterSpacing:"0.02em",fontWeight:"600"}]}}}}</script></head><body class="bg-background font-body-md text-body-md text-on-surface antialiased selection:bg-secondary-fixed selection:text-on-secondary-fixed"><header class="fixed top-0 left-0 w-full z-50 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(28,26,24,0.04)]"><div class="h-20 max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between gap-gutter"><div class="flex items-center gap-space-lg"><a class="flex flex-col group" data-path="restaurants" href="#"><span class="font-headline-md text-headline-md tracking-tight text-primary transition-opacity group-hover:opacity-90">ATELIER RESERVE</span><span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary mt-[-2px]">Concierge Privé</span></a><div class="h-6 w-[1px] bg-outline-variant/40 hidden sm:block"></div><button class="hidden sm:flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-all" type="button"><span class="material-symbols-outlined text-[16px] text-secondary">location_on</span><span class="font-label-md text-label-md">Москва</span><span class="material-symbols-outlined text-[14px]">expand_more</span></button></div><div class="hidden xl:flex items-center flex-1 max-w-xs mx-space-md"><div class="w-full flex items-center gap-space-sm px-space-md py-2 rounded-full bg-surface-container-lowest shadow-[0_1px_4px_rgba(28,26,24,0.03)] focus-within:ring-1 focus-within:ring-primary/20 transition-all"><span class="material-symbols-outlined text-outline text-[18px]">search</span><input class="w-full bg-transparent font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none" placeholder="Ресторан, шеф, локация..." type="text"/></div></div><div class="flex items-center gap-space-lg"><nav class="hidden lg:flex items-center gap-space-lg" data-active-classes="text-primary font-semibold relative after:absolute after:bottom-[-6px] after:left-0 after:w-full after:h-[1.5px] after:bg-primary"><a aria-current="page" class="transition-colors text-primary font-semibold relative after:absolute after:bottom-[-6px] after:left-0 after:w-full after:h-[1.5px] after:bg-primary" data-path="restaurants" href="#">Рестораны</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="curated-collections" href="#">Подборки</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="concierge-service" href="#">О консьерже</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="my-bookings" href="#">Мои брони</a></nav><div class="flex items-center gap-space-md pl-space-sm"><a class="hidden md:flex items-center gap-space-xs px-space-md py-2 rounded-full bg-primary-container text-on-primary hover:bg-primary transition-colors" href="https://t.me" rel="noopener" target="_blank"><span class="material-symbols-outlined text-[16px]">send</span><span class="font-label-md text-label-md">Telegram Concierge</span></a><a class="flex items-center gap-space-xs p-1 rounded-full hover:bg-surface-container-high transition-colors" data-path="profile" href="#" title="Личный кабинет"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></a></div></div></div></header><main class="w-full pt-20 bg-background min-h-[calc(100vh-80px)]"><div class="flex flex-col w-full">
+<!-- Top Utility Context / Breadcrumbs & Navigation -->
+<section class="max-w-7xl mx-auto w-full px-6 lg:px-12 pt-8 pb-4">
+<nav aria-label="Хлебные крошки" class="flex items-center gap-space-xs text-on-surface-variant font-label-md text-label-md">
+<a class="hover:text-primary transition-colors" data-path="restaurants" href="#">Главная</a>
+<span class="material-symbols-outlined text-[14px] text-outline">chevron_right</span>
+<a class="hover:text-primary transition-colors" data-path="restaurants" href="#">Рестораны</a>
+<span class="material-symbols-outlined text-[14px] text-outline">chevron_right</span>
+<span class="hover:text-primary transition-colors">Патриаршие пруды</span>
+<span class="material-symbols-outlined text-[14px] text-outline">chevron_right</span>
+<span class="text-primary font-semibold">L’Ambroisie</span>
+</nav>
+</section>
+<!-- Restaurant Hero Header -->
+<section class="max-w-7xl mx-auto w-full px-6 lg:px-12 pb-8">
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-lg">
+<div class="space-y-space-xs">
+<div class="flex flex-wrap items-center gap-space-sm">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm tracking-wider uppercase shadow-sm">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">hotel_class</span>
+            Michelin 3★ Резиденция
+          </span>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-high text-secondary font-label-sm text-label-sm tracking-widest uppercase">
+<span class="material-symbols-outlined text-[14px]">award_star</span>
+            Гид Ultima 2024
+          </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed-variant font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+            Консьерж подтвержден
+          </span>
+</div>
+<div class="pt-1">
+<h1 class="font-headline-xl text-headline-xl text-primary tracking-tight">L’Ambroisie</h1>
+<p class="font-headline-sm text-headline-sm text-on-surface-variant italic font-normal mt-0.5">
+            Французская современная гастрономия • Шеф-повар Антуан Дюбуа
+          </p>
+</div>
+<div class="flex flex-wrap items-center gap-y-2 gap-x-6 pt-2 text-on-surface-variant font-body-sm text-body-sm">
+<div class="flex items-center gap-1.5 bg-surface-container-lowest px-2.5 py-1 rounded-full shadow-sm">
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-md text-label-md text-on-surface">4.9</span>
+<span class="text-outline">(184 отзыва)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-outline">payments</span>
+<span>Средний чек 6 500 ₽</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-secondary">location_on</span>
+<span>Малая Бронная, 14 (Патриаршие пруды)</span>
+</div>
+<div class="flex items-center gap-1.5 text-outline">
+<span class="material-symbols-outlined text-[16px]">directions_walk</span>
+<span>Маяковская · 7 мин</span>
+</div>
+</div>
+</div>
+<!-- Quick Action CTA Group -->
+<div class="flex items-center gap-space-sm self-start lg:self-end">
+<button class="flex items-center gap-2 px-4 py-2.5 rounded-full bg-surface-container-lowest text-on-surface hover:bg-surface-container-high transition-all shadow-sm" id="favoriteBtn">
+<span class="material-symbols-outlined text-[18px] text-secondary" id="favIcon">bookmark_border</span>
+<span class="font-label-md text-label-md" id="favText">В избранное</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2.5 rounded-full bg-surface-container-lowest text-on-surface hover:bg-surface-container-high transition-all shadow-sm" id="shareBtn">
+<span class="material-symbols-outlined text-[18px] text-outline">share</span>
+<span class="font-label-md text-label-md">Поделиться</span>
+</button>
+<a class="flex items-center gap-2 px-4 py-2.5 rounded-full bg-surface-container-low text-primary hover:bg-surface-container-high transition-all" href="#location-section">
+<span class="material-symbols-outlined text-[18px]">near_me</span>
+<span class="font-label-md text-label-md">Маршрут</span>
+</a>
+</div>
+</div>
+</section>
+<!-- Editorial Mosaic Photo Gallery -->
+<section class="max-w-7xl mx-auto w-full px-6 lg:px-12 pb-12">
+<div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-12 gap-3 h-[490px] rounded-2xl overflow-hidden p-1.5 bg-surface-container-low shadow-sm">
+<!-- Grand Feature Main Photo (Left Half) -->
+<div class="md:col-span-2 lg:col-span-7 h-full relative group overflow-hidden rounded-xl">
+<img class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" data-alt="Grand fine dining salon of L'Ambroisie at twilight, warm flickering candlelights on pristine linen tablecloths, vintage Parisian brass chandeliers, muted olive and cream velvet chairs with elegant patrons in the background, warm cinematic interior photography with soft natural shadows and muted golden glow." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCefKrPkgYUCsRtKv3ztjr8X2kiZBYwFMk32nStbl_Yi1z8v6kfvzxZjj6g3P7aLmWsJa_qIAzafPQVu4BB-6or7dLxw1tAWNoAV7cLpmFLGYMeMQNX_AGmlKuuOfGwev6uyZRiZ7LZAmfqCKWQBGs5eOUMlgAVbdMipTfwqCcS07WUIsLoheRYmneX26Oepzt4h_qUCICdXtXJsRhaxva7z4F4otyVHSo9AkqSd93HYUHoJ2u4kjB6Q"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+<div class="absolute bottom-4 left-5 right-5 flex items-end justify-between text-white">
+<div>
+<span class="font-label-sm text-label-sm tracking-widest uppercase bg-primary/60 backdrop-blur-md px-2.5 py-1 rounded-full text-primary-fixed">Основной зал</span>
+<p class="font-headline-md text-headline-md mt-1.5 text-white/95">Атмосфера старинного парижского особняка</p>
+</div>
+<span class="hidden sm:inline-flex items-center gap-1 text-xs text-white/80 bg-black/40 backdrop-blur-md px-3 py-1 rounded-full font-label-md">
+<span class="material-symbols-outlined text-[14px]">local_fire_department</span> Камин XVII века
+          </span>
+</div>
+</div>
+<!-- Mosaic Secondary Quad (Right Half) -->
+<div class="md:col-span-2 lg:col-span-5 grid grid-cols-2 gap-3 h-full">
+<!-- Photo 1: Chef Plating -->
+<div class="relative group overflow-hidden rounded-xl h-[238px]">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Close up fine dining culinary preparation by French executive chef Antoine Dubois plating a delicate langoustine tartare with gold leaf and sea foam on bespoke dark ceramic tableware, warm dim kitchen ambient lighting, fine dining mastery." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHM4RFT-4LrMxQp05M7fJtkcDql4i2_gNFK0OzSmSLzm2zBrIOzIJ5rpM3vpDedF99GmCun4JRl6cw55ctx9fJS9kgB75_yV6HkE8zT7mz0HfWKqspVL-4-AhBProwKm_x1e_kQ88JsIPfmQ63J9fH9zH1lCBWzgv825X0fdKeRYC7UMuJ9oKGg9zpqmNz6l9dGUU_YhSMicWKXkb2-QNkRGMGalNCx-n4REg3eGaCASc0KMXdSq1JIQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+<div class="absolute bottom-2.5 left-3 text-white">
+<span class="font-label-sm text-label-sm text-white/90 drop-shadow">Шеф Антуан Дюбуа</span>
+</div>
+</div>
+<!-- Photo 2: Panoramic Corner -->
+<div class="relative group overflow-hidden rounded-xl h-[238px]">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Intimate window corner table at luxury Parisian style restaurant overlooking the tranquil green park of Patriarch Ponds Moscow during twilight, reflections on glass, crystal wine glasses on cream linen, cozy atmospheric luxury." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDT0INYWW3XgDBdamdDNKG2YLEXWL8kq1a_N7Gd9_7PPs1j3bw2XjetDO7P8r1-B6MOSyAywhDZeonufs1eXU7wwmVqzRqkoIh6UKMTF6PswLq2Wqhhbr8ZgcOuE7-f5dT9weodBgoFIGYfqrYaiMCKxdFZ5oWBJMiWZfEZyApiV68Oc7Dmdgu0rQRmeBhMcTC-SjnXs8PZbm039uRq1YFO6pcSn2kNqSo7lhGAJhmfj8NRIl3sG9rUbQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+<div class="absolute bottom-2.5 left-3 text-white">
+<span class="font-label-sm text-label-sm text-white/90 drop-shadow">Вид на сквер</span>
+</div>
+</div>
+<!-- Photo 3: Wine Cellar -->
+<div class="relative group overflow-hidden rounded-xl h-[238px]">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Bespoke vaulted stone wine cellar with wooden tasting table, rows of rare vintage Bordeaux and Burgundy bottles illuminated by recessed warm amber lighting, sommelier glass cabinet." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWphzKQAgJAd_2zKQP8i5_KTT3XEwUS7vxc0eYdfv5QrcX5PoYDkGRffivtoXItbAPcnFxT1wnKBHDQFMqYJaa8wGikwWrnQS4xv4iHODP_-fjdADRpGyYYem5UtrX9bQnzv0fISATuzBs3AtTh9QFjTg68Xi7QHRfGSEZiUZgxTvjxBPFWdsiWogOcewqw71C_AGJJwE_9QJybqfuJh_uFFziNjz6ZzxbXg3QzC75dnXljDc3VMh7hQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+<div class="absolute bottom-2.5 left-3 text-white">
+<span class="font-label-sm text-label-sm text-white/90 drop-shadow">Винная галерея</span>
+</div>
+</div>
+<!-- Photo 4: Signature Dessert with Gallery Modal Trigger -->
+<div class="relative group overflow-hidden rounded-xl h-[238px] cursor-pointer">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Exquisite contemporary French dessert Bourbon Vanilla sphere with caramelized gold flakes and salted caramel drizzle resting on minimalist polished marble surface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDd8NN3ZYrtwL1QbjhDEpOCdQelAhnZbM2joiIa8VxygNyE0NNu-VDiOyCIL76esOKvYBw8pB-2QI98wQo0lxwfDtF3lv03C9M62xIYgvh-t6nktXJbcFqmWAgkpX2-HEBWOHmCcul0xeRhfSYsFe6lzOkHn_CV1SgfFepFn3_FpMX9IhdSM-l9jQexqG7TRkdcohxM5BATSz_wRGbvOSfpTO5giVLotQg83j64-_5qRpLe4gHjUzIwhw"/>
+<div class="absolute inset-0 bg-primary/45 backdrop-blur-[2px] flex flex-col items-center justify-center text-on-primary transition-all group-hover:bg-primary/55">
+<span class="material-symbols-outlined text-[28px] mb-1">photo_library</span>
+<span class="font-label-md text-label-md tracking-wider">Все 28 фото</span>
+<span class="font-body-sm text-body-sm text-primary-fixed mt-0.5">Интерьеры &amp; блюда</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Two-Column Main Editorial & Reservation Body -->
+<section class="max-w-7xl mx-auto w-full px-6 lg:px-12 pb-20">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+<!-- LEFT COLUMN: Content, Menus, Zones & Atmosphere (Col 7 / 12) -->
+<div class="lg:col-span-7 space-y-12 min-w-0">
+<!-- Highlights Capsule Grid -->
+<div class="bg-surface-container-lowest p-6 rounded-2xl shadow-sm">
+<div class="font-label-sm text-label-sm uppercase tracking-widest text-secondary mb-4">Особенности визита</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+<div class="flex items-start gap-3 p-3 rounded-xl bg-surface-container-low">
+<span class="material-symbols-outlined text-[20px] text-primary mt-0.5">fireplace</span>
+<div>
+<div class="font-label-md text-label-md text-primary">Каминный зал</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Антикварный очаг XVII в.</div>
+</div>
+</div>
+<div class="flex items-start gap-3 p-3 rounded-xl bg-surface-container-low">
+<span class="material-symbols-outlined text-[20px] text-primary mt-0.5">wine_bar</span>
+<div>
+<div class="font-label-md text-label-md text-primary">Винный погреб</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">450+ редких позиций</div>
+</div>
+</div>
+<div class="flex items-start gap-3 p-3 rounded-xl bg-surface-container-low">
+<span class="material-symbols-outlined text-[20px] text-primary mt-0.5">skillet</span>
+<div>
+<div class="font-label-md text-label-md text-primary">Chef's Table</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Открытая кухня шефа</div>
+</div>
+</div>
+<div class="flex items-start gap-3 p-3 rounded-xl bg-surface-container-low">
+<span class="material-symbols-outlined text-[20px] text-primary mt-0.5">directions_car</span>
+<div>
+<div class="font-label-md text-label-md text-primary">Valet Parking</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Служба парковки гостей</div>
+</div>
+</div>
+<div class="flex items-start gap-3 p-3 rounded-xl bg-surface-container-low">
+<span class="material-symbols-outlined text-[20px] text-primary mt-0.5">apparel</span>
+<div>
+<div class="font-label-md text-label-md text-primary">Smart Casual</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Рекомендованный этикет</div>
+</div>
+</div>
+<div class="flex items-start gap-3 p-3 rounded-xl bg-surface-container-low">
+<span class="material-symbols-outlined text-[20px] text-primary mt-0.5">meeting_room</span>
+<div>
+<div class="font-label-md text-label-md text-primary">Private Dining</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Салон до 16 гостей</div>
+</div>
+</div>
+</div>
+</div>
+<!-- About & Gastronomic Philosophy -->
+<div class="space-y-4">
+<div class="flex items-center gap-3">
+<span class="w-8 h-[1px] bg-secondary"></span>
+<span class="font-label-sm text-label-sm tracking-widest text-secondary uppercase">Философия проекта</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-primary">Французская неоклассика с деликатным северным акцентом</h2>
+<div class="font-body-lg text-body-lg text-on-surface-variant space-y-3 leading-relaxed">
+<p>
+              L’Ambroisie на Патриарших — архитектурное и вкусовое посвящение великой традиционной гастрономии Иль-де-Франс, переосмысленной мастером Антуаном Дюбуа. Каждое утро шеф отбирает редкие морепродукты, дичь и фермерские травы, создавая меню, балансирующее между академической строгостью соусов эскофье и смелой лёгкостью новой волны.
+            </p>
+<p>
+              Свет приглушен до интимных полутонов, мебель обита оливковым и терракотовым бархатом, а столовое серебро выполнено по индивидуальному заказу мануфактуры Christofle. Здесь время замедляет шаг для идеального ужина.
+            </p>
+</div>
+<!-- Sommelier Accent Callout -->
+<div class="flex items-center gap-4 p-4 rounded-xl bg-surface-container-high/60 mt-4">
+<div class="w-12 h-12 rounded-full bg-primary-container text-primary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">local_bar</span>
+</div>
+<div class="text-sm">
+<div class="font-label-md text-label-md text-primary">Винный пейринг от шеф-сомелье Марка Валье</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Индивидуальный подбор винтажных гран крю из закрытых частных коллекций Бордо и Бургундии к каждому сету.</div>
+</div>
+</div>
+</div>
+<!-- Interactive Seating Zones Section -->
+<div class="space-y-5">
+<div class="flex items-center justify-between">
+<div>
+<span class="font-label-sm text-label-sm tracking-widest text-secondary uppercase">Атмосфера залов</span>
+<h3 class="font-headline-md text-headline-md text-primary mt-1">Зоны посадки и локации столов</h3>
+</div>
+<button class="text-primary hover:text-secondary flex items-center gap-1 font-label-md text-label-md group transition-colors">
+              Интерактивная схема столов
+              <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="seatingZones">
+<!-- Zone Card 1 (Selected) -->
+<div class="zone-card active cursor-pointer p-4 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all relative overflow-hidden" data-zone="windows">
+<div class="w-full h-28 rounded-xl overflow-hidden mb-3">
+<img class="w-full h-full object-cover" data-alt="Cozy dining tables by arched french windows with curtains looking over park foliage, elegant table setting with flowers." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpHB399ympyBGIylautDpzxFjDW6lKGMrz8NZA92Noa4f1dpvJF_NOxp4JK9D_soklXH_UTwQ5xhbf7rasoi39X3YRRXQW9l501R2ySUvuGeWt7OJbayJZMmddX0E6ket-tC2VF0n7nZJbt3dyGUDzGP0VqTxA0kMd3DgPOz5GETqXOPC6QnjQt0ymaHkmnllL4gagdYaA1D7nY4qFKMgdJJtMiRxR0tjVbsCRZejKTBk6xUo4y0X51w"/>
+</div>
+<div class="flex items-center justify-between mb-1">
+<h4 class="font-label-lg text-label-lg text-primary">Панорамные окна</h4>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-primary text-on-primary font-label-sm text-[10px]">Выбрано</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">1–4 гостя · Вид на сквер, мягкий рассеянный свет, идеально для пар.</p>
+<div class="mt-3 pt-3 flex items-center justify-between font-label-sm text-label-sm text-secondary">
+<span>Без депозита</span>
+<span class="text-on-surface-variant">Столы #1–#6</span>
+</div>
+</div>
+<!-- Zone Card 2 -->
+<div class="zone-card cursor-pointer p-4 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all relative overflow-hidden" data-zone="fireplace">
+<div class="w-full h-28 rounded-xl overflow-hidden mb-3">
+<img class="w-full h-full object-cover" data-alt="Antique stone fireplace with crackling fire in a luxurious restaurant salon, velvet sofas and dim amber lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVLuPu75t1za01vSK8Tn_Xqg-7MCACjGgQcoOZ1dw4qSc2lz-iH-j9egXygASLJv8qMdGTUnSKGHGAwg64bVE2d6qdko6ZD122NDZkurTE02sWOI-LYSYfnyPp8mYKsVXtCfnZxITesPhlYU1-rI31n7kGM37klRqkByc-fPu244a27CCOw2eT1wW8Xdwn6r_eOJerC_xVEgQvBGG0g9tIHTHQSZDrRTL8AGUXbrVTv1T_Ryx_jliXVg"/>
+</div>
+<div class="flex items-center justify-between mb-1">
+<h4 class="font-label-lg text-label-lg text-primary">Каминная гостиная</h4>
+<span class="text-outline font-label-sm text-[11px]">2 стола</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">2–6 гостей · Глубокие диваны, уединенная беседа у живого огня.</p>
+<div class="mt-3 pt-3 flex items-center justify-between font-label-sm text-label-sm text-secondary">
+<span>Без депозита</span>
+<span class="text-on-surface-variant">Столы #7–#11</span>
+</div>
+</div>
+<!-- Zone Card 3 -->
+<div class="zone-card cursor-pointer p-4 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all relative overflow-hidden" data-zone="chefs_table">
+<div class="w-full h-28 rounded-xl overflow-hidden mb-3">
+<img class="w-full h-full object-cover" data-alt="Exclusive marble chef counter overlooking immaculate stainless steel open kitchen brigade in chef whites." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-hoYUVBjH-T__LLvZZWVzvax00r4G0FzhPefCwiFbJo36MYhKxyZU0qRJmMkczwD9OMRLtV8canq36ep7_7TOJWIDqPdAYjLjstPqpnrztuNHod19HzTPpBydQ4886xK5KzS4vNto8zubQI5aN8Nc-SlrRUpothwjCEcL2eC6gRuvrGwPpEW0DW8CwX4SzP_-r-zMw62BAaYZtlxgquOBNFKwCWL-G6zPCEqupRFd3LkVjsw6A_SEkg"/>
+</div>
+<div class="flex items-center justify-between mb-1">
+<h4 class="font-label-lg text-label-lg text-primary">Chef's Table</h4>
+<span class="inline-flex items-center px-1.5 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-[10px]">Эксклюзив</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">1–2 гостя · Прямой контакт с шефом, подача дегустационного сета.</p>
+<div class="mt-3 pt-3 flex items-center justify-between font-label-sm text-label-sm text-secondary">
+<span>Депозит 10 000 ₽</span>
+<span class="text-on-surface-variant">4 места</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Chef's Signature Dishes / Carte Blanche -->
+<div class="space-y-6">
+<div class="flex items-end justify-between">
+<div>
+<span class="font-label-sm text-label-sm tracking-widest text-secondary uppercase">Гастрономическая визитка</span>
+<h3 class="font-headline-md text-headline-md text-primary mt-1">Знаковые блюда Антуана Дюбуа</h3>
+</div>
+<a class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface hover:text-primary font-label-md text-label-md transition-colors" href="#">
+<span class="material-symbols-outlined text-[16px]">picture_as_pdf</span>
+              Полное меню (PDF)
+            </a>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<!-- Dish 1 -->
+<div class="p-4 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all flex gap-4">
+<div class="w-24 h-24 rounded-xl overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="Tartare of wild sea scallop with black ossetra caviar and truffle ponzu dressing, micro herbs, luxury restaurant plating on dark pottery." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkU6TpB4triRngewepu0o9xgnVDvtjvz6Ku5ancbf6JgN8Z5DPhGoqkathizbBzRX96NoGPRuRcRsFATVfGi1JQD3ZT_W-pQCgzPJ7PkDNlDZekmglcrUD9dSvU5Nl01fbsaBb8fRLJUxCEjoJWUvDsM289rkgUSYjWrnP42PGc1attDK9t_c5JM4Q4jHgXtq7JBhxjJSPjDbtDWXE5bfm70HzlAVo9XkLzzXZzRWIu6RZ9XBsyG4NAQ"/>
+</div>
+<div class="flex flex-col justify-between flex-1 min-w-0">
+<div>
+<div class="flex items-center justify-between gap-1">
+<h4 class="font-label-lg text-label-lg text-primary truncate">Тартар из дикого гребешка</h4>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed uppercase shrink-0">Signature</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mt-1">
+                    С трюфельным понзу, муссом из авокадо и икрой осетра.
+                  </p>
+</div>
+<div class="flex items-baseline justify-between mt-2 pt-2">
+<span class="font-body-sm text-body-sm text-outline">140 г</span>
+<span class="font-headline-sm text-headline-sm text-primary">1 950 ₽</span>
+</div>
+</div>
+</div>
+<!-- Dish 2 -->
+<div class="p-4 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all flex gap-4">
+<div class="w-24 h-24 rounded-xl overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="Dry aged duck breast cooked medium rare with crispy skin, cherry demi-glace glaze, roasted parsnip puree and edible petals." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjPW4VLddCaeQSyqnNMle4lzs1h16ykEMO_H7TKtoeCfqLMMKzsAA7tME2ivmqPoNvd_N7b0UAcCWKNfeg79SBiFrc_3UxTGTAS_h9WZp-RIgG7iNp0m9aaMgUTkP-QgxvO6EWQZtFTd8pu-xuTMv9oJVT25RLk-FtHdJmOEM6yuWczsb-HEuheSDoBVAY-IedEZD52WR_eXe2meREeLBhZI9vGFCQn-fvEGT255GxdFBmnSnMaDyyjA"/>
+</div>
+<div class="flex flex-col justify-between flex-1 min-w-0">
+<div>
+<div class="flex items-center justify-between gap-1">
+<h4 class="font-label-lg text-label-lg text-primary truncate">Утиная грудка dry-aged</h4>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container text-on-surface-variant shrink-0">Dry-aged 21 день</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mt-1">
+                    С вишневым демиглясом, кремом из пастернака и фуа-гра.
+                  </p>
+</div>
+<div class="flex items-baseline justify-between mt-2 pt-2">
+<span class="font-body-sm text-body-sm text-outline">210 г</span>
+<span class="font-headline-sm text-headline-sm text-primary">2 850 ₽</span>
+</div>
+</div>
+</div>
+<!-- Dish 3 -->
+<div class="p-4 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all flex gap-4">
+<div class="w-24 h-24 rounded-xl overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="Handmade delicate ravioli filled with Brittany langoustine bathed in silky white truffle emulsion and shaved fresh winter truffle." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDoch7nFtN4l0u-bzJl-8GUdGbWln2iqS_jB10EGvGc5Qkwiw5aE0cxCCX6rP0AHwS0m_4jNz5jvbCpmj5ccDn6MoK0cuFHxzLVK1zbQjYz_VnVqxGgBPMsUYuLOpRUmANaTzPPwdsjbOj30kVz79mWjxRoxo6ImOmKUYaHpQ8_r4TIoLYDBKHXC-WGoIBEwINmyg9x94Wb-qwHx4lgbvV4qNMB-weshuEWKvhHXgjGDtMKdGso6aqm5w"/>
+</div>
+<div class="flex flex-col justify-between flex-1 min-w-0">
+<div>
+<div class="flex items-center justify-between gap-1">
+<h4 class="font-label-lg text-label-lg text-primary truncate">Равиоли с лангустином</h4>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mt-1">
+                    Домашняя паста, нежнейший лангустин и эмульсия из белого трюфеля.
+                  </p>
+</div>
+<div class="flex items-baseline justify-between mt-2 pt-2">
+<span class="font-body-sm text-body-sm text-outline">180 г</span>
+<span class="font-headline-sm text-headline-sm text-primary">2 400 ₽</span>
+</div>
+</div>
+</div>
+<!-- Dish 4 -->
+<div class="p-4 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all flex gap-4">
+<div class="w-24 h-24 rounded-xl overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="Bourbon vanilla sphere dessert encased in white velvet chocolate with golden leaf and warm salted butter caramel puddle." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCx8GqKO1io6bBFyaWB2FGnMF8DTH-KQ9Cf2X45vGjp6EJqqxi-Xq37fWufLExsiXuzpaH9P4d8AVW6Vh0Im4d0tPoDTFhwVupF0M2IwIWQMhw3c6E1yo5zMpXJxIETF59IdEg1tZuUmY5wpXi_P49QW-mjAriAeohNG0kIP6W7guVXVzM-6i-bUjru6W0aBGC4FixRkVGnUSEnkKF7BnJXMIloEEZBspsIADVAiQd0JJu3O7NB7S9bAQ"/>
+</div>
+<div class="flex flex-col justify-between flex-1 min-w-0">
+<div>
+<div class="flex items-center justify-between gap-1">
+<h4 class="font-label-lg text-label-lg text-primary truncate">Сфера ванили Бурбон</h4>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-primary-fixed text-on-primary-fixed uppercase shrink-0">Десерт</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mt-1">
+                    Мадагаскарская ваниль, соленая карамель, крустийант из фундука.
+                  </p>
+</div>
+<div class="flex items-baseline justify-between mt-2 pt-2">
+<span class="font-body-sm text-body-sm text-outline">120 г</span>
+<span class="font-headline-sm text-headline-sm text-primary">980 ₽</span>
+</div>
+</div>
+</div>
+</div>
+<div class="pt-2 sm:hidden">
+<a class="w-full flex items-center justify-center gap-2 py-3 rounded-full bg-surface-container-high text-on-surface font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[16px]">picture_as_pdf</span>
+              Смотреть меню и винную карту (PDF)
+            </a>
+</div>
+</div>
+<!-- Press Quote & Critics Verdict -->
+<div class="p-6 rounded-2xl bg-surface-container-low relative overflow-hidden">
+<span class="material-symbols-outlined text-[64px] text-surface-container-highest absolute -bottom-4 -right-4 select-none opacity-50">format_quote</span>
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-secondary text-[20px]">verified</span>
+<span class="font-label-sm text-label-sm tracking-wider uppercase text-secondary">Вердикт Ресторанного Критика Гида Ultima</span>
+</div>
+<blockquote class="font-headline-sm text-headline-sm text-primary italic leading-snug">
+            «Антуан Дюбуа сотворил редкое для Москвы гастрономическое чудо: абсолютное почтение к французскому канону без налета музейной пыли. Соус к утиной грудке достоин учебников кулинарного искусства Парижа.»
+          </blockquote>
+<div class="mt-4 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-label-sm">
+              ГК
+            </div>
+<div>
+<div class="font-label-md text-label-md text-primary">Гастрономический комитет Ultima Guide</div>
+<div class="font-body-sm text-body-sm text-outline">Ревизия: Октябрь 2024</div>
+</div>
+</div>
+</div>
+<!-- Location, Arrival & Map Section -->
+<div class="space-y-4 pt-2" id="location-section">
+<div class="flex items-center justify-between">
+<div>
+<span class="font-label-sm text-label-sm tracking-widest text-secondary uppercase">Локация и визит</span>
+<h3 class="font-headline-md text-headline-md text-primary mt-1">Как добраться и режим работы</h3>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="p-5 rounded-2xl bg-surface-container-lowest shadow-sm space-y-4">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-[22px] mt-0.5">place</span>
+<div>
+<div class="font-label-md text-label-md text-primary">Адрес</div>
+<div class="font-body-md text-body-md text-on-surface-variant">Москва, ул. Малая Бронная, 14</div>
+<div class="font-body-sm text-body-sm text-outline mt-0.5">Вход через внутренний сквер со стороны Малого Козихинского переулка.</div>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-[22px] mt-0.5">schedule</span>
+<div>
+<div class="font-label-md text-label-md text-primary">Часы работы</div>
+<div class="font-body-md text-body-md text-on-surface-variant">Пн – Вс: 12:00 — 00:00</div>
+<div class="font-body-sm text-body-sm text-outline mt-0.5">Кухня принимает заказы до 23:15.</div>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-[22px] mt-0.5">local_parking</span>
+<div>
+<div class="font-label-md text-label-md text-primary">Парковка</div>
+<div class="font-body-md text-body-md text-on-surface-variant">Собственная служба Valet</div>
+<div class="font-body-sm text-body-sm text-outline mt-0.5">Передайте автомобиль консьержу при въезде у шлагбаума.</div>
+</div>
+</div>
+</div>
+<!-- Map View Container with data-location -->
+<div class="h-64 rounded-2xl overflow-hidden bg-surface-container shadow-sm relative group cursor-pointer" data-location="Москва, Малая Бронная 14" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCGjIOnp_xMn31bQ_0KKxW4tzFvU4_82EhQMYLTmV4ZayfXGylYfGOCKiiNWqx8XLopGDCyCeyyE8Vy7SHPlzAUcIcGdAYJlNaDPruRpLhUAYB_y0s-290uPPc7J7_dzhEhWdqHEoEBD7zsgKURShJn2wV8gXJKNwPixIBlNyU_DF8NdJpS6crVvcjAnBy7bc1LwU1i7B379m7Yly0EVK-4XVcusbBK3sEBOGSuyhgdQ4TUOQzXoXNoKA')">
+<div class="absolute inset-0 bg-primary/20 group-hover:bg-primary/10 transition-colors"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="bg-surface-container-lowest/95 backdrop-blur-md px-4 py-2.5 rounded-full shadow-lg flex items-center gap-2 text-primary font-label-md text-label-md group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-secondary text-[18px]">near_me</span>
+<span>Открыть карту и навигатор</span>
+</div>
+</div>
+<div class="absolute bottom-3 left-3 bg-surface/90 backdrop-blur-sm px-2.5 py-1 rounded-md text-[11px] font-label-sm text-primary">
+                Патриаршие пруды
+              </div>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: Desktop Sticky Booking Widget (Col 5 / 12) -->
+<div class="lg:col-span-5 sticky top-28 space-y-4">
+<!-- Main Booking Capsule Card -->
+<div class="p-6 rounded-2xl bg-surface-container-lowest shadow-[0_8px_30px_rgb(28,26,24,0.06)] relative">
+<!-- Card Header & Live Availability Indicator -->
+<div class="flex items-start justify-between pb-4">
+<div>
+<div class="font-label-sm text-label-sm uppercase tracking-widest text-secondary">Мгновенный резерв</div>
+<h3 class="font-headline-md text-headline-md text-primary mt-0.5">Забронировать стол</h3>
+</div>
+<div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm">
+<span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
+<span>4 стола на вечер</span>
+</div>
+</div>
+<!-- Step 1: Guest Selector (Segmented buttons) -->
+<div class="space-y-2 py-3">
+<div class="flex items-center justify-between text-on-surface font-label-md text-label-md">
+<span>Количество гостей</span>
+<span class="text-secondary font-semibold" id="guestsDisplay">2 персоны</span>
+</div>
+<div class="grid grid-cols-5 gap-1.5 p-1 rounded-full bg-surface-container-low" id="guestsSelector">
+<button class="guest-btn py-1.5 text-center rounded-full font-label-md text-label-md text-on-surface hover:text-primary transition-all" data-guests="1" type="button">1</button>
+<button class="guest-btn active py-1.5 text-center rounded-full font-label-md text-label-md bg-primary text-on-primary shadow-sm transition-all" data-guests="2" type="button">2</button>
+<button class="guest-btn py-1.5 text-center rounded-full font-label-md text-label-md text-on-surface hover:text-primary transition-all" data-guests="3" type="button">3</button>
+<button class="guest-btn py-1.5 text-center rounded-full font-label-md text-label-md text-on-surface hover:text-primary transition-all" data-guests="4" type="button">4</button>
+<button class="guest-btn py-1.5 text-center rounded-full font-label-md text-label-md text-on-surface hover:text-primary transition-all" data-guests="5+" type="button">5+</button>
+</div>
+</div>
+<!-- Step 2: Date Selector (Calendar / Quick Day Pills) -->
+<div class="space-y-2 py-3">
+<div class="flex items-center justify-between text-on-surface font-label-md text-label-md">
+<span>Дата посещения</span>
+<button class="text-secondary hover:underline text-xs flex items-center gap-0.5" type="button">
+<span class="material-symbols-outlined text-[14px]">calendar_month</span> Выбрать другую
+              </button>
+</div>
+<div class="grid grid-cols-3 gap-2" id="dateSelector">
+<button class="date-btn active p-2.5 rounded-xl text-left bg-primary text-on-primary shadow-sm transition-all" data-date="today" type="button">
+<div class="text-[11px] font-label-sm opacity-80 uppercase">Сегодня</div>
+<div class="font-label-lg text-label-lg font-semibold mt-0.5">24 мая, пт</div>
+</button>
+<button class="date-btn p-2.5 rounded-xl text-left bg-surface-container-low text-on-surface hover:bg-surface-container transition-all" data-date="tomorrow" type="button">
+<div class="text-[11px] font-label-sm text-outline uppercase">Завтра</div>
+<div class="font-label-lg text-label-lg font-semibold mt-0.5">25 мая, сб</div>
+</button>
+<button class="date-btn p-2.5 rounded-xl text-left bg-surface-container-low text-on-surface hover:bg-surface-container transition-all" data-date="sunday" type="button">
+<div class="text-[11px] font-label-sm text-outline uppercase">Воскресенье</div>
+<div class="font-label-lg text-label-lg font-semibold mt-0.5">26 мая, вс</div>
+</button>
+</div>
+</div>
+<!-- Step 3: Time Slot Selector -->
+<div class="space-y-2 py-3">
+<div class="flex items-center justify-between text-on-surface font-label-md text-label-md">
+<span>Время визита</span>
+<span class="text-outline text-xs">Длительность брони: 2ч 30м</span>
+</div>
+<div class="space-y-2">
+<div class="text-[11px] font-label-sm text-outline uppercase tracking-wider">Основной вечерний сет</div>
+<div class="grid grid-cols-5 gap-1.5" id="timeSlots">
+<button class="time-slot py-2 text-center rounded-xl font-label-md text-label-md bg-surface-container-low text-on-surface hover:bg-surface-container transition-all" type="button">18:30</button>
+<button class="time-slot py-2 text-center rounded-xl font-label-md text-label-md bg-surface-container-low text-on-surface hover:bg-surface-container transition-all" type="button">19:00</button>
+<button class="time-slot active py-2 text-center rounded-xl font-label-md text-label-md bg-primary text-on-primary shadow-sm transition-all font-semibold" type="button">19:30</button>
+<button class="time-slot py-2 text-center rounded-xl font-label-md text-label-md bg-surface-container-low text-on-surface hover:bg-surface-container transition-all" type="button">20:15</button>
+<button class="time-slot py-2 text-center rounded-xl font-label-md text-label-md bg-surface-container-low text-on-surface hover:bg-surface-container transition-all" type="button">21:00</button>
+</div>
+</div>
+<div class="pt-1">
+<div class="text-[11px] font-label-sm text-outline uppercase tracking-wider mb-1">Поздний ужин</div>
+<div class="grid grid-cols-5 gap-1.5">
+<button class="time-slot py-2 text-center rounded-xl font-label-md text-label-md bg-surface-container-low text-on-surface hover:bg-surface-container transition-all" type="button">22:00</button>
+<button class="py-2 text-center rounded-xl font-label-md text-label-md bg-surface-container/50 text-outline/40 cursor-not-allowed" disabled="" type="button">22:30</button>
+</div>
+</div>
+</div>
+<!-- Step 4: Seating Zone Select Dropdown / Pill with Schema button -->
+<div class="py-3 space-y-2">
+<div class="flex items-center justify-between text-on-surface font-label-md text-label-md">
+<span>Зона размещения</span>
+<button class="text-secondary hover:underline text-xs" type="button">Схема зала</button>
+</div>
+<div class="relative">
+<select class="w-full bg-surface-container-low font-body-md text-body-md text-on-surface py-2.5 px-3.5 rounded-xl appearance-none focus:outline-none focus:bg-surface-container-high transition-colors cursor-pointer" id="zoneSelect">
+<option selected="" value="windows">Панорамные окна (без депозита)</option>
+<option value="fireplace">Каминная гостиная (без депозита)</option>
+<option value="chefs_table">Chef's Table (депозит 10 000 ₽)</option>
+<option value="any">Любой свободный столик</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-3 text-[18px] text-outline pointer-events-none">expand_more</span>
+</div>
+</div>
+<!-- Occasion Tags -->
+<div class="py-2 space-y-2">
+<label class="font-label-md text-label-md text-on-surface">Повод для визита (опционально)</label>
+<div class="flex flex-wrap gap-1.5" id="occasionTags">
+<button class="occasion-tag px-3 py-1.5 rounded-full font-label-sm text-label-sm bg-surface-container-low text-on-surface-variant hover:text-on-surface transition-all" type="button">Романтический ужин</button>
+<button class="occasion-tag px-3 py-1.5 rounded-full font-label-sm text-label-sm bg-surface-container-low text-on-surface-variant hover:text-on-surface transition-all" type="button">Деловая встреча</button>
+<button class="occasion-tag px-3 py-1.5 rounded-full font-label-sm text-label-sm bg-surface-container-low text-on-surface-variant hover:text-on-surface transition-all" type="button">День рождения</button>
+</div>
+</div>
+<!-- Sommelier Switch Toggle -->
+<div class="py-3 flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px] text-secondary">wine_bar</span>
+<div class="text-xs">
+<div class="font-label-md text-label-md text-primary">Подбор вин к визиту</div>
+<div class="text-outline">Шеф-сомелье подготовит рекомендации</div>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" id="sommelierCheckbox" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<!-- Primary Confirmation Action CTA -->
+<div class="pt-4 space-y-3">
+<button class="w-full h-[52px] rounded-full bg-primary hover:bg-primary-container text-on-primary font-label-lg text-label-lg tracking-wide shadow-md active:scale-[0.98] transition-all flex items-center justify-center gap-2" id="bookCtaBtn" type="button">
+<span class="material-symbols-outlined text-[20px]">calendar_today</span>
+<span id="ctaLabel">Забронировать на 19:30 (2 гостя)</span>
+</button>
+<!-- Telegram Concierge Alternative -->
+<a class="w-full flex items-center justify-center gap-2 py-2.5 rounded-full bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors font-label-md text-label-md" href="https://t.me" rel="noopener" target="_blank">
+<span class="material-symbols-outlined text-[18px] text-secondary">send</span>
+<span>Забронировать через консьержа в Telegram</span>
+</a>
+</div>
+<!-- Atelier Reserve Guarantee Micro-copy -->
+<div class="mt-4 pt-3 flex items-start gap-2 text-outline font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px] text-primary shrink-0 mt-0.5">verified_user</span>
+<span>Гарантия стола Atelier Reserve: моментальное подтверждение ресторана без телефонных звонков. Удержание столика 20 минут.</span>
+</div>
+</div>
+<!-- Concierge Personal Support Mini Card -->
+<div class="p-4 rounded-xl bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">support_agent</span>
+</div>
+<div>
+<div class="font-label-md text-label-md text-primary">Персональные пожелания?</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Цветы к столу, диета или приватный зал</div>
+</div>
+</div>
+<button class="text-primary hover:text-secondary font-label-md text-label-md px-3 py-1.5 rounded-full bg-surface-container-lowest shadow-sm hover:bg-white transition-all" type="button">
+            Чат
+          </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Interactive Client-side Script -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let currentGuests = '2';
+      let currentTime = '19:30';
+      const ctaLabel = document.getElementById('ctaLabel');
+      const guestsDisplay = document.getElementById('guestsDisplay');
+
+      function updateCta() {
+        if (ctaLabel) {
+          const guestWord = currentGuests === '1' ? 'гость' : (currentGuests === '5+' ? 'гостей' : 'гостя');
+          ctaLabel.textContent = `Забронировать на ${currentTime} (${currentGuests} ${guestWord})`;
+        }
+      }
+
+      // Guest selector buttons
+      const guestButtons = document.querySelectorAll('.guest-btn');
+      guestButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          guestButtons.forEach(b => {
+            b.classList.remove('active', 'bg-primary', 'text-on-primary', 'shadow-sm');
+            b.classList.add('text-on-surface');
+          });
+          btn.classList.add('active', 'bg-primary', 'text-on-primary', 'shadow-sm');
+          btn.classList.remove('text-on-surface');
+          currentGuests = btn.getAttribute('data-guests');
+          if (guestsDisplay) {
+            const guestWord = currentGuests === '1' ? 'персона' : (currentGuests === '5+' ? 'персон' : 'персоны');
+            guestsDisplay.textContent = `${currentGuests} ${guestWord}`;
+          }
+          updateCta();
+        });
+      });
+
+      // Date selector buttons
+      const dateButtons = document.querySelectorAll('.date-btn');
+      dateButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          dateButtons.forEach(b => {
+            b.classList.remove('active', 'bg-primary', 'text-on-primary', 'shadow-sm');
+            b.classList.add('bg-surface-container-low', 'text-on-surface');
+          });
+          btn.classList.add('active', 'bg-primary', 'text-on-primary', 'shadow-sm');
+          btn.classList.remove('bg-surface-container-low', 'text-on-surface');
+        });
+      });
+
+      // Time slots
+      const timeSlots = document.querySelectorAll('.time-slot:not([disabled])');
+      timeSlots.forEach(slot => {
+        slot.addEventListener('click', () => {
+          timeSlots.forEach(s => {
+            s.classList.remove('active', 'bg-primary', 'text-on-primary', 'shadow-sm', 'font-semibold');
+            s.classList.add('bg-surface-container-low', 'text-on-surface');
+          });
+          slot.classList.add('active', 'bg-primary', 'text-on-primary', 'shadow-sm', 'font-semibold');
+          slot.classList.remove('bg-surface-container-low', 'text-on-surface');
+          currentTime = slot.textContent.trim();
+          updateCta();
+        });
+      });
+
+      // Occasion tags toggle
+      const occasionTags = document.querySelectorAll('.occasion-tag');
+      occasionTags.forEach(tag => {
+        tag.addEventListener('click', () => {
+          tag.classList.toggle('bg-primary-container');
+          tag.classList.toggle('text-on-primary');
+          tag.classList.toggle('bg-surface-container-low');
+          tag.classList.toggle('text-on-surface-variant');
+        });
+      });
+
+      // Seating Zones card click synchronizes with dropdown
+      const zoneCards = document.querySelectorAll('.zone-card');
+      const zoneSelect = document.getElementById('zoneSelect');
+      zoneCards.forEach(card => {
+        card.addEventListener('click', () => {
+          const zone = card.getAttribute('data-zone');
+          if (zoneSelect) {
+            zoneSelect.value = zone;
+          }
+          zoneCards.forEach(c => {
+            c.classList.remove('bg-primary-fixed/40');
+          });
+          card.classList.add('bg-primary-fixed/40');
+        });
+      });
+
+      // Favorite bookmark action toggle
+      const favBtn = document.getElementById('favoriteBtn');
+      const favIcon = document.getElementById('favIcon');
+      const favText = document.getElementById('favText');
+      let isFav = false;
+      if (favBtn) {
+        favBtn.addEventListener('click', () => {
+          isFav = !isFav;
+          if (isFav) {
+            favIcon.textContent = 'bookmark';
+            favIcon.style.fontVariationSettings = "'FILL' 1";
+            favText.textContent = 'В избранном';
+            favBtn.classList.add('text-secondary');
+          } else {
+            favIcon.textContent = 'bookmark_border';
+            favIcon.style.fontVariationSettings = "'FILL' 0";
+            favText.textContent = 'В избранное';
+            favBtn.classList.remove('text-secondary');
+          }
+        });
+      }
+
+      // Share button micro-interaction
+      const shareBtn = document.getElementById('shareBtn');
+      if (shareBtn) {
+        shareBtn.addEventListener('click', () => {
+          if (navigator.share) {
+            navigator.share({
+              title: "L'Ambroisie — Atelier Reserve",
+              text: "Забронировать стол в L'Ambroisie на Патриарших через Atelier Reserve",
+              url: window.location.href,
+            }).catch(() => {});
+          } else {
+            navigator.clipboard.writeText(window.location.href);
+            const origText = shareBtn.querySelector('span:last-child').textContent;
+            shareBtn.querySelector('span:last-child').textContent = 'Ссылка скопирована!';
+            setTimeout(() => {
+              shareBtn.querySelector('span:last-child').textContent = origText;
+            }, 2000);
+          }
+        });
+      }
+
+      // Reservation CTA click simulation
+      const bookBtn = document.getElementById('bookCtaBtn');
+      if (bookBtn) {
+        bookBtn.addEventListener('click', () => {
+          const prevHtml = bookBtn.innerHTML;
+          bookBtn.innerHTML = `
+            <span class="material-symbols-outlined text-[20px] animate-spin">progress_activity</span>
+            <span>Подтверждаем в ресторане...</span>
+          `;
+          setTimeout(() => {
+            bookBtn.innerHTML = `
+              <span class="material-symbols-outlined text-[20px]">check_circle</span>
+              <span>Стол забронирован!</span>
+            `;
+            bookBtn.classList.remove('bg-primary');
+            bookBtn.classList.add('bg-secondary');
+            setTimeout(() => {
+              bookBtn.innerHTML = prevHtml;
+              bookBtn.classList.remove('bg-secondary');
+              bookBtn.classList.add('bg-primary');
+            }, 3000);
+          }, 900);
+        });
+      }
+    });
+  </script>
+</div></main><footer class="w-full bg-surface-container-lowest shadow-[0_-1px_12px_rgba(28,26,24,0.03)] mt-space-xl"><div class="max-w-7xl mx-auto px-6 lg:px-12 py-space-xl"><div class="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-space-xl"><div class="space-y-space-sm"><div class="font-headline-sm text-headline-sm text-primary">ATELIER RESERVE</div><p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">Закрытый сервис персонального бронирования столов в гранд-ресторанах, авторских бистро и на шефских сессиях Москвы и Санкт-Петербурга.</p></div><div class="space-y-space-sm"><div class="font-label-lg text-label-lg text-primary uppercase tracking-wider">Навигация</div><ul class="space-y-space-xs font-body-sm text-body-sm text-on-surface-variant"><li><a class="hover:text-primary transition-colors" data-path="restaurants" href="#">Каталог ресторанов</a></li><li><a class="hover:text-primary transition-colors" data-path="curated-collections" href="#">Авторские подборки</a></li><li><a class="hover:text-primary transition-colors" data-path="concierge-service" href="#">Услуги консьерж-службы</a></li><li><a class="hover:text-primary transition-colors" data-path="my-bookings" href="#">Мои бронирования</a></li></ul></div><div class="space-y-space-sm"><div class="font-label-lg text-label-lg text-primary uppercase tracking-wider">Консьерж-линия</div><div class="space-y-space-xs font-body-sm text-body-sm text-on-surface-variant"><p class="font-label-md text-label-md text-on-surface">Ежедневно 10:00 — 02:00</p><p>+7 (495) 840-22-10</p><p class="text-outline">reserve@atelier-reserve.ru</p></div></div><div class="space-y-space-sm"><div class="font-label-lg text-label-lg text-primary uppercase tracking-wider">Telegram Поддержка</div><p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">Мгновенный запрос столика, закрытые дегустации и индивидуальные пожелания шеф-повару.</p><a class="inline-flex items-center gap-space-xs px-space-md py-2 rounded-full bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors font-label-md text-label-md" href="https://t.me" rel="noopener" target="_blank"><span class="material-symbols-outlined text-[16px] text-secondary">forum</span>@atelier_concierge_bot</a></div></div><div class="pt-space-lg flex flex-col sm:flex-row items-center justify-between gap-space-sm text-outline font-body-sm text-body-sm"><p>© 2025 Atelier Reserve. Все права защищены.</p><div class="flex items-center gap-space-lg"><a class="hover:text-on-surface-variant transition-colors" href="#">Правила бронирования</a><a class="hover:text-on-surface-variant transition-colors" href="#">Конфиденциальность</a><a class="hover:text-on-surface-variant transition-colors" href="#">Дресс-код и этикет</a></div></div></div></footer></body></html>
