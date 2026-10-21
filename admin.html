@@ -37,6 +37,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
 
     <script>
         tailwind.config = {
@@ -406,10 +407,53 @@
         html.dark #restPickerSheetPanel,
         html.dark #shiftModalPanel,
         html.dark #bookingDetailModal > div,
+        html.dark #quickWalkinModal > div,
         html.dark #cityDropdownMenu {
             background-color: #1A1B1E !important;
             border-color: #2D3035 !important;
             color: #F5F3EF !important;
+        }
+
+        /* Layout Containment for High-Performance Complex Layouts (interactions-in-complex-layouts) */
+        #ordersContainer,
+        #ordersTableContainer,
+        #floorTablesGrid {
+            content-visibility: auto;
+            contain-intrinsic-size: auto 600px;
+        }
+
+        /* Material Symbols rendering */
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 1;
+        }
+
+        /* Floor plan interactive table cards */
+        .floor-table-tile {
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .floor-table-tile:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px -4px rgba(26, 40, 31, 0.12);
+        }
+        .floor-table-tile.active-selected {
+            outline: 2px solid #c49c6d;
+            box-shadow: 0 0 0 2px #c49c6d, 0 10px 28px -4px rgba(196, 156, 109, 0.25);
+        }
+        html.dark .floor-table-tile.active-selected {
+            outline: 2px solid #ecc15a;
+            box-shadow: 0 0 0 2px #ecc15a, 0 10px 28px -4px rgba(236, 193, 90, 0.3);
+        }
+
+        /* Hide scrollbars */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
 
     </style>
@@ -460,6 +504,11 @@
                     <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                     <span id="lblDesktopNavManage" class="whitespace-nowrap">Ресторан</span>
                     <kbd class="hidden xl:inline text-[9px] font-mono px-1 py-0.5 rounded bg-white/5 border border-[#E8E2D5] text-[#73706B] flex-shrink-0">4</kbd>
+                </button>
+                <button type="button" onclick="openQuickWalkinModal()" id="desktopNavBtn-quickWalkin" class="hidden lg:flex items-center gap-1.5 px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold bg-[#1a281f] text-white hover:bg-[#2f3e34] border border-[#1a281f] shadow-sm transition active:scale-95 ml-1" title="Быстрая посадка гостя (Клавиша: W)">
+                    <span class="text-amber-300 text-sm">⚡</span>
+                    <span>Посадить гостя</span>
+                    <kbd class="text-[9px] font-mono px-1 py-0.5 rounded bg-black/40 border border-white/20 text-white">W</kbd>
                 </button>
                 <button type="button" onclick="switchTab('subscriptions')" id="desktopNavBtn-subscriptions" class="hidden desktop-nav-tab px-2.5 lg:px-3 xl:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold text-[#73706B] hover:text-[#1E1F20] flex items-center gap-1.5 lg:gap-2 border border-transparent whitespace-nowrap flex-shrink-0">
                     <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
@@ -1055,6 +1104,88 @@
         </div>
     </div>
 
+    <!-- ================= 5. БЫСТРАЯ ПОСАДКА ГОСТЯ (QUICK WALKIN MODAL) ================= -->
+    <div id="quickWalkinModal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-[#FFFFFF] border border-[#E8E2D5] rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-2xl relative text-left">
+            <div class="flex items-center justify-between border-b border-[#E8E2D5] pb-3">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-10 h-10 rounded-2xl bg-[#1a281f] text-white flex items-center justify-center text-lg font-bold shadow-sm">
+                        ⚡
+                    </div>
+                    <div>
+                        <h3 class="text-base sm:text-lg font-bold text-[#1E1F20] font-serif-luxury">Быстрая посадка гостя (Walk-in)</h3>
+                        <p class="text-xs text-[#73706B]">Оформление гостя с улицы или по звонку хостес</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeQuickWalkinModal()" class="w-8 h-8 rounded-full bg-[#F3EFE8] text-[#73706B] hover:text-[#1E1F20] flex items-center justify-center text-sm transition">
+                    ✕
+                </button>
+            </div>
+
+            <form id="quickWalkinForm" onsubmit="event.preventDefault(); submitQuickWalkin();" class="space-y-3.5">
+                <!-- Стол и Количество гостей -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-[11px] font-bold text-[#73706B] uppercase tracking-wider block mb-1">Столик *</label>
+                        <select id="qwTableSelect" class="w-full bg-[#F3EFE8] border border-[#E8E2D5] rounded-xl px-3 py-2.5 text-xs sm:text-sm font-bold text-[#1E1F20] focus:outline-none focus:border-[#4A5543]">
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[11px] font-bold text-[#73706B] uppercase tracking-wider block mb-1">Кол-во персон *</label>
+                        <select id="qwGuestsSelect" class="w-full bg-[#F3EFE8] border border-[#E8E2D5] rounded-xl px-3 py-2.5 text-xs sm:text-sm font-bold text-[#1E1F20] focus:outline-none focus:border-[#4A5543]">
+                            <option value="1">1 персона</option>
+                            <option value="2" selected>2 персоны</option>
+                            <option value="3">3 персоны</option>
+                            <option value="4">4 персоны</option>
+                            <option value="5">5 персон</option>
+                            <option value="6">6 персон</option>
+                            <option value="8">8 персон (Банкет)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Дата и Время -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-[11px] font-bold text-[#73706B] uppercase tracking-wider block mb-1">Дата</label>
+                        <input id="qwDateInput" type="date" class="w-full bg-[#F3EFE8] border border-[#E8E2D5] rounded-xl px-3 py-2.5 text-xs sm:text-sm font-medium text-[#1E1F20] focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="text-[11px] font-bold text-[#73706B] uppercase tracking-wider block mb-1">Время посадки</label>
+                        <input id="qwTimeInput" type="time" class="w-full bg-[#F3EFE8] border border-[#E8E2D5] rounded-xl px-3 py-2.5 text-xs sm:text-sm font-bold text-[#1E1F20] focus:outline-none">
+                    </div>
+                </div>
+
+                <!-- Имя гостя и Телефон -->
+                <div>
+                    <label class="text-[11px] font-bold text-[#73706B] uppercase tracking-wider block mb-1">Имя гостя *</label>
+                    <input id="qwGuestName" type="text" placeholder="Например: Асхат (Гость с порога)" required class="w-full bg-[#F3EFE8] border border-[#E8E2D5] rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-[#1E1F20] placeholder-[#A6A29C] focus:outline-none focus:border-[#4A5543]">
+                </div>
+
+                <div>
+                    <label class="text-[11px] font-bold text-[#73706B] uppercase tracking-wider block mb-1">Телефон (для связи и чека)</label>
+                    <input id="qwGuestPhone" type="tel" oninput="formatAdminKZPhone(this)" placeholder="+7 (7XX) XXX-XX-XX" class="w-full bg-[#F3EFE8] border border-[#E8E2D5] rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-mono text-[#1E1F20] placeholder-[#A6A29C] focus:outline-none focus:border-[#4A5543]">
+                </div>
+
+                <div>
+                    <label class="text-[11px] font-bold text-[#73706B] uppercase tracking-wider block mb-1">Пожелания / Заметка хостес</label>
+                    <input id="qwWishes" type="text" placeholder="Детский стульчик, у окна, депозит оплачен..." class="w-full bg-[#F3EFE8] border border-[#E8E2D5] rounded-xl px-3.5 py-2 text-xs text-[#1E1F20] placeholder-[#A6A29C] focus:outline-none">
+                </div>
+
+                <!-- Кнопки действий -->
+                <div class="grid grid-cols-2 gap-2 pt-2 border-t border-[#E8E2D5]">
+                    <button type="button" onclick="closeQuickWalkinModal()" class="py-2.5 rounded-xl text-xs font-semibold bg-[#F3EFE8] text-[#1E1F20] transition hover:bg-[#E8E2D5]">
+                        Отмена
+                    </button>
+                    <button type="submit" class="py-2.5 rounded-xl text-xs font-bold bg-[#1a281f] hover:bg-[#2f3e34] text-white shadow-md transition flex items-center justify-center gap-1.5 cursor-pointer">
+                        <span>🥂 Посадить гостя</span>
+                        <kbd class="text-[9px] font-mono px-1 rounded bg-black/40 text-white">Enter</kbd>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- ОСНОВНОЙ КОНТЕЙНЕР -->
     <main class="max-w-[1600px] 2xl:max-w-[1760px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 space-y-6 sm:space-y-8">
 
@@ -1111,11 +1242,26 @@
                     </button>
                 </div>
 
-                <!-- Строка 2: Фильтр по дате (полная ширина 3 колонки) -->
-                <div class="grid grid-cols-3 gap-2 bg-[#F3EFE8] p-1.5 rounded-2xl border border-[#E8E2D5] max-w-lg">
-                    <button onclick="setDateFilter('all')" id="dateBtn-all" class="py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm lg:text-base font-bold bg-[#2D2A26] text-white transition text-center shadow-sm active:scale-95">Все дни</button>
-                    <button onclick="setDateFilter('today')" id="dateBtn-today" class="py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm lg:text-base font-semibold text-[#73706B] hover:text-[#1E1F20] transition text-center active:scale-95">Сегодня</button>
-                    <button onclick="setDateFilter('tomorrow')" id="dateBtn-tomorrow" class="py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm lg:text-base font-semibold text-[#73706B] hover:text-[#1E1F20] transition text-center active:scale-95">Завтра</button>
+                <!-- Строка 2: Фильтры дат и переключатель вида таблицы (Десктоп) -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1 border-t border-[#E8E2D5] flex-wrap">
+                    <!-- Фильтр по дате -->
+                    <div class="grid grid-cols-3 gap-2 bg-[#F3EFE8] p-1.5 rounded-2xl border border-[#E8E2D5] max-w-xs w-full sm:w-auto">
+                        <button onclick="setDateFilter('all')" id="dateBtn-all" class="py-2 px-3 rounded-xl text-xs sm:text-sm font-bold bg-[#2D2A26] text-white transition text-center shadow-sm active:scale-95">Все дни</button>
+                        <button onclick="setDateFilter('today')" id="dateBtn-today" class="py-2 px-3 rounded-xl text-xs sm:text-sm font-semibold text-[#73706B] hover:text-[#1E1F20] transition text-center active:scale-95">Сегодня</button>
+                        <button onclick="setDateFilter('tomorrow')" id="dateBtn-tomorrow" class="py-2 px-3 rounded-xl text-xs sm:text-sm font-semibold text-[#73706B] hover:text-[#1E1F20] transition text-center active:scale-95">Завтра</button>
+                    </div>
+
+                    <!-- Переключатель Карточки / Таблица -->
+                    <div class="hidden sm:flex items-center gap-1 bg-[#F3EFE8] p-1.5 rounded-2xl border border-[#E8E2D5]">
+                        <button type="button" onclick="setOrdersViewMode('cards')" id="btnViewModeCards" class="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-[#FFFFFF] text-[#1E1F20] shadow-sm flex items-center gap-1.5 transition">
+                            <svg class="w-3.5 h-3.5 text-[#c49c6d]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                            <span>Карточки</span>
+                        </button>
+                        <button type="button" onclick="setOrdersViewMode('table')" id="btnViewModeTable" class="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold text-[#73706B] hover:text-[#1E1F20] flex items-center gap-1.5 transition">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+                            <span>Таблица (List)</span>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Строка 3: Фильтр по статусу (плавный скролл) -->
@@ -1138,60 +1284,124 @@
 
             <!-- Список карточек бронирований (Multi-column на планшетах и десктопе) -->
             <div id="ordersContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"></div>
+
+            <!-- Табличный реестр бронирований (Компактный десктопный режим) -->
+            <div id="ordersTableContainer" class="hidden overflow-x-auto rounded-3xl border border-[#E8E2D5] bg-[#FFFFFF] shadow-sm">
+                <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                    <thead>
+                        <tr class="bg-[#F3EFE8] border-b border-[#E8E2D5] text-[11px] uppercase tracking-wider text-[#73706B] font-bold">
+                            <th class="py-3 px-4">#ID</th>
+                            <th class="py-3 px-4">Время</th>
+                            <th class="py-3 px-4">Стол</th>
+                            <th class="py-3 px-4">Гость</th>
+                            <th class="py-3 px-4">Телефон</th>
+                            <th class="py-3 px-4 text-center">Персон</th>
+                            <th class="py-3 px-4">Пожелания</th>
+                            <th class="py-3 px-4">Статус</th>
+                            <th class="py-3 px-4 text-right">Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTableBody" class="divide-y divide-[#E8E2D5]/70 text-[#1E1F20]">
+                    </tbody>
+                </table>
+            </div>
         </section>
 
         <!-- ================= ВКЛАДКА 2: ЗАЛ И ШАХМАТКА СТОЛОВ ================= -->
         <section id="tab-floor" class="hidden space-y-4 sm:space-y-6 fade-in">
-            <div class="bg-[#FFFFFF] border border-[#E8E2D5] rounded-3xl p-5 sm:p-6 lg:p-7 space-y-4 sm:space-y-5 shadow-lg">
-                <div class="flex items-center justify-between">
+            <!-- Верхняя панель управления залом -->
+            <div class="bg-[#FFFFFF] border border-[#E8E2D5] rounded-3xl p-4 sm:p-6 space-y-4 shadow-md">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#E8E2D5] pb-4">
                     <div>
-                        <h2 class="text-base sm:text-lg lg:text-xl font-bold text-[#1E1F20] font-serif-luxury flex items-center gap-2">
-                            <span>🪑</span> <span>Интерактивная карта зала</span>
-                        </h2>
-                        <p id="floorSubtitle" class="text-xs sm:text-sm text-[#73706B] mt-0.5">Нажмите на любой стол для посадки или просмотра брони</p>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xl">🪑</span>
+                            <h2 class="text-lg sm:text-xl lg:text-2xl font-bold text-[#1E1F20] font-serif-luxury" id="floorRestHeading">Интерактивная карта залов</h2>
+                            <span id="floorOccupancyBadge" class="ml-2 px-3 py-1 rounded-full text-xs font-bold bg-[#EFF5F0] text-[#244E33] border border-[#CFE1D4] shadow-xs">
+                                Занято: 0/8
+                            </span>
+                        </div>
+                        <p id="floorSubtitle" class="text-xs sm:text-sm text-[#73706B] mt-0.5">Визуальное управление посадкой в реальном времени • Кликните на стол для деталей и посадки</p>
                     </div>
-                    <span id="floorOccupancyBadge" class="px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold bg-[#F3EFE8] text-[#4A5543] border border-[#E8E2D5] shadow-sm">
-                        Занято: 0/8
-                    </span>
-                </div>
 
-                <!-- Выбор даты и смены для карты зала -->
-                <div class="grid grid-cols-2 gap-3 sm:gap-4">
-                    <div>
-                        <label class="text-xs sm:text-sm font-bold text-[#73706B] block mb-1.5">📅 Дата смены</label>
-                        <select id="floorDateSelect" onchange="renderFloorMap()" class="w-full bg-[#F3EFE8] border border-[#E8E2D5] rounded-2xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm lg:text-base text-[#1E1F20] focus:outline-none focus:border-[#c49c6d]">
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-xs sm:text-sm font-bold text-[#73706B] block mb-1.5">🕒 Время / Период</label>
-                        <select id="floorTimeSelect" onchange="renderFloorMap()" class="w-full bg-[#F3EFE8] border border-[#E8E2D5] rounded-2xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm lg:text-base text-[#1E1F20] focus:outline-none focus:border-[#c49c6d]">
-                            <option value="all">Весь день (Все брони)</option>
-                            <option value="12:00">☀️ 12:00 — Обед</option>
-                            <option value="13:00">☀️ 13:00 — Обед</option>
-                            <option value="14:00">☀️ 14:00 — Обед</option>
-                            <option value="18:00">🌙 18:00 — Ужин</option>
-                            <option value="19:00">🌙 19:00 — Пик ужина</option>
-                            <option value="20:00">🌙 20:00 — Пик ужина</option>
-                            <option value="21:00">🌙 21:00 — Вечер</option>
-                        </select>
+                    <!-- Быстрые действия: Walk-in + Выбор даты -->
+                    <div class="flex items-center gap-2.5 flex-wrap">
+                        <button type="button" onclick="openQuickWalkinModal()" class="h-10 sm:h-11 px-4 rounded-xl text-xs sm:text-sm font-bold bg-[#1a281f] text-white hover:bg-[#2f3e34] shadow-sm flex items-center gap-2 transition active:scale-95 cursor-pointer" title="Быстрая посадка гостя (Клавиша: W)">
+                            <span class="text-amber-300">⚡</span>
+                            <span>Посадить гостя (Walk-in)</span>
+                            <kbd class="hidden sm:inline text-[10px] font-mono px-1.5 py-0.5 rounded bg-black/40 border border-white/20">W</kbd>
+                        </button>
+                        <div class="flex items-center gap-1.5 bg-[#F3EFE8] border border-[#E8E2D5] rounded-xl px-3 py-2">
+                            <span class="text-xs text-[#73706B]">📅</span>
+                            <select id="floorDateSelect" onchange="renderFloorMap()" class="bg-transparent text-xs sm:text-sm font-bold text-[#1E1F20] focus:outline-none cursor-pointer">
+                            </select>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Легенда -->
-                <div class="flex items-center justify-between text-xs sm:text-sm text-[#73706B] pt-2 border-t border-[#E8E2D5] flex-wrap gap-2">
-                    <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-emerald-500/30 border border-emerald-400"></span> Свободен</span>
-                    <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-amber-500/30 border border-amber-400"></span> Ждёт ответа</span>
-                    <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-[#c49c6d]/30 border border-[#c49c6d]"></span> В брони</span>
-                    <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-sky-500/30 border border-sky-400"></span> Гости сидят</span>
+                <!-- 1. ИНТЕРАКТИВНЫЙ ТАЙМЛАЙН СМЕНЫ (12:00 – 00:00) -->
+                <div>
+                    <div class="flex items-center justify-between text-xs text-[#73706B] font-semibold mb-2">
+                        <span class="flex items-center gap-1.5">
+                            <svg class="w-3.5 h-3.5 text-[#c49c6d]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <span>Шкала времени смены (Таймлайн)</span>
+                        </span>
+                        <span class="text-[11px] text-[#4A5543] hidden sm:inline">Выберите слот для среза занятости залов</span>
+                    </div>
+                    <!-- Горизонтальная лента часов -->
+                    <div id="floorTimelineBar" class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto hide-scrollbar pb-1">
+                        <!-- Заполняется динамически через JS -->
+                    </div>
                 </div>
 
-                <!-- Сцена / Вход / Панорамные окна -->
-                <div class="w-full py-2.5 sm:py-3 rounded-2xl bg-[#F3EFE8] border border-[#E8E2D5] text-center text-xs sm:text-sm text-[#4A5543] uppercase tracking-widest font-semibold">
-                    ✨ Панорамные окна • Главный зал ✨
+                <!-- 2. ФИЛЬТРЫ ЗОН ЗАВЕДЕНИЯ & ЛЕГЕНДА СТАТУСОВ -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-[#E8E2D5]">
+                    <!-- Фильтры зон -->
+                    <div id="floorZoneChips" class="flex items-center gap-1.5 overflow-x-auto hide-scrollbar">
+                        <!-- Заполняется динамически: Все зоны, Окна, Главный зал, VIP, Терраса -->
+                    </div>
+
+                    <!-- Легенда статусов -->
+                    <div class="flex items-center gap-3 text-xs text-[#73706B] flex-wrap">
+                        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Свободен</span>
+                        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span> Ждёт ответа</span>
+                        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-[#c49c6d]"></span> В брони</span>
+                        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span> Гости сидят</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. ДЕСКТОПНЫЙ СПЛИТ: СХЕМА ЗАЛА (СЛЕВА) + БОКОВОЙ ИНСПЕКТОР СТОЛА (СПРАВА) -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                <!-- Левая колонка: Карта столов -->
+                <div class="lg:col-span-8 xl:col-span-8 space-y-4">
+                    <!-- Верхний ориентир: Панорамные окна -->
+                    <div class="w-full py-2.5 px-4 rounded-2xl bg-[#F3EFE8] border border-[#E8E2D5] flex items-center justify-between text-xs text-[#4A5543] font-semibold">
+                        <div class="flex items-center gap-2">
+                            <span>🪟</span>
+                            <span>Панорамные окна • Вид на фасад и парк</span>
+                        </div>
+                        <span class="text-[11px] opacity-75">Естественный свет</span>
+                    </div>
+
+                    <!-- Сетка столов с архитектурным зонированием -->
+                    <div id="floorTablesGrid" class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4"></div>
+
+                    <!-- Нижний ориентир: Вход и хостес -->
+                    <div class="w-full py-2.5 px-4 rounded-2xl bg-[#F3EFE8] border border-[#E8E2D5] flex items-center justify-between text-xs text-[#73706B] font-medium">
+                        <div class="flex items-center gap-2">
+                            <span>🚪</span>
+                            <span>Главный вход • Стойка встречи гостей & Гардероб</span>
+                        </div>
+                        <span class="text-[11px]">Зона входа</span>
+                    </div>
                 </div>
 
-                <!-- Сетка столов -->
-                <div id="floorTablesGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 lg:gap-5"></div>
+                <!-- Правая колонка: Sticky Инспектор выбранного стола -->
+                <div class="lg:col-span-4 xl:col-span-4 sticky top-24 space-y-4">
+                    <div id="floorTableInspectorCard" class="bg-[#FFFFFF] border border-[#E8E2D5] rounded-3xl p-5 sm:p-6 shadow-xl space-y-4">
+                        <!-- Заполняется динамически через selectFloorTable(tableId) -->
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -1749,6 +1959,10 @@
         let currentStatusFilter = 'all';
         let currentDateFilter = 'all';
         let currentTab = 'orders';
+        let currentOrdersView = localStorage.getItem('admin_orders_view') || 'cards';
+        let selectedFloorTime = 'all';
+        let selectedFloorZone = 'all';
+        let selectedFloorTableId = null;
 
         // ================= SECURITY & SUBSCRIPTION MANAGEMENT STATE =================
         const MASTER_ADMIN_KEY = 'restokz_super_2026';
@@ -3019,9 +3233,45 @@
             }
         }
 
+        function setOrdersViewMode(mode) {
+            currentOrdersView = mode;
+            try {
+                localStorage.setItem('admin_orders_view', mode);
+            } catch (e) {}
+
+            const btnCards = document.getElementById('btnViewModeCards');
+            const btnTable = document.getElementById('btnViewModeTable');
+            const cardsContainer = document.getElementById('ordersContainer');
+            const tableContainer = document.getElementById('ordersTableContainer');
+
+            if (mode === 'table') {
+                if (btnTable) {
+                    btnTable.className = "px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-[#FFFFFF] text-[#1E1F20] shadow-sm flex items-center gap-1.5 transition";
+                }
+                if (btnCards) {
+                    btnCards.className = "px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold text-[#73706B] hover:text-[#1E1F20] flex items-center gap-1.5 transition";
+                }
+                if (cardsContainer) cardsContainer.classList.add('hidden');
+                if (tableContainer) tableContainer.classList.remove('hidden');
+            } else {
+                if (btnCards) {
+                    btnCards.className = "px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-[#FFFFFF] text-[#1E1F20] shadow-sm flex items-center gap-1.5 transition";
+                }
+                if (btnTable) {
+                    btnTable.className = "px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold text-[#73706B] hover:text-[#1E1F20] flex items-center gap-1.5 transition";
+                }
+                if (cardsContainer) cardsContainer.classList.remove('hidden');
+                if (tableContainer) tableContainer.classList.add('hidden');
+            }
+        }
+
         function renderOrders() {
             const container = document.getElementById('ordersContainer');
+            const tableBody = document.getElementById('ordersTableBody');
             const query = (document.getElementById('searchOrdersInput')?.value || '').trim().toLowerCase();
+
+            // Применяем текущий вид (карточки или таблица)
+            setOrdersViewMode(currentOrdersView);
 
             let list = getFilteredByRestaurant();
 
@@ -3047,117 +3297,216 @@
             }
 
             if (list.length === 0) {
-                container.innerHTML = `
-                    <div class="col-span-full bg-[#FFFFFF] border border-[#E8E2D5] rounded-3xl p-12 sm:p-16 text-center space-y-3">
-                        <div class="w-16 h-16 mx-auto rounded-2xl bg-[#F3EFE8] border border-[#E8E2D5] flex items-center justify-center text-[#c49c6d]">
-                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                if (container) {
+                    container.innerHTML = `
+                        <div class="col-span-full bg-[#FFFFFF] border border-[#E8E2D5] rounded-3xl p-12 sm:p-16 text-center space-y-3">
+                            <div class="w-16 h-16 mx-auto rounded-2xl bg-[#F3EFE8] border border-[#E8E2D5] flex items-center justify-center text-[#c49c6d]">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                            </div>
+                            <div class="text-base sm:text-lg font-bold text-[#1E1F20]">Заявок по выбранному фильтру нет</div>
+                            <p class="text-xs sm:text-sm text-[#73706B] max-w-md mx-auto">Вы можете создать бронь от хостес во вкладке «По звонку» [3] или нажать кнопку «+ Тест»</p>
                         </div>
-                        <div class="text-base sm:text-lg font-bold text-[#1E1F20]">Заявок по выбранному фильтру нет</div>
-                        <p class="text-xs sm:text-sm text-[#73706B] max-w-md mx-auto">Вы можете создать бронь от хостес во вкладке «По звонку» [3] или нажать кнопку «+ Тест»</p>
-                    </div>
-                `;
+                    `;
+                }
+                if (tableBody) {
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="9" class="p-8 text-center text-xs sm:text-sm text-[#73706B]">Заявок по выбранному фильтру нет</td>
+                        </tr>
+                    `;
+                }
                 return;
             }
 
-            container.innerHTML = list.map(b => `
-                <div class="bg-[#FFFFFF] border ${b.status === 'pending' ? 'border-[#C29B38]/60 shadow-lg shadow-[#C29B38]/5' : 'border-[#E8E2D5]'} rounded-3xl p-5 sm:p-6 lg:p-7 space-y-4 transition-all hover:border-[#c49c6d]/50 hover:shadow-2xl">
-                    <div class="flex items-start justify-between gap-3">
-                        <div class="min-w-0 flex-1">
-                            <div class="flex items-center gap-2 flex-wrap">
-                                <span class="text-xs sm:text-sm font-bold px-3 py-1 rounded-xl bg-[#F3EFE8] text-[#4A5543] border border-[#E8E2D5] truncate max-w-[220px] flex items-center gap-1.5">
-                                    ${ICONS.branch} <span class="truncate">${b.restName}</span>
-                                </span>
-                                <span class="text-xs sm:text-sm text-[#73706B] font-mono">#${b.id}</span>
+            // 1. Рендеринг режима карточек (для мобильных и визуального обзора)
+            if (container) {
+                container.innerHTML = list.map(b => `
+                    <div class="bg-[#FFFFFF] border ${b.status === 'pending' ? 'border-[#C29B38]/60 shadow-lg shadow-[#C29B38]/5' : 'border-[#E8E2D5]'} rounded-3xl p-5 sm:p-6 lg:p-7 space-y-4 transition-all hover:border-[#c49c6d]/50 hover:shadow-2xl">
+                        <div class="flex items-start justify-between gap-3">
+                            <div class="min-w-0 flex-1">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <span class="text-xs sm:text-sm font-bold px-3 py-1 rounded-xl bg-[#F3EFE8] text-[#4A5543] border border-[#E8E2D5] truncate max-w-[220px] flex items-center gap-1.5">
+                                        ${ICONS.branch} <span class="truncate">${b.restName}</span>
+                                    </span>
+                                    <span class="text-xs sm:text-sm text-[#73706B] font-mono">#${b.id}</span>
+                                </div>
+                                <h3 class="text-base sm:text-lg lg:text-xl font-bold text-[#1E1F20] mt-2 flex items-center gap-2 truncate">
+                                    ${ICONS.user} <span class="truncate">${b.guestName}</span>
+                                </h3>
+                                <a href="tel:${b.guestPhone}" class="text-xs sm:text-sm lg:text-base text-[#4A5543] hover:text-[#c49c6d] font-semibold flex items-center gap-1.5 mt-1 transition">
+                                    ${ICONS.phone} <span>${b.guestPhone}</span>
+                                </a>
                             </div>
-                            <h3 class="text-base sm:text-lg lg:text-xl font-bold text-[#1E1F20] mt-2 flex items-center gap-2 truncate">
-                                ${ICONS.user} <span class="truncate">${b.guestName}</span>
-                            </h3>
-                            <a href="tel:${b.guestPhone}" class="text-xs sm:text-sm lg:text-base text-[#4A5543] hover:text-[#c49c6d] font-semibold flex items-center gap-1.5 mt-1 transition">
-                                ${ICONS.phone} <span>${b.guestPhone}</span>
-                            </a>
-                        </div>
-                        <div class="text-right flex-shrink-0">
-                            ${getStatusBadge(b.status)}
-                            <div class="text-xs text-[#73706B] mt-1.5 font-medium flex items-center justify-end gap-1">
-                                <span>${b.createdAt || 'Только что'}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-3 gap-2 bg-[#F3EFE8] rounded-2xl p-3 sm:p-4 border border-[#E8E2D5] text-center">
-                        <div>
-                            <div class="text-[11px] sm:text-xs text-[#73706B] font-bold uppercase tracking-tight">Дата и Время</div>
-                            <div class="text-xs sm:text-sm lg:text-base font-bold text-[#4A5543] mt-1 truncate">${b.date} • ${b.time}</div>
-                        </div>
-                        <div class="border-x border-[#E8E2D5]">
-                            <div class="text-[11px] sm:text-xs text-[#73706B] font-bold uppercase tracking-tight">Персон</div>
-                            <div class="text-xs sm:text-sm lg:text-base font-bold text-[#1E1F20] mt-1 flex items-center justify-center gap-1">
-                                ${ICONS.users} <span>${b.guests} чел.</span>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="text-[11px] sm:text-xs text-[#73706B] font-bold uppercase tracking-tight">Столик</div>
-                            <div class="text-xs sm:text-sm lg:text-base font-bold text-[#244E33] mt-1 truncate px-1 flex items-center justify-center gap-1">
-                                ${ICONS.table} <span>№${b.table_number}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    ${b.comment ? `
-                        <div class="bg-[#F3EFE8] border border-[#E8E2D5] rounded-2xl px-4 py-3 text-xs sm:text-sm lg:text-base text-[#4A5543] leading-relaxed flex items-start gap-2">
-                            ${ICONS.comment}
-                            <div class="min-w-0"><span class="text-[#73706B] font-medium">Пожелание:</span> ${b.comment}</div>
-                        </div>
-                    ` : ''}
-
-                    <!-- Контекстные кнопки управления статусом (Крупные, удобные для мыши) -->
-                    <div class="pt-1">
-                        ${b.status === 'pending' ? `
-                            <div class="grid grid-cols-3 gap-2.5">
-                                <button onclick="changeStatus('${b.id}', 'confirmed')" class="col-span-2 py-3.5 sm:py-4 rounded-2xl text-xs sm:text-sm lg:text-base font-bold bg-[#244E33] hover:bg-[#1B3C26] text-white transition active:scale-[0.98] shadow-sm flex items-center justify-center gap-2 cursor-pointer">
-                                    ${ICONS.check} <span>Подтвердить</span>
-                                </button>
-                                <button onclick="changeStatus('${b.id}', 'rejected')" class="py-3.5 sm:py-4 rounded-2xl text-xs sm:text-sm lg:text-base font-semibold bg-[#FCF3F3] hover:bg-[#F8E8E8] text-[#822B2B] border border-[#E8CACA] transition active:scale-[0.98] flex items-center justify-center gap-1.5 cursor-pointer">
-                                    ${ICONS.cross} <span>Отказ</span>
-                                </button>
-                            </div>
-                        ` : b.status === 'confirmed' ? `
-                            <div class="grid grid-cols-3 gap-2.5">
-                                <button onclick="changeStatus('${b.id}', 'arrived')" class="col-span-2 py-3.5 sm:py-4 rounded-2xl text-xs sm:text-sm lg:text-base font-bold bg-[#243B52] hover:bg-[#1A2D40] text-white transition active:scale-[0.98] shadow-sm flex items-center justify-center gap-2 cursor-pointer">
-                                    ${ICONS.wine} <span>Посадить за стол</span>
-                                </button>
-                                <button onclick="changeStatus('${b.id}', 'rejected')" class="py-3.5 sm:py-4 rounded-2xl text-xs sm:text-sm lg:text-base font-semibold bg-[#FAF8F5] hover:bg-[#FCF3F3] text-[#73706B] hover:text-[#822B2B] border border-[#E8E2D5] transition active:scale-[0.98] flex items-center justify-center gap-1 cursor-pointer">
-                                    ${ICONS.cross} <span>Отмена</span>
-                                </button>
-                            </div>
-                        ` : b.status === 'arrived' ? `
-                            <div class="grid grid-cols-3 gap-2.5">
-                                <button onclick="changeStatus('${b.id}', 'rejected')" class="col-span-2 py-3.5 sm:py-4 rounded-2xl text-xs sm:text-sm lg:text-base font-bold bg-[#244E33] hover:bg-[#1B3C26] text-white transition active:scale-[0.98] shadow-sm flex items-center justify-center gap-2 cursor-pointer">
-                                    ${ICONS.check} <span>Освободить стол</span>
-                                </button>
-                                <button onclick="changeStatus('${b.id}', 'confirmed')" class="py-3.5 sm:py-4 rounded-2xl text-xs sm:text-sm lg:text-base font-semibold bg-[#FAF8F5] text-[#73706B] hover:text-[#1E1F20] border border-[#E8E2D5] transition active:scale-[0.98] flex items-center justify-center gap-1 cursor-pointer">
-                                    ${ICONS.undo} <span>В бронь</span>
-                                </button>
-                            </div>
-                        ` : `
-                            <!-- Для отклонённых/завершённых заявок -->
-                            <div class="flex items-center justify-between gap-3 bg-[#F3EFE8] rounded-2xl px-4 py-3 border border-[#E8E2D5]">
-                                <span class="text-xs sm:text-sm text-[#822B2B] font-semibold flex items-center gap-1.5">
-                                    ${ICONS.cross} <span>Заявка отменена</span>
-                                </span>
-                                <div class="flex gap-2.5">
-                                    <button onclick="changeStatus('${b.id}', 'confirmed')" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-[#EFF5F0] hover:bg-[#E2EDE4] text-[#244E33] border border-[#CFE1D4] transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
-                                        ${ICONS.undo} <span>Восстановить</span>
-                                    </button>
-                                    <button onclick="deleteBookingLocal('${b.id}')" class="px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-[#FAF8F5] hover:bg-[#FCF3F3] text-[#73706B] hover:text-[#822B2B] border border-[#E8E2D5] transition active:scale-95 cursor-pointer" title="Удалить заявку">
-                                        ${ICONS.trash}
-                                    </button>
+                            <div class="text-right flex-shrink-0">
+                                ${getStatusBadge(b.status)}
+                                <div class="text-xs text-[#73706B] mt-1.5 font-medium flex items-center justify-end gap-1">
+                                    <span>${b.createdAt || 'Только что'}</span>
                                 </div>
                             </div>
-                        `}
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-2 bg-[#F3EFE8] rounded-2xl p-3 sm:p-4 border border-[#E8E2D5] text-center">
+                            <div>
+                                <div class="text-[11px] sm:text-xs text-[#73706B] font-bold uppercase tracking-tight">Дата и Время</div>
+                                <div class="text-xs sm:text-sm lg:text-base font-bold text-[#4A5543] mt-1 truncate">${b.date} • ${b.time}</div>
+                            </div>
+                            <div class="border-x border-[#E8E2D5]">
+                                <div class="text-[11px] sm:text-xs text-[#73706B] font-bold uppercase tracking-tight">Персон</div>
+                                <div class="text-xs sm:text-sm lg:text-base font-bold text-[#1E1F20] mt-1 flex items-center justify-center gap-1">
+                                    ${ICONS.users} <span>${b.guests} чел.</span>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="text-[11px] sm:text-xs text-[#73706B] font-bold uppercase tracking-tight">Столик</div>
+                                <div class="text-xs sm:text-sm lg:text-base font-bold text-[#244E33] mt-1 truncate px-1 flex items-center justify-center gap-1">
+                                    ${ICONS.table} <span>№${b.table_number}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        ${b.comment ? `
+                            <div class="bg-[#F3EFE8] border border-[#E8E2D5] rounded-2xl px-4 py-3 text-xs sm:text-sm lg:text-base text-[#4A5543] leading-relaxed flex items-start gap-2">
+                                ${ICONS.comment}
+                                <div class="min-w-0"><span class="text-[#73706B] font-medium">Пожелание:</span> ${b.comment}</div>
+                            </div>
+                        ` : ''}
+
+                        <!-- Контекстные кнопки управления статусом (Крупные, удобные для мыши) -->
+                        <div class="pt-1">
+                            ${b.status === 'pending' ? `
+                                <div class="grid grid-cols-3 gap-2.5">
+                                    <button onclick="changeStatus('${b.id}', 'confirmed')" class="col-span-2 py-3.5 sm:py-4 rounded-2xl text-xs sm:text-sm lg:text-base font-bold bg-[#244E33] hover:bg-[#1B3C26] text-white transition active:scale-[0.98] shadow-sm flex items-center justify-center gap-2 cursor-pointer">
+                                        ${ICONS.check} <span>Подтвердить</span>
+                                    </button>
+                                    <button onclick="changeStatus('${b.id}', 'rejected')" class="py-3.5 sm:py-4 rounded-2xl text-xs sm:text-sm lg:text-base font-semibold bg-[#FCF3F3] hover:bg-[#F8E8E8] text-[#822B2B] border border-[#E8CACA] transition active:scale-[0.98] flex items-center justify-center gap-1.5 cursor-pointer">
+                                        ${ICONS.cross} <span>Отказ</span>
+                                    </button>
+                                </div>
+                            ` : b.status === 'confirmed' ? `
+                                <div class="grid grid-cols-3 gap-2.5">
+                                    <button onclick="changeStatus('${b.id}', 'arrived')" class="col-span-2 py-3.5 sm:py-4 rounded-2xl text-xs sm:text-sm lg:text-base font-bold bg-[#243B52] hover:bg-[#1A2D40] text-white transition active:scale-[0.98] shadow-sm flex items-center justify-center gap-2 cursor-pointer">
+                                        ${ICONS.wine} <span>Посадить за стол</span>
+                                    </button>
+                                    <button onclick="changeStatus('${b.id}', 'rejected')" class="py-3.5 sm:py-4 rounded-2xl text-xs sm:text-sm lg:text-base font-semibold bg-[#FAF8F5] hover:bg-[#FCF3F3] text-[#73706B] hover:text-[#822B2B] border border-[#E8E2D5] transition active:scale-[0.98] flex items-center justify-center gap-1 cursor-pointer">
+                                        ${ICONS.cross} <span>Отмена</span>
+                                    </button>
+                                </div>
+                            ` : b.status === 'arrived' ? `
+                                <div class="grid grid-cols-3 gap-2.5">
+                                    <button onclick="changeStatus('${b.id}', 'rejected')" class="col-span-2 py-3.5 sm:py-4 rounded-2xl text-xs sm:text-sm lg:text-base font-bold bg-[#244E33] hover:bg-[#1B3C26] text-white transition active:scale-[0.98] shadow-sm flex items-center justify-center gap-2 cursor-pointer">
+                                        ${ICONS.check} <span>Освободить стол</span>
+                                    </button>
+                                    <button onclick="changeStatus('${b.id}', 'confirmed')" class="py-3.5 sm:py-4 rounded-2xl text-xs sm:text-sm lg:text-base font-semibold bg-[#FAF8F5] text-[#73706B] hover:text-[#1E1F20] border border-[#E8E2D5] transition active:scale-[0.98] flex items-center justify-center gap-1 cursor-pointer">
+                                        ${ICONS.undo} <span>В бронь</span>
+                                    </button>
+                                </div>
+                            ` : `
+                                <!-- Для отклонённых/завершённых заявок -->
+                                <div class="flex items-center justify-between gap-3 bg-[#F3EFE8] rounded-2xl px-4 py-3 border border-[#E8E2D5]">
+                                    <span class="text-xs sm:text-sm text-[#822B2B] font-semibold flex items-center gap-1.5">
+                                        ${ICONS.cross} <span>Заявка отменена</span>
+                                    </span>
+                                    <div class="flex gap-2.5">
+                                        <button onclick="changeStatus('${b.id}', 'confirmed')" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-[#EFF5F0] hover:bg-[#E2EDE4] text-[#244E33] border border-[#CFE1D4] transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
+                                            ${ICONS.undo} <span>Восстановить</span>
+                                        </button>
+                                        <button onclick="deleteBookingLocal('${b.id}')" class="px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-[#FAF8F5] hover:bg-[#FCF3F3] text-[#73706B] hover:text-[#822B2B] border border-[#E8E2D5] transition active:scale-95 cursor-pointer" title="Удалить заявку">
+                                            ${ICONS.trash}
+                                        </button>
+                                    </div>
+                                </div>
+                            `}
+                        </div>
                     </div>
-                </div>
-            `).join('');
+                `).join('');
+            }
+
+            // 2. Рендеринг табличного реестра (Плотный профессиональный режим для ПК)
+            if (tableBody) {
+                tableBody.innerHTML = list.map(b => {
+                    let actionHtml = '';
+                    if (b.status === 'pending') {
+                        actionHtml = `
+                            <div class="flex items-center justify-end gap-1.5">
+                                <button onclick="changeStatus('${b.id}', 'confirmed')" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-[#244E33] hover:bg-[#1B3C26] text-white transition active:scale-95 shadow-xs flex items-center gap-1 cursor-pointer" title="Подтвердить бронь">
+                                    ${ICONS.check} <span>Принять</span>
+                                </button>
+                                <button onclick="changeStatus('${b.id}', 'rejected')" class="px-2 py-1 rounded-lg text-xs font-semibold bg-[#FCF3F3] hover:bg-[#F8E8E8] text-[#822B2B] border border-[#E8CACA] transition active:scale-95 cursor-pointer" title="Отклонить">
+                                    ${ICONS.cross}
+                                </button>
+                            </div>
+                        `;
+                    } else if (b.status === 'confirmed') {
+                        actionHtml = `
+                            <div class="flex items-center justify-end gap-1.5">
+                                <button onclick="changeStatus('${b.id}', 'arrived')" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-[#243B52] hover:bg-[#1A2D40] text-white transition active:scale-95 shadow-xs flex items-center gap-1 cursor-pointer" title="Гости пришли (Посадить)">
+                                    ${ICONS.wine} <span>Посадить</span>
+                                </button>
+                                <button onclick="changeStatus('${b.id}', 'rejected')" class="px-2 py-1 rounded-lg text-xs font-semibold bg-[#FAF8F5] hover:bg-[#FCF3F3] text-[#73706B] hover:text-[#822B2B] border border-[#E8E2D5] transition active:scale-95 cursor-pointer" title="Отмена">
+                                    ${ICONS.cross}
+                                </button>
+                            </div>
+                        `;
+                    } else if (b.status === 'arrived') {
+                        actionHtml = `
+                            <div class="flex items-center justify-end gap-1.5">
+                                <button onclick="changeStatus('${b.id}', 'rejected')" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-[#244E33] hover:bg-[#1B3C26] text-white transition active:scale-95 shadow-xs flex items-center gap-1 cursor-pointer" title="Освободить стол">
+                                    ${ICONS.check} <span>Освободить</span>
+                                </button>
+                                <button onclick="changeStatus('${b.id}', 'confirmed')" class="px-2 py-1 rounded-lg text-xs font-semibold bg-[#FAF8F5] text-[#73706B] hover:text-[#1E1F20] border border-[#E8E2D5] transition active:scale-95 cursor-pointer" title="В бронь">
+                                    ${ICONS.undo}
+                                </button>
+                            </div>
+                        `;
+                    } else {
+                        actionHtml = `
+                            <div class="flex items-center justify-end gap-1.5">
+                                <button onclick="changeStatus('${b.id}', 'confirmed')" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-[#EFF5F0] hover:bg-[#E2EDE4] text-[#244E33] border border-[#CFE1D4] transition active:scale-95 flex items-center gap-1 cursor-pointer" title="Восстановить">
+                                    ${ICONS.undo} <span>Вернуть</span>
+                                </button>
+                                <button onclick="deleteBookingLocal('${b.id}')" class="px-2 py-1 rounded-lg text-xs font-semibold bg-[#FAF8F5] hover:bg-[#FCF3F3] text-[#73706B] hover:text-[#822B2B] border border-[#E8E2D5] transition active:scale-95 cursor-pointer" title="Удалить">
+                                    ${ICONS.trash}
+                                </button>
+                            </div>
+                        `;
+                    }
+
+                    return `
+                        <tr class="hover:bg-[#F3EFE8]/40 transition border-b border-[#E8E2D5]/70">
+                            <td class="py-3 px-4 font-mono font-bold text-xs text-[#73706B]">#${b.id}</td>
+                            <td class="py-3 px-4 whitespace-nowrap">
+                                <div class="font-bold text-[#1E1F20]">${b.time}</div>
+                                <div class="text-[10px] text-[#73706B]">${b.date || 'Сегодня'}</div>
+                            </td>
+                            <td class="py-3 px-4 whitespace-nowrap">
+                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#EFF5F0] text-[#244E33] font-bold text-xs border border-[#CFE1D4]">
+                                    🪑 №${b.table_number || '-'}
+                                </span>
+                                <span class="text-[10px] text-[#73706B] block mt-0.5 truncate max-w-[120px]">${b.table_zone || 'Основной зал'}</span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="font-bold text-[#1E1F20] truncate max-w-[160px]">${b.guestName}</div>
+                                <div class="text-[10px] text-[#73706B] truncate max-w-[160px]">${b.restName || ''}</div>
+                            </td>
+                            <td class="py-3 px-4 whitespace-nowrap">
+                                <a href="tel:${b.guestPhone}" class="font-mono text-xs font-medium text-[#4A5543] hover:text-[#c49c6d] transition">${b.guestPhone}</a>
+                            </td>
+                            <td class="py-3 px-4 text-center font-bold text-[#1E1F20]">
+                                ${b.guests}
+                            </td>
+                            <td class="py-3 px-4">
+                                <span class="text-xs text-[#73706B] line-clamp-1 max-w-[160px]" title="${b.comment || ''}">${b.comment || '—'}</span>
+                            </td>
+                            <td class="py-3 px-4 whitespace-nowrap">
+                                ${getStatusBadge(b.status)}
+                            </td>
+                            <td class="py-3 px-4 text-right whitespace-nowrap">
+                                ${actionHtml}
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
         }
 
         function deleteBookingLocal(id) {
@@ -3208,6 +3557,7 @@
                     closeSideDrawer();
                     closeRestaurantPicker();
                     closeShiftModal();
+                    closeQuickWalkinModal();
                 }
                 return;
             }
@@ -3216,6 +3566,7 @@
                 closeSideDrawer();
                 closeRestaurantPicker();
                 closeShiftModal();
+                closeQuickWalkinModal();
             } else if (e.key === '1') {
                 switchTab('orders');
             } else if (e.key === '2') {
@@ -3224,6 +3575,9 @@
                 switchTab('walkin');
             } else if (e.key === '4') {
                 switchTab('manage');
+            } else if (e.key === 'w' || e.key === 'W' || e.key === 'ц' || e.key === 'Ц') {
+                e.preventDefault();
+                openQuickWalkinModal();
             } else if (e.key === 'r' || e.key === 'R' || e.key === 'к' || e.key === 'К') {
                 manualRefresh();
             } else if (e.key === '/') {
@@ -3236,107 +3590,517 @@
             }
         });
 
-        // ================= КАРТА ЗАЛА И ПОСАДКИ =================
+        // ================= ИНТЕРАКТИВНАЯ КАРТА ЗАЛОВ & ТЕРМИНАЛ ХОСТЕС =================
+        function initFloorDateSelect() {
+            const sel = document.getElementById('floorDateSelect');
+            if (!sel || sel.children.length > 0) return;
+            const dates = [
+                { label: 'Сегодня (' + getIsoDate(0).split('-').slice(1).reverse().join('.') + ')', val: getIsoDate(0) },
+                { label: 'Завтра (' + getIsoDate(1).split('-').slice(1).reverse().join('.') + ')', val: getIsoDate(1) },
+                { label: '+2 дня (' + getIsoDate(2).split('-').slice(1).reverse().join('.') + ')', val: getIsoDate(2) },
+                { label: '+3 дня (' + getIsoDate(3).split('-').slice(1).reverse().join('.') + ')', val: getIsoDate(3) }
+            ];
+            sel.innerHTML = dates.map(d => `<option value="${d.val}">${d.label}</option>`).join('');
+        }
+
+        function selectFloorTime(timeSlot) {
+            selectedFloorTime = timeSlot;
+            renderFloorMap();
+        }
+
+        function selectFloorZone(zoneName) {
+            selectedFloorZone = zoneName;
+            renderFloorMap();
+        }
+
+        function selectFloorTable(tableId) {
+            selectedFloorTableId = Number(tableId);
+            renderFloorMap();
+        }
+
+        function renderFloorTimeline(activeBookings) {
+            const timelineBar = document.getElementById('floorTimelineBar');
+            if (!timelineBar) return;
+
+            const timeSlots = ['all', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'];
+
+            timelineBar.innerHTML = timeSlots.map(slot => {
+                const isSelected = selectedFloorTime === slot;
+                let count = 0;
+                if (slot === 'all') {
+                    count = activeBookings.length;
+                } else {
+                    const hourPrefix = slot.slice(0, 2);
+                    count = activeBookings.filter(b => b.time === slot || String(b.time || '').startsWith(hourPrefix)).length;
+                }
+
+                const label = slot === 'all' ? 'Весь день' : slot;
+                const activeClasses = isSelected
+                    ? 'bg-[#2D2A26] text-white border-[#2D2A26] shadow-sm font-bold'
+                    : 'bg-[#FFFFFF] text-[#73706B] hover:text-[#1E1F20] hover:bg-[#F3EFE8] border-[#E8E2D5] font-semibold';
+                const countBadge = isSelected
+                    ? 'bg-white/20 text-white'
+                    : count > 0
+                        ? 'bg-[#EFF5F0] text-[#244E33] border border-[#CFE1D4]'
+                        : 'bg-[#F3EFE8] text-[#73706B]';
+
+                return `
+                    <button type="button" onclick="selectFloorTime('${slot}')" class="px-3 py-1.5 rounded-xl text-xs whitespace-nowrap transition border cursor-pointer active:scale-95 flex items-center gap-1.5 flex-shrink-0 ${activeClasses}">
+                        <span>${label}</span>
+                        <span class="text-[10px] font-mono px-1.5 py-0.2 rounded-full ${countBadge}">${count}</span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function renderFloorZones(tables) {
+            const zoneBar = document.getElementById('floorZoneChips');
+            if (!zoneBar) return;
+
+            const uniqueZones = ['all', ...Array.from(new Set(tables.map(t => t.zone || 'Главный зал')))];
+
+            zoneBar.innerHTML = uniqueZones.map(z => {
+                const isSelected = selectedFloorZone === z;
+                const label = z === 'all' ? 'Все зоны' : z;
+                const icon = z.includes('VIP') ? '👑' : (z.includes('Террас') ? '🌿' : (z.includes('Окн') ? '🪟' : '🍽'));
+                const activeCls = isSelected
+                    ? 'bg-[#4A5543] text-white border-[#4A5543] font-bold shadow-xs'
+                    : 'bg-[#F3EFE8] text-[#73706B] hover:text-[#1E1F20] border-[#E8E2D5] font-medium';
+
+                return `
+                    <button type="button" onclick="selectFloorZone('${z}')" class="px-3 py-1.5 rounded-xl text-xs whitespace-nowrap transition border cursor-pointer active:scale-95 flex items-center gap-1.5 flex-shrink-0 ${activeCls}">
+                        <span>${icon}</span>
+                        <span>${label}</span>
+                    </button>
+                `;
+            }).join('');
+        }
+
         function renderFloorMap() {
+            initFloorDateSelect();
+
             const restId = selectedRestId === 'all' ? 1 : Number(selectedRestId);
             const rest = RESTAURANTS.find(r => r.id === restId) || RESTAURANTS[0];
             const dateVal = document.getElementById('floorDateSelect')?.value || getIsoDate(0);
-            const timeVal = document.getElementById('floorTimeSelect')?.value || 'all';
 
-            document.getElementById('floorSubtitle').textContent = `Заведение: ${rest.name} (${rest.city})`;
+            const headingEl = document.getElementById('floorRestHeading');
+            if (headingEl) {
+                headingEl.textContent = `Интерактивная карта залов — ${rest.name}`;
+            }
 
+            const subtitleEl = document.getElementById('floorSubtitle');
+            if (subtitleEl) {
+                subtitleEl.textContent = `Заведение: ${rest.name} (${rest.city}) • Всего столов: ${rest.tables ? rest.tables.length : 0} • Кликните на стол для деталей и быстрого приема`;
+            }
+
+            // Фильтрация броней по заведению и дате
             const activeBookings = bookings.filter(b => {
                 const sameRest = (Number(b.restId) === rest.id) || (b.restName === rest.name);
                 if (!sameRest) return false;
                 if (b.status === 'rejected') return false;
                 if (dateVal && b.booking_date && b.booking_date !== dateVal) return false;
-                if (timeVal !== 'all' && b.time !== timeVal) return false;
                 return true;
             });
+
+            // Рендерим таймлайн и зоны
+            renderFloorTimeline(activeBookings);
+            renderFloorZones(rest.tables || []);
+
+            // Фильтруем столы по зоне
+            let visibleTables = rest.tables || [];
+            if (selectedFloorZone !== 'all') {
+                visibleTables = visibleTables.filter(t => t.zone === selectedFloorZone);
+            }
+
+            // Выбираем первый стол, если никакой не выбран или выбранный не из текущего заведения
+            if (!selectedFloorTableId || !visibleTables.some(t => t.id === selectedFloorTableId)) {
+                selectedFloorTableId = visibleTables[0]?.id || null;
+            }
 
             let occupiedCount = 0;
             const grid = document.getElementById('floorTablesGrid');
 
-            grid.innerHTML = rest.tables.map(t => {
-                const tableBooking = activeBookings.find(b => Number(b.table_number) === Number(t.number));
+            if (grid) {
+                grid.innerHTML = visibleTables.map(t => {
+                    const isSelected = selectedFloorTableId === t.id;
 
-                if (tableBooking) {
-                    occupiedCount++;
-                    const isPending = tableBooking.status === 'pending';
-                    const isArrived = tableBooking.status === 'arrived';
+                    // Находим бронь стола в выбранном временном слоте
+                    const tableBooking = activeBookings.find(b => {
+                        if (Number(b.table_number) !== Number(t.number)) return false;
+                        if (selectedFloorTime !== 'all') {
+                            const hourPrefix = selectedFloorTime.slice(0, 2);
+                            if (b.time !== selectedFloorTime && !String(b.time || '').startsWith(hourPrefix)) return false;
+                        }
+                        return true;
+                    });
 
-                    const borderClass = isArrived
-                        ? 'border-sky-400/50 bg-sky-500/10'
-                        : isPending
-                            ? 'border-amber-400/50 bg-amber-500/10'
-                            : 'border-[#C5A880] bg-[#F5EFE6] text-[#1E1F20]';
+                    if (tableBooking) {
+                        occupiedCount++;
+                        const isPending = tableBooking.status === 'pending';
+                        const isArrived = tableBooking.status === 'arrived';
 
-                    const statusLabel = isArrived
-                        ? '🥂 Гости сидят'
-                        : isPending
-                            ? '⏳ Ждёт ответа'
-                            : '✅ В брони';
+                        const cardTheme = isArrived
+                            ? 'border-sky-400/70 bg-sky-500/10'
+                            : isPending
+                                ? 'border-amber-400/70 bg-amber-500/10'
+                                : 'border-[#C5A880] bg-[#FDF9F0]';
 
-                    return `
-                        <div class="rounded-2xl border ${borderClass} p-3 flex flex-col justify-between space-y-2 transition">
-                            <div>
-                                <div class="flex items-center justify-between">
-                                    <span class="text-xs font-bold text-[#1E1F20]">🪑 Стол №${t.number}</span>
-                                    <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-[#F3EFE8] text-[#1E1F20]">${tableBooking.time}</span>
+                        const statusBadge = isArrived
+                            ? `<span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-sky-100 text-sky-900 border border-sky-300">🥂 В зале</span>`
+                            : isPending
+                                ? `<span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300 animate-pulse">⏳ Новая</span>`
+                                : `<span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-[#EFF5F0] text-[#244E33] border border-[#CFE1D4]">✅ Бронь</span>`;
+
+                        return `
+                            <div onclick="selectFloorTable(${t.id})" class="cursor-pointer rounded-2xl border ${cardTheme} ${isSelected ? 'ring-2 ring-[#4A5543] shadow-lg scale-[1.01]' : 'shadow-xs hover:border-[#4A5543]/60'} p-3.5 flex flex-col justify-between space-y-2.5 transition active:scale-[0.99] group bg-[#FFFFFF]">
+                                <div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs sm:text-sm font-bold text-[#1E1F20] flex items-center gap-1">
+                                            <span>🪑</span> <span>Стол №${t.number}</span>
+                                        </span>
+                                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#F3EFE8] text-[#1E1F20] font-mono">${tableBooking.time}</span>
+                                    </div>
+                                    <div class="text-[10px] sm:text-xs text-[#73706B] mt-0.5">${t.zone} • ${t.seats} мест</div>
+                                    <div class="mt-2.5 pt-2 border-t border-[#E8E2D5]">
+                                        <div class="text-xs sm:text-sm font-bold text-[#1E1F20] truncate flex items-center gap-1">
+                                            <span>👤</span> <span class="truncate">${tableBooking.guestName}</span>
+                                        </div>
+                                        <div class="text-[10px] text-[#4A5543] mt-0.5">👥 ${tableBooking.guests} гостя</div>
+                                    </div>
                                 </div>
-                                <div class="text-[10px] text-[#73706B]">${t.zone} • до ${t.seats} чел.</div>
-                                <div class="mt-2 pt-2 border-t border-[#E8E2D5]">
-                                    <div class="text-xs font-bold text-[#1E1F20] truncate">👤 ${tableBooking.guestName}</div>
-                                    <div class="text-[10px] text-[#4A5543]">👥 ${tableBooking.guests} гостя • ${statusLabel}</div>
+                                <div class="pt-1 flex items-center justify-between gap-1.5 border-t border-[#E8E2D5]/60">
+                                    ${statusBadge}
+                                    <span class="text-[10px] font-bold text-[#4A5543] group-hover:underline">Инспектор →</span>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-2 gap-1 pt-1">
-                                ${tableBooking.status !== 'arrived' ? `
-                                    <button onclick="changeStatus('${tableBooking.id}', 'arrived')" class="py-1.5 rounded-lg text-[10px] font-bold bg-[#243B52] text-white shadow-sm transition active:scale-95">
-                                        🥂 Посадить
-                                    </button>
-                                ` : `
-                                    <button onclick="changeStatus('${tableBooking.id}', 'rejected')" class="py-1.5 rounded-lg text-[10px] font-bold bg-[#EFF5F0] text-[#244E33] border border-[#CFE1D4] hover:bg-[#E2EDE4] transition active:scale-95">
-                                        🔓 Освободить
-                                    </button>
-                                `}
-                                <button onclick="changeStatus('${tableBooking.id}', 'rejected')" class="py-1.5 rounded-lg text-[10px] font-medium bg-[#FCF3F3] text-[#822B2B] border border-[#E8CACA] hover:bg-[#F8E8E8] transition active:scale-95">
-                                    Отмена
+                        `;
+                    }
+
+                    // Свободный стол
+                    return `
+                        <div onclick="selectFloorTable(${t.id})" class="cursor-pointer rounded-2xl border ${isSelected ? 'ring-2 ring-[#4A5543] border-[#4A5543] shadow-lg scale-[1.01]' : 'border-[#E8E2D5] hover:border-emerald-500/60 hover:bg-[#F6FAF6]'} bg-[#FFFFFF] p-3.5 flex flex-col justify-between space-y-2.5 transition active:scale-[0.99] group shadow-xs">
+                            <div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs sm:text-sm font-bold text-[#1E1F20] flex items-center gap-1">
+                                        <span>🪑</span> <span>Стол №${t.number}</span>
+                                    </span>
+                                    <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-[#EFF5F0] text-[#244E33] border border-[#CFE1D4]">Свободен</span>
+                                </div>
+                                <div class="text-[10px] sm:text-xs text-[#73706B] mt-0.5">${t.zone}</div>
+                                <div class="text-[10px] text-[#73706B] mt-1.5">Вместимость: до ${t.seats} персон</div>
+                            </div>
+                            <div class="pt-1">
+                                <button type="button" onclick="event.stopPropagation(); openQuickWalkinModal(${t.id});" class="w-full py-1.5 rounded-xl text-center text-[10px] sm:text-xs font-bold bg-[#EFF3EC] group-hover:bg-[#E3EBE0] text-[#4A5543] border border-emerald-200 transition active:scale-95 flex items-center justify-center gap-1">
+                                    <span>⚡</span> <span>Посадить</span>
                                 </button>
                             </div>
                         </div>
                     `;
-                }
+                }).join('');
+            }
 
-                return `
-                    <div onclick="quickSeatAtTable(${rest.id}, ${t.id}, ${t.number}, ${t.seats})" class="cursor-pointer rounded-2xl border border-[#E8E2D5] bg-[#FFFFFF] hover:bg-[#EFF3EC] p-3 flex flex-col justify-between space-y-2 transition group">
-                        <div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-xs font-bold text-[#1E1F20]">🪑 Стол №${t.number}</span>
-                                <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-[#EFF5F0] text-[#244E33] border border-[#CFE1D4]">Свободен</span>
+            // Обновляем бейдж занятости
+            const badgeEl = document.getElementById('floorOccupancyBadge');
+            if (badgeEl) {
+                const totalCount = rest.tables ? rest.tables.length : 0;
+                badgeEl.textContent = `Занято: ${occupiedCount}/${totalCount}`;
+                if (occupiedCount >= totalCount && totalCount > 0) {
+                    badgeEl.className = "ml-2 px-3 py-1 rounded-full text-xs font-bold bg-[#FCF3F3] text-[#822B2B] border border-[#E8CACA] shadow-xs";
+                } else if (occupiedCount > 0) {
+                    badgeEl.className = "ml-2 px-3 py-1 rounded-full text-xs font-bold bg-[#FDF9F0] text-[#7A5B10] border border-[#E8DCBD] shadow-xs";
+                } else {
+                    badgeEl.className = "ml-2 px-3 py-1 rounded-full text-xs font-bold bg-[#EFF5F0] text-[#244E33] border border-[#CFE1D4] shadow-xs";
+                }
+            }
+
+            // Рендерим правый боковой инспектор выбранного стола
+            renderFloorInspector(rest, activeBookings);
+        }
+
+        function renderFloorInspector(rest, activeBookings) {
+            const card = document.getElementById('floorTableInspectorCard');
+            if (!card) return;
+
+            const selectedTable = (rest.tables || []).find(t => t.id === selectedFloorTableId) || rest.tables?.[0];
+            if (!selectedTable) {
+                card.innerHTML = `
+                    <div class="p-6 text-center text-xs text-[#73706B]">
+                        Нет данных о столиках
+                    </div>
+                `;
+                return;
+            }
+
+            const selBooking = activeBookings.find(b => {
+                if (Number(b.table_number) !== Number(selectedTable.number)) return false;
+                if (selectedFloorTime !== 'all') {
+                    const hourPrefix = selectedFloorTime.slice(0, 2);
+                    if (b.time !== selectedFloorTime && !String(b.time || '').startsWith(hourPrefix)) return false;
+                }
+                return true;
+            });
+
+            if (selBooking) {
+                const cleanPhone = String(selBooking.guestPhone || '').replace(/\D/g, '');
+                card.innerHTML = `
+                    <div class="space-y-4">
+                        <!-- Шапка столика -->
+                        <div class="flex items-start justify-between border-b border-[#E8E2D5] pb-3">
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xl">🪑</span>
+                                    <h3 class="text-base sm:text-lg font-bold text-[#1E1F20] font-serif-luxury">Стол №${selectedTable.number}</h3>
+                                </div>
+                                <p class="text-xs text-[#73706B] mt-0.5">${selectedTable.zone} • До ${selectedTable.seats} персон</p>
                             </div>
-                            <div class="text-[10px] text-[#73706B] mt-0.5">${t.zone}</div>
-                            <div class="text-[10px] text-zinc-500 mt-1">Вместимость: до ${t.seats} персон</div>
+                            <div>
+                                ${getStatusBadge(selBooking.status)}
+                            </div>
                         </div>
-                        <div class="pt-1">
-                            <div class="w-full py-1.5 rounded-lg text-center text-[10px] font-bold bg-[#EFF3EC] group-hover:bg-[#E3EBE0] text-[#4A5543] border border-emerald-200 transition">
-                                ➕ Посадить гостей
+
+                        <!-- Карточка текущего гостя -->
+                        <div class="bg-[#F3EFE8] rounded-2xl p-4 border border-[#E8E2D5] space-y-3">
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <div class="text-[10px] font-bold uppercase tracking-wider text-[#73706B]">Текущий гость</div>
+                                    <div class="text-sm sm:text-base font-bold text-[#1E1F20] mt-0.5 flex items-center gap-1.5">
+                                        <span>👤</span> <span>${selBooking.guestName}</span>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-white/70 text-[#73706B] border border-[#E8E2D5]">#${selBooking.id}</span>
+                            </div>
+
+                            <!-- Быстрые действия связи: Звонок и WhatsApp -->
+                            <div class="pt-2 border-t border-[#E8E2D5] flex items-center justify-between gap-2 flex-wrap">
+                                <a href="tel:${selBooking.guestPhone}" class="text-xs font-mono font-bold text-[#4A5543] hover:text-[#c49c6d] flex items-center gap-1 transition">
+                                    <span>📞</span> <span>${selBooking.guestPhone}</span>
+                                </a>
+                                <a href="https://wa.me/${cleanPhone}?text=${encodeURIComponent('Здравствуйте, ' + selBooking.guestName + '! Ваша бронь столика №' + selectedTable.number + ' в ' + rest.name)}" target="_blank" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-[#25D366]/10 text-[#128C7E] hover:bg-[#25D366]/20 border border-[#25D366]/30 flex items-center gap-1 transition" title="Открыть чат в WhatsApp">
+                                    <span>💬</span> <span>WhatsApp</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Детали посадки -->
+                        <div class="grid grid-cols-2 gap-2 text-xs">
+                            <div class="bg-[#FFFFFF] border border-[#E8E2D5] rounded-xl p-2.5">
+                                <div class="text-[10px] text-[#73706B] font-bold uppercase">Время брони</div>
+                                <div class="font-bold text-[#1E1F20] mt-0.5">⏰ ${selBooking.time} (${selBooking.date || 'Сегодня'})</div>
+                            </div>
+                            <div class="bg-[#FFFFFF] border border-[#E8E2D5] rounded-xl p-2.5">
+                                <div class="text-[10px] text-[#73706B] font-bold uppercase">Персон</div>
+                                <div class="font-bold text-[#1E1F20] mt-0.5">👥 ${selBooking.guests} чел.</div>
+                            </div>
+                        </div>
+
+                        ${selBooking.comment ? `
+                            <div class="bg-[#FFFFFF] border border-[#E8E2D5] rounded-xl p-3 text-xs text-[#4A5543]">
+                                <span class="text-[10px] font-bold uppercase text-[#73706B] block mb-1">Пожелание гостя:</span>
+                                ${selBooking.comment}
+                            </div>
+                        ` : ''}
+
+                        <!-- Терминальные кнопки управления посадкой -->
+                        <div class="space-y-2 pt-2 border-t border-[#E8E2D5]">
+                            ${selBooking.status !== 'arrived' ? `
+                                <button onclick="changeStatus('${selBooking.id}', 'arrived')" class="w-full py-3 rounded-xl text-xs sm:text-sm font-bold bg-[#243B52] hover:bg-[#1A2D40] text-white shadow-md transition active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer">
+                                    <span>🥂</span> <span>Посадить за стол (Check-in)</span>
+                                </button>
+                            ` : `
+                                <button onclick="changeStatus('${selBooking.id}', 'rejected')" class="w-full py-3 rounded-xl text-xs sm:text-sm font-bold bg-[#244E33] hover:bg-[#1B3C26] text-white shadow-md transition active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer">
+                                    <span>🔓</span> <span>Освободить стол (Выезд)</span>
+                                </button>
+                            `}
+                            <div class="grid grid-cols-2 gap-2">
+                                <button onclick="changeStatus('${selBooking.id}', 'rejected')" class="py-2 rounded-xl text-xs font-semibold bg-[#FCF3F3] text-[#822B2B] hover:bg-[#F8E8E8] border border-[#E8CACA] transition active:scale-95 text-center cursor-pointer">
+                                    Отменить бронь
+                                </button>
+                                <button onclick="openQuickWalkinModal(${selectedTable.id})" class="py-2 rounded-xl text-xs font-semibold bg-[#F3EFE8] text-[#1E1F20] hover:bg-[#E8E2D5] transition active:scale-95 text-center cursor-pointer">
+                                    Пересадить гостя
+                                </button>
                             </div>
                         </div>
                     </div>
                 `;
-            }).join('');
+                return;
+            }
 
-            document.getElementById('floorOccupancyBadge').textContent = `Занято: ${occupiedCount}/${rest.tables.length}`;
+            // Столик свободен
+            card.innerHTML = `
+                <div class="space-y-4">
+                    <!-- Шапка столика -->
+                    <div class="flex items-start justify-between border-b border-[#E8E2D5] pb-3">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xl">🪑</span>
+                                <h3 class="text-base sm:text-lg font-bold text-[#1E1F20] font-serif-luxury">Стол №${selectedTable.number}</h3>
+                            </div>
+                            <p class="text-xs text-[#73706B] mt-0.5">${selectedTable.zone} • До ${selectedTable.seats} персон</p>
+                        </div>
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-bold bg-[#EFF5F0] text-[#244E33] border border-[#CFE1D4]">
+                            🟢 Свободен
+                        </span>
+                    </div>
+
+                    <!-- Карточка готовности столика -->
+                    <div class="bg-[#EFF5F0]/60 border border-[#CFE1D4] rounded-2xl p-5 text-center space-y-2">
+                        <div class="w-12 h-12 mx-auto rounded-full bg-[#EFF5F0] text-[#244E33] flex items-center justify-center text-xl shadow-xs">
+                            ✨
+                        </div>
+                        <div class="text-sm font-bold text-[#244E33]">Стол сервирован и готов к приёму</div>
+                        <p class="text-xs text-[#73706B] max-w-xs mx-auto">
+                            На выбранное время (${selectedFloorTime === 'all' ? 'текущий срез' : selectedFloorTime}) нет подтверждённых броней.
+                        </p>
+                    </div>
+
+                    <!-- Кнопка быстрой посадки -->
+                    <button onclick="openQuickWalkinModal(${selectedTable.id})" class="w-full py-3.5 rounded-2xl text-xs sm:text-sm font-bold bg-[#1a281f] hover:bg-[#2f3e34] text-white shadow-lg shadow-[#1a281f]/10 transition active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer">
+                        <span class="text-amber-300">⚡</span>
+                        <span>Посадить гостей (Walk-in)</span>
+                        <kbd class="text-[9px] font-mono px-1 py-0.5 rounded bg-black/40 border border-white/20">W</kbd>
+                    </button>
+                </div>
+            `;
+        }
+
+        // ================= БЫСТРАЯ ПОСАДКА ГОСТЯ (QUICK WALKIN MODAL) =================
+        function openQuickWalkinModal(tableId = null) {
+            const modal = document.getElementById('quickWalkinModal');
+            if (!modal) return;
+
+            const restId = selectedRestId === 'all' ? 1 : Number(selectedRestId);
+            const rest = RESTAURANTS.find(r => r.id === restId) || RESTAURANTS[0];
+
+            const sel = document.getElementById('qwTableSelect');
+            if (sel && rest && rest.tables) {
+                sel.innerHTML = rest.tables.map(t => {
+                    const isSel = (tableId && Number(tableId) === Number(t.id)) || (!tableId && t.id === selectedFloorTableId);
+                    return `<option value="${t.id}" data-num="${t.number}" data-zone="${t.zone}" data-seats="${t.seats}" ${isSel ? 'selected' : ''}>Стол №${t.number} (${t.zone}, до ${t.seats} персон)</option>`;
+                }).join('');
+            }
+
+            const dateInput = document.getElementById('qwDateInput');
+            if (dateInput) {
+                dateInput.value = document.getElementById('floorDateSelect')?.value || getIsoDate(0);
+            }
+
+            const timeInput = document.getElementById('qwTimeInput');
+            if (timeInput) {
+                if (selectedFloorTime !== 'all') {
+                    timeInput.value = selectedFloorTime;
+                } else {
+                    const now = new Date();
+                    const hh = String(now.getHours()).padStart(2, '0');
+                    const mm = String(Math.floor(now.getMinutes() / 15) * 15).padStart(2, '0');
+                    timeInput.value = `${hh}:${mm}`;
+                }
+            }
+
+            const nameInput = document.getElementById('qwGuestName');
+            if (nameInput) {
+                nameInput.value = '';
+                setTimeout(() => nameInput.focus(), 80);
+            }
+
+            const phoneInput = document.getElementById('qwGuestPhone');
+            if (phoneInput) phoneInput.value = '';
+
+            const commentInput = document.getElementById('qwWishes');
+            if (commentInput) commentInput.value = '';
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeQuickWalkinModal() {
+            const modal = document.getElementById('quickWalkinModal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function formatAdminKZPhone(input) {
+            if (!input) return;
+            let digits = input.value.replace(/\D/g, '');
+            if (digits.startsWith('8')) digits = '7' + digits.slice(1);
+            if (!digits.startsWith('7')) digits = '7' + digits;
+            digits = digits.slice(0, 11);
+
+            let res = '+7';
+            if (digits.length > 1) res += ' (' + digits.substring(1, 4);
+            if (digits.length >= 4) res += ') ' + digits.substring(4, 7);
+            if (digits.length >= 7) res += '-' + digits.substring(7, 9);
+            if (digits.length >= 9) res += '-' + digits.substring(9, 11);
+            input.value = res;
+        }
+
+        async function submitQuickWalkin() {
+            const restId = selectedRestId === 'all' ? 1 : Number(selectedRestId);
+            const rest = RESTAURANTS.find(r => r.id === restId) || RESTAURANTS[0];
+
+            const tableSel = document.getElementById('qwTableSelect');
+            const opt = tableSel?.options[tableSel.selectedIndex];
+            const tableId = Number(tableSel?.value) || rest.tables?.[0]?.id || 1;
+            const tableNum = Number(opt?.dataset?.num || rest.tables?.[0]?.number || 1);
+            const tableZone = opt?.dataset?.zone || 'Главный зал';
+
+            const guestsCount = Number(document.getElementById('qwGuestsSelect')?.value) || 2;
+            const bookingDate = document.getElementById('qwDateInput')?.value || getIsoDate(0);
+            const bookingTime = document.getElementById('qwTimeInput')?.value || '19:30';
+            const guestName = (document.getElementById('qwGuestName')?.value || '').trim() || 'Гость (Walk-in)';
+            const guestPhone = (document.getElementById('qwGuestPhone')?.value || '').trim() || '+7 (700) 000-00-00';
+            const wishes = (document.getElementById('qwWishes')?.value || '').trim() || 'Быстрая посадка от хостес';
+
+            const payload = {
+                restaurant_id: rest.id,
+                table_id: tableId,
+                guest_name: guestName,
+                guest_phone: guestPhone,
+                booking_date: bookingDate,
+                booking_time: bookingTime,
+                guests_count: guestsCount,
+                wishes: wishes
+            };
+
+            closeQuickWalkinModal();
+
+            const res = await apiFetch('/api/bookings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (res && res.booking && res.booking.id) {
+                const newId = res.booking.id;
+                // Hostess sets status to 'completed' (arrived) in DB API
+                await apiFetch(`/api/admin/bookings/${newId}/status`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: 'completed' })
+                });
+                await loadBookingsFromServer();
+            } else {
+                const localObj = normalizeBooking({
+                    id: Date.now(),
+                    ...payload,
+                    restaurant_name: rest.name,
+                    table_number: tableNum,
+                    table_zone: tableZone,
+                    status: 'arrived'
+                });
+                bookings.unshift(localObj);
+                saveToSharedStorage(bookings);
+                updateKPIs();
+                renderOrders();
+            }
+
+            selectedFloorTableId = tableId;
+            renderFloorMap();
+            showToast(`Гости успешно посажены за Стол №${tableNum}! 🥂`, '🪑');
+            if (soundNotificationEnabled) {
+                playLuxuryChime();
+            }
         }
 
         async function quickSeatAtTable(restId, tableId, tableNum, seats) {
-            document.getElementById('walkinRestSelect').value = String(restId);
-            await populateWalkinTables();
-            document.getElementById('walkinTableSelect').value = String(tableId);
-            document.getElementById('walkinGuestsSelect').value = String(Math.min(seats, 8));
-            switchTab('walkin');
-            showToast(`Выбран Стол №${tableNum} — введите имя гостя`, '🪑');
+            openQuickWalkinModal(tableId);
         }
 
         // ================= РУЧНАЯ БРОНЬ ПО ЗВОНКУ / WALK-IN =================
@@ -4789,6 +5553,7 @@
 
         document.addEventListener('DOMContentLoaded', async () => {
             initAdminTheme();
+            setOrdersViewMode(currentOrdersView);
             initShiftState();
             updateSoundToggleUI();
             setAdminLanguage(currentAdminLang);
